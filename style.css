@@ -6,221 +6,49 @@
     --accent-color: #2a66ff;
     --secondary-color: #00ff66;
     --border-color: #222222;
-    --font-main: 'Space Grotesk', sans-serif;
-    --font-mono: 'Share Tech Mono', monospace;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Active l'effet magnétique page par page (façon TikTok) sur la page */
-html {
-    scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
-}
+body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Space Grotesk', sans-serif; display: flex; }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-main);
-    overflow-x: hidden;
-    display: flex;
-}
-
-/* --- MENU LATÉRAL FIXE (GAUCHE) --- */
+/* Menu fixe */
 .side-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100vh;
-    border-right: 1px solid var(--border-color);
-    padding: 3rem 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: var(--bg-color);
-    z-index: 100;
+    position: fixed; width: 280px; height: 100vh; border-right: 1px solid var(--border-color);
+    padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: space-between; z-index: 100;
 }
 
-.nav-logo {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    color: var(--secondary-color);
-}
-
-.nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-/* Style des liens inactifs : gris et opacité faible */
 .nav-item {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: #888888;
-    opacity: 0.4;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    display: inline-block;
-    transform-origin: left center;
+    font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #888; opacity: 0.4;
+    text-decoration: none; text-transform: uppercase; transition: all 0.5s ease; display: block; margin-bottom: 1.5rem;
 }
 
-/* Style dynamique de la page active : grossit et s'illumine */
-.nav-item.active {
-    color: var(--text-color);
-    opacity: 1;
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
-    transform: scale(1.08);
-}
+.nav-item.active { color: var(--text-color); opacity: 1; font-size: 1.3rem; font-weight: 700; transform: scale(1.1); }
 
-.nav-status {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: #444;
-}
-
-/* --- FLUX VERTICAL DES SECTIONS (DROITE) --- */
-.main-feed {
-    margin-left: 280px;
-    width: calc(100% - 280px);
-}
+/* Flux sections avec animation de transition */
+.main-feed { margin-left: 280px; width: calc(100% - 280px); }
 
 .feed-section {
-    height: 100vh;
-    padding: 6rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    scroll-snap-align: start; /* Force l'ancrage parfait de chaque section */
+    height: 100vh; padding: 6rem; border-bottom: 1px solid var(--border-color);
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0.2; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Section Accueil spécifique */
-#accueil {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
+.feed-section.active { opacity: 1; transform: translateY(0); }
 
-.tag {
-    font-family: var(--font-mono);
-    color: var(--secondary-color);
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    display: block;
-    margin-bottom: 1.5rem;
-}
+/* Contenu */
+.tag { font-family: 'Share Tech Mono', monospace; color: var(--secondary-color); font-size: 0.8rem; margin-bottom: 1rem; display: block; }
+h1 { font-size: 3.5rem; line-height: 1; text-transform: uppercase; }
+h2 { font-size: 3rem; text-transform: uppercase; }
+.highlight { color: var(--accent-color); }
+.wireframe-placeholder { height: 300px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; margin-top: 2rem; color: var(--secondary-color); font-family: 'Share Tech Mono', monospace; }
+.placeholder-box { height: 200px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; margin-top: 2rem; color: #444; }
 
-.hero-text h1 {
-    font-size: 3.8rem;
-    line-height: 1.05;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-}
-
-.highlight {
-    color: var(--accent-color);
-}
-
-.hero-text p {
-    color: #888;
-    font-size: 1.1rem;
-    max-width: 450px;
-    line-height: 1.6;
-}
-
-.wireframe-placeholder {
-    width: 100%;
-    height: 380px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    color: var(--secondary-color);
-    background: rgba(255, 255, 255, 0.01);
-    animation: pulse 4s infinite ease-in-out;
-}
-
-/* Autres sections du feed */
-.section-content h2 {
-    font-size: 3rem;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-}
-
-.section-desc {
-    color: #888;
-    font-size: 1.1rem;
-    margin-bottom: 2.5rem;
-}
-
-.placeholder-box {
-    width: 100%;
-    height: 250px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-mono);
-    color: #444;
-}
-
-@keyframes pulse {
-    0% { opacity: 0.3; }
-    50% { opacity: 0.8; }
-    100% { opacity: 0.3; }
-}
-
-/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 900px) {
-    body {
-        flex-direction: column;
-    }
-    .side-nav {
-        position: sticky; /* Reste collé en haut de l'écran sur mobile */
-        top: 0;
-        width: 100%;
-        height: auto;
-        padding: 1.2rem 1.5rem;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .main-feed {
-        margin-left: 0;
-        width: 100%;
-    }
-    .feed-section {
-        padding: 3rem 1.5rem;
-        height: auto;
-        min-height: calc(100vh - 80px);
-    }
-    #accueil {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    .hero-text h1 {
-        font-size: 2.5rem;
-    }
-    .nav-links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-top: 0.8rem;
-    }
+    .side-nav { position: sticky; width: 100%; height: auto; border-bottom: 1px solid var(--border-color); }
+    .main-feed { margin-left: 0; }
 }
+
 
 
 

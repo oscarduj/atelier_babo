@@ -22,64 +22,53 @@
         <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
     </header>
 
-    <!-- Flux principal vertical avec effet magnétique -->
+    <!-- Flux principal -->
     <main class="main-feed">
-
-        <!-- Section 01 : Accueil -->
-        <section id="accueil" class="feed-section">
+        <section id="accueil" class="feed-section active">
             <div class="hero-content">
                 <span class="tag">MANIFESTE // HYBRIDATION</span>
                 <h1>ART, CODE &<br><span class="highlight">TECHNOLOGIE</span></h1>
                 <p>Espace de recherche, de création collective et de collision entre les médiums physiques et numériques.</p>
             </div>
-            <div class="hero-visual-container">
-                <div class="wireframe-placeholder">
-                    <span>[ SPHERE_3D_WIREFRAME ]</span>
-                </div>
-            </div>
+            <div class="wireframe-placeholder"><span>[ SPHERE_3D_WIREFRAME ]</span></div>
         </section>
 
-        <!-- Section 02 : Travaux -->
         <section id="travaux" class="feed-section">
             <div class="section-content">
                 <span class="tag">ARCHIVE // PROJETS</span>
                 <h2>02. TRAVAUX</h2>
                 <p class="section-desc">Exploration des frontières entre algorithmique et plasticité.</p>
-                <div class="placeholder-box">[ GALERIE DE PROJETS EN COURS ]</div>
+                <div class="placeholder-box">[ GALERIE DE PROJETS ]</div>
             </div>
         </section>
 
-        <!-- Section 03 : Curation -->
         <section id="curation" class="feed-section">
             <div class="section-content">
                 <span class="tag">PENSÉE // RECHERCHE</span>
                 <h2>03. CURATION</h2>
-                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques contemporaines.</p>
+                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
                 <div class="placeholder-box">[ TEXTES & MANIFESTES ]</div>
             </div>
         </section>
 
-        <!-- Section 04 : Expos -->
         <section id="expos" class="feed-section">
             <div class="section-content">
                 <span class="tag">ESPACE // TEMPOREL</span>
                 <h2>04. EXPOS</h2>
                 <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
-                <div class="placeholder-box">[ AGENDA DES INTERVENTIONS ]</div>
+                <div class="placeholder-box">[ AGENDA ]</div>
             </div>
         </section>
 
-        <!-- Section 05 : Soutien -->
         <section id="soutien" class="feed-section">
             <div class="section-content">
                 <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
                 <h2>05. SOUTIEN</h2>
-                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres du collectif.</p>
+                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
                 <div class="placeholder-box">[ ESPACE CONTRIBUTIF ]</div>
             </div>
         </section>
 
-        <!-- Section 06 : Contact -->
         <section id="contact" class="feed-section">
             <div class="section-content">
                 <span class="tag">CONNEXION // RÉSEAU</span>
@@ -88,10 +77,8 @@
                 <div class="placeholder-box">[ CANAUX DE TRANSMISSION ]</div>
             </div>
         </section>
-
     </main>
 
-    <!-- Script de détection du scroll pour animer le menu -->
     <script>
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
@@ -99,21 +86,24 @@
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
                     current = section.getAttribute('id');
                 }
             });
 
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.getAttribute('id') === current) section.classList.add('active');
+            });
+
             navItems.forEach(item => {
                 item.classList.remove('active');
-                if (item.getAttribute('data-target') === current) {
-                    item.classList.add('active');
-                }
+                if (item.getAttribute('data-target') === current) item.classList.add('active');
             });
         });
     </script>
 </body>
 </html>
+
 
