@@ -58,58 +58,67 @@
             </div>
         </section>
 
-        <!-- 04. COLLABORATEURS (NOUVELLE PAGE) -->
+        <!-- 04. COLLABORATEURS -->
         <section id="collaborateurs" class="feed-section">
             <div class="section-content" style="width: 100%;">
                 <span class="tag">RÉSEAU // IMPLICATION</span>
                 <h2>COLLABORATEURS</h2>
                 
-                <!-- Barre de sous-catégories -->
                 <div class="sub-nav-bar">
                     <button class="sub-nav-btn active" data-cat="artistes">ARTISTES</button>
                     <button class="sub-nav-btn" data-cat="structures">STRUCTURES</button>
                     <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
                 </div>
 
-                <!-- Contenu : Catégorie Artistes (Carrousel horizontal) -->
+                <!-- Catégorie Artistes : Carrousel horizontal avec votre liste -->
                 <div id="cat-artistes" class="collab-category-content active">
                     <p class="section-desc">Glissez vers la droite pour découvrir les artistes du collectif.</p>
                     
                     <div class="horizontal-scroll-container">
-                        <!-- Exemple Artiste 1 -->
-                        <a href="artiste-exemple.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE ARTISTE ]</div>
-                            <span class="artist-name">LÉONARD VEX</span>
-                            <span class="artist-practice">Génératif & Installation</span>
+                        <!-- Artiste 1 : g0she -->
+                        <a href="goshe.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE G0SHE ]</div>
+                            <span class="artist-name">g0she</span>
+                            <span class="artist-practice">Arts Numériques</span>
                         </a>
-                        <!-- Exemple Artiste 2 -->
-                        <a href="artiste-exemple.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE ARTISTE ]</div>
-                            <span class="artist-name">CLARA MENDES</span>
-                            <span class="artist-practice">3D & Réalité Virtuelle</span>
+                        <!-- Artiste 2 : Nino -->
+                        <a href="nino.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE NINO ]</div>
+                            <span class="artist-name">Nino</span>
+                            <span class="artist-practice">Plastique & Son</span>
                         </a>
-                        <!-- Exemple Artiste 3 -->
-                        <a href="artiste-exemple.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE ARTISTE ]</div>
-                            <span class="artist-name">SOFIANE K.</span>
-                            <span class="artist-practice">Performance Sonore</span>
+                        <!-- Artiste 3 : quideNovie -->
+                        <a href="quidenovie.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE QUIDENOVIE ]</div>
+                            <span class="artist-name">quideNovie</span>
+                            <span class="artist-practice">Recherche & Code</span>
                         </a>
-                        <!-- Exemple Artiste 4 -->
-                        <a href="artiste-exemple.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE ARTISTE ]</div>
-                            <span class="artist-name">MAHSA R.</span>
-                            <span class="artist-practice">Plasticité & Code</span>
+                        <!-- Artiste 4 : collectif naïf -->
+                        <a href="collectif-naif.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE COLLECTIF NAÏF ]</div>
+                            <span class="artist-name">collectif naïf</span>
+                            <span class="artist-practice">Création Collaborative</span>
+                        </a>
+                        <!-- Artiste 5 : Hugo Denise -->
+                        <a href="hugo-denise.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE HUGO DENISE ]</div>
+                            <span class="artist-name">Hugo Denise</span>
+                            <span class="artist-practice">Installation & Matière</span>
+                        </a>
+                        <!-- Artiste 6 : Léon Chotard -->
+                        <a href="leon-chotard.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE LÉON CHOTARD ]</div>
+                            <span class="artist-name">Léon Chotard</span>
+                            <span class="artist-practice">Génératif & Visuel</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- Contenu : Catégorie Structures (Masqué par défaut) -->
                 <div id="cat-structures" class="collab-category-content" style="display: none;">
                     <p class="section-desc">Partenaires institutionnels, galeries et espaces de diffusion.</p>
                     <div class="placeholder-box">[ RÉSEAU DE STRUCTURES PARTENAIRES ]</div>
                 </div>
 
-                <!-- Contenu : Catégorie Mécènes (Masqué par défaut) -->
                 <div id="cat-mecenes" class="collab-category-content" style="display: none;">
                     <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
                     <div class="placeholder-box">[ CERCLE DES MÉCÈNES ]</div>
@@ -157,7 +166,6 @@
         const themeText = document.getElementById('theme-text');
         const htmlRoot = document.documentElement;
 
-        // Gestion du mode Jour/Nuit
         themeToggle.addEventListener('click', () => {
             if (htmlRoot.classList.contains('dark-mode')) {
                 htmlRoot.classList.remove('dark-mode');
@@ -170,7 +178,6 @@
             }
         });
 
-        // Gestion des sous-catégories (Artistes / Structures / Mécènes)
         const subNavBtns = document.querySelectorAll('.sub-nav-btn');
         const collabContents = document.querySelectorAll('.collab-category-content');
 
@@ -189,7 +196,6 @@
             });
         });
 
-        // Navigation active au défilement
         mainFeed.addEventListener('scroll', () => {
             let index = Math.round(mainFeed.scrollTop / window.innerHeight);
             let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
@@ -211,6 +217,7 @@
     </script>
 </body>
 </html>
+
 
 
 
