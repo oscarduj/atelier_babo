@@ -1,0 +1,155 @@
+/* --- VARIABLES & RESET --- */
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #00FF66; /* Vert fluo technique */
+    --secondary-color: #0044FF; /* Bleu électrique */
+    --border-color: #333333;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-sans: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.logo {
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--accent-color);
+}
+
+/* --- HERO SECTION --- */
+.main-content {
+    padding: 4rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.hero-text .tag {
+    font-family: var(--font-mono);
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.hero-text h1 {
+    font-family: var(--font-mono);
+    font-size: 3.5rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+}
+
+.hero-text .highlight {
+    color: var(--secondary-color);
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    color: #aaaaaa;
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+/* --- VISUAL PLACEHOLDER (Sphère / wireframe ref) --- */
+.hero-visual-container {
+    width: 100%;
+    height: 400px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #111 0%, #000 100%);
+    position: relative;
+}
+
+.wireframe-placeholder {
+    font-family: var(--font-mono);
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* --- FOOTER --- */
+.site-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .nav-links {
+        display: none; /* On pourra ajouter un menu mobile plus tard */
+    }
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+}
