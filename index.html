@@ -83,10 +83,12 @@
         const nav = document.querySelector('.side-nav');
 
         window.addEventListener('scroll', () => {
+            // Apparition du menu au scroll
             nav.classList.add('visible');
             clearTimeout(window.navTimer);
             window.navTimer = setTimeout(() => { nav.classList.remove('visible'); }, 2000);
 
+            // Gestion de la section active
             let current = '';
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
@@ -108,6 +110,7 @@
     </script>
 </body>
 </html>
+
 
 
 
