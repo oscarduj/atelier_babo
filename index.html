@@ -34,7 +34,7 @@
         <section id="travaux" class="feed-section">
             <div class="section-content">
                 <span class="tag">ARCHIVE // PROJETS</span>
-                <h2>02. TRAVAUX</h2>
+                <h2>TRAVAUX</h2>
                 <p class="section-desc">Exploration des frontières entre algorithmique et plasticité.</p>
                 <div class="placeholder-box">[ GALERIE DE PROJETS ]</div>
             </div>
@@ -43,7 +43,7 @@
         <section id="curation" class="feed-section">
             <div class="section-content">
                 <span class="tag">PENSÉE // RECHERCHE</span>
-                <h2>03. CURATION</h2>
+                <h2>CURATION</h2>
                 <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
                 <div class="placeholder-box">[ TEXTES & MANIFESTES ]</div>
             </div>
@@ -52,7 +52,7 @@
         <section id="expos" class="feed-section">
             <div class="section-content">
                 <span class="tag">ESPACE // TEMPOREL</span>
-                <h2>04. EXPOS</h2>
+                <h2>EXPOS</h2>
                 <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
                 <div class="placeholder-box">[ AGENDA ]</div>
             </div>
@@ -61,7 +61,7 @@
         <section id="soutien" class="feed-section">
             <div class="section-content">
                 <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
-                <h2>05. SOUTIEN</h2>
+                <h2>SOUTIEN</h2>
                 <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
                 <div class="placeholder-box">[ ESPACE CONTRIBUTIF ]</div>
             </div>
@@ -70,7 +70,7 @@
         <section id="contact" class="feed-section">
             <div class="section-content">
                 <span class="tag">CONNEXION // RÉSEAU</span>
-                <h2>06. CONTACT</h2>
+                <h2>CONTACT</h2>
                 <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
                 <div class="placeholder-box">[ CANAUX DE TRANSMISSION ]</div>
             </div>
@@ -80,20 +80,10 @@
     <script>
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
-        const nav = document.querySelector('.side-nav');
         const mainFeed = document.querySelector('.main-feed');
 
-        nav.addEventListener('click', () => {
-            nav.classList.add('visible');
-        });
-
+        // Met uniquement à jour la page active au défilement (sans ouvrir la barre)
         mainFeed.addEventListener('scroll', () => {
-            nav.classList.add('visible');
-            clearTimeout(window.navTimer);
-            window.navTimer = setTimeout(() => { 
-                nav.classList.remove('visible'); 
-            }, 2000);
-
             let index = Math.round(mainFeed.scrollTop / window.innerHeight);
             let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
 
@@ -111,13 +101,10 @@
                 }
             });
         });
-
-        nav.addEventListener('mouseleave', () => {
-            nav.classList.remove('visible');
-        });
     </script>
 </body>
 </html>
+
 
 
 

@@ -19,7 +19,7 @@ body {
     overflow: hidden; 
 }
 
-/* --- MENU LATÉRAL : BANDE FINE --- */
+/* --- MENU LATÉRAL : NE S'OUVRE QUE AU SURVOL --- */
 .side-nav {
     position: fixed; 
     top: 0; 
@@ -36,8 +36,8 @@ body {
     transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.side-nav:hover, 
-.side-nav.visible { 
+/* S'ouvre uniquement au survol de la souris sur la zone latérale */
+.side-nav:hover { 
     left: 0; 
 }
 
@@ -58,7 +58,7 @@ body {
     color: var(--secondary-color); 
 }
 
-/* Style de base des liens */
+/* Liens du menu */
 .nav-item {
     font-family: 'Share Tech Mono', monospace; 
     font-size: 0.95rem; 
@@ -104,19 +104,20 @@ body {
     scroll-snap-type: y mandatory; 
 }
 
+/* --- SECTIONS : CONTENU BIEN HAUT ET À GAUCHE --- */
 .feed-section {
     height: 100vh; 
-    padding: 4rem 6rem; /* Padding haut/bas réduit pour remonter le contenu */
+    padding: 3rem 6rem; /* Marges réduites */
     border-bottom: 1px solid var(--border-color);
     display: flex; 
     flex-direction: column; 
-    justify-content: flex-start; /* Aligné vers le haut de la section */
-    padding-top: 5rem; /* Position du haut contrôlée ici */
+    justify-content: flex-start; /* Aligné tout en haut */
+    padding-top: 4rem; /* Remonté au maximum */
     scroll-snap-align: start;
     opacity: 1; 
 }
 
-/* --- CONTENU & TYPOGRAPHIE PLUS PETITE --- */
+/* --- TYPOGRAPHIE PLUS PETITE & ÉPURÉE --- */
 .tag { 
     font-family: 'Share Tech Mono', monospace; 
     color: var(--secondary-color); 
@@ -129,18 +130,19 @@ h1 {
     font-size: 2.2rem; /* Taille réduite */
     line-height: 1.1; 
     text-transform: uppercase; 
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 h2 { 
-    font-size: 2rem; /* Taille réduite (plus petit) */
+    font-size: 2rem; /* Taille réduite et sans les chiffres */
     text-transform: uppercase; 
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .section-desc, .hero-content p {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #aaaaaa;
+    margin-bottom: 1.5rem;
 }
 
 .highlight { 
@@ -148,23 +150,21 @@ h2 {
 }
 
 .wireframe-placeholder { 
-    height: 260px; 
+    height: 280px; 
     border: 1px dashed var(--border-color); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    margin-top: 2rem; 
     color: var(--secondary-color); 
     font-family: 'Share Tech Mono', monospace; 
 }
 
 .placeholder-box { 
-    height: 220px; 
+    height: 280px; 
     border: 1px dashed var(--border-color); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    margin-top: 2rem; 
     color: #aaaaaa; 
     font-family: 'Share Tech Mono', monospace;
 }
@@ -174,6 +174,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
