@@ -1,53 +1,405 @@
-<!DOCTYPE html>
-<html lang="fr" class="dark-mode">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOM DE L'ARTISTE // ATELIER BABO</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
-    <main class="artist-page-container">
-        <!-- Bouton de retour vers l'accueil / collaborateurs -->
-        <a href="index.html#collaborateurs" class="back-link">← RETOUR AUX COLLABORATEURS</a>
+html.dark-mode {
+    --bg-color: #101010;        
+    --text-color: #EAE8E4;      
+    --accent-color: #FFFFFF;    
+    --secondary-color: #A3B1C2; 
+    --border-color: #262626;    
+    --box-bg: rgba(163, 177, 194, 0.01);
+    --desc-color: #999999;
+    --hover-bg: rgba(163, 177, 194, 0.08);
+}
 
-        <!-- Nom de l'artiste en haut -->
-        <header class="artist-header">
-            <span class="tag">ARTISTE // PROFIL</span>
-            <h1>NOM DE L'ARTISTE</h1>
-        </header>
+html.light-mode {
+    --bg-color: #F4F3F0;        
+    --text-color: #181818;      
+    --accent-color: #111111;    
+    --secondary-color: #4A607A; 
+    --border-color: #D8D6D0;    
+    --box-bg: rgba(74, 96, 122, 0.02);
+    --desc-color: #555555;
+    --hover-bg: rgba(74, 96, 122, 0.08);
+}
 
-        <!-- Espace texte de présentation -->
-        <section class="artist-bio-section">
-            <h3>PRÉSENTATION</h3>
-            <p>Écrivez ici la description de la démarche artistique, de la pratique et de l'implication de l'artiste au sein du collectif Atelier Babo.</p>
-        </section>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        <!-- Espaces pour les images des projets collaboratifs -->
-        <section class="artist-projects-section">
-            <h3>PROJETS COLLABORATIFS</h3>
-            <div class="artist-gallery">
-                <div class="artist-img-placeholder">[ IMAGE PROJET 1 ]</div>
-                <div class="artist-img-placeholder">[ IMAGE PROJET 2 ]</div>
-            </div>
-        </section>
+body { 
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    font-family: 'Space Grotesk', sans-serif; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; 
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
 
-        <!-- Espace contact (Liens site et Instagram) -->
-        <section class="artist-contact-section">
-            <h3>CANAUX DE CONTACT & LIENS</h3>
-            <div class="contact-links-grid">
-                <a href="https://instagram.com" target="_blank" class="contact-btn">INSTAGRAM</a>
-                <a href="https://example.com" target="_blank" class="contact-btn">SITE WEB</a>
-            </div>
-        </section>
-    </main>
+/* --- MENU LATÉRAL --- */
+.side-nav {
+    position: fixed; 
+    top: 0; 
+    left: -240px; 
+    width: 280px; 
+    height: 100vh;
+    border-right: 1px solid var(--border-color); 
+    padding: 3rem 2rem;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    background-color: var(--bg-color); 
+    z-index: 100;
+    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
+}
 
-    <script>
-        // Optionnel : Script si vous souhaitez garder la bascule Jour/Nuit aussi sur les pages artistes
-    </script>
-</body>
-</html>
+.side-nav:hover { 
+    left: 0; 
+}
+
+.side-nav::after {
+    content: ""; 
+    position: absolute; 
+    right: 10px; 
+    top: 50%; 
+    width: 2px; 
+    height: 40px;
+    background-color: var(--secondary-color); 
+    opacity: 0.5;
+}
+
+.nav-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.nav-logo { 
+    font-family: 'Share Tech Mono', monospace; 
+    font-size: 1.1rem; 
+    color: var(--secondary-color); 
+    letter-spacing: 1px;
+}
+
+.theme-switch {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    width: fit-content;
+}
+
+.theme-switch:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: var(--hover-bg);
+}
+
+.nav-item {
+    font-family: 'Share Tech Mono', monospace; 
+    font-size: 0.95rem; 
+    color: var(--text-color); 
+    opacity: 0.35;
+    text-decoration: none; 
+    text-transform: uppercase; 
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+    display: block; 
+    margin-bottom: 1.5rem;
+    padding: 0.4rem 0.6rem;
+    border-left: 2px solid transparent;
+}
+
+.nav-item:hover {
+    opacity: 0.85;
+    transform: translateX(8px);
+    color: var(--secondary-color);
+}
+
+.nav-item.active { 
+    color: var(--secondary-color) !important; 
+    opacity: 1 !important; 
+    background-color: var(--hover-bg); 
+    border-left: 4px solid var(--secondary-color); 
+    font-weight: 700; 
+    padding-left: 1rem;
+    transform: translateX(10px);
+}
+
+.nav-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--desc-color);
+}
+
+/* --- FLUX MAGNÉTIQUE --- */
+.main-feed { 
+    flex: 1; 
+    height: 100vh; 
+    overflow-y: scroll; 
+    scroll-snap-type: y mandatory; 
+}
+
+/* --- SECTIONS --- */
+.feed-section {
+    height: 100vh; 
+    padding: 3rem 6rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start;
+    padding-top: 3.5rem;
+    scroll-snap-align: start;
+    opacity: 1; 
+    transition: border-color 0.4s ease;
+}
+
+/* --- SOUS-BARRE DE NAVIGATION (COLLABORATEURS) --- */
+.sub-nav-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1rem 0 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.6rem;
+}
+
+.sub-nav-btn {
+    background: transparent;
+    border: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--desc-color);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    padding-bottom: 0.2rem;
+}
+
+.sub-nav-btn:hover {
+    color: var(--text-color);
+}
+
+.sub-nav-btn.active {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    font-weight: 700;
+}
+
+/* --- CARROUSEL HORIZONTAL DES ARTISTES --- */
+.horizontal-scroll-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem 0 2rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) var(--border-color);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+}
+
+.artist-card {
+    min-width: 240px;
+    max-width: 240px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+}
+
+.artist-card:hover {
+    transform: translateY(-5px);
+}
+
+.artist-img-box {
+    height: 280px;
+    border: 1px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    background-color: var(--box-bg);
+    margin-bottom: 0.8rem;
+    transition: border-color 0.3s ease;
+}
+
+.artist-card:hover .artist-img-box {
+    border-color: var(--secondary-color);
+}
+
+.artist-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+
+.artist-practice {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--desc-color);
+}
+
+/* --- STYLE DES PAGES ARTISTES INDIVIDUELLES (utilisé dans le dossier artistes/) --- */
+.artist-page-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    overflow-y: auto;
+    height: 100vh;
+}
+
+.back-link {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease;
+}
+
+.back-link:hover {
+    transform: translateX(-5px);
+}
+
+.artist-header {
+    margin-bottom: 2.5rem;
+}
+
+.artist-bio-section, .artist-projects-section, .artist-contact-section {
+    margin-bottom: 3rem;
+}
+
+.artist-bio-section h3, .artist-projects-section h3, .artist-contact-section h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.artist-bio-section p {
+    font-size: 0.95rem;
+    color: var(--desc-color);
+    line-height: 1.6;
+}
+
+.artist-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.artist-img-placeholder {
+    height: 240px;
+    border: 1px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--desc-color);
+    background-color: var(--box-bg);
+}
+
+.contact-links-grid {
+    display: flex;
+    gap: 1rem;
+}
+
+.contact-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background-color: var(--box-bg);
+}
+
+.contact-btn:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: var(--hover-bg);
+}
+
+/* --- TYPOGRAPHIE & PLACEHOLDERS --- */
+.tag { 
+    font-family: 'Share Tech Mono', monospace; 
+    color: var(--secondary-color); 
+    font-size: 0.75rem; 
+    margin-bottom: 0.4rem; 
+    display: block; 
+    letter-spacing: 0.5px;
+}
+
+h1 { 
+    font-size: 2rem; 
+    line-height: 1.1; 
+    text-transform: uppercase; 
+    margin-bottom: 0.3rem;
+}
+
+h2 { 
+    font-size: 1.8rem; 
+    text-transform: uppercase; 
+    margin-bottom: 0.3rem;
+}
+
+.section-desc, .hero-content p {
+    font-size: 0.85rem;
+    color: var(--desc-color);
+    margin-bottom: 1.2rem;
+}
+
+.highlight { 
+    color: var(--accent-color); 
+}
+
+.wireframe-placeholder { 
+    height: 280px; 
+    border: 1px dashed var(--border-color); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: var(--secondary-color); 
+    font-family: 'Share Tech Mono', monospace; 
+    background-color: var(--box-bg); 
+}
+
+.placeholder-box { 
+    height: 280px; 
+    border: 1px dashed var(--border-color); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: var(--desc-color); 
+    font-family: 'Share Tech Mono', monospace;
+}
+
+@media (max-width: 900px) {
+    body { overflow-y: auto; height: auto; flex-direction: column; }
+    .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
+    .main-feed { height: auto; overflow: visible; }
+}
+
 
 
 
