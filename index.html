@@ -82,13 +82,19 @@
         const navItems = document.querySelectorAll('.nav-item');
         const nav = document.querySelector('.side-nav');
 
+        // 1. Ouvre au clic sur la barre
+        nav.addEventListener('click', () => {
+            nav.classList.add('visible');
+        });
+
+        // 2. Ouvre au scroll + gestion des fenêtres
         window.addEventListener('scroll', () => {
-            // Apparition du menu au scroll
             nav.classList.add('visible');
             clearTimeout(window.navTimer);
-            window.navTimer = setTimeout(() => { nav.classList.remove('visible'); }, 2000);
+            window.navTimer = setTimeout(() => { 
+                nav.classList.remove('visible'); 
+            }, 2000);
 
-            // Gestion de la section active
             let current = '';
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
@@ -107,9 +113,15 @@
                 if (item.getAttribute('data-target') === current) item.classList.add('active');
             });
         });
+
+        // 3. Ferme quand la souris quitte le menu
+        nav.addEventListener('mouseleave', () => {
+            nav.classList.remove('visible');
+        });
     </script>
 </body>
 </html>
+
 
 
 

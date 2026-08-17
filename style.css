@@ -10,51 +10,156 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Space Grotesk', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+body { 
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    font-family: 'Space Grotesk', sans-serif; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; 
+}
 
 /* --- MENU LATÉRAL : BANDE FINE (40px visible) --- */
 .side-nav {
-    position: fixed; top: 0; left: -240px; width: 280px; height: 100vh;
-    border-right: 1px solid var(--border-color); padding: 3rem 2rem;
-    display: flex; flex-direction: column; justify-content: space-between;
-    background-color: var(--bg-color); z-index: 100;
+    position: fixed; 
+    top: 0; 
+    left: -240px; /* Cache la majeure partie, laisse 40px visibles à gauche */
+    width: 280px; 
+    height: 100vh;
+    border-right: 1px solid var(--border-color); 
+    padding: 3rem 2rem;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    background-color: var(--bg-color); 
+    z-index: 100;
     transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.side-nav:hover, .side-nav.visible { left: 0; }
+/* S'ouvre au survol de la souris ou si le script ajoute .visible */
+.side-nav:hover, 
+.side-nav.visible { 
+    left: 0; 
+}
 
-/* Petite ligne verticale sur la bande fine */
+/* Petite ligne discrète pour montrer qu'on peut cliquer/survoler */
 .side-nav::after {
-    content: ""; position: absolute; right: 10px; top: 50%; width: 2px; height: 40px;
-    background-color: var(--secondary-color); opacity: 0.3;
+    content: ""; 
+    position: absolute; 
+    right: 10px; 
+    top: 50%; 
+    width: 2px; 
+    height: 40px;
+    background-color: var(--secondary-color); 
+    opacity: 0.3;
 }
 
-.nav-logo { font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; color: var(--secondary-color); }
+.nav-logo { 
+    font-family: 'Share Tech Mono', monospace; 
+    font-size: 1.1rem; 
+    color: var(--secondary-color); 
+}
+
 .nav-item {
-    font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #888; opacity: 0.4;
-    text-decoration: none; text-transform: uppercase; transition: all 0.5s ease; display: block; margin-bottom: 1.5rem;
+    font-family: 'Share Tech Mono', monospace; 
+    font-size: 0.9rem; 
+    color: #888; 
+    opacity: 0.4;
+    text-decoration: none; 
+    text-transform: uppercase; 
+    transition: all 0.5s ease; 
+    display: block; 
+    margin-bottom: 1.5rem;
 }
-.nav-item.active { color: var(--text-color); opacity: 1; font-size: 1.3rem; font-weight: 700; transform: scale(1.1); }
 
-/* --- FLUX MAGNÉTIQUE --- */
-.main-feed { flex: 1; height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-.feed-section {
-    height: 100vh; padding: 6rem; border-bottom: 1px solid var(--border-color);
-    display: flex; flex-direction: column; justify-content: center; scroll-snap-align: start;
-    opacity: 0.2; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+.nav-item.active { 
+    color: var(--text-color); 
+    opacity: 1; 
+    font-size: 1.3rem; 
+    font-weight: 700; 
+    transform: scale(1.1); 
 }
-.feed-section.active { opacity: 1; transform: translateY(0); }
+
+.nav-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: #444;
+}
+
+/* --- FLUX MAGNÉTIQUE (FENÊTRE PAR FENÊTRE) --- */
+.main-feed { 
+    flex: 1; 
+    height: 100vh; 
+    overflow-y: scroll; 
+    scroll-snap-type: y mandatory; 
+}
+
+.feed-section {
+    height: 100vh; 
+    padding: 6rem; 
+    border-bottom: 1px solid var(--border-color);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    scroll-snap-align: start;
+    opacity: 0.2; 
+    transform: translateY(40px); 
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feed-section.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
 
 /* --- CONTENU --- */
-.tag { font-family: 'Share Tech Mono', monospace; color: var(--secondary-color); font-size: 0.8rem; margin-bottom: 1rem; display: block; }
-h1 { font-size: 3.5rem; line-height: 1; text-transform: uppercase; }
-h2 { font-size: 3rem; text-transform: uppercase; }
-.highlight { color: var(--accent-color); }
-.wireframe-placeholder { height: 300px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; margin-top: 2rem; color: var(--secondary-color); font-family: 'Share Tech Mono', monospace; }
-.placeholder-box { height: 200px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; margin-top: 2rem; color: #444; }
+.tag { 
+    font-family: 'Share Tech Mono', monospace; 
+    color: var(--secondary-color); 
+    font-size: 0.8rem; 
+    margin-bottom: 1rem; 
+    display: block; 
+}
+
+h1 { 
+    font-size: 3.5rem; 
+    line-height: 1; 
+    text-transform: uppercase; 
+}
+
+h2 { 
+    font-size: 3rem; 
+    text-transform: uppercase; 
+}
+
+.highlight { 
+    color: var(--accent-color); 
+}
+
+.wireframe-placeholder { 
+    height: 300px; 
+    border: 1px dashed var(--border-color); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin-top: 2rem; 
+    color: var(--secondary-color); 
+    font-family: 'Share Tech Mono', monospace; 
+}
+
+.placeholder-box { 
+    height: 200px; 
+    border: 1px dashed var(--border-color); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin-top: 2rem; 
+    color: #444; 
+}
 
 @media (max-width: 900px) {
     body { overflow-y: auto; height: auto; flex-direction: column; }
-    .side-nav { position: sticky; width: 100%; height: auto; }
+    .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
