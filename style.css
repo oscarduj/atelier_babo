@@ -58,30 +58,38 @@ body {
     color: var(--secondary-color); 
 }
 
-/* Liens inactifs : discrets */
+/* Style de base des liens : discrets et semi-transparents */
 .nav-item {
     font-family: 'Share Tech Mono', monospace; 
     font-size: 0.95rem; 
-    color: #888888; 
-    opacity: 0.5;
+    color: #ffffff; 
+    opacity: 0.35;
     text-decoration: none; 
     text-transform: uppercase; 
-    transition: all 0.3s ease; 
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
     display: block; 
     margin-bottom: 1.5rem;
     padding: 0.4rem 0.6rem;
     border-left: 2px solid transparent;
 }
 
-/* Lien actif : opacité forcée à 1, lumineux et surligné */
+/* Animation au survol de la souris (Hover) */
+.nav-item:hover {
+    opacity: 0.8;
+    transform: translateX(8px);
+    color: var(--secondary-color);
+}
+
+/* Animation et opacité maximale pour la page active (Actif) */
 .nav-item.active { 
     color: var(--secondary-color) !important; 
     opacity: 1 !important; 
-    background-color: rgba(0, 255, 102, 0.1); 
-    border-left: 3px solid var(--secondary-color); 
+    background-color: rgba(0, 255, 102, 0.12); 
+    border-left: 4px solid var(--secondary-color); 
     font-weight: 700; 
-    padding-left: 0.8rem;
-    font-size: 1.1rem;
+    padding-left: 1rem;
+    transform: translateX(10px);
+    text-shadow: 0 0 12px rgba(0, 255, 102, 0.5);
 }
 
 .nav-status {
@@ -160,6 +168,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
