@@ -9,7 +9,6 @@ html.dark-mode {
     --box-bg: rgba(163, 177, 194, 0.01);
     --desc-color: #999999;
     --hover-bg: rgba(163, 177, 194, 0.08);
-    --btn-bg: #181818;          /* Fond spécifique pour que le bouton ressorte bien */
 }
 
 html.light-mode {
@@ -21,7 +20,6 @@ html.light-mode {
     --box-bg: rgba(74, 96, 122, 0.02);
     --desc-color: #555555;
     --hover-bg: rgba(74, 96, 122, 0.08);
-    --btn-bg: #E8E6E1;          /* Fond spécifique mode jour */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,29 +32,6 @@ body {
     height: 100vh; 
     overflow: hidden; 
     transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* --- BOUTON FIXE HAUT DROITE (Garantie de visibilité) --- */
-.theme-btn-fixed {
-    position: fixed;
-    top: 2rem;
-    right: 3rem;
-    z-index: 1000;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    background-color: var(--btn-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.theme-btn-fixed:hover {
-    border-color: var(--secondary-color);
-    color: var(--secondary-color);
 }
 
 /* --- MENU LATÉRAL --- */
@@ -91,11 +66,38 @@ body {
     opacity: 0.5;
 }
 
+.nav-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
 .nav-logo { 
     font-family: 'Share Tech Mono', monospace; 
     font-size: 1.1rem; 
     color: var(--secondary-color); 
     letter-spacing: 1px;
+}
+
+/* Bouton Jour / Nuit dans le menu */
+.theme-switch {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    width: fit-content;
+}
+
+.theme-switch:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: var(--hover-bg);
 }
 
 .nav-item {
@@ -214,8 +216,8 @@ h2 {
     body { overflow-y: auto; height: auto; flex-direction: column; }
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
-    .theme-btn-fixed { top: 1rem; right: 1rem; }
 }
+
 
 
 
