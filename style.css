@@ -16,8 +16,10 @@
     box-sizing: border-box;
 }
 
+/* Active l'effet magnétique page par page (façon TikTok) sur la page */
 html {
     scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
 }
 
 body {
@@ -57,7 +59,7 @@ body {
     gap: 1.5rem;
 }
 
-/* Style par défaut des liens : gris avec faible opacité */
+/* Style des liens inactifs : gris et opacité faible */
 .nav-item {
     font-family: var(--font-mono);
     font-size: 0.9rem;
@@ -71,7 +73,7 @@ body {
     transform-origin: left center;
 }
 
-/* Effet dynamique lorsque l'on est sur la page active : grossit, opacité max et s'illumine */
+/* Style dynamique de la page active : grossit et s'illumine */
 .nav-item.active {
     color: var(--text-color);
     opacity: 1;
@@ -94,12 +96,13 @@ body {
 }
 
 .feed-section {
-    min-height: 100vh;
+    height: 100vh;
     padding: 6rem;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
+    scroll-snap-align: start; /* Force l'ancrage parfait de chaque section */
 }
 
 /* Section Accueil spécifique */
@@ -187,10 +190,11 @@ body {
         flex-direction: column;
     }
     .side-nav {
-        position: relative;
+        position: sticky; /* Reste collé en haut de l'écran sur mobile */
+        top: 0;
         width: 100%;
         height: auto;
-        padding: 1.5rem;
+        padding: 1.2rem 1.5rem;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
     }
@@ -200,7 +204,8 @@ body {
     }
     .feed-section {
         padding: 3rem 1.5rem;
-        min-height: auto;
+        height: auto;
+        min-height: calc(100vh - 80px);
     }
     #accueil {
         grid-template-columns: 1fr;
@@ -213,9 +218,10 @@ body {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 1rem;
-        margin-top: 1rem;
+        margin-top: 0.8rem;
     }
 }
+
 
 
 
