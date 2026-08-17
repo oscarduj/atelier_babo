@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
+/* --- PALETTE MINÉRAL & ACIER (SANS DORÉ) --- */
 :root {
-    --bg-color: #050505;
-    --text-color: #ffffff;
-    --accent-color: #2a66ff;
-    --secondary-color: #00ff66;
-    --border-color: #222222;
+    --bg-color: #101010;        /* Noir minéral mat profond */
+    --text-color: #EAE8E4;      /* Blanc lin élégant */
+    --accent-color: #FFFFFF;    /* Blanc pur pour l'accent (minimaliste) */
+    --secondary-color: #A3B1C2; /* Bleu ardoise subtil (Actif) */
+    --border-color: #262626;    /* Lignes de structure fines */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,7 +20,7 @@ body {
     overflow: hidden; 
 }
 
-/* --- MENU LATÉRAL : NE S'OUVRE QUE AU SURVOL --- */
+/* --- MENU LATÉRAL --- */
 .side-nav {
     position: fixed; 
     top: 0; 
@@ -36,7 +37,6 @@ body {
     transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* S'ouvre uniquement au survol de la souris sur la zone latérale */
 .side-nav:hover { 
     left: 0; 
 }
@@ -56,13 +56,13 @@ body {
     font-family: 'Share Tech Mono', monospace; 
     font-size: 1.1rem; 
     color: var(--secondary-color); 
+    letter-spacing: 1px;
 }
 
-/* Liens du menu */
 .nav-item {
     font-family: 'Share Tech Mono', monospace; 
     font-size: 0.95rem; 
-    color: #ffffff; 
+    color: var(--text-color); 
     opacity: 0.35;
     text-decoration: none; 
     text-transform: uppercase; 
@@ -74,7 +74,7 @@ body {
 }
 
 .nav-item:hover {
-    opacity: 0.8;
+    opacity: 0.85;
     transform: translateX(8px);
     color: var(--secondary-color);
 }
@@ -82,12 +82,11 @@ body {
 .nav-item.active { 
     color: var(--secondary-color) !important; 
     opacity: 1 !important; 
-    background-color: rgba(0, 255, 102, 0.12); 
+    background-color: rgba(163, 177, 194, 0.08); 
     border-left: 4px solid var(--secondary-color); 
     font-weight: 700; 
     padding-left: 1rem;
     transform: translateX(10px);
-    text-shadow: 0 0 12px rgba(0, 255, 102, 0.5);
 }
 
 .nav-status {
@@ -104,45 +103,46 @@ body {
     scroll-snap-type: y mandatory; 
 }
 
-/* --- SECTIONS : CONTENU BIEN HAUT ET À GAUCHE --- */
+/* --- SECTIONS : HAUT & GAUCHE --- */
 .feed-section {
     height: 100vh; 
-    padding: 3rem 6rem; /* Marges réduites */
+    padding: 3rem 6rem;
     border-bottom: 1px solid var(--border-color);
     display: flex; 
     flex-direction: column; 
-    justify-content: flex-start; /* Aligné tout en haut */
-    padding-top: 4rem; /* Remonté au maximum */
+    justify-content: flex-start;
+    padding-top: 3.5rem;
     scroll-snap-align: start;
     opacity: 1; 
 }
 
-/* --- TYPOGRAPHIE PLUS PETITE & ÉPURÉE --- */
+/* --- TYPOGRAPHIE --- */
 .tag { 
     font-family: 'Share Tech Mono', monospace; 
     color: var(--secondary-color); 
     font-size: 0.75rem; 
-    margin-bottom: 0.5rem; 
+    margin-bottom: 0.4rem; 
     display: block; 
+    letter-spacing: 0.5px;
 }
 
 h1 { 
-    font-size: 2.2rem; /* Taille réduite */
+    font-size: 2rem; 
     line-height: 1.1; 
     text-transform: uppercase; 
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
 }
 
 h2 { 
-    font-size: 2rem; /* Taille réduite et sans les chiffres */
+    font-size: 1.8rem; 
     text-transform: uppercase; 
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
 }
 
 .section-desc, .hero-content p {
-    font-size: 0.9rem;
-    color: #aaaaaa;
-    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: #999999;
+    margin-bottom: 1.2rem;
 }
 
 .highlight { 
@@ -157,6 +157,7 @@ h2 {
     justify-content: center; 
     color: var(--secondary-color); 
     font-family: 'Share Tech Mono', monospace; 
+    background-color: rgba(163, 177, 194, 0.01);
 }
 
 .placeholder-box { 
@@ -165,7 +166,7 @@ h2 {
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    color: #aaaaaa; 
+    color: #777; 
     font-family: 'Share Tech Mono', monospace;
 }
 
@@ -174,6 +175,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
