@@ -1,2 +1,128 @@
-# atelier_babo
-Dépôt dossier ne site babo
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER BABO // COLLECTIF</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="side-nav">
+        <div class="nav-top-group">
+            <div class="nav-logo">ATELIER_BABO</div>
+            <button id="theme-toggle" class="theme-btn">MODE: <span id="theme-text">NUIT</span></button>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="#accueil" class="nav-item active" data-target="accueil">01. ACCUEIL</a>
+            <a href="#travaux" class="nav-item" data-target="travaux">02. TRAVAUX</a>
+            <a href="#curation" class="nav-item" data-target="curation">03. CURATION</a>
+            <a href="#expos" class="nav-item" data-target="expos">04. EXPOS</a>
+            <a href="#soutien" class="nav-item" data-target="soutien">05. SOUTIEN</a>
+            <a href="#contact" class="nav-item" data-target="contact">06. CONTACT</a>
+        </nav>
+        
+        <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
+    </header>
+
+    <main class="main-feed">
+        <section id="accueil" class="feed-section active">
+            <div class="hero-content">
+                <span class="tag">MANIFESTE // HYBRIDATION</span>
+                <h1>ART, CODE &<br><span class="highlight">TECHNOLOGIE</span></h1>
+                <p>Espace de recherche, de création collective et de collision entre les médiums physiques et numériques.</p>
+            </div>
+            <div class="wireframe-placeholder"><span>[ SPHERE_3D_WIREFRAME ]</span></div>
+        </section>
+
+        <section id="travaux" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ARCHIVE // PROJETS</span>
+                <h2>TRAVAUX</h2>
+                <p class="section-desc">Exploration des frontières entre algorithmique et plasticité.</p>
+                <div class="placeholder-box">[ GALERIE DE PROJETS ]</div>
+            </div>
+        </section>
+
+        <section id="curation" class="feed-section">
+            <div class="section-content">
+                <span class="tag">PENSÉE // RECHERCHE</span>
+                <h2>CURATION</h2>
+                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
+                <div class="placeholder-box">[ TEXTES & MANIFESTES ]</div>
+            </div>
+        </section>
+
+        <section id="expos" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ESPACE // TEMPOREL</span>
+                <h2>EXPOS</h2>
+                <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
+                <div class="placeholder-box">[ AGENDA ]</div>
+            </div>
+        </section>
+
+        <section id="soutien" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
+                <h2>SOUTIEN</h2>
+                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
+                <div class="placeholder-box">[ ESPACE CONTRIBUTIF ]</div>
+            </div>
+        </section>
+
+        <section id="contact" class="feed-section">
+            <div class="section-content">
+                <span class="tag">CONNEXION // RÉSEAU</span>
+                <h2>CONTACT</h2>
+                <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
+                <div class="placeholder-box">[ CANAUX DE TRANSMISSION ]</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('.feed-section');
+        const navItems = document.querySelectorAll('.nav-item');
+        const mainFeed = document.querySelector('.main-feed');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeText = document.getElementById('theme-text');
+        const htmlRoot = document.documentElement;
+
+        // Gestion du changement de thème Jour / Nuit
+        themeToggle.addEventListener('click', () => {
+            if (htmlRoot.classList.contains('dark-mode')) {
+                htmlRoot.classList.remove('dark-mode');
+                htmlRoot.classList.add('light-mode');
+                themeText.textContent = 'JOUR';
+            } else {
+                htmlRoot.classList.remove('light-mode');
+                htmlRoot.classList.add('dark-mode');
+                themeText.textContent = 'NUIT';
+            }
+        });
+
+        // Mise à jour de la navigation active au défilement
+        mainFeed.addEventListener('scroll', () => {
+            let index = Math.round(mainFeed.scrollTop / window.innerHeight);
+            let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
+
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.getAttribute('id') === current) {
+                    section.classList.add('active');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

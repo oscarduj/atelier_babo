@@ -1,12 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
-/* --- PALETTE MINÉRAL & ACIER (SANS DORÉ) --- */
-:root {
+/* --- PALETTES DE COULEURS (NUIT PAR DÉFAUT & JOUR) --- */
+html.dark-mode {
     --bg-color: #101010;        /* Noir minéral mat profond */
     --text-color: #EAE8E4;      /* Blanc lin élégant */
-    --accent-color: #FFFFFF;    /* Blanc pur pour l'accent (minimaliste) */
-    --secondary-color: #A3B1C2; /* Bleu ardoise subtil (Actif) */
-    --border-color: #262626;    /* Lignes de structure fines */
+    --accent-color: #FFFFFF;    /* Blanc pur */
+    --secondary-color: #A3B1C2; /* Bleu ardoise subtil */
+    --border-color: #262626;    --box-bg: rgba(163, 177, 194, 0.01);
+    --desc-color: #999999;
+    --hover-bg: rgba(163, 177, 194, 0.08);
+}
+
+html.light-mode {
+    --bg-color: #F4F3F0;        /* Gris minéral très clair et chaleureux */
+    --text-color: #181818;      /* Noir anthracite textuel */
+    --accent-color: #111111;    /* Noir pur */
+    --secondary-color: #4A607A; /* Bleu ardoise profond pour contraster en mode jour */
+    --border-color: #D8D6D0;    --box-bg: rgba(74, 96, 122, 0.02);
+    --desc-color: #555555;
+    --hover-bg: rgba(74, 96, 122, 0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,6 +30,7 @@ body {
     display: flex; 
     height: 100vh; 
     overflow: hidden; 
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* --- MENU LATÉRAL --- */
@@ -34,7 +47,7 @@ body {
     justify-content: space-between;
     background-color: var(--bg-color); 
     z-index: 100;
-    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
 }
 
 .side-nav:hover { 
@@ -52,11 +65,36 @@ body {
     opacity: 0.5;
 }
 
+.nav-top-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
 .nav-logo { 
     font-family: 'Share Tech Mono', monospace; 
     font-size: 1.1rem; 
     color: var(--secondary-color); 
     letter-spacing: 1px;
+}
+
+/* Bouton Jour / Nuit élégant */
+.theme-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.theme-btn:hover {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
 }
 
 .nav-item {
@@ -82,7 +120,7 @@ body {
 .nav-item.active { 
     color: var(--secondary-color) !important; 
     opacity: 1 !important; 
-    background-color: rgba(163, 177, 194, 0.08); 
+    background-color: var(--hover-bg); 
     border-left: 4px solid var(--secondary-color); 
     font-weight: 700; 
     padding-left: 1rem;
@@ -92,7 +130,7 @@ body {
 .nav-status {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.75rem;
-    color: #666;
+    color: var(--desc-color);
 }
 
 /* --- FLUX MAGNÉTIQUE --- */
@@ -103,7 +141,7 @@ body {
     scroll-snap-type: y mandatory; 
 }
 
-/* --- SECTIONS : HAUT & GAUCHE --- */
+/* --- SECTIONS --- */
 .feed-section {
     height: 100vh; 
     padding: 3rem 6rem;
@@ -114,6 +152,7 @@ body {
     padding-top: 3.5rem;
     scroll-snap-align: start;
     opacity: 1; 
+    transition: border-color 0.4s ease;
 }
 
 /* --- TYPOGRAPHIE --- */
@@ -141,7 +180,7 @@ h2 {
 
 .section-desc, .hero-content p {
     font-size: 0.85rem;
-    color: #999999;
+    color: var(--desc-color);
     margin-bottom: 1.2rem;
 }
 
@@ -157,7 +196,7 @@ h2 {
     justify-content: center; 
     color: var(--secondary-color); 
     font-family: 'Share Tech Mono', monospace; 
-    background-color: rgba(163, 177, 194, 0.01);
+    background-color: var(--box-bg); 
 }
 
 .placeholder-box { 
@@ -166,7 +205,7 @@ h2 {
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    color: #777; 
+    color: var(--desc-color); 
     font-family: 'Share Tech Mono', monospace;
 }
 
@@ -175,6 +214,8 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
+
 
 
 
