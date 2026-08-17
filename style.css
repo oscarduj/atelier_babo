@@ -2,7 +2,7 @@
 
 :root {
     --bg-color: #050505;
-    --text-color: #f0f0f0;
+    --text-color: #ffffff;
     --accent-color: #2a66ff;
     --secondary-color: #00ff66;
     --border-color: #222222;
@@ -19,7 +19,7 @@ body {
     overflow: hidden; 
 }
 
-/* --- MENU LATÉRAL : BANDE FINE (40px visible) --- */
+/* --- MENU LATÉRAL : BANDE FINE --- */
 .side-nav {
     position: fixed; 
     top: 0; 
@@ -49,7 +49,7 @@ body {
     width: 2px; 
     height: 40px;
     background-color: var(--secondary-color); 
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 .nav-logo { 
@@ -58,30 +58,34 @@ body {
     color: var(--secondary-color); 
 }
 
+/* Style des liens inactifs : clairs et bien visibles */
 .nav-item {
     font-family: 'Share Tech Mono', monospace; 
-    font-size: 0.9rem; 
-    color: #888; 
-    opacity: 0.4;
+    font-size: 0.95rem; 
+    color: #cccccc; 
+    opacity: 0.7;
     text-decoration: none; 
     text-transform: uppercase; 
-    transition: all 0.5s ease; 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
     display: block; 
     margin-bottom: 1.5rem;
 }
 
+/* Style du lien actif : grand, lumineux et bien distinct */
 .nav-item.active { 
-    color: var(--text-color); 
+    color: var(--secondary-color); 
     opacity: 1; 
-    font-size: 1.3rem; 
+    font-size: 1.35rem; 
     font-weight: 700; 
-    transform: scale(1.1); 
+    letter-spacing: 1px;
+    transform: scale(1.05); 
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
 }
 
 .nav-status {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.75rem;
-    color: #444;
+    color: #666;
 }
 
 /* --- FLUX MAGNÉTIQUE --- */
@@ -101,22 +105,16 @@ body {
     justify-content: center; 
     scroll-snap-align: start;
     
-    /* CORRECTION : Les sections ne sont plus sombres (opacité 1, juste un léger effet de glissement) */
+    /* Plus aucune opacité sombre : la page est pleinement visible et nette */
     opacity: 1; 
-    transform: translateY(20px); 
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.feed-section.active { 
-    opacity: 1; 
-    transform: translateY(0); 
+    transform: none; 
 }
 
 /* --- CONTENU --- */
 .tag { 
     font-family: 'Share Tech Mono', monospace; 
     color: var(--secondary-color); 
-    font-size: 0.8rem; 
+    font-size: 0.85rem; 
     margin-bottom: 1rem; 
     display: block; 
 }
@@ -154,7 +152,8 @@ h2 {
     align-items: center; 
     justify-content: center; 
     margin-top: 2rem; 
-    color: #888; 
+    color: #aaaaaa; 
+    font-family: 'Share Tech Mono', monospace;
 }
 
 @media (max-width: 900px) {
@@ -162,6 +161,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
