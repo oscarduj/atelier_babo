@@ -23,7 +23,7 @@ body {
 .side-nav {
     position: fixed; 
     top: 0; 
-    left: -240px; /* Cache la majeure partie, laisse 40px visibles à gauche */
+    left: -240px; 
     width: 280px; 
     height: 100vh;
     border-right: 1px solid var(--border-color); 
@@ -36,13 +36,11 @@ body {
     transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* S'ouvre au survol de la souris ou si le script ajoute .visible */
 .side-nav:hover, 
 .side-nav.visible { 
     left: 0; 
 }
 
-/* Petite ligne discrète pour montrer qu'on peut cliquer/survoler */
 .side-nav::after {
     content: ""; 
     position: absolute; 
@@ -86,7 +84,7 @@ body {
     color: #444;
 }
 
-/* --- FLUX MAGNÉTIQUE (FENÊTRE PAR FENÊTRE) --- */
+/* --- FLUX MAGNÉTIQUE --- */
 .main-feed { 
     flex: 1; 
     height: 100vh; 
@@ -102,9 +100,11 @@ body {
     flex-direction: column; 
     justify-content: center; 
     scroll-snap-align: start;
-    opacity: 0.2; 
-    transform: translateY(40px); 
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* CORRECTION : Les sections ne sont plus sombres (opacité 1, juste un léger effet de glissement) */
+    opacity: 1; 
+    transform: translateY(20px); 
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .feed-section.active { 
@@ -154,7 +154,7 @@ h2 {
     align-items: center; 
     justify-content: center; 
     margin-top: 2rem; 
-    color: #444; 
+    color: #888; 
 }
 
 @media (max-width: 900px) {
@@ -162,4 +162,6 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
+
 

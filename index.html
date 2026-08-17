@@ -81,23 +81,14 @@
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
         const nav = document.querySelector('.side-nav');
+        const mainFeed = document.querySelector('.main-feed');
 
-<<<<<<< HEAD
-        // 1. Ouvre au clic sur la barre
         nav.addEventListener('click', () => {
             nav.classList.add('visible');
         });
 
-        // 2. Ouvre au scroll + gestion des sections et des liens actifs
-=======
-        // 1. Ouvre au clic sur la barre
-        nav.addEventListener('click', () => {
-            nav.classList.add('visible');
-        });
-
-        // 2. Ouvre au scroll + gestion des fenetres
->>>>>>> 63ef9f4dbb3dec22f389ffdd7cf6811c1afa1a10
-        window.addEventListener('scroll', () => {
+        // Détection précise du défilement dans le conteneur principal
+        mainFeed.addEventListener('scroll', () => {
             nav.classList.add('visible');
             clearTimeout(window.navTimer);
             window.navTimer = setTimeout(() => { 
@@ -107,33 +98,34 @@
             let current = '';
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
+                // Si la section occupe le milieu de l'écran
                 if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
                     current = section.getAttribute('id');
                 }
             });
 
-            // Active/Desactive les sections
-            sections.forEach(section => {
-                section.classList.remove('active');
-                if (section.getAttribute('id') === current) section.classList.add('active');
-            });
+            if (current) {
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.getAttribute('id') === current) section.classList.add('active');
+                });
 
-            // Active/Desactive les liens du menu (met en valeur la bonne page)
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-target') === current) {
-                    item.classList.add('active');
-                }
-            });
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-target') === current) {
+                        item.classList.add('active');
+                    }
+                });
+            }
         });
 
-        // 3. Ferme quand la souris quitte le menu
         nav.addEventListener('mouseleave', () => {
             nav.classList.remove('visible');
         });
     </script>
 </body>
 </html>
+
 
 
 
