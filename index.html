@@ -87,6 +87,7 @@
             nav.classList.add('visible');
         });
 
+        // Détection ultra-précise basée sur le scrollTop du conteneur
         mainFeed.addEventListener('scroll', () => {
             nav.classList.add('visible');
             clearTimeout(window.navTimer);
@@ -94,16 +95,16 @@
                 nav.classList.remove('visible'); 
             }, 2000);
 
-            let current = 'accueil';
+            let index = Math.round(mainFeed.scrollTop / window.innerHeight);
+            let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
+
             sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                // Si la section est positionnée au milieu de l'écran lors du scroll
-                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                    current = section.getAttribute('id');
+                section.classList.remove('active');
+                if (section.getAttribute('id') === current) {
+                    section.classList.add('active');
                 }
             });
 
-            // Met à jour la classe active sur les liens du menu
             navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('data-target') === current) {
@@ -118,6 +119,7 @@
     </script>
 </body>
 </html>
+
 
 
 

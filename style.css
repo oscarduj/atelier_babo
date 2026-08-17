@@ -58,11 +58,12 @@ body {
     color: var(--secondary-color); 
 }
 
-/* Liens inactifs dans la barre */
+/* Liens inactifs : discrets */
 .nav-item {
     font-family: 'Share Tech Mono', monospace; 
     font-size: 0.95rem; 
     color: #888888; 
+    opacity: 0.5;
     text-decoration: none; 
     text-transform: uppercase; 
     transition: all 0.3s ease; 
@@ -72,13 +73,15 @@ body {
     border-left: 2px solid transparent;
 }
 
-/* Surlignage et mise en valeur de la page active dans la barre */
+/* Lien actif : opacité forcée à 1, lumineux et surligné */
 .nav-item.active { 
-    color: var(--secondary-color); 
-    background-color: rgba(0, 255, 102, 0.08); /* Effet de surlignage discret */
-    border-left: 3px solid var(--secondary-color); /* Bordure latérale de surlignage */
+    color: var(--secondary-color) !important; 
+    opacity: 1 !important; 
+    background-color: rgba(0, 255, 102, 0.1); 
+    border-left: 3px solid var(--secondary-color); 
     font-weight: 700; 
     padding-left: 0.8rem;
+    font-size: 1.1rem;
 }
 
 .nav-status {
@@ -157,6 +160,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
