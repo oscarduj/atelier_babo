@@ -82,12 +82,21 @@
         const navItems = document.querySelectorAll('.nav-item');
         const nav = document.querySelector('.side-nav');
 
+<<<<<<< HEAD
         // 1. Ouvre au clic sur la barre
         nav.addEventListener('click', () => {
             nav.classList.add('visible');
         });
 
-        // 2. Ouvre au scroll + gestion des fenêtres
+        // 2. Ouvre au scroll + gestion des sections et des liens actifs
+=======
+        // 1. Ouvre au clic sur la barre
+        nav.addEventListener('click', () => {
+            nav.classList.add('visible');
+        });
+
+        // 2. Ouvre au scroll + gestion des fenetres
+>>>>>>> 63ef9f4dbb3dec22f389ffdd7cf6811c1afa1a10
         window.addEventListener('scroll', () => {
             nav.classList.add('visible');
             clearTimeout(window.navTimer);
@@ -103,14 +112,18 @@
                 }
             });
 
+            // Active/Desactive les sections
             sections.forEach(section => {
                 section.classList.remove('active');
                 if (section.getAttribute('id') === current) section.classList.add('active');
             });
 
+            // Active/Desactive les liens du menu (met en valeur la bonne page)
             navItems.forEach(item => {
                 item.classList.remove('active');
-                if (item.getAttribute('data-target') === current) item.classList.add('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
             });
         });
 
