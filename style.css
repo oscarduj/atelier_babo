@@ -57,25 +57,28 @@ body {
     gap: 1.5rem;
 }
 
+/* Style par défaut des liens : gris avec faible opacité */
 .nav-item {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
-    color: #666;
+    font-size: 0.9rem;
+    color: #888888;
+    opacity: 0.4;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: inline-block;
     transform-origin: left center;
 }
 
-/* Effet de zoom et d'illumination dynamique de la page active */
+/* Effet dynamique lorsque l'on est sur la page active : grossit, opacité max et s'illumine */
 .nav-item.active {
     color: var(--text-color);
-    font-size: 1.3rem;
+    opacity: 1;
+    font-size: 1.25rem;
     font-weight: 700;
-    text-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
-    transform: scale(1.1);
+    text-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
+    transform: scale(1.08);
 }
 
 .nav-status {
@@ -213,4 +216,6 @@ body {
         margin-top: 1rem;
     }
 }
+
+
 
