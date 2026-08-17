@@ -10,9 +10,20 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Space Grotesk', sans-serif; display: flex; }
+html { 
+    scroll-behavior: smooth; 
+}
 
-/* Menu fixe */
+body { 
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    font-family: 'Space Grotesk', sans-serif; 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; /* Empêche le scroll sur le body */
+}
+
+/* Le menu reste à gauche */
 .side-nav {
     position: fixed; width: 280px; height: 100vh; border-right: 1px solid var(--border-color);
     padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: space-between; z-index: 100;
@@ -25,18 +36,28 @@ body { background-color: var(--bg-color); color: var(--text-color); font-family:
 
 .nav-item.active { color: var(--text-color); opacity: 1; font-size: 1.3rem; font-weight: 700; transform: scale(1.1); }
 
-/* Flux sections avec animation de transition */
-.main-feed { margin-left: 280px; width: calc(100% - 280px); }
+/* --- LE CŒUR DE L'EFFET --- */
+.main-feed { 
+    margin-left: 280px; 
+    width: calc(100% - 280px); 
+    height: 100vh; 
+    overflow-y: scroll; /* Scroll uniquement dans cette zone */
+    scroll-snap-type: y mandatory; /* Force l'aimantation */
+}
 
 .feed-section {
-    height: 100vh; padding: 6rem; border-bottom: 1px solid var(--border-color);
+    height: 100vh; /* Chaque page prend toute la hauteur */
+    padding: 6rem; border-bottom: 1px solid var(--border-color);
     display: flex; flex-direction: column; justify-content: center;
-    opacity: 0.2; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    scroll-snap-align: start; /* S'arrête exactement au début de la section */
+    
+    /* Animation de transition */
+    opacity: 0.2; transform: translateY(50px); transition: all 0.6s ease;
 }
 
 .feed-section.active { opacity: 1; transform: translateY(0); }
 
-/* Contenu */
+/* Contenu (identique à avant) */
 .tag { font-family: 'Share Tech Mono', monospace; color: var(--secondary-color); font-size: 0.8rem; margin-bottom: 1rem; display: block; }
 h1 { font-size: 3.5rem; line-height: 1; text-transform: uppercase; }
 h2 { font-size: 3rem; text-transform: uppercase; }
@@ -45,9 +66,11 @@ h2 { font-size: 3rem; text-transform: uppercase; }
 .placeholder-box { height: 200px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; margin-top: 2rem; color: #444; }
 
 @media (max-width: 900px) {
-    .side-nav { position: sticky; width: 100%; height: auto; border-bottom: 1px solid var(--border-color); }
-    .main-feed { margin-left: 0; }
+    body { overflow-y: auto; height: auto; flex-direction: column; }
+    .side-nav { position: sticky; width: 100%; height: auto; }
+    .main-feed { margin-left: 0; height: auto; overflow: visible; }
 }
+
 
 
 
