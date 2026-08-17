@@ -1,166 +1,124 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER BABO // COLLECTIF</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-:root {
-    --bg-color: #050505;
-    --text-color: #ffffff;
-    --accent-color: #2a66ff;
-    --secondary-color: #00ff66;
-    --border-color: #222222;
-}
+    <header class="side-nav">
+        <div class="nav-logo">ATELIER_BABO</div>
+        <nav class="nav-links">
+            <a href="#accueil" class="nav-item active" data-target="accueil">01. ACCUEIL</a>
+            <a href="#travaux" class="nav-item" data-target="travaux">02. TRAVAUX</a>
+            <a href="#curation" class="nav-item" data-target="curation">03. CURATION</a>
+            <a href="#expos" class="nav-item" data-target="expos">04. EXPOS</a>
+            <a href="#soutien" class="nav-item" data-target="soutien">05. SOUTIEN</a>
+            <a href="#contact" class="nav-item" data-target="contact">06. CONTACT</a>
+        </nav>
+        <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
+    </header>
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+    <main class="main-feed">
+        <section id="accueil" class="feed-section active">
+            <div class="hero-content">
+                <span class="tag">MANIFESTE // HYBRIDATION</span>
+                <h1>ART, CODE &<br><span class="highlight">TECHNOLOGIE</span></h1>
+                <p>Espace de recherche, de création collective et de collision entre les médiums physiques et numériques.</p>
+            </div>
+            <div class="wireframe-placeholder"><span>[ SPHERE_3D_WIREFRAME ]</span></div>
+        </section>
 
-body { 
-    background-color: var(--bg-color); 
-    color: var(--text-color); 
-    font-family: 'Space Grotesk', sans-serif; 
-    display: flex; 
-    height: 100vh; 
-    overflow: hidden; 
-}
+        <section id="travaux" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ARCHIVE // PROJETS</span>
+                <h2>02. TRAVAUX</h2>
+                <p class="section-desc">Exploration des frontières entre algorithmique et plasticité.</p>
+                <div class="placeholder-box">[ GALERIE DE PROJETS ]</div>
+            </div>
+        </section>
 
-/* --- MENU LATÉRAL : BANDE FINE --- */
-.side-nav {
-    position: fixed; 
-    top: 0; 
-    left: -240px; 
-    width: 280px; 
-    height: 100vh;
-    border-right: 1px solid var(--border-color); 
-    padding: 3rem 2rem;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-between;
-    background-color: var(--bg-color); 
-    z-index: 100;
-    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+        <section id="curation" class="feed-section">
+            <div class="section-content">
+                <span class="tag">PENSÉE // RECHERCHE</span>
+                <h2>03. CURATION</h2>
+                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
+                <div class="placeholder-box">[ TEXTES & MANIFESTES ]</div>
+            </div>
+        </section>
 
-.side-nav:hover, 
-.side-nav.visible { 
-    left: 0; 
-}
+        <section id="expos" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ESPACE // TEMPOREL</span>
+                <h2>04. EXPOS</h2>
+                <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
+                <div class="placeholder-box">[ AGENDA ]</div>
+            </div>
+        </section>
 
-.side-nav::after {
-    content: ""; 
-    position: absolute; 
-    right: 10px; 
-    top: 50%; 
-    width: 2px; 
-    height: 40px;
-    background-color: var(--secondary-color); 
-    opacity: 0.5;
-}
+        <section id="soutien" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
+                <h2>05. SOUTIEN</h2>
+                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
+                <div class="placeholder-box">[ ESPACE CONTRIBUTIF ]</div>
+            </div>
+        </section>
 
-.nav-logo { 
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 1.1rem; 
-    color: var(--secondary-color); 
-}
+        <section id="contact" class="feed-section">
+            <div class="section-content">
+                <span class="tag">CONNEXION // RÉSEAU</span>
+                <h2>06. CONTACT</h2>
+                <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
+                <div class="placeholder-box">[ CANAUX DE TRANSMISSION ]</div>
+            </div>
+        </section>
+    </main>
 
-/* Style des liens inactifs : clairs et bien visibles */
-.nav-item {
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 0.95rem; 
-    color: #cccccc; 
-    opacity: 0.7;
-    text-decoration: none; 
-    text-transform: uppercase; 
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-    display: block; 
-    margin-bottom: 1.5rem;
-}
+    <script>
+        const sections = document.querySelectorAll('.feed-section');
+        const navItems = document.querySelectorAll('.nav-item');
+        const nav = document.querySelector('.side-nav');
+        const mainFeed = document.querySelector('.main-feed');
 
-/* Style du lien actif : grand, lumineux et bien distinct */
-.nav-item.active { 
-    color: var(--secondary-color); 
-    opacity: 1; 
-    font-size: 1.35rem; 
-    font-weight: 700; 
-    letter-spacing: 1px;
-    transform: scale(1.05); 
-    text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
-}
+        nav.addEventListener('click', () => {
+            nav.classList.add('visible');
+        });
 
-.nav-status {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: #666;
-}
+        mainFeed.addEventListener('scroll', () => {
+            nav.classList.add('visible');
+            clearTimeout(window.navTimer);
+            window.navTimer = setTimeout(() => { 
+                nav.classList.remove('visible'); 
+            }, 2000);
 
-/* --- FLUX MAGNÉTIQUE --- */
-.main-feed { 
-    flex: 1; 
-    height: 100vh; 
-    overflow-y: scroll; 
-    scroll-snap-type: y mandatory; 
-}
+            let current = 'accueil';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                // Si la section est positionnée au milieu de l'écran lors du scroll
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-.feed-section {
-    height: 100vh; 
-    padding: 6rem; 
-    border-bottom: 1px solid var(--border-color);
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    scroll-snap-align: start;
-    
-    /* Plus aucune opacité sombre : la page est pleinement visible et nette */
-    opacity: 1; 
-    transform: none; 
-}
+            // Met à jour la classe active sur les liens du menu
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
 
-/* --- CONTENU --- */
-.tag { 
-    font-family: 'Share Tech Mono', monospace; 
-    color: var(--secondary-color); 
-    font-size: 0.85rem; 
-    margin-bottom: 1rem; 
-    display: block; 
-}
+        nav.addEventListener('mouseleave', () => {
+            nav.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>
 
-h1 { 
-    font-size: 3.5rem; 
-    line-height: 1; 
-    text-transform: uppercase; 
-}
-
-h2 { 
-    font-size: 3rem; 
-    text-transform: uppercase; 
-}
-
-.highlight { 
-    color: var(--accent-color); 
-}
-
-.wireframe-placeholder { 
-    height: 300px; 
-    border: 1px dashed var(--border-color); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    margin-top: 2rem; 
-    color: var(--secondary-color); 
-    font-family: 'Share Tech Mono', monospace; 
-}
-
-.placeholder-box { 
-    height: 200px; 
-    border: 1px dashed var(--border-color); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    margin-top: 2rem; 
-    color: #aaaaaa; 
-    font-family: 'Share Tech Mono', monospace;
-}
-
-@media (max-width: 900px) {
-    body { overflow-y: auto; height: auto; flex-direction: column; }
-    .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
-    .main-feed { height: auto; overflow: visible; }
-}
 
 
 

@@ -58,28 +58,27 @@ body {
     color: var(--secondary-color); 
 }
 
-/* Style des liens inactifs : clairs et bien visibles */
+/* Liens inactifs dans la barre */
 .nav-item {
     font-family: 'Share Tech Mono', monospace; 
     font-size: 0.95rem; 
-    color: #cccccc; 
-    opacity: 0.7;
+    color: #888888; 
     text-decoration: none; 
     text-transform: uppercase; 
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    transition: all 0.3s ease; 
     display: block; 
     margin-bottom: 1.5rem;
+    padding: 0.4rem 0.6rem;
+    border-left: 2px solid transparent;
 }
 
-/* Style du lien actif : grand, lumineux et bien distinct */
+/* Surlignage et mise en valeur de la page active dans la barre */
 .nav-item.active { 
     color: var(--secondary-color); 
-    opacity: 1; 
-    font-size: 1.35rem; 
+    background-color: rgba(0, 255, 102, 0.08); /* Effet de surlignage discret */
+    border-left: 3px solid var(--secondary-color); /* Bordure latérale de surlignage */
     font-weight: 700; 
-    letter-spacing: 1px;
-    transform: scale(1.05); 
-    text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+    padding-left: 0.8rem;
 }
 
 .nav-status {
@@ -104,10 +103,7 @@ body {
     flex-direction: column; 
     justify-content: center; 
     scroll-snap-align: start;
-    
-    /* Plus aucune opacité sombre : la page est pleinement visible et nette */
     opacity: 1; 
-    transform: none; 
 }
 
 /* --- CONTENU --- */
@@ -161,6 +157,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
