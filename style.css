@@ -254,7 +254,7 @@ body {
     color: var(--desc-color);
 }
 
-/* --- STYLE DES PAGES ARTISTES INDIVIDUELLES (utilisé dans le dossier artistes/) --- */
+/* --- STYLE DES PAGES ARTISTES INDIVIDUELLES --- */
 .artist-page-container {
     width: 100%;
     max-width: 900px;
@@ -399,6 +399,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
