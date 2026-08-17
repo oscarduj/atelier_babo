@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- Menu latéral gauche fixe -->
     <header class="side-nav">
         <div class="nav-logo">ATELIER_BABO</div>
         <nav class="nav-links">
@@ -22,7 +21,6 @@
         <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
     </header>
 
-    <!-- Flux principal -->
     <main class="main-feed">
         <section id="accueil" class="feed-section active">
             <div class="hero-content">
@@ -82,8 +80,13 @@
     <script>
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
+        const nav = document.querySelector('.side-nav');
 
         window.addEventListener('scroll', () => {
+            nav.classList.add('visible');
+            clearTimeout(window.navTimer);
+            window.navTimer = setTimeout(() => { nav.classList.remove('visible'); }, 2000);
+
             let current = '';
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
@@ -105,5 +108,6 @@
     </script>
 </body>
 </html>
+
 
 
