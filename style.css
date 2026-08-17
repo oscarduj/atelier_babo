@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
 html.dark-mode {
-    --bg-color: #101010;        /* Noir minéral mat profond */
-    --text-color: #EAE8E4;      /* Blanc lin élégant */
-    --accent-color: #FFFFFF;    /* Blanc pur */
-    --secondary-color: #A3B1C2; /* Bleu ardoise subtil */
+    --bg-color: #101010;        
+    --text-color: #EAE8E4;      
+    --accent-color: #FFFFFF;    
+    --secondary-color: #A3B1C2; 
     --border-color: #262626;    
     --box-bg: rgba(163, 177, 194, 0.01);
     --desc-color: #999999;
@@ -12,10 +12,10 @@ html.dark-mode {
 }
 
 html.light-mode {
-    --bg-color: #F4F3F0;        /* Gris minéral très clair */
-    --text-color: #181818;      /* Noir anthracite textuel */
-    --accent-color: #111111;    /* Noir pur */
-    --secondary-color: #4A607A; /* Bleu ardoise profond */
+    --bg-color: #F4F3F0;        
+    --text-color: #181818;      
+    --accent-color: #111111;    
+    --secondary-color: #4A607A; 
     --border-color: #D8D6D0;    
     --box-bg: rgba(74, 96, 122, 0.02);
     --desc-color: #555555;
@@ -79,7 +79,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Bouton Jour / Nuit dans le menu */
 .theme-switch {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.75rem;
@@ -158,7 +157,104 @@ body {
     transition: border-color 0.4s ease;
 }
 
-/* --- TYPOGRAPHIE --- */
+/* --- SOUS-BARRE DE NAVIGATION (COLLABORATEURS) --- */
+.sub-nav-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1rem 0 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.6rem;
+}
+
+.sub-nav-btn {
+    background: transparent;
+    border: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--desc-color);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    padding-bottom: 0.2rem;
+}
+
+.sub-nav-btn:hover {
+    color: var(--text-color);
+}
+
+.sub-nav-btn.active {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    font-weight: 700;
+}
+
+/* --- CARROUSEL HORIZONTAL DES ARTISTES --- */
+.horizontal-scroll-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem 0 2rem 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) var(--border-color);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
+}
+
+.artist-card {
+    min-width: 240px;
+    max-width: 240px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+}
+
+.artist-card:hover {
+    transform: translateY(-5px);
+}
+
+.artist-img-box {
+    height: 280px;
+    border: 1px dashed var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-color);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    background-color: var(--box-bg);
+    margin-bottom: 0.8rem;
+    transition: border-color 0.3s ease;
+}
+
+.artist-card:hover .artist-img-box {
+    border-color: var(--secondary-color);
+}
+
+.artist-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+
+.artist-practice {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--desc-color);
+}
+
+/* --- TYPOGRAPHIE & PLACEHOLDERS --- */
 .tag { 
     font-family: 'Share Tech Mono', monospace; 
     color: var(--secondary-color); 
@@ -217,6 +313,8 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
+
 
 
 
