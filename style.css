@@ -394,11 +394,32 @@ h2 {
     font-family: 'Share Tech Mono', monospace;
 }
 
+/* --- STYLE DU LOGO DE LA PAGE D'ACCUEIL --- */
+.nav-logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-logo-img {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.nav-logo-img:hover {
+    opacity: 0.8;
+}
+
 @media (max-width: 900px) {
     body { overflow-y: auto; height: auto; flex-direction: column; }
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
