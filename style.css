@@ -157,7 +157,37 @@ body {
     transition: border-color 0.4s ease;
 }
 
-/* --- SOUS-BARRE DE NAVIGATION (COLLABORATEURS) --- */
+/* --- STYLE DE LA SECTION ACCUEIL AVEC VIDÉO --- */
+.hero-section-video {
+    position: relative;
+    overflow: hidden;
+    padding: 0 !important;
+}
+
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+/* --- SOUS-BARRE DE NAVIGATION --- */
 .sub-nav-bar {
     display: flex;
     gap: 1.5rem;
@@ -189,7 +219,7 @@ body {
     font-weight: 700;
 }
 
-/* --- CARROUSEL HORIZONTAL DES ARTISTES --- */
+/* --- CARROUSEL --- */
 .horizontal-scroll-container {
     display: flex;
     gap: 2rem;
@@ -254,92 +284,6 @@ body {
     color: var(--desc-color);
 }
 
-/* --- STYLE DES PAGES ARTISTES INDIVIDUELLES --- */
-.artist-page-container {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
-    overflow-y: auto;
-    height: 100vh;
-}
-
-.back-link {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 2rem;
-    transition: transform 0.2s ease;
-}
-
-.back-link:hover {
-    transform: translateX(-5px);
-}
-
-.artist-header {
-    margin-bottom: 2.5rem;
-}
-
-.artist-bio-section, .artist-projects-section, .artist-contact-section {
-    margin-bottom: 3rem;
-}
-
-.artist-bio-section h3, .artist-projects-section h3, .artist-contact-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-    margin-bottom: 0.8rem;
-    letter-spacing: 1px;
-}
-
-.artist-bio-section p {
-    font-size: 0.95rem;
-    color: var(--desc-color);
-    line-height: 1.6;
-}
-
-.artist-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.artist-img-placeholder {
-    height: 240px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--desc-color);
-    background-color: var(--box-bg);
-}
-
-.contact-links-grid {
-    display: flex;
-    gap: 1rem;
-}
-
-.contact-btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    padding: 0.6rem 1.2rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    background-color: var(--box-bg);
-}
-
-.contact-btn:hover {
-    border-color: var(--secondary-color);
-    color: var(--secondary-color);
-    background-color: var(--hover-bg);
-}
-
 /* --- TYPOGRAPHIE & PLACEHOLDERS --- */
 .tag { 
     font-family: 'Share Tech Mono', monospace; 
@@ -350,38 +294,18 @@ body {
     letter-spacing: 0.5px;
 }
 
-h1 { 
-    font-size: 2rem; 
-    line-height: 1.1; 
+h1, h2 { 
     text-transform: uppercase; 
     margin-bottom: 0.3rem;
 }
 
-h2 { 
-    font-size: 1.8rem; 
-    text-transform: uppercase; 
-    margin-bottom: 0.3rem;
-}
+h1 { font-size: 2rem; line-height: 1.1; }
+h2 { font-size: 1.8rem; }
 
 .section-desc, .hero-content p {
     font-size: 0.85rem;
     color: var(--desc-color);
     margin-bottom: 1.2rem;
-}
-
-.highlight { 
-    color: var(--accent-color); 
-}
-
-.wireframe-placeholder { 
-    height: 280px; 
-    border: 1px dashed var(--border-color); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--secondary-color); 
-    font-family: 'Share Tech Mono', monospace; 
-    background-color: var(--box-bg); 
 }
 
 .placeholder-box { 
@@ -394,7 +318,7 @@ h2 {
     font-family: 'Share Tech Mono', monospace;
 }
 
-/* --- STYLE DU LOGO DE LA PAGE D'ACCUEIL --- */
+/* --- LOGO AGRANDI --- */
 .nav-logo-container {
     display: flex;
     justify-content: center;
@@ -403,7 +327,7 @@ h2 {
 }
 
 .nav-logo-img {
-    max-width: 250px;
+    max-width: 380px;
     width: 100%;
     height: auto;
     display: block;
@@ -419,6 +343,7 @@ h2 {
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 

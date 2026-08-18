@@ -28,9 +28,15 @@
     </header>
 
     <main class="main-feed">
-        <!-- 01. ACCUEIL -->
-        <section id="accueil" class="feed-section active">
-            <div class="hero-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+        <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
+        <section id="accueil" class="feed-section active hero-section-video">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="videos/fond-accueil.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+
+            <div class="hero-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; z-index: 2; position: relative;">
+                <span class="tag" style="margin-bottom: 1rem;">// ACCUEIL</span>
                 <div class="nav-logo-container">
                     <a href="#accueil">
                         <img src="images/accueil/Logo.PNG" alt="ATELIER BABO" class="nav-logo-img">
@@ -71,42 +77,34 @@
                     <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
                 </div>
 
-                <!-- Catégorie Artistes : Carrousel horizontal -->
                 <div id="cat-artistes" class="collab-category-content active">
                     <p class="section-desc">Glissez vers la droite pour découvrir les artistes du collectif.</p>
-                    
                     <div class="horizontal-scroll-container">
-                        <!-- Artiste 1 : g0she -->
                         <a href="artistes/goshe.html" class="artist-card">
                             <div class="artist-img-box">[ IMAGE G0SHE ]</div>
                             <span class="artist-name">g0she</span>
                             <span class="artist-practice">Arts Numériques</span>
                         </a>
-                        <!-- Artiste 2 : Nino -->
                         <a href="artistes/nino.html" class="artist-card">
                             <div class="artist-img-box">[ IMAGE NINO ]</div>
                             <span class="artist-name">Nino</span>
                             <span class="artist-practice">Plastique & Son</span>
                         </a>
-                        <!-- Artiste 3 : quideNovie -->
                         <a href="artistes/quidenovie.html" class="artist-card">
                             <div class="artist-img-box">[ IMAGE QUIDENOVIE ]</div>
                             <span class="artist-name">quideNovie</span>
                             <span class="artist-practice">Recherche & Code</span>
                         </a>
-                        <!-- Artiste 4 : collectif naïf -->
                         <a href="artistes/collectif-naif.html" class="artist-card">
                             <div class="artist-img-box">[ IMAGE COLLECTIF NAÏF ]</div>
                             <span class="artist-name">collectif naïf</span>
                             <span class="artist-practice">Création Collaborative</span>
                         </a>
-                        <!-- Artiste 5 : Hugo Denise -->
                         <a href="artistes/hugo-denise.html" class="artist-card">
                             <div class="artist-img-box">[ IMAGE HUGO DENISE ]</div>
                             <span class="artist-name">Hugo Denise</span>
                             <span class="artist-practice">Installation & Matière</span>
                         </a>
-                        <!-- Artiste 6 : Léon Chotard -->
                         <a href="artistes/leon-chotard.html" class="artist-card">
                             <div class="artist-img-box">[ IMAGE LÉON CHOTARD ]</div>
                             <span class="artist-name">Léon Chotard</span>
@@ -124,7 +122,6 @@
                     <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
                     <div class="placeholder-box">[ CERCLE DES MÉCÈNES ]</div>
                 </div>
-
             </div>
         </section>
 
@@ -218,6 +215,7 @@
     </script>
 </body>
 </html>
+
 
 
 
