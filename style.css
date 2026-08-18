@@ -187,6 +187,17 @@ body {
     z-index: 1;
 }
 
+.hero-content {
+    width: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 100%; 
+    z-index: 2; 
+    position: relative;
+}
+
 /* --- SOUS-BARRE DE NAVIGATION --- */
 .sub-nav-bar {
     display: flex;
@@ -343,6 +354,7 @@ h2 { font-size: 1.8rem; }
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
 }
+
 
 
 
