@@ -349,30 +349,12 @@ h2 { font-size: 1.8rem; }
     opacity: 0.8;
 }
 
-/* --- SECTION TRAVAUX EN PLEINE PAGE --- */
-#travaux.feed-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-}
-
-#travaux .section-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-}
-
+/* --- SECTION TRAVAUX & SOUS-PAGES (RECTANGLES PLUS GROS) --- */
 .collectif-main-card {
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    flex: 1;
-    margin-bottom: 1rem;
-    min-height: 0;
+    margin-bottom: 1.5rem;
     transition: transform 0.3s ease;
 }
 
@@ -381,8 +363,7 @@ h2 { font-size: 1.8rem; }
 }
 
 .collectif-banner-box {
-    height: 100%;
-    min-height: 140px;
+    height: 220px; /* Agrandit la hauteur du bloc collectif */
     border: 1px dashed var(--border-color);
     display: flex;
     align-items: center;
@@ -391,7 +372,7 @@ h2 { font-size: 1.8rem; }
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.9rem;
     background-color: var(--box-bg);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
     transition: border-color 0.3s ease;
 }
 
@@ -415,16 +396,13 @@ h2 { font-size: 1.8rem; }
 .travaux-members-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    flex: 1;
-    min-height: 0;
+    gap: 1.2rem;
 }
 
 .member-card {
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    height: 100%;
     transition: transform 0.3s ease;
 }
 
@@ -433,8 +411,7 @@ h2 { font-size: 1.8rem; }
 }
 
 .member-img-box {
-    height: 100%;
-    min-height: 90px;
+    height: 180px; /* Agrandit la hauteur des blocs membres */
     border: 1px dashed var(--border-color);
     display: flex;
     align-items: center;
@@ -560,6 +537,8 @@ h2 { font-size: 1.8rem; }
     .travaux-members-grid { grid-template-columns: repeat(2, 1fr); }
     .artist-page-container { padding: 2rem; }
 }
+
+
 
 
 
