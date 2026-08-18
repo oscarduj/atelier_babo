@@ -349,11 +349,6 @@ h2 { font-size: 1.8rem; }
     opacity: 0.8;
 }
 
-@media (max-width: 900px) {
-    body { overflow-y: auto; height: auto; flex-direction: column; }
-    .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
-    .main-feed { height: auto; overflow: visible; }
-}
 /* --- PAGES INDIVIDUELLES DES ARTISTES --- */
 .artist-page-container {
     padding: 4rem 6rem;
@@ -446,6 +441,14 @@ h2 { font-size: 1.8rem; }
 .contact-btn:hover {
     opacity: 0.7;
 }
+
+@media (max-width: 900px) {
+    body { overflow-y: auto; height: auto; flex-direction: column; }
+    .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
+    .main-feed { height: auto; overflow: visible; }
+    .artist-page-container { padding: 2rem; }
+}
+
 
 
 
