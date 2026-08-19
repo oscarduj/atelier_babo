@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr" class="dark-mode">
 <head>
@@ -35,11 +36,11 @@
             </video>
             <div class="video-overlay"></div>
 
-            <div class="hero-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; z-index: 2; position: relative;">
+            <div class="hero-content">
                 <span class="tag" style="margin-bottom: 1rem;">// ACCUEIL</span>
                 <div class="nav-logo-container">
                     <a href="#accueil">
-                        <img src="images/accueil/Logo.PNG" alt="ATELIER BABO" class="nav-logo-img">
+                        <img src="images/accueil/Logo.png" alt="ATELIER BABO" class="nav-logo-img">
                     </a>
                 </div>
             </div>
@@ -325,24 +326,26 @@
             });
         });
 
-        mainFeed.addEventListener('scroll', () => {
-            let index = Math.round(mainFeed.scrollTop / window.innerHeight);
-            let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
+        // IntersectionObserver plutôt qu'un listener de scroll : fonctionne que ce soit
+        // .main-feed qui scroll (desktop) ou le body (mobile), sans dépendre du conteneur actif.
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const current = entry.target.getAttribute('id');
 
-            sections.forEach(section => {
-                section.classList.remove('active');
-                if (section.getAttribute('id') === current) {
-                    section.classList.add('active');
-                }
-            });
+                sections.forEach(section => section.classList.remove('active'));
+                entry.target.classList.add('active');
 
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-target') === current) {
-                    item.classList.add('active');
-                }
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-target') === current) {
+                        item.classList.add('active');
+                    }
+                });
             });
-        });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => sectionObserver.observe(section));
     </script>
 </body>
 </html>
