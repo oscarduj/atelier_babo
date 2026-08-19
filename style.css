@@ -11,15 +11,15 @@ html.dark-mode {
     --hover-bg: rgba(163, 177, 194, 0.08);
 }
 
-html.light-mode {
-    --bg-color: #F4F3F0;        
-    --text-color: #181818;      
-    --accent-color: #111111;    
-    --secondary-color: #4A607A; 
-    --border-color: #D8D6D0;    
-    --box-bg: rgba(74, 96, 122, 0.02);
-    --desc-color: #555555;
-    --hover-bg: rgba(74, 96, 122, 0.08);
+[data-theme="light"] {
+  /* === MODE CLAIR === */
+  --bg-color: #fafafa;           /* Blanc cassé */
+  --text-color: #0a0a0a;         /* Noir pur */
+  --accent-color: #ff6b35;       /* Orange vif */
+  --secondary-color: #8b7d6b;    /* Taupe/beige */
+  --border-color: #d0d0d0;       /* Gris clair */
+  --box-bg: #f0f0f0;             /* Gris très clair */
+  --hover-color: #cc5429;        /* Orange foncé */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
