@@ -1,285 +1,243 @@
-<!DOCTYPE html>
-<html lang="fr">
+!DOCTYPE html>
+<html lang="fr" class="dark-mode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css?v=3.0">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-mode">
+<body>
 
-    <!-- SIDEBAR NAVIGATION -->
-    <aside class="sidebar">
-        <div class="sidebar-content">
-            <!-- Logo -->
-            <div class="logo">
-                <span class="logo-text">BABO</span>
-                <span class="logo-sub">COLLECTIF</span>
-            </div>
-            
-            <!-- Theme Toggle -->
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <span class="toggle-icon">●</span>
-            </button>
-            
-            <!-- Navigation -->
-            <nav class="sidebar-nav">
-                <ol>
-                    <li><a href="#section-1">01 — Projets</a></li>
-                    <li><a href="#section-2">02 — Artistes</a></li>
-                    <li><a href="#section-3">03 — Résidences</a></li>
-                    <li><a href="#section-4">04 — Éditions</a></li>
-                    <li><a href="#section-5">05 — Événements</a></li>
-                    <li><a href="#section-6">06 — Archive</a></li>
-                    <li><a href="#section-7">07 — Contact</a></li>
-                </ol>
-            </nav>
+    <header class="side-nav">
+        <div class="nav-top">
+            <div class="nav-logo">ATELIER_BABO</div>
+            <button id="theme-toggle" class="theme-switch">MODE: <span id="theme-text">NUIT</span></button>
         </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
         
-        <!-- HERO SECTION -->
-        <section class="hero" id="hero">
-            <video class="hero-video" autoplay muted loop playsinline>
-                <source src="videos/background.mp4" type="video/mp4">
+        <nav class="nav-links">
+            <a href="#accueil" class="nav-item active" data-target="accueil">01. ACCUEIL</a>
+            <a href="#travaux" class="nav-item" data-target="travaux">02. TRAVAUX</a>
+            <a href="#curation" class="nav-item" data-target="curation">03. CURATION</a>
+            <a href="#collaborateurs" class="nav-item" data-target="collaborateurs">04. COLLABORATEURS</a>
+            <a href="#expos" class="nav-item" data-target="expos">05. EXPOS</a>
+            <a href="#soutien" class="nav-item" data-target="soutien">06. SOUTIEN</a>
+            <a href="#contact" class="nav-item" data-target="contact">07. CONTACT</a>
+        </nav>
+        
+        <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
+    </header>
+
+    <main class="main-feed">
+        <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
+        <section id="accueil" class="feed-section active hero-section-video">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="videos/accueil/fond-accueil.mp4" type="video/mp4">
             </video>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <span class="title-word">ATELIER</span>
-                    <span class="title-divider">//</span>
-                    <span class="title-word">BABO</span>
-                </h1>
-                <p class="hero-subtitle">Collectif d'artistes contemporains</p>
-                <div class="hero-cta">
-                    <button class="btn btn-primary">Explorer</button>
-                    <button class="btn btn-secondary">Manifeste</button>
+            <div class="video-overlay"></div>
+
+            <div class="hero-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; z-index: 2; position: relative;">
+                <span class="tag" style="margin-bottom: 1rem;">// ACCUEIL</span>
+                <div class="nav-logo-container">
+                    <a href="#accueil">
+                        <img src="images/accueil/Logo.PNG" alt="ATELIER BABO" class="nav-logo-img">
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 1: PROJETS -->
-        <section class="content-section" id="section-1">
-            <div class="section-header">
-                <h2>01 — Projets</h2>
-                <p class="section-meta">Explorations visuelles & installations immersives</p>
-            </div>
-            <div class="carousel-container">
-                <div class="carousel">
-                    <article class="card">
-                        <div class="card-image" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8E72 100%);"></div>
-                        <h3>Spectrum Drift</h3>
-                        <p>Installation chromatic • 2024</p>
-                    </article>
-                    <article class="card">
-                        <div class="card-image" style="background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);"></div>
-                        <h3>Void Erosion</h3>
-                        <p>Sculpture digitale • 2024</p>
-                    </article>
-                    <article class="card">
-                        <div class="card-image" style="background: linear-gradient(135deg, #F7B731 0%, #E17055 100%);"></div>
-                        <h3>Resonance</h3>
-                        <p>Performance sonore • 2024</p>
-                    </article>
-                    <article class="card">
-                        <div class="card-image" style="background: linear-gradient(135deg, #A29BFE 0%, #6C5CE7 100%);"></div>
-                        <h3>Flux Paradox</h3>
-                        <p>Installation interactive • 2024</p>
-                    </article>
+        <!-- 02. TRAVAUX -->
+        <section id="travaux" class="feed-section">
+            <div class="section-content" style="width: 100%;">
+                <span class="tag">ARCHIVE // PROJETS</span>
+                <h2>TRAVAUX</h2>
+                <p class="section-desc">Projets collectifs et recherches individuelles des membres.</p>
+                
+                <!-- GRAND RECTANGLE POUR LE COLLECTIF -->
+                <a href="travaux/collectif.html" class="collectif-main-card">
+                    <div class="collectif-banner-box">[ PROJETS DU COLLECTIF ATELIER BABO ]</div>
+                    <span class="collectif-title">COLLECTIF</span>
+                    <span class="collectif-practice">Voir les créations et installations communes</span>
+                </a>
+
+                <!-- 4 RECTANGLES POUR LES MEMBRES -->
+                <div class="travaux-members-grid">
+                    <a href="travaux/hyunseok-yoon.html" class="member-card">
+                        <div class="member-img-box">[ HYUNSEOK YOON ]</div>
+                        <span class="member-name">Hyunseok Yoon</span>
+                    </a>
+                    <a href="travaux/tom-lecointre.html" class="member-card">
+                        <div class="member-img-box">[ TOM LECOINTRE ]</div>
+                        <span class="member-name">Tom Lecointre</span>
+                    </a>
+                    <a href="travaux/oscar-dujarrier.html" class="member-card">
+                        <div class="member-img-box">[ OSCAR DUJARRIER ]</div>
+                        <span class="member-name">Oscar Dujarrier</span>
+                    </a>
+                    <a href="travaux/wenjie-tong.html" class="member-card">
+                        <div class="member-img-box">[ WENJIE TONG ]</div>
+                        <span class="member-name">Wenjie Tong</span>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 2: ARTISTES -->
-        <section class="content-section" id="section-2">
-            <div class="section-header">
-                <h2>02 — Artistes</h2>
-                <p class="section-meta">Membres du collectif & collaborateurs</p>
-            </div>
-            <div class="artists-grid">
-                <div class="artist-card">
-                    <div class="artist-avatar" style="background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);"></div>
-                    <h3>Marina Volkov</h3>
-                    <p>Sculpture & Installations</p>
-                </div>
-                <div class="artist-card">
-                    <div class="artist-avatar" style="background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);"></div>
-                    <h3>Yuki Tanaka</h3>
-                    <p>Photographie & Vidéo</p>
-                </div>
-                <div class="artist-card">
-                    <div class="artist-avatar" style="background: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);"></div>
-                    <h3>Alex Chen</h3>
-                    <p>Design & Direction Artistique</p>
-                </div>
-                <div class="artist-card">
-                    <div class="artist-avatar" style="background: linear-gradient(135deg, #FA709A 0%, #FEE140 100%);"></div>
-                    <h3>Sophie Bernard</h3>
-                    <p>Curatrice & Théoricienne</p>
-                </div>
+        <!-- 03. CURATION -->
+        <section id="curation" class="feed-section">
+            <div class="section-content">
+                <span class="tag">PENSÉE // RECHERCHE</span>
+                <h2>CURATION</h2>
+                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
+                <div class="placeholder-box">[ TEXTES & MANIFESTES ]</div>
             </div>
         </section>
 
-        <!-- SECTION 3: RÉSIDENCES -->
-        <section class="content-section" id="section-3">
-            <div class="section-header">
-                <h2>03 — Résidences</h2>
-                <p class="section-meta">Programmes d'immersion & de recherche</p>
-            </div>
-            <div class="residencies-list">
-                <article class="residency-item">
-                    <div class="residency-badge">Printemps 2024</div>
-                    <h3>Résidence Berlin</h3>
-                    <p>Exploration des pratiques contemporaines en dialogue avec la scène locale. Accueil de 8 artistes pour un programme de 3 mois.</p>
-                    <a href="#" class="link-arrow">En savoir plus →</a>
-                </article>
-                <article class="residency-item">
-                    <div class="residency-badge">Été 2024</div>
-                    <h3>Résidence Kyoto</h3>
-                    <p>Immersion dans les traditions artisanales japonaises et créations hybrides. Collaboration avec les maîtres locaux.</p>
-                    <a href="#" class="link-arrow">En savoir plus →</a>
-                </article>
-                <article class="residency-item">
-                    <div class="residency-badge">Automne 2024</div>
-                    <h3>Résidence São Paulo</h3>
-                    <p>Engagement communautaire et pratiques sociales. Échanges avec les collectifs locaux et création d'installations publiques.</p>
-                    <a href="#" class="link-arrow">En savoir plus →</a>
-                </article>
-            </div>
-        </section>
+        <!-- 04. COLLABORATEURS -->
+        <section id="collaborateurs" class="feed-section">
+            <div class="section-content" style="width: 100%;">
+                <span class="tag">RÉSEAU // IMPLICATION</span>
+                <h2>COLLABORATEURS</h2>
+                
+                <div class="sub-nav-bar">
+                    <button class="sub-nav-btn active" data-cat="artistes">ARTISTES</button>
+                    <button class="sub-nav-btn" data-cat="structures">STRUCTURES</button>
+                    <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
+                </div>
 
-        <!-- SECTION 4: ÉDITIONS -->
-        <section class="content-section" id="section-4">
-            <div class="section-header">
-                <h2>04 — Éditions</h2>
-                <p class="section-meta">Publications & Matériaux de recherche</p>
-            </div>
-            <div class="editions-grid">
-                <div class="edition-card">
-                    <div class="edition-cover" style="background: linear-gradient(135deg, #1E3C72 0%, #2A5298 100%); position: relative; overflow: hidden;">
-                        <div style="position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);"></div>
-                    </div>
-                    <h4>Manifeste 01</h4>
-                    <p>Théorie & Pratiques • 2024</p>
-                </div>
-                <div class="edition-card">
-                    <div class="edition-cover" style="background: linear-gradient(135deg, #C471F5 0%, #FA71CD 100%);"></div>
-                    <h4>Archive Visuelle</h4>
-                    <p>Catalogue raisonné • 2023</p>
-                </div>
-                <div class="edition-card">
-                    <div class="edition-cover" style="background: linear-gradient(135deg, #30CFD0 0%, #330867 100%);"></div>
-                    <h4>Essais Critiques</h4>
-                    <p>Dialogues & Perspectives • 2024</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: ÉVÉNEMENTS -->
-        <section class="content-section" id="section-5">
-            <div class="section-header">
-                <h2>05 — Événements</h2>
-                <p class="section-meta">Expositions, performances & rencontres</p>
-            </div>
-            <div class="events-timeline">
-                <div class="event-item">
-                    <time class="event-date">15 Janvier</time>
-                    <div class="event-content">
-                        <h3>Ouverture Exposition</h3>
-                        <p>Vernissage de "Void Resonance" au Centre d'Art Contemporain. Présence de tous les artistes du collectif.</p>
+                <div id="cat-artistes" class="collab-category-content active">
+                    <p class="section-desc">Glissez vers la droite pour découvrir les artistes du collectif.</p>
+                    <div class="horizontal-scroll-container">
+                        <a href="artistes/goshe.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE G0SHE ]</div>
+                            <span class="artist-name">g0she</span>
+                            <span class="artist-practice">Arts Numériques</span>
+                        </a>
+                        <a href="artistes/nino.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE NINO ]</div>
+                            <span class="artist-name">Nino</span>
+                            <span class="artist-practice">Plastique & Son</span>
+                        </a>
+                        <a href="artistes/quidenovie.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE QUIDENOVIE ]</div>
+                            <span class="artist-name">quideNovie</span>
+                            <span class="artist-practice">Recherche & Code</span>
+                        </a>
+                        <a href="artistes/collectif-naif.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE COLLECTIF NAÏF ]</div>
+                            <span class="artist-name">collectif naïf</span>
+                            <span class="artist-practice">Création Collaborative</span>
+                        </a>
+                        <a href="artistes/hugo-denise.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE HUGO DENISE ]</div>
+                            <span class="artist-name">Hugo Denise</span>
+                            <span class="artist-practice">Installation & Matière</span>
+                        </a>
+                        <a href="artistes/leon-chotard.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE LÉON CHOTARD ]</div>
+                            <span class="artist-name">Léon Chotard</span>
+                            <span class="artist-practice">Génératif & Visuel</span>
+                        </a>
                     </div>
                 </div>
-                <div class="event-item">
-                    <time class="event-date">28 Février</time>
-                    <div class="event-content">
-                        <h3>Performance Sonore</h3>
-                        <p>Séance immersive avec compositions originales. Durée : 45 minutes • Entrée libre sur inscription.</p>
-                    </div>
+
+                <div id="cat-structures" class="collab-category-content" style="display: none;">
+                    <p class="section-desc">Partenaires institutionnels, galeries et espaces de diffusion.</p>
+                    <div class="placeholder-box">[ RÉSEAU DE STRUCTURES PARTENAIRES ]</div>
                 </div>
-                <div class="event-item">
-                    <time class="event-date">15 Mars</time>
-                    <div class="event-content">
-                        <h3>Table Ronde</h3>
-                        <p>Débat : "L'art contemporain et les technologie émergentes". Modération par Sophie Bernard.</p>
-                    </div>
+
+                <div id="cat-mecenes" class="collab-category-content" style="display: none;">
+                    <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
+                    <div class="placeholder-box">[ CERCLE DES MÉCÈNES ]</div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 6: ARCHIVE -->
-        <section class="content-section" id="section-6">
-            <div class="section-header">
-                <h2>06 — Archive</h2>
-                <p class="section-meta">Historique & Projets antérieurs</p>
-            </div>
-            <div class="archive-filter">
-                <button class="filter-btn active">Tout</button>
-                <button class="filter-btn">2023</button>
-                <button class="filter-btn">2022</button>
-                <button class="filter-btn">2021</button>
-            </div>
-            <div class="archive-grid">
-                <article class="archive-item" style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 142, 114, 0.1) 100%);"></article>
-                <article class="archive-item" style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(68, 160, 141, 0.1) 100%);"></article>
-                <article class="archive-item" style="background: linear-gradient(135deg, rgba(247, 183, 49, 0.1) 0%, rgba(229, 112, 85, 0.1) 100%);"></article>
-                <article class="archive-item" style="background: linear-gradient(135deg, rgba(162, 155, 254, 0.1) 0%, rgba(108, 92, 231, 0.1) 100%);"></article>
-                <article class="archive-item" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);"></article>
-                <article class="archive-item" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);"></article>
+        <!-- 05. EXPOS -->
+        <section id="expos" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ESPACE // TEMPOREL</span>
+                <h2>EXPOS</h2>
+                <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
+                <div class="placeholder-box">[ AGENDA ]</div>
             </div>
         </section>
 
-        <!-- SECTION 7: CONTACT -->
-        <section class="content-section" id="section-7">
-            <div class="section-header">
-                <h2>07 — Contact</h2>
-                <p class="section-meta">Nous contacter & collaborer</p>
-            </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-block">
-                        <h3>Email</h3>
-                        <a href="mailto:hello@atelierbabo.com" class="contact-link">hello@atelierbabo.com</a>
-                    </div>
-                    <div class="contact-block">
-                        <h3>Adresse</h3>
-                        <p>Rue de l'Art Contemporain<br>75004 Paris, France</p>
-                    </div>
-                    <div class="contact-block">
-                        <h3>Réseaux</h3>
-                        <div class="social-links">
-                            <a href="#" class="social-link">Instagram</a>
-                            <a href="#" class="social-link">Twitter</a>
-                            <a href="#" class="social-link">Discord</a>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form">
-                    <input type="text" placeholder="Votre nom" required>
-                    <input type="email" placeholder="Votre email" required>
-                    <textarea placeholder="Votre message" rows="6" required></textarea>
-                    <button type="submit" class="btn btn-primary">Envoyer</button>
-                </form>
+        <!-- 06. SOUTIEN -->
+        <section id="soutien" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
+                <h2>SOUTIEN</h2>
+                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
+                <div class="placeholder-box">[ ESPACE CONTRIBUTIF ]</div>
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2024 ATELIER BABO // COLLECTIF. Tous droits réservés.</p>
-        </footer>
-
+        <!-- 07. CONTACT -->
+        <section id="contact" class="feed-section">
+            <div class="section-content">
+                <span class="tag">CONNEXION // RÉSEAU</span>
+                <h2>CONTACT</h2>
+                <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
+                <div class="placeholder-box">[ CANAUX DE TRANSMISSION ]</div>
+            </div>
+        </section>
     </main>
 
-    <!-- JAVASCRIPT -->
-    <script src="script.js?v=3.0"></script>
+    <script>
+        const sections = document.querySelectorAll('.feed-section');
+        const navItems = document.querySelectorAll('.nav-item');
+        const mainFeed = document.querySelector('.main-feed');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeText = document.getElementById('theme-text');
+        const htmlRoot = document.documentElement;
 
+        themeToggle.addEventListener('click', () => {
+            if (htmlRoot.classList.contains('dark-mode')) {
+                htmlRoot.classList.remove('dark-mode');
+                htmlRoot.classList.add('light-mode');
+                themeText.textContent = 'JOUR';
+            } else {
+                htmlRoot.classList.remove('light-mode');
+                htmlRoot.classList.add('dark-mode');
+                themeText.textContent = 'NUIT';
+            }
+        });
+
+        const subNavBtns = document.querySelectorAll('.sub-nav-btn');
+        const collabContents = document.querySelectorAll('.collab-category-content');
+
+        subNavBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                subNavBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const targetCat = btn.getAttribute('data-cat');
+                collabContents.forEach(content => {
+                    content.style.display = 'none';
+                    if (content.id === 'cat-' + targetCat) {
+                        content.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        mainFeed.addEventListener('scroll', () => {
+            let index = Math.round(mainFeed.scrollTop / window.innerHeight);
+            let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
+
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.getAttribute('id') === current) {
+                    section.classList.add('active');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
