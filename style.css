@@ -363,7 +363,7 @@ h2 { font-size: 1.8rem; }
 }
 
 .collectif-banner-box {
-    height: 220px; /* Agrandit la hauteur du bloc collectif */
+    height: 360px; /* Agrandit la hauteur du bloc collectif */
     border: 1px dashed var(--border-color);
     display: flex;
     align-items: center;
@@ -411,7 +411,7 @@ h2 { font-size: 1.8rem; }
 }
 
 .member-img-box {
-    height: 180px; /* Agrandit la hauteur des blocs membres */
+    height: 320px; /* Agrandit la hauteur des blocs membres */
     border: 1px dashed var(--border-color);
     display: flex;
     align-items: center;
