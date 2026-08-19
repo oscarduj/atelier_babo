@@ -1,634 +1,138 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
-
-html.dark-mode {
-    --bg-color: #101010;        
-    --text-color: #EAE8E4;      
-    --accent-color: #FFFFFF;    
-    --secondary-color: #A3B1C2; 
-    --border-color: #262626;    
-    --box-bg: rgba(163, 177, 194, 0.01);
+/* === VARIABLES GLOBALES === */
+html {
+    --bg-color: #101010;
+    --text-color: #EAE8E4;
+    --accent-color: #FFFFFF;
+    --secondary-color: #A3B1C2;
     --desc-color: #999999;
     --hover-bg: rgba(163, 177, 194, 0.08);
+    --border-color: rgba(163, 177, 194, 0.15);
+    scroll-behavior: smooth;
 }
 
 html.light-mode {
-  /* === MODE CLAIR === */
-  --bg-color: #fafafa;           
-  --text-color: #0a0a0a;         
-  --accent-color: #ff6b35;      
-  --secondary-color: #cc5429;    
-  --border-color: #d0d0d0;       
-  --box-bg: #f0f0f0;             
-  --hover-color: #cc5429;        
+    --bg-color: #fafafa;
+    --text-color: #0a0a0a;
+    --accent-color: #ff6b35;
+    --secondary-color: #cc5429;
+    --desc-color: #d0d0d0;
+    --hover-bg: #f0f0f0;
+    --border-color: #e0e0e0;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body { 
-    background-color: var(--bg-color); 
-    color: var(--text-color); 
-    font-family: 'Space Grotesk', sans-serif; 
-    display: flex; 
-    height: 100vh; 
-    overflow: hidden; 
-    transition: background-color 0.4s ease, color 0.4s ease;
+/* === RESET & BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* --- MENU LATÉRAL --- */
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === SIDE NAVIGATION === */
 .side-nav {
-    position: fixed; 
-    top: 0; 
-    left: -240px; 
-    width: 280px; 
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
     height: 100vh;
-    border-right: 1px solid var(--border-color); 
-    padding: 3rem 2rem;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-between;
-    background-color: var(--bg-color); 
-    z-index: 100;
-    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
-}
-
-.side-nav:hover { 
-    left: 0; 
-}
-
-.side-nav::after {
-    content: ""; 
-    position: absolute; 
-    right: 10px; 
-    top: 50%; 
-    width: 2px; 
-    height: 40px;
-    background-color: var(--secondary-color); 
-    opacity: 0.5;
+    background-color: var(--bg-color);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
 }
 
 .nav-top {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
 }
 
-.nav-logo { 
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 1.1rem; 
-    color: var(--secondary-color); 
-    letter-spacing: 1px;
+.logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--accent-color);
 }
 
 .theme-switch {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    background: transparent;
-    color: var(--text-color);
+    background: none;
     border: 1px solid var(--border-color);
-    padding: 0.5rem 0.8rem;
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
     cursor: pointer;
-    text-align: left;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
     transition: all 0.3s ease;
-    letter-spacing: 1px;
-    width: fit-content;
 }
 
 .theme-switch:hover {
-    border-color: var(--secondary-color);
-    color: var(--secondary-color);
     background-color: var(--hover-bg);
+    border-color: var(--secondary-color);
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
 }
 
 .nav-item {
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 0.95rem; 
-    color: var(--text-color); 
-    opacity: 0.35;
-    text-decoration: none; 
-    text-transform: uppercase; 
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-    display: block; 
-    margin-bottom: 1.5rem;
-    padding: 0.4rem 0.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--desc-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.75rem 1rem;
     border-left: 2px solid transparent;
 }
 
 .nav-item:hover {
-    opacity: 0.85;
-    transform: translateX(8px);
-    color: var(--secondary-color);
+    color: var(--text-color);
+    background-color: var(--hover-bg);
 }
 
-.nav-item.active { 
-    color: var(--secondary-color) !important; 
-    opacity: 1 !important; 
-    background-color: var(--hover-bg); 
-    border-left: 4px solid var(--secondary-color); 
-    font-weight: 700; 
-    padding-left: 1rem;
-    transform: translateX(10px);
+.nav-item.active {
+    color: var(--accent-color);
+    border-left-color: var(--accent-color);
+    background-color: var(--hover-bg);
 }
 
 .nav-status {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
     color: var(--desc-color);
-}
-
-/* --- FLUX MAGNÉTIQUE --- */
-.main-feed { 
-    flex: 1; 
-    height: 100vh; 
-    overflow-y: scroll; 
-    scroll-snap-type: y mandatory; 
-}
-
-/* --- SECTIONS --- */
-.feed-section {
-    height: 100vh; 
-    padding: 3rem 6rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex; 
-    flex-direction: column; 
-    justify-content: flex-start;
-    padding-top: 3.5rem;
-    scroll-snap-align: start;
-    opacity: 1; 
-    transition: border-color 0.4s ease;
-}
-
-/* --- STYLE DE LA SECTION ACCUEIL AVEC VIDÉO --- */
-.hero-section-video {
-    position: relative;
-    overflow: hidden;
-    padding: 0 !important;
-}
-
-.hero-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-    z-index: 0;
-}
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
-
-.hero-content {
-    width: 100%; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    height: 100%; 
-    z-index: 2; 
-    position: relative;
-}
-
-/* --- SOUS-BARRE DE NAVIGATION --- */
-.sub-nav-bar {
-    display: flex;
-    gap: 1.5rem;
-    margin: 1rem 0 1.5rem 0;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.6rem;
-}
-
-.sub-nav-btn {
-    background: transparent;
-    border: none;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--desc-color);
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
-    padding-bottom: 0.2rem;
-}
-
-.sub-nav-btn:hover {
-    color: var(--text-color);
-}
-
-.sub-nav-btn.active {
-    color: var(--secondary-color);
-    border-bottom: 2px solid var(--secondary-color);
-    font-weight: 700;
-}
-
-/* --- CARROUSEL --- */
-.horizontal-scroll-container {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    padding: 1rem 0 2rem 0;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    scrollbar-color: var(--secondary-color) var(--border-color);
-}
-
-.horizontal-scroll-container::-webkit-scrollbar {
-    height: 4px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color);
-}
-
-.artist-card {
-    min-width: 240px;
-    max-width: 240px;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    scroll-snap-align: start;
-    transition: transform 0.3s ease;
-}
-
-.artist-card:hover {
-    transform: translateY(-5px);
-}
-
-.artist-img-box {
-    height: 280px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    background-color: var(--box-bg);
-    margin-bottom: 0.8rem;
-    transition: border-color 0.3s ease;
-}
-
-.artist-card:hover .artist-img-box {
-    border-color: var(--secondary-color);
-}
-
-.artist-name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-color);
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
-}
-
-.artist-practice {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--desc-color);
-}
-
-/* --- TYPOGRAPHIE & PLACEHOLDERS --- */
-.tag { 
-    font-family: 'Share Tech Mono', monospace; 
-    color: var(--secondary-color); 
-    font-size: 0.75rem; 
-    margin-bottom: 0.4rem; 
-    display: block; 
-    letter-spacing: 0.5px;
-}
-
-h1, h2 { 
-    text-transform: uppercase; 
-    margin-bottom: 0.3rem;
-}
-
-h1 { font-size: 2rem; line-height: 1.1; }
-h2 { font-size: 1.8rem; }
-
-.section-desc, .hero-content p {
-    font-size: 0.85rem;
-    color: var(--desc-color);
-    margin-bottom: 1.2rem;
-}
-
-.placeholder-box { 
-    height: 280px; 
-    border: 1px dashed var(--border-color); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--desc-color); 
-    font-family: 'Share Tech Mono', monospace;
-}
-
-/* --- LOGO AGRANDI --- */
-.nav-logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.nav-logo-img {
-    max-width: 380px;
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: opacity 0.3s ease;
-}
-
-.nav-logo-img:hover {
-    opacity: 0.8;
-}
-
-/* --- SECTION TRAVAUX & SOUS-PAGES (RECTANGLES PLUS GROS) --- */
-.collectif-main-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
-}
-
-.collectif-main-card:hover {
-    transform: translateY(-3px);
-}
-
-.collectif-banner-box {
-    height: 580px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    background-color: var(--box-bg);
-    margin-bottom: 0.6rem;
-    transition: border-color 0.3s ease;
-}
-
-.collectif-main-card:hover .collectif-banner-box {
-    border-color: var(--secondary-color);
-}
-
-.collectif-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-color);
-    text-transform: uppercase;
-}
-
-.collectif-practice, .member-card .member-name {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--desc-color);
-}
-
-.travaux-members-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.2rem;
-}
-
-.member-card {
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease;
-}
-
-.member-card:hover {
-    transform: translateY(-3px);
-}
-
-.member-img-box {
-    height: 420px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    background-color: var(--box-bg);
-    margin-bottom: 0.4rem;
     text-align: center;
-    padding: 0.5rem;
-    transition: border-color 0.3s ease;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
 }
 
-.member-card:hover .member-img-box {
-    border-color: var(--secondary-color);
-}
-
-.member-name {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-color);
-    text-transform: uppercase;
-}
-
-/* --- PAGES INDIVIDUELLES DES ARTISTES --- */
-.artist-page-container {
-    padding: 4rem 6rem;
-    max-width: 900px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.back-link {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 2rem;
-    transition: opacity 0.3s ease;
-}
-
-.back-link:hover {
-    opacity: 0.7;
-}
-
-.artist-header {
-    margin-bottom: 2.5rem;
-}
-
-.artist-header h1 {
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    color: var(--text-color);
-    margin-top: 0.5rem;
-}
-
-.artist-bio-section, 
-.artist-projects-section, 
-.artist-contact-section {
-    margin-bottom: 2.5rem;
-}
-
-.artist-bio-section h3, 
-.artist-projects-section h3, 
-.artist-contact-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-    letter-spacing: 1px;
-}
-
-.artist-bio-section p {
-    font-size: 1rem;
-    color: var(--desc-color);
-    line-height: 1.6;
-}
-
-.artist-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.artist-img-placeholder {
-    height: 200px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--desc-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    background-color: var(--box-bg);
-}
-
-.contact-links-grid {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.contact-btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    border-bottom: 1px solid var(--secondary-color);
-    padding-bottom: 0.2rem;
-    transition: opacity 0.3s ease;
-}
-
-.contact-btn:hover {
-    opacity: 0.7;
-}
-
-/* --- RESPONSIVE TABLET --- */
-@media (max-width: 768px) {
-    .hamburger {
-        display: flex;
-    }
-    
-    .side-nav nav {
-        position: fixed;
-        left: -240px;
-        top: 0;
-        width: 240px;
-        height: 100vh;
-        background-color: var(--bg-color);
-        border-right: 1px solid var(--border-color);
-        overflow-y: auto;
-        transition: left 0.3s ease;
-        z-index: 1000;
-    }
-    
-    .side-nav.mobile-open nav {
-        left: 0;
-    }
-}
-
-    .main-feed {
-        height: auto;
-        overflow-y: auto;
-    }
-
-    .feed-section {
-        height: auto;
-        padding: 2.5rem 3rem;
-        padding-top: 2rem;
-    }
-
-    .hero-section-video {
-        min-height: 50vh;
-    }
-
-    h1 { font-size: 1.6rem; }
-    h2 { font-size: 1.4rem; }
-
-    .travaux-members-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-    .member-img-box { height: 340px; }
-    .collectif-banner-box { height: 420px; }
-
-    .horizontal-scroll-container { gap: 1.5rem; }
-    .artist-card { min-width: 200px; max-width: 200px; }
-    .artist-img-box { height: 240px; }
-
-    .sub-nav-bar { gap: 1rem; }
-    .sub-nav-btn { font-size: 0.75rem; }
-
-    .artist-page-container { padding: 2rem 3rem; }
-
-
-/* --- RESPONSIVE MOBILE --- */
-@media (max-width: 480px) {
-    .side-nav {
-        display: none;
-    }
-
-    .feed-section {
-        padding: 1.5rem 1.5rem;
-        padding-top: 1.5rem;
-    }
-
-    .hero-section-video {
-        min-height: 35vh;
-    }
-
-    h1 { font-size: 1.3rem; }
-    h2 { font-size: 1.1rem; }
-
-    .travaux-members-grid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
-
-   .member-img-box { height: 280px; }
-    .collectif-banner-box { height: 300px; }
-
-    .horizontal-scroll-container { gap: 1rem; }
-    .artist-card { min-width: 180px; max-width: 180px; }
-    .artist-img-box { height: 200px; }
-
-    .sub-nav-bar { gap: 0.8rem; }
-    .sub-nav-btn { font-size: 0.65rem; }
-
-    .tag { font-size: 0.65rem; }
-    .artist-page-container { padding: 1.5rem; }
-}
-
-/* Hamburger Menu */
+/* === HAMBURGER MENU === */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -646,7 +150,7 @@ h2 { font-size: 1.8rem; }
     width: 24px;
     height: 2px;
     background-color: var(--text-color);
-    transition: 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hamburger.active span:nth-child(1) {
@@ -661,12 +165,527 @@ h2 { font-size: 1.8rem; }
     transform: rotate(-45deg) translate(7px, -7px);
 }
 
+/* === MAIN FEED === */
+.main-feed {
+    margin-left: 240px;
+    background-color: var(--bg-color);
+    transition: margin-left 0.3s ease;
+}
+
+.feed-section {
+    min-height: 100vh;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* === HERO SECTION === */
+.hero-section-video {
+    position: relative;
+    width: 100%;
+    min-height: 60vh;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.hero-section-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    color: var(--accent-color);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+/* === TYPOGRAPHIE === */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+}
+
+h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--accent-color);
+    letter-spacing: 0.02em;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    line-height: 1.8;
+}
+
+/* === GRILLES & LAYOUTS === */
+.travaux-members-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.member-card {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-4px);
+}
+
+.member-img-box {
+    width: 100%;
+    height: 340px;
+    background-color: var(--hover-bg);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.member-desc {
+    color: var(--desc-color);
+    font-size: 0.9rem;
+}
+
+/* === SECTION CURATION === */
+.collectif-banner-box {
+    width: 100%;
+    height: 420px;
+    background-color: var(--hover-bg);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+/* === HORIZONTAL SCROLL === */
+.horizontal-scroll-container {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) var(--hover-bg);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+    background: var(--hover-bg);
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+.artist-card {
+    min-width: 200px;
+    max-width: 200px;
+    scroll-snap-align: start;
+    transition: all 0.3s ease;
+}
+
+.artist-card:hover {
+    transform: scale(1.05);
+}
+
+.artist-img-box {
+    width: 100%;
+    height: 240px;
+    background-color: var(--hover-bg);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+/* === SUB NAV BAR === */
+.sub-nav-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.sub-nav-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sub-nav-btn:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--secondary-color);
+}
+
+.sub-nav-btn.active {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+}
+
+/* === EXPOS === */
+.expos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.expo-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.expo-img-box {
+    width: 100%;
+    height: 300px;
+    background-color: var(--hover-bg);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.tag {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    background-color: var(--hover-bg);
+    color: var(--secondary-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    width: fit-content;
+    margin-top: 0.5rem;
+}
+
+/* === SUPPORTERS === */
+.supporters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.supporter-logo {
+    width: 100%;
+    height: 150px;
+    background-color: var(--hover-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* === CONTACT === */
+.artist-page-container {
+    padding: 2rem 3rem;
+    background-color: var(--hover-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background-color: var(--bg-color);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: var(--desc-color);
+}
+
+.contact-form button {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    width: fit-content;
+}
+
+.contact-form button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* === RESPONSIVE TABLET (768px) === */
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
     }
-    
+
+    .side-nav {
+        width: 240px;
+        position: fixed;
+        left: -240px;
+        height: 100vh;
+        z-index: 1000;
+    }
+
     .side-nav.mobile-open {
-        transform: translateX(0);
+        left: 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .main-feed {
+        margin-left: 0;
+    }
+
+    .feed-section {
+        padding: 2.5rem 2rem;
+        min-height: auto;
+    }
+
+    .hero-section-video {
+        min-height: 50vh;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .travaux-members-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .member-img-box {
+        height: 340px;
+    }
+
+    .collectif-banner-box {
+        height: 420px;
+    }
+
+    .horizontal-scroll-container {
+        gap: 1.5rem;
+    }
+
+    .artist-card {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    .artist-img-box {
+        height: 240px;
+    }
+
+    .sub-nav-bar {
+        gap: 1rem;
+    }
+
+    .sub-nav-btn {
+        font-size: 0.75rem;
+    }
+
+    .expos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .supporters-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .artist-page-container {
+        padding: 2rem 3rem;
+    }
+}
+
+/* === RESPONSIVE MOBILE (480px) === */
+@media (max-width: 480px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .side-nav {
+        width: 240px;
+        position: fixed;
+        left: -240px;
+        height: 100vh;
+        z-index: 1000;
+    }
+
+    .side-nav.mobile-open {
+        left: 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .main-feed {
+        margin-left: 0;
+    }
+
+    .feed-section {
+        padding: 1.5rem 1.5rem;
+        min-height: auto;
+    }
+
+    .hero-section-video {
+        min-height: 35vh;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    .travaux-members-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .member-img-box {
+        height: 280px;
+    }
+
+    .collectif-banner-box {
+        height: 300px;
+    }
+
+    .horizontal-scroll-container {
+        gap: 1rem;
+    }
+
+    .artist-card {
+        min-width: 180px;
+        max-width: 180px;
+    }
+
+    .artist-img-box {
+        height: 200px;
+    }
+
+    .sub-nav-bar {
+        gap: 0.8rem;
+    }
+
+    .sub-nav-btn {
+        font-size: 0.65rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .expos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .supporters-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tag {
+        font-size: 0.65rem;
+    }
+
+    .artist-page-container {
+        padding: 1.5rem;
+    }
+
+    .contact-form {
+        gap: 1rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-links {
+        gap: 0.8rem;
+    }
+
+    .nav-item {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.7rem;
     }
 }

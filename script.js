@@ -1,133 +1,139 @@
-// ===== THEME TOGGLE =====
-const themeToggle = document.querySelector('.theme-toggle');
-const body = document.body;
+/ ===========================
+// THEME TOGGLE
+// ===========================
+const themeToggle = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
+
+// Charger le thème sauvegardé (ou par défaut dark)
+const savedTheme = localStorage.getItem('theme') || 'dark-mode';
+htmlElement.classList.add(savedTheme);
+updateThemeButton(savedTheme);
 
 themeToggle.addEventListener('click', () => {
-    const isDarkMode = body.classList.toggle('dark-mode');
-    body.classList.toggle('light-mode');
-    themeToggle.setAttribute('aria-pressed', isDarkMode);
-    themeToggle.querySelector('.theme-icon').textContent = isDarkMode ? '🌙' : '☀️';
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  const currentTheme = htmlElement.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+  const newTheme = currentTheme === 'dark-mode' ? 'light-mode' : 'dark-mode';
+  
+  htmlElement.classList.remove(currentTheme);
+  htmlElement.classList.add(newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeButton(newTheme);
 });
 
-// Charger le thème sauvegardé
-const savedTheme = localStorage.getItem('theme') || 'dark';
-if (savedTheme === 'light') {
-    body.classList.remove('dark-mode');
-    body.classList.add('light-mode');
-    themeToggle.setAttribute('aria-pressed', false);
-    themeToggle.querySelector('.theme-icon').textContent = '☀️';
+function updateThemeButton(theme) {
+  themeToggle.textContent = theme === 'dark-mode' ? 'LIGHT' : 'DARK';
 }
 
-// ===== NAVIGATION ACTIVE =====
-const navItems = document.querySelectorAll('.nav-item');
-const sections = document.querySelectorAll('section');
-
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - sectionHeight / 3) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    navItems.forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('href').slice(1) === current) {
-            item.classList.add('active');
-            item.setAttribute('aria-current', 'page');
-        } else {
-            item.removeAttribute('aria-current');
-        }
-    });
-});
-
-// ===== CARROUSEL FONCTIONNALITÉS =====
-const carousel = document.querySelector('.carousel');
-const carouselItems = document.querySelectorAll('.carousel-item');
-const prevBtn = document.querySelector('.carousel-prev');
-const nextBtn = document.querySelector('.carousel-next');
-const indicators = document.querySelectorAll('.indicator');
-
-let currentIndex = 0;
-const itemWidth = 280 + 24; // largeur + gap
-
-function updateCarouselPosition() {
-    carousel.scrollLeft = currentIndex * itemWidth;
-    updateIndicators();
-}
-
-function updateIndicators() {
-    indicators.forEach((indicator, index) => {
-        indicator.classList.toggle('active', index === currentIndex);
-    });
-}
-
-prevBtn?.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-    updateCarouselPosition();
-});
-
-nextBtn?.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % carouselItems.length;
-    updateCarouselPosition();
-});
-
-indicators.forEach((indicator) => {
-    indicator.addEventListener('click', (e) => {
-        currentIndex = parseInt(e.target.getAttribute('data-index'));
-        updateCarouselPosition();
-    });
-});
-
-// Clavier : flèches gauche/droite
-document.addEventListener('keydown', (e) => {
-    if (document.activeElement === carousel || carousel.contains(document.activeElement)) {
-        if (e.key === 'ArrowLeft') {
-            prevBtn?.click();
-        } else if (e.key === 'ArrowRight') {
-            nextBtn?.click();
-        }
-    }
-});
-
-// ===== ONGLETS SOUS-NAV =====
-const tabs = document.querySelectorAll('.tab');
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => {
-            t.classList.remove('active');
-            t.setAttribute('aria-selected', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', 'true');
-    });
-
-    // Clavier : Tab + Flèches
-    tab.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-            const nextTab = tab.nextElementSibling;
-            if (nextTab?.classList.contains('tab')) nextTab.click();
-        } else if (e.key === 'ArrowLeft') {
-            const prevTab = tab.previousElementSibling;
-            if (prevTab?.classList.contains('tab')) prevTab.click();
-        }
-    });
-});
-/ ===== HAMBURGER MENU =====
+// ===========================
+// HAMBURGER MENU TOGGLE
+// ===========================
 const hamburger = document.getElementById('hamburger-toggle');
-const nav = document.querySelector('.side-nav');
+const sideNav = document.querySelector('.side-nav');
 
-hamburger?.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    nav.classList.toggle('mobile-open');
+hamburger.addEventListener('click', () => {
+  sideNav.classList.toggle('mobile-open');
+  hamburger.classList.toggle('active');
 });
 
-document.querySelectorAll('.side-nav a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        nav.classList.remove('mobile-open');
-    });
+// Fermer le menu quand on clique sur un lien
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    sideNav.classList.remove('mobile-open');
+    hamburger.classList.remove('active');
+  });
+});
+
+// ===========================
+// ACTIVE NAV ITEM ON SCROLL
+// ===========================
+const sections = document.querySelectorAll('main > section');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+function updateActiveNav() {
+  let currentSection = '';
+  
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    
+    if (window.scrollY >= sectionTop - 100) {
+      currentSection = section.id;
+    }
+  });
+  
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('data-target') === currentSection) {
+      link.classList.add('active');
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveNav);
+updateActiveNav(); // Appel initial
+
+// ===========================
+// SMOOTH SCROLL
+// ===========================
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = link.getAttribute('data-target');
+    const section = document.getElementById(target);
+    
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// ===========================
+// FORM VALIDATION (Contact)
+// ===========================
+const contactForm = document.querySelector('form');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const name = contactForm.querySelector('input[name="name"]')?.value.trim();
+    const email = contactForm.querySelector('input[name="email"]')?.value.trim();
+    const message = contactForm.querySelector('textarea[name="message"]')?.value.trim();
+    
+    // Validation simple
+    if (!name || !email || !message) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Veuillez entrer une adresse email valide.');
+      return;
+    }
+    
+    // Succès (tu peux intégrer un backend ici plus tard)
+    alert('Message envoyé ! Merci de nous avoir contactés.');
+    contactForm.reset();
+  });
+}
+
+// ===========================
+// INTERSECTION OBSERVER (pour animations au scroll)
+// ===========================
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in-view');
+    }
+  });
+}, observerOptions);
+
+// Observer tous les éléments avec la classe 'fade-in' (optionnel)
+document.querySelectorAll('.fade-in, section').forEach(el => {
+  observer.observe(el);
 });

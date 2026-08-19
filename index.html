@@ -1,32 +1,23 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark-mode">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header class="side-nav">
+        <div class="nav-top">
+            <div class="logo">ATELIER_BABO</div>
+            <button id="theme-toggle" class="theme-switch">
+                <span id="theme-text">DARK</span>
+            </button>
+        </div>
 
-<header class="side-nav"> 
-    <div class="nav-top">
-        <div class="nav-logo">ATELIER_BABO</div>
-        <button id="theme-toggle" class="theme-switch">MODE: <span id="theme-text">NUIT</span></button>
-    </div>
-    
-    <nav>
-        <!-- Tous tes nav-items ici -->
-    </nav>
-    
-    <button class="hamburger" id="hamburger-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-</header>
-        
         <nav class="nav-links">
-            <a href="#accueil" class="nav-item active" data-target="accueil">01. ACCUEIL</a>
+            <a href="#accueil" class="nav-item" data-target="accueil">01. ACCUEIL</a>
             <a href="#travaux" class="nav-item" data-target="travaux">02. TRAVAUX</a>
             <a href="#curation" class="nav-item" data-target="curation">03. CURATION</a>
             <a href="#collaborateurs" class="nav-item" data-target="collaborateurs">04. COLLABORATEURS</a>
@@ -34,221 +25,121 @@
             <a href="#soutien" class="nav-item" data-target="soutien">06. SOUTIEN</a>
             <a href="#contact" class="nav-item" data-target="contact">07. CONTACT</a>
         </nav>
-        
-        <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
+
+        <div class="nav-status">
+            STATUS: ALL SYSTEMS OPERATIONAL
+        </div>
+
+        <button id="hamburger-toggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
     <main class="main-feed">
-        <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
-        <section id="accueil" class="feed-section active hero-section-video">
-            <video autoplay muted loop playsinline class="hero-video">
-                <source src="videos/accueil/fond-accueil.mp4" type="video/mp4">
-            </video>
-            <div class="video-overlay"></div>
-
-            <div class="hero-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; z-index: 2; position: relative;">
-                <span class="tag" style="margin-bottom: 1rem;">// ACCUEIL</span>
-                <div class="nav-logo-container">
-                    <a href="#accueil">
-                        <img src="images/accueil/Logo.PNG" alt="ATELIER BABO" class="nav-logo-img">
-                    </a>
+        <!-- SECTION ACCUEIL -->
+        <section id="accueil" class="feed-section">
+            <div class="hero-section-video">
+                <video autoplay muted loop playsinline>
+                    <source src="your-video.mp4" type="video/mp4">
+                </video>
+                <div class="hero-content">
+                    <h1>ATELIER BABO</h1>
+                    <p>Collectif d'artistes contemporains</p>
                 </div>
             </div>
         </section>
 
-        <!-- 02. TRAVAUX -->
+        <!-- SECTION TRAVAUX -->
         <section id="travaux" class="feed-section">
-            <div class="section-content" style="width: 100%;">
-                <span class="tag">ARCHIVE // PROJETS</span>
-                <h2>TRAVAUX</h2>
-                <p class="section-desc">Projets collectifs et recherches individuelles des membres.</p>
-                
-                <!-- GRAND RECTANGLE POUR LE COLLECTIF -->
-                <a href="travaux/collectif.html" class="collectif-main-card">
-                    <div class="collectif-banner-box">[ PROJETS DU COLLECTIF ATELIER BABO ]</div>
-                    <span class="collectif-title">COLLECTIF</span>
-                    <span class="collectif-practice">Voir les créations et installations communes</span>
-                </a>
-
-                <!-- 4 RECTANGLES POUR LES MEMBRES -->
-                <div class="travaux-members-grid">
-                    <a href="travaux/hyunseok-yoon.html" class="member-card">
-                        <div class="member-img-box">[ HYUNSEOK YOON ]</div>
-                        <span class="member-name">Hyunseok Yoon</span>
-                    </a>
-                    <a href="travaux/tom-lecointre.html" class="member-card">
-                        <div class="member-img-box">[ TOM LECOINTRE ]</div>
-                        <span class="member-name">Tom Lecointre</span>
-                    </a>
-                    <a href="travaux/oscar-dujarrier.html" class="member-card">
-                        <div class="member-img-box">[ OSCAR DUJARRIER ]</div>
-                        <span class="member-name">Oscar Dujarrier</span>
-                    </a>
-                    <a href="travaux/wenjie-tong.html" class="member-card">
-                        <div class="member-img-box">[ WENJIE TONG ]</div>
-                        <span class="member-name">Wenjie Tong</span>
-                    </a>
+            <h2>TRAVAUX</h2>
+            <div class="travaux-members-grid">
+                <div class="member-card">
+                    <div class="member-img-box"></div>
+                    <h3>Artiste 1</h3>
+                    <p class="member-desc">Description courte</p>
+                </div>
+                <div class="member-card">
+                    <div class="member-img-box"></div>
+                    <h3>Artiste 2</h3>
+                    <p class="member-desc">Description courte</p>
                 </div>
             </div>
         </section>
 
-        <!-- 03. CURATION -->
+        <!-- SECTION CURATION -->
         <section id="curation" class="feed-section">
-            <div class="section-content">
-                <span class="tag">PENSÉE // RECHERCHE</span>
-                <h2>CURATION</h2>
-                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
-                <div class="placeholder-box">[ TEXTES & MANIFESTES ]</div>
-            </div>
+            <h2>CURATION</h2>
+            <div class="collectif-banner-box"></div>
+            <p>Texte de curation et de présentation du collectif</p>
         </section>
 
-        <!-- 04. COLLABORATEURS -->
+        <!-- SECTION COLLABORATEURS -->
         <section id="collaborateurs" class="feed-section">
-            <div class="section-content" style="width: 100%;">
-                <span class="tag">RÉSEAU // IMPLICATION</span>
-                <h2>COLLABORATEURS</h2>
-                
-                <div class="sub-nav-bar">
-                    <button class="sub-nav-btn active" data-cat="artistes">ARTISTES</button>
-                    <button class="sub-nav-btn" data-cat="structures">STRUCTURES</button>
-                    <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
+            <h2>COLLABORATEURS</h2>
+            <div class="horizontal-scroll-container">
+                <div class="artist-card">
+                    <div class="artist-img-box"></div>
+                    <h4>Collaborateur 1</h4>
                 </div>
-
-                <div id="cat-artistes" class="collab-category-content active">
-                    <p class="section-desc">Glissez vers la droite pour découvrir les artistes du collectif.</p>
-                    <div class="horizontal-scroll-container">
-                        <a href="artistes/goshe.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE G0SHE ]</div>
-                            <span class="artist-name">g0she</span>
-                            <span class="artist-practice">Arts Numériques</span>
-                        </a>
-                        <a href="artistes/nino.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE NINO ]</div>
-                            <span class="artist-name">Nino</span>
-                            <span class="artist-practice">Plastique & Son</span>
-                        </a>
-                        <a href="artistes/quidenovie.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE QUIDENOVIE ]</div>
-                            <span class="artist-name">quideNovie</span>
-                            <span class="artist-practice">Recherche & Code</span>
-                        </a>
-                        <a href="artistes/collectif-naif.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE COLLECTIF NAÏF ]</div>
-                            <span class="artist-name">collectif naïf</span>
-                            <span class="artist-practice">Création Collaborative</span>
-                        </a>
-                        <a href="artistes/hugo-denise.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE HUGO DENISE ]</div>
-                            <span class="artist-name">Hugo Denise</span>
-                            <span class="artist-practice">Installation & Matière</span>
-                        </a>
-                        <a href="artistes/leon-chotard.html" class="artist-card">
-                            <div class="artist-img-box">[ IMAGE LÉON CHOTARD ]</div>
-                            <span class="artist-name">Léon Chotard</span>
-                            <span class="artist-practice">Génératif & Visuel</span>
-                        </a>
-                    </div>
+                <div class="artist-card">
+                    <div class="artist-img-box"></div>
+                    <h4>Collaborateur 2</h4>
                 </div>
-
-                <div id="cat-structures" class="collab-category-content" style="display: none;">
-                    <p class="section-desc">Partenaires institutionnels, galeries et espaces de diffusion.</p>
-                    <div class="placeholder-box">[ RÉSEAU DE STRUCTURES PARTENAIRES ]</div>
-                </div>
-
-                <div id="cat-mecenes" class="collab-category-content" style="display: none;">
-                    <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
-                    <div class="placeholder-box">[ CERCLE DES MÉCÈNES ]</div>
+                <div class="artist-card">
+                    <div class="artist-img-box"></div>
+                    <h4>Collaborateur 3</h4>
                 </div>
             </div>
         </section>
 
-        <!-- 05. EXPOS -->
+        <!-- SECTION EXPOS -->
         <section id="expos" class="feed-section">
-            <div class="section-content">
-                <span class="tag">ESPACE // TEMPOREL</span>
-                <h2>EXPOS</h2>
-                <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
-                <div class="placeholder-box">[ AGENDA ]</div>
+            <h2>EXPOSITIONS</h2>
+            <div class="sub-nav-bar">
+                <button class="sub-nav-btn active">PASSÉES</button>
+                <button class="sub-nav-btn">ACTUELLES</button>
+                <button class="sub-nav-btn">À VENIR</button>
+            </div>
+            <div class="expos-grid">
+                <div class="expo-card">
+                    <div class="expo-img-box"></div>
+                    <h4>Exposition 1</h4>
+                    <span class="tag">2024</span>
+                </div>
+                <div class="expo-card">
+                    <div class="expo-img-box"></div>
+                    <h4>Exposition 2</h4>
+                    <span class="tag">2023</span>
+                </div>
             </div>
         </section>
 
-        <!-- 06. SOUTIEN -->
+        <!-- SECTION SOUTIEN -->
         <section id="soutien" class="feed-section">
-            <div class="section-content">
-                <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
-                <h2>SOUTIEN</h2>
-                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
-                <div class="placeholder-box">[ ESPACE CONTRIBUTIF ]</div>
+            <h2>SOUTIEN</h2>
+            <div class="supporters-grid">
+                <div class="supporter-logo"></div>
+                <div class="supporter-logo"></div>
+                <div class="supporter-logo"></div>
             </div>
         </section>
 
-        <!-- 07. CONTACT -->
+        <!-- SECTION CONTACT -->
         <section id="contact" class="feed-section">
-            <div class="section-content">
-                <span class="tag">CONNEXION // RÉSEAU</span>
-                <h2>CONTACT</h2>
-                <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
-                <div class="placeholder-box">[ CANAUX DE TRANSMISSION ]</div>
+            <h2>CONTACT</h2>
+            <div class="artist-page-container">
+                <form class="contact-form">
+                    <input type="text" placeholder="NOM" required>
+                    <input type="email" placeholder="EMAIL" required>
+                    <textarea placeholder="MESSAGE" rows="5" required></textarea>
+                    <button type="submit">ENVOYER</button>
+                </form>
             </div>
         </section>
     </main>
 
-    <script>
-        const sections = document.querySelectorAll('.feed-section');
-        const navItems = document.querySelectorAll('.nav-item');
-        const mainFeed = document.querySelector('.main-feed');
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeText = document.getElementById('theme-text');
-        const htmlRoot = document.documentElement;
-
-        themeToggle.addEventListener('click', () => {
-            if (htmlRoot.classList.contains('dark-mode')) {
-                htmlRoot.classList.remove('dark-mode');
-                htmlRoot.classList.add('light-mode');
-                themeText.textContent = 'JOUR';
-            } else {
-                htmlRoot.classList.remove('light-mode');
-                htmlRoot.classList.add('dark-mode');
-                themeText.textContent = 'NUIT';
-            }
-        });
-
-        const subNavBtns = document.querySelectorAll('.sub-nav-btn');
-        const collabContents = document.querySelectorAll('.collab-category-content');
-
-        subNavBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                subNavBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const targetCat = btn.getAttribute('data-cat');
-                collabContents.forEach(content => {
-                    content.style.display = 'none';
-                    if (content.id === 'cat-' + targetCat) {
-                        content.style.display = 'block';
-                    }
-                });
-            });
-        });
-
-        mainFeed.addEventListener('scroll', () => {
-            let index = Math.round(mainFeed.scrollTop / window.innerHeight);
-            let current = sections[index] ? sections[index].getAttribute('id') : 'accueil';
-
-            sections.forEach(section => {
-                section.classList.remove('active');
-                if (section.getAttribute('id') === current) {
-                    section.classList.add('active');
-                }
-            });
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-target') === current) {
-                    item.classList.add('active');
-                }
-            });
-        });
-    </script
+    <script src="script.js"></script>
 </body>
 </html>
