@@ -533,12 +533,27 @@ h2 { font-size: 1.8rem; }
 
 /* --- RESPONSIVE TABLET --- */
 @media (max-width: 768px) {
-    .side-nav {
+    .hamburger {
+        display: flex;
+    }
+    
+    .side-nav nav {
         position: fixed;
         left: -240px;
+        top: 0;
         width: 240px;
-        padding: 2rem 1.5rem;
+        height: 100vh;
+        background-color: var(--bg-color);
+        border-right: 1px solid var(--border-color);
+        overflow-y: auto;
+        transition: left 0.3s ease;
+        z-index: 1000;
     }
+    
+    .side-nav.mobile-open nav {
+        left: 0;
+    }
+}
 
     .main-feed {
         height: auto;
