@@ -116,3 +116,18 @@ tabs.forEach(tab => {
         }
     });
 });
+/ ===== HAMBURGER MENU =====
+const hamburger = document.getElementById('hamburger-toggle');
+const nav = document.querySelector('.side-nav');
+
+hamburger?.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    nav.classList.toggle('mobile-open');
+});
+
+document.querySelectorAll('.side-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        nav.classList.remove('mobile-open');
+    });
+});

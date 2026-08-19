@@ -599,7 +599,7 @@ h2 { font-size: 1.8rem; }
         gap: 0.8rem;
     }
 
-    .member-img-box { height: 280px; }
+   .member-img-box { height: 280px; }
     .collectif-banner-box { height: 300px; }
 
     .horizontal-scroll-container { gap: 1rem; }
@@ -611,4 +611,47 @@ h2 { font-size: 1.8rem; }
 
     .tag { font-size: 0.65rem; }
     .artist-page-container { padding: 1.5rem; }
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 6px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-color);
+    transition: 0.3s;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    .side-nav.mobile-open {
+        transform: translateX(0);
+    }
 }
