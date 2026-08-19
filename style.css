@@ -530,10 +530,189 @@ h2 { font-size: 1.8rem; }
     opacity: 0.7;
 }
 
+/* --- CURATION --- */
+.curation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.curation-item {
+    border: 1px dashed var(--border-color);
+    padding: 1.5rem;
+    background-color: var(--box-bg);
+    transition: border-color 0.3s ease;
+}
+
+.curation-item:hover {
+    border-color: var(--secondary-color);
+}
+
+.curation-item .curation-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 0.6rem;
+}
+
+.curation-item h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    color: var(--text-color);
+}
+
+.curation-item p {
+    font-size: 0.85rem;
+    color: var(--desc-color);
+    line-height: 1.5;
+}
+
+/* --- STRUCTURES / MÉCÈNES --- */
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+}
+
+.partner-card {
+    border: 1px dashed var(--border-color);
+    padding: 1.2rem;
+    background-color: var(--box-bg);
+    transition: border-color 0.3s ease;
+}
+
+.partner-card:hover {
+    border-color: var(--secondary-color);
+}
+
+.partner-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-color);
+    margin-bottom: 0.3rem;
+}
+
+.partner-type {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--desc-color);
+    text-transform: uppercase;
+}
+
+/* --- EXPOS --- */
+.expo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.expo-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.expo-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    min-width: 110px;
+    letter-spacing: 0.5px;
+}
+
+.expo-info h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--text-color);
+    margin-bottom: 0.2rem;
+}
+
+.expo-info p {
+    font-size: 0.8rem;
+    color: var(--desc-color);
+}
+
+.expo-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    padding: 0.15rem 0.5rem;
+    margin-left: auto;
+    height: fit-content;
+    white-space: nowrap;
+}
+
+/* --- SOUTIEN --- */
+.soutien-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.soutien-card {
+    border: 1px dashed var(--border-color);
+    padding: 1.5rem;
+    background-color: var(--box-bg);
+}
+
+.soutien-card h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    margin-bottom: 0.6rem;
+}
+
+.soutien-card p {
+    font-size: 0.85rem;
+    color: var(--desc-color);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* --- CONTACT --- */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.contact-info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-info-block .info-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.contact-info-block .info-value {
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
 @media (max-width: 900px) {
     body { overflow-y: auto; height: auto; flex-direction: column; }
     .side-nav { position: sticky; width: 100%; height: auto; left: 0 !important; }
     .main-feed { height: auto; overflow: visible; }
     .travaux-members-grid { grid-template-columns: repeat(2, 1fr); }
     .artist-page-container { padding: 2rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .expo-item { flex-direction: column; }
+    .expo-status { margin-left: 0; }
 }
