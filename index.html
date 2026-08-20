@@ -8,9 +8,9 @@
 </head>
 <body>
 
-    <div class="boot-overlay" id="boot-overlay">
-        <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
+    <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
 
+    <div class="boot-overlay" id="boot-overlay">
         <div class="boot-gate" id="boot-gate">
             <div class="boot-gate-square"></div>
         </div>
@@ -94,9 +94,14 @@
                 <svg viewBox="0 0 130 26"><line x1="2" y1="13" x2="112" y2="13"/><path d="M95 2 L120 13 L95 24"/></svg>
             </div>
 
-            <div class="hero-content">
-                <span class="tag" style="margin-bottom: 1rem;">// ACCUEIL</span>
-            </div>
+            <button class="carousel-mobile-btn carousel-mobile-prev" id="carousel-mobile-prev" type="button" aria-label="Vidéo précédente">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="carousel-mobile-btn carousel-mobile-next" id="carousel-mobile-next" type="button" aria-label="Vidéo suivante">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+
+            <div class="hero-tag-corner">// ACCUEIL</div>
 
             <div class="dvd-logo" id="dvd-logo">
                 <img src="images/accueil/Logo.png" alt="ATELIER BABO">
@@ -859,6 +864,11 @@
             const overlay = document.getElementById('boot-overlay');
             overlay.classList.add('dismissed');
             setTimeout(() => { overlay.style.display = 'none'; }, 900);
+
+            // L'ambiance prend le relais dès que le boot est terminé — plus besoin de cliquer.
+            startAmbient();
+            const ambientLabel = document.getElementById('ambient-text');
+            if (ambientLabel) ambientLabel.textContent = 'ON';
         }
 
         // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
@@ -898,16 +908,22 @@
         const carouselPrev = document.getElementById('carousel-prev');
         const carouselNext = document.getElementById('carousel-next');
         const carouselArrow = document.getElementById('carousel-arrow');
+        const carouselMobilePrev = document.getElementById('carousel-mobile-prev');
+        const carouselMobileNext = document.getElementById('carousel-mobile-next');
 
         // Les zones/curseur ne prennent leur sens qu'avec plusieurs vidéos : masqués tant
         // qu'il n'y en a qu'une seule. Ajouter des <video class="hero-video"> les activera.
         if (heroVideos.length > 1) {
             carouselPrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
             carouselNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
+            carouselMobilePrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
+            carouselMobileNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
             resetHeroAutoAdvance();
         } else {
             carouselPrev.style.display = 'none';
             carouselNext.style.display = 'none';
+            carouselMobilePrev.style.display = 'none';
+            carouselMobileNext.style.display = 'none';
         }
 
         function positionCarouselArrow(e) {

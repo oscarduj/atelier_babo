@@ -150,8 +150,8 @@ body {
 
 /* --- SECTIONS --- */
 .feed-section {
-    height: 100vh; 
-    height: 100dvh;
+    min-height: 100vh; 
+    min-height: 100dvh;
     padding: 3rem 6rem;
     border-bottom: 1px solid var(--border-color);
     display: flex; 
@@ -197,15 +197,15 @@ body {
     z-index: 1;
 }
 
-.hero-content {
-    width: 100%; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    height: 100%; 
-    z-index: 2; 
-    position: relative;
+.hero-tag-corner {
+    position: absolute;
+    top: 1.8rem;
+    right: 2rem;
+    z-index: 2;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--secondary-color);
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
 }
 
 /* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
@@ -245,7 +245,7 @@ body {
 /* --- LOGO "DVD" REBONDISSANT --- */
 .dvd-logo {
     position: absolute;
-    width: clamp(90px, 14vw, 160px);
+    width: clamp(150px, 22vw, 280px);
     z-index: 3;
     cursor: pointer;
     filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
@@ -269,6 +269,29 @@ body {
 @media (max-width: 900px) {
     .carousel-arrow-cursor { display: none; }
     .carousel-nav-zone { cursor: default; }
+}
+
+.carousel-mobile-btn { display: none; }
+@media (max-width: 900px) {
+    .carousel-mobile-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 42px;
+        height: 42px;
+        background: rgba(16, 16, 16, 0.55);
+        border: 1px solid rgba(163, 177, 194, 0.4);
+        border-radius: 50%;
+        z-index: 3;
+        color: var(--text-color);
+        padding: 0;
+    }
+    .carousel-mobile-btn svg { width: 18px; height: 18px; }
+    .carousel-mobile-prev { left: 1rem; }
+    .carousel-mobile-next { right: 1rem; }
 }
 
 /* --- SOUS-BARRE DE NAVIGATION --- */
@@ -386,7 +409,7 @@ h1, h2 {
 h1 { font-size: 2rem; line-height: 1.1; }
 h2 { font-size: 1.8rem; }
 
-.section-desc, .hero-content p {
+.section-desc {
     font-size: 0.85rem;
     color: var(--desc-color);
     margin-bottom: 1.2rem;
@@ -892,19 +915,19 @@ h2 { font-size: 1.8rem; }
 }
 
 .sound-toggle {
-    position: absolute;
+    position: fixed;
     top: 1.2rem;
     right: 1.2rem;
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.72rem;
-    background: transparent;
+    background: rgba(16, 16, 16, 0.72);
     border: 1px solid #333333;
     color: #999999;
     padding: 0.5rem 0.8rem;
     cursor: pointer;
     letter-spacing: 0.5px;
     border-radius: 3px;
-    z-index: 6;
+    z-index: 600;
     transition: color 0.25s ease, border-color 0.25s ease;
 }
 .sound-toggle:hover { color: #EAE8E4; border-color: #4a4a4a; }
@@ -927,6 +950,7 @@ h2 { font-size: 1.8rem; }
     pointer-events: none;
 }
 .boot-gate-square {
+    position: relative;
     width: clamp(50px, 12vw, 100px);
     aspect-ratio: 1 / 1;
     background: #000000;
@@ -935,13 +959,50 @@ h2 { font-size: 1.8rem; }
 }
 .boot-gate:hover .boot-gate-square { transform: scale(1.08); }
 
+/* Halo large en dégradé, porté par un pseudo-élément pour ne pas entrer en
+   conflit avec le transform du survol. C'est lui qui donne le gros de l'effet. */
+.boot-gate-square::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 620%;
+    height: 620%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle,
+        rgba(0, 0, 0, 0.40) 0%,
+        rgba(0, 0, 0, 0.22) 26%,
+        rgba(0, 0, 0, 0.09) 48%,
+        rgba(0, 0, 0, 0) 70%);
+    pointer-events: none;
+    z-index: -1;
+    animation: halo-breathe 3.4s ease-in-out infinite;
+}
+
 /* Aura sombre qui pulse autour du carré, comme une respiration */
 @keyframes square-breathe {
     0%, 100% {
-        box-shadow: 0 0 20px 6px rgba(0, 0, 0, 0.28), 0 0 46px 18px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.42),
+                    0 0 70px 26px rgba(0, 0, 0, 0.22),
+                    0 0 130px 48px rgba(0, 0, 0, 0.10);
     }
     50% {
-        box-shadow: 0 0 40px 15px rgba(0, 0, 0, 0.42), 0 0 78px 32px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 62px 24px rgba(0, 0, 0, 0.62),
+                    0 0 125px 52px rgba(0, 0, 0, 0.34),
+                    0 0 230px 90px rgba(0, 0, 0, 0.17);
+    }
+}
+
+/* Le halo respire en décalé du carré : il gonfle un peu plus lentement,
+   ce qui évite l'effet "clignotement" et donne un souffle plus organique. */
+@keyframes halo-breathe {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(0.82);
+        opacity: 0.55;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.18);
+        opacity: 1;
     }
 }
 
