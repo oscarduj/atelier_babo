@@ -872,7 +872,7 @@ h2 { font-size: 1.8rem; }
         padding: 2.5rem 1.25rem;
     }
 
-    /* La grille asymétrique redevient une simple colonne — les spans n'ont plus de sens ici */
+    /*  La grille asymétrique redevient une simple colonne — les spans n'ont plus de sens ici */
     .travaux-asym-grid {
         grid-template-columns: 1fr;
         grid-template-rows: none;
