@@ -1078,6 +1078,40 @@
 
         initDvdLogo();
 
+        /* ---- Rotation des membres dans la grille Travaux ----
+           Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
+           Les 4 membres tournent entre les 4 emplacements toutes les 8s, pour qu'aucun
+           ne reste cantonné à une case plus petite que les autres sur la durée. */
+        const travauxMembers = [
+            { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]' },
+            { name: 'Tom Lecointre', href: 'travaux/tom-lecointre.html', label: '[ TOM LECOINTRE ]' },
+            { name: 'Oscar Dujarrier', href: 'travaux/oscar-dujarrier.html', label: '[ OSCAR DUJARRIER ]' },
+            { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '[ WENJIE TONG ]' }
+        ];
+        let travauxOffset = 0;
+
+        function rotateTravauxMembers() {
+            const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
+            if (slots.some(s => !s)) return;
+
+            slots.forEach(slot => {
+                slot.style.transition = 'opacity 0.4s ease';
+                slot.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                slots.forEach((slot, i) => {
+                    const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
+                    slot.href = member.href;
+                    slot.querySelector('.travaux-cell-box').textContent = member.label;
+                    slot.querySelector('.travaux-cell-title').textContent = member.name;
+                });
+                slots.forEach(slot => { slot.style.opacity = '1'; });
+                travauxOffset = (travauxOffset + 1) % travauxMembers.length;
+            }, 420);
+        }
+        setInterval(rotateTravauxMembers, 8000);
+
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
         const mainFeed = document.querySelector('.main-feed');
