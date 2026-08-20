@@ -720,6 +720,11 @@ h2 { font-size: 1.8rem; }
         height: auto;
         left: 0 !important;
         padding: 1.5rem;
+        transition: transform 0.3s ease, background-color 0.4s ease;
+    }
+    /* Se cache en scrollant vers le bas, réapparaît dès qu'on remonte */
+    .side-nav.nav-hidden {
+        transform: translateY(-100%);
     }
     .side-nav::after { display: none; }
     .nav-links {
@@ -759,4 +764,226 @@ h2 { font-size: 1.8rem; }
 @media (max-width: 480px) {
     .nav-links { grid-template-columns: 1fr; }
     .travaux-members-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   SYSTÈME DE BOOT — écran d'entrée (portail, œil, popup, logo)
+   Volontairement en couleurs fixes (pas de var(--...)) : cette
+   séquence se joue avant tout choix de thème par le visiteur.
+   ============================================================ */
+.boot-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: #101010;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    transition: opacity 0.9s ease;
+}
+.boot-overlay.dismissed {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sound-toggle {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    background: transparent;
+    border: 1px solid #333333;
+    color: #999999;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    border-radius: 3px;
+    z-index: 6;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+.sound-toggle:hover { color: #EAE8E4; border-color: #4a4a4a; }
+.sound-toggle.is-off { color: #555555; }
+
+/* Portail d'entrée — carré noir sur fond blanc, à cliquer pour lancer le boot */
+.boot-gate {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+    cursor: pointer;
+    transition: opacity 0.6s ease;
+}
+.boot-gate.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.boot-gate-square {
+    width: clamp(50px, 12vw, 100px);
+    aspect-ratio: 1 / 1;
+    background: #000000;
+    transition: transform 0.25s ease;
+}
+.boot-gate:hover .boot-gate-square { transform: scale(1.08); }
+
+/* Oeil organique en caractères */
+.eye-wrap {
+    width: min(98vw, 820px);
+    margin: 0 auto 1.5rem;
+    position: relative;
+}
+#eye-grid {
+    display: grid;
+    grid-template-columns: repeat(54, 1fr);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(7px, 1.55vw, 13px);
+    line-height: 1.05;
+    user-select: none;
+    position: relative;
+}
+.eye-cell {
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.eye-cell.lit { opacity: 1; }
+.eye-cell.band-sclera { color: #52585d; }
+.eye-cell.band-iris { color: #A3B1C2; }
+
+.eye-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.eye-screen.visible { opacity: 1; }
+.eye-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.6rem, 1.7vw, 0.85rem);
+    color: #EAE8E4;
+    letter-spacing: 1px;
+    margin-bottom: 0.35rem;
+}
+.eye-bar {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.6rem, 1.7vw, 0.85rem);
+    color: #A3B1C2;
+    letter-spacing: 1px;
+}
+
+/* Logo qui se matérialise depuis le centre */
+#boot-overlay .wordmark {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(1.8rem, 6vw, 4rem);
+    letter-spacing: 2px;
+    margin-top: 0.5rem;
+}
+#boot-overlay .wm-char {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.15);
+    filter: blur(3px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+#boot-overlay .wm-char.wm-visible {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+}
+#boot-overlay .cursor {
+    display: inline-block;
+    width: 0.5em;
+    background: #A3B1C2;
+    animation: boot-cursor-blink 1s steps(1) infinite;
+}
+@keyframes boot-cursor-blink { 50% { opacity: 0; } }
+
+/* Faux popup de permission caméra/micro — purement décoratif */
+.perm-popup {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    width: min(86vw, 300px);
+    background: #161616;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+.perm-popup.visible { opacity: 1; transform: translate(-50%, 0); }
+.perm-header { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.6rem; }
+.perm-dot { width: 7px; height: 7px; border-radius: 50%; background: #A3B1C2; flex-shrink: 0; }
+.perm-url {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: #999999;
+    letter-spacing: 0.5px;
+}
+.perm-message {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    color: #EAE8E4;
+    margin-bottom: 0.7rem;
+}
+.perm-items { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.perm-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: #A3B1C2;
+}
+.perm-icon { width: 15px; height: 15px; flex-shrink: 0; }
+.perm-actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
+.perm-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+    background: transparent;
+    border: 1px solid #333333;
+    color: #999999;
+    padding: 0.4rem 0.8rem;
+    border-radius: 3px;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.perm-btn.perm-allow { color: #EAE8E4; border-color: #4a4a4a; }
+.perm-btn.perm-allow.perm-pressed {
+    background: #A3B1C2;
+    color: #101010;
+    border-color: #A3B1C2;
+}
+.perm-granted-msg {
+    display: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: #A3B1C2;
+    letter-spacing: 1.5px;
+    text-align: center;
+    padding: 0.4rem 0;
+}
+.perm-popup.granted .perm-message,
+.perm-popup.granted .perm-items,
+.perm-popup.granted .perm-actions { display: none; }
+.perm-popup.granted .perm-granted-msg { display: block; }
+
+@media (max-width: 480px) {
+    .eye-status, .eye-bar { letter-spacing: 0.5px; }
+    .sound-toggle { top: 0.8rem; right: 0.8rem; font-size: 0.65rem; padding: 0.4rem 0.6rem; }
 }

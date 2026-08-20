@@ -9,6 +9,46 @@
 </head>
 <body>
 
+    <div class="boot-overlay" id="boot-overlay">
+        <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
+
+        <div class="boot-gate" id="boot-gate">
+            <div class="boot-gate-square"></div>
+        </div>
+
+        <div class="perm-popup" id="perm-popup">
+            <div class="perm-header">
+                <span class="perm-dot"></span>
+                <span class="perm-url">atelierbabo.fr</span>
+            </div>
+            <p class="perm-message">souhaite accéder à :</p>
+            <div class="perm-items">
+                <div class="perm-item">
+                    <svg class="perm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="14" height="12" rx="2"/><path d="M17 10l4-2v9l-4-2"/><circle cx="10" cy="13" r="3"/></svg>
+                    Caméra
+                </div>
+                <div class="perm-item">
+                    <svg class="perm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+                    Microphone
+                </div>
+            </div>
+            <div class="perm-actions">
+                <button class="perm-btn perm-block" type="button">Bloquer</button>
+                <button class="perm-btn perm-allow" id="perm-allow-btn" type="button">Autoriser</button>
+            </div>
+            <p class="perm-granted-msg">ACCÈS ACCORDÉ</p>
+        </div>
+
+        <div class="eye-wrap" id="eye-wrap">
+            <div id="eye-grid"></div>
+            <div class="eye-screen" id="eye-screen">
+                <div class="eye-status" id="eye-status">INIT</div>
+                <div class="eye-bar" id="eye-bar">[------------]</div>
+            </div>
+        </div>
+        <div class="wordmark" id="boot-wordmark"></div>
+    </div>
+
     <header class="side-nav">
         <div class="nav-top">
             <div class="nav-logo">ATELIER_BABO</div>
@@ -289,9 +329,407 @@
     </main>
 
     <script>
+        /* ============ SYSTÈME DE BOOT — ÉCRAN D'ENTRÉE ============ */
+
+        /* ---- Moteur sonore (sons générés, aucun fichier audio) ---- */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (!Ctx) return null;
+                audioCtx = new Ctx();
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+        // Les navigateurs bloquent l'audio tant qu'aucune interaction n'a eu lieu :
+        // on débloque le contexte dès le premier clic ou toucher, silencieusement.
+        function unlockAudioOnce() {
+            getAudioCtx();
+            document.removeEventListener('click', unlockAudioOnce);
+            document.removeEventListener('touchstart', unlockAudioOnce);
+        }
+        document.addEventListener('click', unlockAudioOnce);
+        document.addEventListener('touchstart', unlockAudioOnce);
+
+        function playTone(freq, duration, type, startGain, freqEnd) {
+            if (!soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            try {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                if (freqEnd) osc.frequency.linearRampToValueAtTime(freqEnd, ctx.currentTime + duration);
+                gain.gain.setValueAtTime(startGain || 0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) { /* audio indisponible : on ignore sans casser la page */ }
+        }
+
+        // Clic bruité et filtré — un craquement sec, pas une note mélodique de jeu vidéo.
+        function playClick(duration, gain, filterFreq, q) {
+            if (!soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            try {
+                const size = Math.max(1, Math.floor(ctx.sampleRate * duration));
+                const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < size; i++) {
+                    data[i] = (Math.random() * 2 - 1) * (1 - i / size);
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = filterFreq || 2500;
+                filter.Q.value = q || 1.4;
+                const g = ctx.createGain();
+                g.gain.value = gain || 0.05;
+                noise.connect(filter);
+                filter.connect(g);
+                g.connect(ctx.destination);
+                noise.start();
+            } catch (e) { /* ignore */ }
+        }
+
+        // Nappe grave désaccordée (léger battement), pulsée par une modulation carrée pour un
+        // grain numérique — démarre une fois l'accès "accordé" par le faux popup.
+        let drone = null;
+        function startDrone() {
+            if (!soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx || drone) return;
+            try {
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                osc1.type = 'sine'; osc2.type = 'sine';
+                osc1.frequency.value = 55;
+                osc2.frequency.value = 55 * 1.008;
+                const lfo = ctx.createOscillator();
+                lfo.type = 'square';
+                lfo.frequency.value = 5.5;
+                const lfoGain = ctx.createGain();
+                lfoGain.gain.value = 0.012;
+                lfo.connect(lfoGain);
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.045, ctx.currentTime + 1.2);
+                lfoGain.connect(gain.gain);
+                osc1.connect(gain); osc2.connect(gain);
+                gain.connect(ctx.destination);
+                osc1.start(); osc2.start(); lfo.start();
+                drone = { osc1, osc2, lfo, gain };
+            } catch (e) { /* ignore */ }
+        }
+        function stopDrone(fadeSec) {
+            if (!drone) return;
+            const ctx = getAudioCtx();
+            const fade = fadeSec || 0.8;
+            try {
+                drone.gain.gain.cancelScheduledValues(ctx.currentTime);
+                drone.gain.gain.setValueAtTime(drone.gain.gain.value, ctx.currentTime);
+                drone.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + fade);
+                drone.osc1.stop(ctx.currentTime + fade + 0.05);
+                drone.osc2.stop(ctx.currentTime + fade + 0.05);
+                drone.lfo.stop(ctx.currentTime + fade + 0.05);
+            } catch (e) { /* ignore */ }
+            drone = null;
+        }
+
+        const sfx = {
+            eyeOpen: () => playTone(85, 1.9, 'sine', 0.09, 240),
+            eyeClose: () => playTone(240, 1.2, 'sine', 0.08, 65),
+            blink: () => playTone(200, 0.16, 'sine', 0.05, 85),
+            popupAppear: () => playClick(0.05, 0.09, 3200, 2.2),
+            allowPress: () => playClick(0.035, 0.1, 1400, 3),
+            statusTick: () => playClick(0.025, 0.055, 4800, 1.8),
+            wordmarkChar: (dist) => { const f = 420 + dist * 35; playTone(f, 0.1, 'sine', 0.018, f * 1.05); }
+        };
+
+        document.getElementById('sound-toggle').addEventListener('click', function () {
+            soundEnabled = !soundEnabled;
+            this.textContent = 'SON : ' + (soundEnabled ? 'ON' : 'OFF');
+            this.classList.toggle('is-off', !soundEnabled);
+            if (soundEnabled) getAudioCtx();
+        });
+
+        /* ---- L'œil, en caractères ---- */
+        const EYE_COLS = 54, EYE_ROWS = 21;
+        const CENTER_C = (EYE_COLS - 1) / 2, CENTER_R = (EYE_ROWS - 1) / 2;
+        const PUPIL_R = 0.30, IRIS_R = 0.64;
+        const SHIMMER_CHARS = {
+            sclera: ['.', '`', "'", ',', ':'],
+            iris: [':', ';', '+', 'x', '*', 'o', '1', '0']
+        };
+        let eyeCells = [];
+        let eyeRaf = null;
+        let lookX = 0, lookY = 0, lookTargetX = 0, lookTargetY = 0;
+        const MAX_LOOK = 0.17;
+
+        function eyeEnvelope(nx) {
+            const base = Math.pow(Math.max(0, 1 - nx * nx), 0.58);
+            const noise = Math.sin(nx * 8.5 + 1.4) * 0.09
+                        + Math.sin(nx * 19 - 0.6) * 0.05
+                        + Math.sin(nx * 33 + 2.1) * 0.03;
+            return Math.max(0.02, base + noise);
+        }
+
+        // La pupille suit le curseur, comme si l'œil observait le visiteur.
+        document.addEventListener('mousemove', (e) => {
+            const wrap = document.getElementById('eye-wrap');
+            if (!wrap) return;
+            const rect = wrap.getBoundingClientRect();
+            const halfW = rect.width / 2 || 1;
+            const halfH = rect.height / 2 || 1;
+            let dx = (e.clientX - (rect.left + halfW)) / halfW;
+            let dy = (e.clientY - (rect.top + halfH)) / halfH;
+            const mag = Math.sqrt(dx * dx + dy * dy);
+            if (mag > 1) { dx /= mag; dy /= mag; }
+            lookTargetX = dx * MAX_LOOK;
+            lookTargetY = dy * MAX_LOOK;
+        });
+
+        function buildEyeGrid() {
+            const grid = document.getElementById('eye-grid');
+            grid.innerHTML = '';
+            eyeCells = [];
+            for (let r = 0; r < EYE_ROWS; r++) {
+                for (let c = 0; c < EYE_COLS; c++) {
+                    const nx = (c - CENTER_C) / CENTER_C;
+                    const ny = (r - CENTER_R) / CENTER_R;
+                    const env = eyeEnvelope(nx);
+                    const outlineDist = Math.sqrt(nx * nx + (ny / env) * (ny / env));
+                    const cell = document.createElement('span');
+                    cell.className = 'eye-cell';
+                    grid.appendChild(cell);
+                    const jitter = (Math.random() - 0.5) * 0.16;
+                    eyeCells.push({
+                        el: cell, nx, ny,
+                        inEye: outlineDist <= 1,
+                        revealThreshold: outlineDist + jitter,
+                        grown: false, band: null, nextShimmer: 0
+                    });
+                }
+            }
+        }
+
+        function randomChar(band) {
+            const set = SHIMMER_CHARS[band];
+            return set[Math.floor(Math.random() * set.length)];
+        }
+
+        function renderCell(cell, elapsed) {
+            if (!cell.grown) return;
+            const dx = cell.nx - lookX, dy = cell.ny - lookY;
+            const pupilDist = Math.sqrt(dx * dx + dy * dy);
+            const band = pupilDist <= PUPIL_R ? 'core-blank' : (pupilDist <= IRIS_R ? 'iris' : 'sclera');
+
+            if (band === 'core-blank') {
+                if (cell.band !== 'core-blank') {
+                    cell.el.classList.remove('lit', 'band-sclera', 'band-iris');
+                    cell.el.textContent = '';
+                }
+                cell.band = 'core-blank';
+                return;
+            }
+            const bandChanged = cell.band !== band;
+            const dueShimmer = elapsed !== undefined && elapsed >= cell.nextShimmer;
+            if (bandChanged || dueShimmer || !cell.el.textContent) {
+                cell.el.textContent = randomChar(band);
+                cell.nextShimmer = (elapsed || 0) + 1300 + Math.random() * 2600;
+            }
+            if (bandChanged) {
+                cell.el.classList.remove('band-sclera', 'band-iris');
+                cell.el.classList.add('lit', 'band-' + band);
+            }
+            cell.band = band;
+        }
+
+        function setOpenProgress(p) {
+            eyeCells.forEach(cell => {
+                const shouldGrow = cell.inEye && cell.revealThreshold <= p;
+                if (shouldGrow !== cell.grown) {
+                    cell.grown = shouldGrow;
+                    if (!shouldGrow) {
+                        cell.band = null;
+                        cell.el.classList.remove('lit', 'band-sclera', 'band-iris');
+                        cell.el.textContent = '';
+                    }
+                }
+                if (cell.grown) renderCell(cell, 0);
+            });
+        }
+
+        function animateOpenProgress(from, to, duration, onDone) {
+            const start = performance.now();
+            function tick(now) {
+                const t = Math.min(1, (now - start) / duration);
+                const eased = 1 - Math.pow(1 - t, 3);
+                setOpenProgress(from + (to - from) * eased);
+                if (t < 1) requestAnimationFrame(tick);
+                else if (onDone) onDone();
+            }
+            requestAnimationFrame(tick);
+        }
+
+        let eyeLiveStart = 0;
+        function eyeLiveLoop(now) {
+            if (!eyeLiveStart) eyeLiveStart = now;
+            const elapsed = now - eyeLiveStart;
+            lookX += (lookTargetX - lookX) * 0.02;
+            lookY += (lookTargetY - lookY) * 0.02;
+            eyeCells.forEach(cell => { if (cell.grown) renderCell(cell, elapsed); });
+            eyeRaf = requestAnimationFrame(eyeLiveLoop);
+        }
+        function startEyeLive() {
+            stopEyeLive();
+            eyeLiveStart = 0;
+            eyeRaf = requestAnimationFrame(eyeLiveLoop);
+        }
+        function stopEyeLive() {
+            if (eyeRaf) cancelAnimationFrame(eyeRaf);
+            eyeRaf = null;
+        }
+
+        function renderBar(pct) {
+            const total = 12;
+            const filled = Math.round((pct / 100) * total);
+            return '[' + '■'.repeat(filled) + '-'.repeat(total - filled) + ']';
+        }
+
+        const bootStatuses = ['DÉTECTION_PRÉSENCE', 'ANALYSE_EN_COURS', 'SUIVI_OCULAIRE_ACTIF', 'IDENTIFICATION_OK'];
+
+        function playBoot() {
+            const wordmark = document.getElementById('boot-wordmark');
+            const eyeScreen = document.getElementById('eye-screen');
+            const statusEl = document.getElementById('eye-status');
+            const permPopup = document.getElementById('perm-popup');
+
+            wordmark.innerHTML = '';
+            buildEyeGrid();
+            setOpenProgress(0);
+            eyeScreen.classList.remove('visible');
+            statusEl.textContent = bootStatuses[0];
+            document.getElementById('eye-bar').textContent = renderBar(0);
+            permPopup.classList.remove('visible', 'granted');
+            document.getElementById('perm-allow-btn').classList.remove('perm-pressed');
+
+            sfx.eyeOpen();
+            animateOpenProgress(0, 1, 3200, () => {
+                startEyeLive();
+                eyeScreen.classList.add('visible');
+                runLoadingSequence();
+            });
+        }
+
+        // Faux popup de permission caméra/micro — jamais d'appel réel à getUserMedia().
+        // Le bouton "Autoriser" s'active tout seul, sans action du visiteur.
+        function showFakePermissionPopup() {
+            const popup = document.getElementById('perm-popup');
+            const allowBtn = document.getElementById('perm-allow-btn');
+            popup.classList.remove('granted');
+            allowBtn.classList.remove('perm-pressed');
+            popup.classList.add('visible');
+            sfx.popupAppear();
+
+            setTimeout(() => { allowBtn.classList.add('perm-pressed'); sfx.allowPress(); }, 1100);
+            setTimeout(() => { popup.classList.add('granted'); startDrone(); }, 1500);
+            setTimeout(() => { popup.classList.remove('visible'); }, 2700);
+        }
+
+        function runLoadingSequence() {
+            const statusEl = document.getElementById('eye-status');
+            const barEl = document.getElementById('eye-bar');
+            const stepDuration = 950;
+
+            showFakePermissionPopup();
+
+            bootStatuses.forEach((label, i) => {
+                setTimeout(() => {
+                    statusEl.textContent = label;
+                    barEl.textContent = renderBar(Math.round(((i + 1) / bootStatuses.length) * 100));
+                    sfx.statusTick();
+                }, i * stepDuration);
+            });
+
+            setTimeout(() => {
+                sfx.blink();
+                animateOpenProgress(1, 0.1, 480, () => animateOpenProgress(0.1, 1, 480));
+            }, bootStatuses.length * stepDuration * 0.5);
+
+            const closeDelay = bootStatuses.length * stepDuration + 700;
+            setTimeout(() => {
+                document.getElementById('eye-screen').classList.remove('visible');
+                stopEyeLive();
+                sfx.eyeClose();
+                stopDrone(1.6);
+                animateOpenProgress(1, 0, 1400, () => {
+                    setTimeout(revealWordmarkFromCenter, 200);
+                });
+            }, closeDelay);
+        }
+
+        // Le mot se matérialise depuis sa lettre centrale, comme s'il émergeait du même point
+        // que l'œil — puis le voile de boot s'efface pour révéler le site.
+        function revealWordmarkFromCenter() {
+            const wordmark = document.getElementById('boot-wordmark');
+            const text = 'ATELIER_BABO';
+            wordmark.innerHTML = '';
+            const centerIndex = (text.length - 1) / 2;
+            const spans = [];
+
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = text[i];
+                span.className = 'wm-char';
+                wordmark.appendChild(span);
+                spans.push(span);
+            }
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            cursor.innerHTML = '&nbsp;';
+            wordmark.appendChild(cursor);
+
+            let maxDelay = 0;
+            spans.forEach((span, i) => {
+                const dist = Math.abs(i - centerIndex);
+                const delay = dist * 55;
+                maxDelay = Math.max(maxDelay, delay);
+                setTimeout(() => {
+                    span.classList.add('wm-visible');
+                    sfx.wordmarkChar(dist);
+                }, delay);
+            });
+
+            setTimeout(dismissBootOverlay, maxDelay + 1700);
+        }
+
+        function dismissBootOverlay() {
+            const overlay = document.getElementById('boot-overlay');
+            overlay.classList.add('dismissed');
+            setTimeout(() => { overlay.style.display = 'none'; }, 900);
+        }
+
+        // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
+        document.getElementById('boot-gate').addEventListener('click', () => {
+            document.getElementById('boot-gate').classList.add('hidden');
+            playBoot();
+        });
+
+        /* ============ FIN SYSTÈME DE BOOT ============ */
+
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
         const mainFeed = document.querySelector('.main-feed');
+        const sideNav = document.querySelector('.side-nav');
         const themeToggle = document.getElementById('theme-toggle');
         const themeText = document.getElementById('theme-text');
         const htmlRoot = document.documentElement;
@@ -346,6 +784,25 @@
         }, { threshold: 0.5 });
 
         sections.forEach(section => sectionObserver.observe(section));
+
+        // Le menu mobile se cache en scrollant vers le bas et revient dès qu'on remonte,
+        // pour ne pas monopoliser l'écran. Inactif sur desktop (le hover gère déjà l'affichage).
+        const mobileQuery = window.matchMedia('(max-width: 900px)');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            if (!mobileQuery.matches) {
+                sideNav.classList.remove('nav-hidden');
+                return;
+            }
+            const currentY = window.scrollY;
+            if (currentY > lastScrollY && currentY > 80) {
+                sideNav.classList.add('nav-hidden');
+            } else {
+                sideNav.classList.remove('nav-hidden');
+            }
+            lastScrollY = currentY;
+        }, { passive: true });
     </script>
 </body>
 </html>
