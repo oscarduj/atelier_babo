@@ -294,6 +294,31 @@ body {
     .carousel-mobile-next { right: 1rem; }
 }
 
+.carousel-dots {
+    position: absolute;
+    bottom: 1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
+    z-index: 3;
+}
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(234, 232, 228, 0.35);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+.carousel-dot:hover { background: rgba(234, 232, 228, 0.6); }
+.carousel-dot.active {
+    background: #EAE8E4;
+    transform: scale(1.3);
+}
+
 /* --- SOUS-BARRE DE NAVIGATION --- */
 .sub-nav-bar {
     display: flex;

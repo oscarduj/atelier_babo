@@ -100,6 +100,7 @@
             <button class="carousel-mobile-btn carousel-mobile-next" id="carousel-mobile-next" type="button" aria-label="Vidéo suivante">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
+            <div class="carousel-dots" id="carousel-dots"></div>
 
             <div class="hero-tag-corner">// ACCUEIL</div>
 
@@ -599,7 +600,13 @@
             popupAppear: () => playClick(0.05, 0.09, 3200, 2.2),
             allowPress: () => playClick(0.035, 0.1, 1400, 3),
             statusTick: () => playClick(0.025, 0.055, 4800, 1.8),
-            wordmarkChar: (dist) => { const f = 420 + dist * 35; playTone(f, 0.1, 'sine', 0.018, f * 1.05); }
+            wordmarkChar: (dist) => { const f = 420 + dist * 35; playTone(f, 0.1, 'sine', 0.018, f * 1.05); },
+            logoDestroy: () => {
+                playClick(0.16, 0.13, 1600, 1.1);
+                setTimeout(() => playClick(0.11, 0.1, 3400, 2), 35);
+                setTimeout(() => playClick(0.13, 0.09, 800, 1.4), 80);
+                playTone(170, 0.55, 'sawtooth', 0.05, 35);
+            }
         };
 
         document.getElementById('sound-toggle').addEventListener('click', function () {
@@ -897,6 +904,9 @@
                     v.classList.remove('active');
                 }
             });
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentHeroIndex);
+            });
             resetHeroAutoAdvance();
         }
         function resetHeroAutoAdvance() {
@@ -913,17 +923,45 @@
 
         // Les zones/curseur ne prennent leur sens qu'avec plusieurs vidéos : masqués tant
         // qu'il n'y en a qu'une seule. Ajouter des <video class="hero-video"> les activera.
+        const carouselDots = document.getElementById('carousel-dots');
         if (heroVideos.length > 1) {
             carouselPrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
             carouselNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
             carouselMobilePrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
             carouselMobileNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
+
+            heroVideos.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', 'Aller à la vidéo ' + (i + 1));
+                dot.addEventListener('click', () => goToHeroVideo(i));
+                carouselDots.appendChild(dot);
+            });
+
+            // Swipe horizontal (tactile) : seuil de 50px, et nettement plus horizontal que
+            // vertical pour ne jamais entrer en conflit avec le scroll normal de la page.
+            let touchStartX = 0, touchStartY = 0;
+            const heroStage = document.getElementById('accueil');
+            heroStage.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            heroStage.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                const dy = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                    goToHeroVideo(dx < 0 ? currentHeroIndex + 1 : currentHeroIndex - 1);
+                }
+            }, { passive: true });
+
             resetHeroAutoAdvance();
         } else {
             carouselPrev.style.display = 'none';
             carouselNext.style.display = 'none';
             carouselMobilePrev.style.display = 'none';
             carouselMobileNext.style.display = 'none';
+            carouselDots.style.display = 'none';
         }
 
         function positionCarouselArrow(e) {
@@ -979,7 +1017,22 @@
                 e.stopPropagation();
                 if (destroyed) return;
                 destroyed = true;
+                sfx.logoDestroy();
                 destroyDvdLogo(logo, stage);
+
+                // Réapparaît après 5 minutes, comme si la machine régénérait son emblème.
+                setTimeout(() => {
+                    x = 20 + Math.random() * 30;
+                    y = 20 + Math.random() * 30;
+                    vx = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+                    vy = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+                    logo.style.display = 'block';
+                    logo.style.opacity = '0';
+                    logo.style.transition = 'opacity 0.8s ease';
+                    requestAnimationFrame(() => { logo.style.opacity = '1'; });
+                    destroyed = false;
+                    requestAnimationFrame(tick);
+                }, 5 * 60 * 1000);
             });
         }
 
