@@ -1082,13 +1082,43 @@
            Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
            Les 4 membres tournent entre les 4 emplacements toutes les 8s, pour qu'aucun
            ne reste cantonné à une case plus petite que les autres sur la durée. */
+        const oscarPhotos = [
+            'images/travaux/oscar/oscar-1.jpg', 'images/travaux/oscar/oscar-2.jpg',
+            'images/travaux/oscar/oscar-3.jpg', 'images/travaux/oscar/oscar-4.jpg',
+            'images/travaux/oscar/oscar-5.jpg', 'images/travaux/oscar/oscar-6.jpg',
+            'images/travaux/oscar/oscar-7.jpg', 'images/travaux/oscar/oscar-8.jpg',
+            'images/travaux/oscar/oscar-9.jpg', 'images/travaux/oscar/oscar-10.jpg'
+        ];
         const travauxMembers = [
             { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]' },
             { name: 'Tom Lecointre', href: 'travaux/tom-lecointre.html', label: '[ TOM LECOINTRE ]' },
-            { name: 'Oscar Dujarrier', href: 'travaux/oscar-dujarrier.html', label: '[ OSCAR DUJARRIER ]' },
+            { name: 'Oscar Dujarrier', href: 'travaux/oscar-dujarrier.html', label: '', photos: oscarPhotos },
             { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '[ WENJIE TONG ]' }
         ];
         let travauxOffset = 0;
+
+        // Fait défiler les photos d'Oscar dans la case (quelle qu'elle soit) qu'il occupe
+        // au moment donné. Le minuteur est relancé à chaque rotation des 4 membres.
+        let oscarPhotoTimer = null;
+        let oscarPhotoIndex = 0;
+        function applyOscarPhoto(box) {
+            box.style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
+            box.style.backgroundSize = 'cover';
+            box.style.backgroundPosition = 'center';
+            box.style.backgroundRepeat = 'no-repeat';
+        }
+        function startOscarPhotoCycle(box) {
+            oscarPhotoIndex = 0;
+            applyOscarPhoto(box);
+            oscarPhotoTimer = setInterval(() => {
+                oscarPhotoIndex = (oscarPhotoIndex + 1) % oscarPhotos.length;
+                applyOscarPhoto(box);
+            }, 2600);
+        }
+        function stopOscarPhotoCycle() {
+            if (oscarPhotoTimer) clearInterval(oscarPhotoTimer);
+            oscarPhotoTimer = null;
+        }
 
         function rotateTravauxMembers() {
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
@@ -1100,16 +1130,29 @@
             });
 
             setTimeout(() => {
+                stopOscarPhotoCycle();
                 slots.forEach((slot, i) => {
                     const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
                     slot.href = member.href;
-                    slot.querySelector('.travaux-cell-box').textContent = member.label;
+                    const box = slot.querySelector('.travaux-cell-box');
+                    box.style.backgroundImage = '';
+                    if (member.photos) {
+                        box.textContent = '';
+                        startOscarPhotoCycle(box);
+                    } else {
+                        box.textContent = member.label;
+                    }
                     slot.querySelector('.travaux-cell-title').textContent = member.name;
                 });
                 slots.forEach(slot => { slot.style.opacity = '1'; });
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
             }, 420);
         }
+        // Position initiale d'Oscar = travaux-cell-3 (voir le HTML) : on lance son défilement
+        // directement dessus, sans passer par une rotation complète (qui provoquerait un
+        // fondu inutile dès le chargement de la page).
+        const oscarInitialBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
+        if (oscarInitialBox) startOscarPhotoCycle(oscarInitialBox);
         setInterval(rotateTravauxMembers, 8000);
 
         const sections = document.querySelectorAll('.feed-section');
