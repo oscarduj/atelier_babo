@@ -48,10 +48,15 @@
         <div class="wordmark" id="boot-wordmark"></div>
     </div>
 
-    <header class="side-nav">
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <header class="side-nav" id="side-nav">
         <div class="nav-top">
             <div class="nav-logo">ATELIER_BABO</div>
             <button id="theme-toggle" class="theme-switch">MODE: <span id="theme-text">NUIT</span></button>
+            <button id="ambient-toggle" class="theme-switch">AMBIANCE: <span id="ambient-text">OFF</span></button>
         </div>
         
         <nav class="nav-links">
@@ -70,18 +75,31 @@
     <main class="main-feed">
         <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
         <section id="accueil" class="feed-section active hero-section-video">
-            <video autoplay muted loop playsinline class="hero-video">
-                <source src="videos/accueil/fond-accueil.mp4" type="video/mp4">
-            </video>
+            <div class="hero-video-carousel" id="hero-carousel">
+                <video class="hero-video active" autoplay muted loop playsinline data-index="0">
+                    <source src="videos/accueil/fond-accueil.mp4" type="video/mp4">
+                </video>
+                <video class="hero-video" autoplay muted loop playsinline data-index="1">
+                    <source src="videos/accueil/fond-accueil-2.mp4" type="video/mp4">
+                </video>
+                <video class="hero-video" autoplay muted loop playsinline data-index="2">
+                    <source src="videos/accueil/fond-accueil-3.mp4" type="video/mp4">
+                </video>
+            </div>
             <div class="video-overlay"></div>
+
+            <div class="carousel-nav-zone carousel-nav-prev" id="carousel-prev"></div>
+            <div class="carousel-nav-zone carousel-nav-next" id="carousel-next"></div>
+            <div class="carousel-arrow-cursor" id="carousel-arrow">
+                <svg viewBox="0 0 130 26"><line x1="2" y1="13" x2="112" y2="13"/><path d="M95 2 L120 13 L95 24"/></svg>
+            </div>
 
             <div class="hero-content">
                 <span class="tag" style="margin-bottom: 1rem;">// ACCUEIL</span>
-                <div class="nav-logo-container">
-                    <a href="#accueil">
-                        <img src="images/accueil/Logo.png" alt="ATELIER BABO" class="nav-logo-img">
-                    </a>
-                </div>
+            </div>
+
+            <div class="dvd-logo" id="dvd-logo">
+                <img src="images/accueil/Logo.png" alt="ATELIER BABO">
             </div>
         </section>
 
@@ -443,6 +461,132 @@
             drone = null;
         }
 
+        /* ---- Ambiance générative (style Aphex Twin / Pure Data) ----
+           Nappe désaccordée + texture de bruit filtré qui évolue lentement +
+           notes éparses aléatoires + reverb "faite main" à base de delay avec
+           feedback (une brique de base classique en Pure Data, pas de fichier
+           audio ni d'impulse response : tout est généré). */
+        let ambient = null;
+        let ambientPlaying = false;
+
+        function startAmbient() {
+            if (ambientPlaying) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            ambientPlaying = true;
+            try {
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0, ctx.currentTime);
+                master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 3.5);
+                master.connect(ctx.destination);
+
+                // Reverb maison : delay + feedback + filtre dans la boucle
+                const delay = ctx.createDelay(2);
+                delay.delayTime.value = 0.46;
+                const feedback = ctx.createGain();
+                feedback.gain.value = 0.4;
+                const delayFilter = ctx.createBiquadFilter();
+                delayFilter.type = 'lowpass';
+                delayFilter.frequency.value = 2200;
+                delay.connect(delayFilter);
+                delayFilter.connect(feedback);
+                feedback.connect(delay);
+                delay.connect(master);
+
+                // Nappe : cluster de 4 voix légèrement désaccordées
+                const padFreqs = [65.41, 98.0, 130.81, 164.81];
+                const padOscs = padFreqs.map(f => {
+                    const osc = ctx.createOscillator();
+                    osc.type = 'sine';
+                    osc.frequency.value = f * (1 + (Math.random() - 0.5) * 0.006);
+                    const g = ctx.createGain();
+                    g.gain.value = 0.035;
+                    osc.connect(g); g.connect(master); g.connect(delay);
+                    osc.start();
+                    return { osc, g };
+                });
+
+                // Texture de bruit filtré, dont la fréquence de coupure dérive lentement
+                const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
+                const noiseData = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < noiseData.length; i++) noiseData[i] = Math.random() * 2 - 1;
+                const noiseSrc = ctx.createBufferSource();
+                noiseSrc.buffer = noiseBuffer;
+                noiseSrc.loop = true;
+                const noiseFilter = ctx.createBiquadFilter();
+                noiseFilter.type = 'bandpass';
+                noiseFilter.frequency.value = 700;
+                noiseFilter.Q.value = 0.7;
+                const noiseGain = ctx.createGain();
+                noiseGain.gain.value = 0.015;
+                noiseSrc.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(master);
+                noiseSrc.start();
+
+                let lfoPhase = Math.random() * 10;
+                let noiseLfoRaf;
+                function driftNoiseFilter() {
+                    if (!ambientPlaying) return;
+                    lfoPhase += 0.0025;
+                    noiseFilter.frequency.value = 480 + Math.sin(lfoPhase) * 320 + Math.sin(lfoPhase * 0.37) * 160;
+                    noiseLfoRaf = requestAnimationFrame(driftNoiseFilter);
+                }
+                driftNoiseFilter();
+
+                // Notes éparses, aléatoires, sur une gamme ouverte — fragments mélodiques rares
+                const scale = [261.6, 293.7, 349.2, 392.0, 440.0, 523.2, 587.3];
+                let noteTimer = null;
+                function scheduleNote() {
+                    if (!ambientPlaying) return;
+                    noteTimer = setTimeout(() => {
+                        const freq = scale[Math.floor(Math.random() * scale.length)] * (Math.random() < 0.3 ? 0.5 : 1);
+                        const osc = ctx.createOscillator();
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        const g = ctx.createGain();
+                        g.gain.setValueAtTime(0, ctx.currentTime);
+                        g.gain.linearRampToValueAtTime(0.045, ctx.currentTime + 0.6);
+                        g.gain.linearRampToValueAtTime(0, ctx.currentTime + 3.4);
+                        osc.connect(g); g.connect(master); g.connect(delay);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 3.5);
+                        scheduleNote();
+                    }, 2600 + Math.random() * 5200);
+                }
+                scheduleNote();
+
+                ambient = { master, padOscs, noiseSrc, getNoteTimer: () => noteTimer, cancelNoteTimer: () => clearTimeout(noteTimer) };
+            } catch (e) { ambientPlaying = false; /* audio indisponible */ }
+        }
+
+        function stopAmbient() {
+            if (!ambientPlaying || !ambient) return;
+            ambientPlaying = false;
+            const ctx = getAudioCtx();
+            const { master, padOscs, noiseSrc, cancelNoteTimer } = ambient;
+            cancelNoteTimer();
+            try {
+                master.gain.cancelScheduledValues(ctx.currentTime);
+                master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+                master.gain.linearRampToValueAtTime(0, ctx.currentTime + 2);
+                setTimeout(() => {
+                    padOscs.forEach(p => { try { p.osc.stop(); } catch (e) { /* déjà arrêté */ } });
+                    try { noiseSrc.stop(); } catch (e) { /* déjà arrêté */ }
+                }, 2100);
+            } catch (e) { /* ignore */ }
+            ambient = null;
+        }
+
+        document.getElementById('ambient-toggle').addEventListener('click', function () {
+            const label = this.querySelector('#ambient-text');
+            if (ambientPlaying) {
+                stopAmbient();
+                label.textContent = 'OFF';
+            } else {
+                startAmbient();
+                label.textContent = 'ON';
+            }
+        });
+
         const sfx = {
             eyeOpen: () => playTone(85, 1.9, 'sine', 0.09, 240),
             eyeClose: () => playTone(240, 1.2, 'sine', 0.08, 65),
@@ -725,6 +869,149 @@
 
         /* ============ FIN SYSTÈME DE BOOT ============ */
 
+        /* ---- Carrousel vidéo de l'Accueil : défilement auto + manuel ---- */
+        const heroVideos = Array.from(document.querySelectorAll('.hero-video'));
+        let currentHeroIndex = 0;
+        let heroAutoTimer = null;
+
+        function goToHeroVideo(index) {
+            const total = heroVideos.length;
+            if (total <= 1) return;
+            currentHeroIndex = ((index % total) + total) % total;
+            heroVideos.forEach((v, i) => {
+                if (i === currentHeroIndex) {
+                    v.classList.add('active');
+                    v.currentTime = 0;
+                    v.play().catch(() => { /* lecture bloquée, sans conséquence */ });
+                } else {
+                    v.classList.remove('active');
+                }
+            });
+            resetHeroAutoAdvance();
+        }
+        function resetHeroAutoAdvance() {
+            clearTimeout(heroAutoTimer);
+            if (heroVideos.length <= 1) return;
+            heroAutoTimer = setTimeout(() => goToHeroVideo(currentHeroIndex + 1), 9000);
+        }
+
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carouselArrow = document.getElementById('carousel-arrow');
+
+        // Les zones/curseur ne prennent leur sens qu'avec plusieurs vidéos : masqués tant
+        // qu'il n'y en a qu'une seule. Ajouter des <video class="hero-video"> les activera.
+        if (heroVideos.length > 1) {
+            carouselPrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
+            carouselNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
+            resetHeroAutoAdvance();
+        } else {
+            carouselPrev.style.display = 'none';
+            carouselNext.style.display = 'none';
+        }
+
+        function positionCarouselArrow(e) {
+            carouselArrow.style.left = e.clientX + 'px';
+            carouselArrow.style.top = e.clientY + 'px';
+        }
+        [carouselPrev, carouselNext].forEach(zone => {
+            zone.addEventListener('mousemove', positionCarouselArrow);
+            zone.addEventListener('mouseleave', () => carouselArrow.classList.remove('visible'));
+        });
+        carouselPrev.addEventListener('mouseenter', (e) => {
+            carouselArrow.classList.add('visible', 'flip');
+            positionCarouselArrow(e);
+        });
+        carouselNext.addEventListener('mouseenter', (e) => {
+            carouselArrow.classList.remove('flip');
+            carouselArrow.classList.add('visible');
+            positionCarouselArrow(e);
+        });
+
+        /* ---- Logo "DVD" rebondissant, destructible au clic ---- */
+        function initDvdLogo() {
+            const logo = document.getElementById('dvd-logo');
+            const stage = document.getElementById('accueil');
+            if (!logo || !stage) return;
+
+            let x = 20 + Math.random() * 30;
+            let y = 20 + Math.random() * 30;
+            let vx = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+            let vy = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+            let destroyed = false;
+
+            function tick() {
+                if (destroyed) return;
+                const stageRect = stage.getBoundingClientRect();
+                const logoRect = logo.getBoundingClientRect();
+                const wPct = (logoRect.width / stageRect.width) * 100;
+                const hPct = (logoRect.height / stageRect.height) * 100;
+
+                x += vx; y += vy;
+                if (x <= 0) { x = 0; vx *= -1; }
+                if (x >= 100 - wPct) { x = 100 - wPct; vx *= -1; }
+                if (y <= 0) { y = 0; vy *= -1; }
+                if (y >= 100 - hPct) { y = 100 - hPct; vy *= -1; }
+
+                logo.style.left = x + '%';
+                logo.style.top = y + '%';
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+
+            logo.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (destroyed) return;
+                destroyed = true;
+                destroyDvdLogo(logo, stage);
+            });
+        }
+
+        function destroyDvdLogo(logo, stage) {
+            const logoRect = logo.getBoundingClientRect();
+            const stageRect = stage.getBoundingClientRect();
+            const cols = 6, rows = 2;
+            const pieceW = logoRect.width / cols;
+            const pieceH = logoRect.height / rows;
+
+            const wrap = document.createElement('div');
+            wrap.className = 'dvd-shatter';
+            wrap.style.left = (logoRect.left - stageRect.left) + 'px';
+            wrap.style.top = (logoRect.top - stageRect.top) + 'px';
+            wrap.style.width = logoRect.width + 'px';
+            wrap.style.height = logoRect.height + 'px';
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'dvd-shatter-piece';
+                    piece.style.width = pieceW + 'px';
+                    piece.style.height = pieceH + 'px';
+                    piece.style.left = (c * pieceW) + 'px';
+                    piece.style.top = (r * pieceH) + 'px';
+                    piece.style.backgroundImage = "url('images/accueil/Logo.png')";
+                    piece.style.backgroundSize = logoRect.width + 'px ' + logoRect.height + 'px';
+                    piece.style.backgroundPosition = (-c * pieceW) + 'px ' + (-r * pieceH) + 'px';
+                    wrap.appendChild(piece);
+
+                    requestAnimationFrame(() => {
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist = 160 + Math.random() * 280;
+                        const dx = Math.cos(angle) * dist;
+                        const dy = Math.sin(angle) * dist;
+                        const rot = (Math.random() - 0.5) * 720;
+                        piece.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg) scale(0.15)`;
+                        piece.style.opacity = '0';
+                    });
+                }
+            }
+            stage.appendChild(wrap);
+            logo.style.display = 'none';
+            setTimeout(() => wrap.remove(), 1100);
+        }
+
+        initDvdLogo();
+
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
         const mainFeed = document.querySelector('.main-feed');
@@ -784,24 +1071,18 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
-        // Le menu mobile se cache en scrollant vers le bas et revient dès qu'on remonte,
-        // pour ne pas monopoliser l'écran. Inactif sur desktop (le hover gère déjà l'affichage).
-        const mobileQuery = window.matchMedia('(max-width: 900px)');
-        let lastScrollY = window.scrollY;
-
-        window.addEventListener('scroll', () => {
-            if (!mobileQuery.matches) {
-                sideNav.classList.remove('nav-hidden');
-                return;
-            }
-            const currentY = window.scrollY;
-            if (currentY > lastScrollY && currentY > 80) {
-                sideNav.classList.add('nav-hidden');
-            } else {
-                sideNav.classList.remove('nav-hidden');
-            }
-            lastScrollY = currentY;
-        }, { passive: true });
+        // Menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = sideNav.classList.toggle('menu-open');
+            hamburgerBtn.classList.toggle('open', isOpen);
+        });
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sideNav.classList.remove('menu-open');
+                hamburgerBtn.classList.remove('open');
+            });
+        });
     </script>
 </body>
 </html>
