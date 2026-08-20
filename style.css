@@ -68,6 +68,8 @@ body {
     opacity: 0.5;
 }
 
+.hamburger-btn { display: none; }
+
 .nav-top {
     display: flex;
     flex-direction: column;
@@ -179,7 +181,11 @@ body {
     height: auto;
     object-fit: cover;
     z-index: 0;
+    opacity: 0;
+    transition: opacity 1.1s ease;
 }
+
+.hero-video.active { opacity: 1; }
 
 .video-overlay {
     position: absolute;
@@ -200,6 +206,69 @@ body {
     height: 100%; 
     z-index: 2; 
     position: relative;
+}
+
+/* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
+.carousel-nav-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: 2;
+    cursor: none;
+}
+.carousel-nav-prev { left: 0; }
+.carousel-nav-next { right: 0; }
+
+.carousel-arrow-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 26px;
+    pointer-events: none;
+    z-index: 250;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease;
+}
+.carousel-arrow-cursor.visible { opacity: 1; }
+.carousel-arrow-cursor.flip { transform: translate(-50%, -50%) scaleX(-1); }
+.carousel-arrow-cursor svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--text-color);
+    stroke-width: 1.4;
+}
+
+/* --- LOGO "DVD" REBONDISSANT --- */
+.dvd-logo {
+    position: absolute;
+    width: clamp(90px, 14vw, 160px);
+    z-index: 3;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+}
+.dvd-logo img {
+    width: 100%;
+    display: block;
+    pointer-events: none;
+}
+.dvd-shatter {
+    position: absolute;
+    z-index: 4;
+    pointer-events: none;
+}
+.dvd-shatter-piece {
+    position: absolute;
+    background-repeat: no-repeat;
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+}
+
+@media (max-width: 900px) {
+    .carousel-arrow-cursor { display: none; }
+    .carousel-nav-zone { cursor: default; }
 }
 
 /* --- SOUS-BARRE DE NAVIGATION --- */
@@ -713,20 +782,54 @@ h2 { font-size: 1.8rem; }
 @media (max-width: 900px) {
     body { overflow-y: auto; height: auto; flex-direction: column; }
 
-    /* Menu compacté en barre sticky (plus de hover sur tactile) */
+    /* Bouton hamburger — toujours visible, seul point d'entrée du menu sur mobile */
+    .hamburger-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        width: 34px;
+        height: 34px;
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        z-index: 210;
+        padding: 0;
+    }
+    .hamburger-btn span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        margin: 0 auto;
+        background-color: var(--text-color);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Le menu reste replié (hors écran) tant qu'on n'a pas ouvert le hamburger */
     .side-nav {
-        position: sticky;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
         height: auto;
-        left: 0 !important;
-        padding: 1.5rem;
-        transition: transform 0.3s ease, background-color 0.4s ease;
-    }
-    /* Se cache en scrollant vers le bas, réapparaît dès qu'on remonte */
-    .side-nav.nav-hidden {
+        max-height: 88vh;
+        overflow-y: auto;
+        padding: 4.5rem 1.5rem 1.5rem;
         transform: translateY(-100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
+        z-index: 205;
+    }
+    .side-nav.menu-open {
+        transform: translateY(0);
     }
     .side-nav::after { display: none; }
+    .nav-top { flex-wrap: wrap; gap: 0.6rem; }
     .nav-links {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -828,8 +931,19 @@ h2 { font-size: 1.8rem; }
     aspect-ratio: 1 / 1;
     background: #000000;
     transition: transform 0.25s ease;
+    animation: square-breathe 3.4s ease-in-out infinite;
 }
 .boot-gate:hover .boot-gate-square { transform: scale(1.08); }
+
+/* Aura sombre qui pulse autour du carré, comme une respiration */
+@keyframes square-breathe {
+    0%, 100% {
+        box-shadow: 0 0 20px 6px rgba(0, 0, 0, 0.28), 0 0 46px 18px rgba(0, 0, 0, 0.12);
+    }
+    50% {
+        box-shadow: 0 0 40px 15px rgba(0, 0, 0, 0.42), 0 0 78px 32px rgba(0, 0, 0, 0.2);
+    }
+}
 
 /* Oeil organique en caractères */
 .eye-wrap {
