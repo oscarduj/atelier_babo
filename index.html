@@ -12,7 +12,6 @@
 
     <div class="boot-overlay" id="boot-overlay">
         <div class="boot-gate" id="boot-gate">
-            <div class="boot-dive-wipe" id="boot-dive-wipe"></div>
             <div class="boot-gate-square" id="boot-gate-square">
                 <div class="cube-face cube-front"></div>
                 <div class="cube-face cube-back"></div>
@@ -1076,19 +1075,27 @@
         }
 
         // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
-        // Transition : un disque noir s'étend depuis le centre jusqu'à recouvrir tout
-        // l'écran (effet 2D classique de "fondu depuis un point"), pas un effet 3D.
+        // Transition : au clic, la rotation du cube se fige à l'angle où elle en est,
+        // puis seul le zoom prend le relais — la sensation d'entrer dans la boîte noire,
+        // sans le bug que provoquait une rotation qui continuait pendant l'agrandissement.
+        let cubeDiving = false;
         document.getElementById('boot-gate').addEventListener('click', () => {
             const gate = document.getElementById('boot-gate');
-            const wipe = document.getElementById('boot-dive-wipe');
+            const square = document.getElementById('boot-gate-square');
+            cubeDiving = true;
             sfx.eyeOpen();
             stopGateNoise();
-            wipe.classList.add('active');
+            gate.classList.add('diving');
+            square.style.transition = 'transform 0.9s cubic-bezier(0.65, 0, 0.85, 0.35)';
+            square.style.transform = `rotateX(${cubeRotX.toFixed(2)}deg) rotateY(${cubeRotY.toFixed(2)}deg) scale(24)`;
             setTimeout(() => {
                 gate.classList.add('hidden');
-                wipe.classList.remove('active');
+                gate.classList.remove('diving');
+                square.style.transition = '';
+                cubeDiving = false;
+                cubeRotX = 0; cubeRotY = 0;
                 playBoot();
-            }, 850);
+            }, 900);
         });
 
         /* ---- Cube 3D réactif du portail ----
@@ -1122,7 +1129,7 @@
         function cubeLoop() {
             const gate = document.getElementById('boot-gate');
             const square = document.getElementById('boot-gate-square');
-            if (gate && square && !gate.classList.contains('hidden')) {
+            if (gate && square && !gate.classList.contains('hidden') && !cubeDiving) {
                 cubeIdlePhase += 0.015;
                 const idleEnergy = Math.sin(cubeIdlePhase) * 0.12 + 0.12;
                 const energy = Math.min(1, idleEnergy + cubeProximity * 0.85);
