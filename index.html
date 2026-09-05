@@ -118,24 +118,44 @@
 
                 <div class="travaux-asym-grid">
                     <a href="travaux/collectif.html" class="travaux-cell travaux-cell-collectif">
-                        <div class="travaux-cell-box">[ PROJETS DU COLLECTIF ATELIER BABO ]</div>
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ PROJETS DU COLLECTIF ATELIER BABO ]</span>
+                        </div>
                         <span class="travaux-cell-title">Collectif</span>
                         <span class="travaux-cell-sub">Voir les créations et installations communes</span>
                     </a>
                     <a href="travaux/hyunseok-yoon.html" class="travaux-cell travaux-cell-1">
-                        <div class="travaux-cell-box">[ HYUNSEOK YOON ]</div>
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ HYUNSEOK YOON ]</span>
+                        </div>
                         <span class="travaux-cell-title">Hyunseok Yoon</span>
                     </a>
                     <a href="travaux/tom-lecointre.html" class="travaux-cell travaux-cell-2">
-                        <div class="travaux-cell-box">[ TOM LECOINTRE ]</div>
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ TOM LECOINTRE ]</span>
+                        </div>
                         <span class="travaux-cell-title">Tom Lecointre</span>
                     </a>
                     <a href="travaux/oscar-dujarrier.html" class="travaux-cell travaux-cell-3">
-                        <div class="travaux-cell-box">[ OSCAR DUJARRIER ]</div>
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ OSCAR DUJARRIER ]</span>
+                        </div>
                         <span class="travaux-cell-title">Oscar Dujarrier</span>
                     </a>
                     <a href="travaux/wenjie-tong.html" class="travaux-cell travaux-cell-4">
-                        <div class="travaux-cell-box">[ WENJIE TONG ]</div>
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ WENJIE TONG ]</span>
+                        </div>
                         <span class="travaux-cell-title">Wenjie Tong</span>
                     </a>
                 </div>
@@ -1078,9 +1098,13 @@
 
         initDvdLogo();
 
-        /* ---- Photos qui défilent dans les cases Collectif et Oscar ---- */
+        /* ---- Photos qui défilent dans les cases Collectif et Oscar ----
+           Chaque case a 2 calques superposés (.cell-photo-layer) : on prépare la photo
+           suivante sur le calque caché, puis on bascule lequel est "actif" pour obtenir
+           un vrai fondu-enchaîné (plutôt qu'un changement brut), avec un léger zoom lent
+           porté par la transition CSS elle-même. */
 
-        // Collectif : case fixe, défilement simple et continu.
+        // Collectif : case fixe, rythme plus lent (4.2s par image, contre 2.6s avant).
         const collectifPhotos = [
             'images/travaux/collectif/collectif-1.jpg',
             'images/travaux/collectif/collectif-2.jpg',
@@ -1089,19 +1113,29 @@
             'images/travaux/collectif/collectif-5.jpg'
         ];
         let collectifPhotoIndex = 0;
-        function applyCollectifPhoto() {
+        let collectifActiveLayer = 0;
+
+        function getCollectifLayers() {
             const box = document.querySelector('.travaux-cell-collectif .travaux-cell-box');
-            if (!box) return;
-            box.style.backgroundImage = `url('${collectifPhotos[collectifPhotoIndex]}')`;
-            box.style.backgroundSize = 'cover';
-            box.style.backgroundPosition = 'center';
-            box.style.backgroundRepeat = 'no-repeat';
+            return box ? box.querySelectorAll('.cell-photo-layer') : null;
         }
-        applyCollectifPhoto();
-        setInterval(() => {
+        function advanceCollectifPhoto() {
+            const layers = getCollectifLayers();
+            if (!layers || layers.length < 2) return;
             collectifPhotoIndex = (collectifPhotoIndex + 1) % collectifPhotos.length;
-            applyCollectifPhoto();
-        }, 2600);
+            const nextIdx = 1 - collectifActiveLayer;
+            layers[nextIdx].style.backgroundImage = `url('${collectifPhotos[collectifPhotoIndex]}')`;
+            layers[nextIdx].classList.add('active');
+            layers[collectifActiveLayer].classList.remove('active');
+            collectifActiveLayer = nextIdx;
+        }
+        (function initCollectifPhoto() {
+            const layers = getCollectifLayers();
+            if (!layers || layers.length < 2) return;
+            layers[0].style.backgroundImage = `url('${collectifPhotos[0]}')`;
+            layers[0].classList.add('active');
+        })();
+        setInterval(advanceCollectifPhoto, 4200);
 
         /* ---- Rotation des membres dans la grille Travaux ----
            Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
@@ -1123,23 +1157,34 @@
         let travauxOffset = 0;
 
         // L'index avance en continu depuis le chargement de la page — il n'est JAMAIS remis
-        // à zéro par la rotation des membres, seule la case cible change. Sans ça, un cycle
-        // complet (26s) n'a jamais le temps de se terminer entre deux rotations (8s) : c'était
-        // exactement le bug précédent.
+        // à zéro par la rotation des membres, seule la case cible (et donc ses calques) change.
         let oscarPhotoIndex = 0;
+        let oscarActiveLayer = 0;
         let oscarTargetBox = null;
 
-        function applyOscarPhoto() {
+        function advanceOscarPhoto() {
             if (!oscarTargetBox) return;
-            oscarTargetBox.style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
-            oscarTargetBox.style.backgroundSize = 'cover';
-            oscarTargetBox.style.backgroundPosition = 'center';
-            oscarTargetBox.style.backgroundRepeat = 'no-repeat';
-        }
-        setInterval(() => {
+            const layers = oscarTargetBox.querySelectorAll('.cell-photo-layer');
+            if (layers.length < 2) return;
             oscarPhotoIndex = (oscarPhotoIndex + 1) % oscarPhotos.length;
-            applyOscarPhoto();
-        }, 2600);
+            const nextIdx = 1 - oscarActiveLayer;
+            layers[nextIdx].style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
+            layers[nextIdx].classList.add('active');
+            layers[oscarActiveLayer].classList.remove('active');
+            oscarActiveLayer = nextIdx;
+        }
+        // Affiche tout de suite l'image en cours sur la case qu'Oscar vient de rejoindre,
+        // sans attendre le prochain tick — sinon la case resterait vide jusqu'à 2.6s.
+        function showOscarPhotoOnCurrentBox() {
+            if (!oscarTargetBox) return;
+            const layers = oscarTargetBox.querySelectorAll('.cell-photo-layer');
+            if (layers.length < 2) return;
+            layers.forEach(l => { l.classList.remove('active'); l.style.backgroundImage = ''; });
+            layers[0].style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
+            layers[0].classList.add('active');
+            oscarActiveLayer = 0;
+        }
+        setInterval(advanceOscarPhoto, 2600);
 
         function rotateTravauxMembers() {
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
@@ -1151,23 +1196,27 @@
             });
 
             setTimeout(() => {
-                if (oscarTargetBox) oscarTargetBox.style.backgroundImage = '';
                 oscarTargetBox = null;
 
                 slots.forEach((slot, i) => {
                     const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
                     slot.href = member.href;
                     const box = slot.querySelector('.travaux-cell-box');
+                    const textEl = box.querySelector('.cell-box-text');
                     if (member.photos) {
-                        box.textContent = '';
+                        textEl.style.display = 'none';
                         oscarTargetBox = box;
                     } else {
-                        box.style.backgroundImage = '';
-                        box.textContent = member.label;
+                        box.querySelectorAll('.cell-photo-layer').forEach(l => {
+                            l.classList.remove('active');
+                            l.style.backgroundImage = '';
+                        });
+                        textEl.style.display = '';
+                        textEl.textContent = member.label;
                     }
                     slot.querySelector('.travaux-cell-title').textContent = member.name;
                 });
-                applyOscarPhoto(); // affiche tout de suite l'image courante sur la nouvelle case
+                showOscarPhotoOnCurrentBox();
 
                 slots.forEach(slot => { slot.style.opacity = '1'; });
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
@@ -1175,7 +1224,8 @@
         }
         // Position initiale d'Oscar = travaux-cell-3 (voir le HTML)
         oscarTargetBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
-        applyOscarPhoto();
+        oscarTargetBox.querySelector('.cell-box-text').style.display = 'none';
+        showOscarPhotoOnCurrentBox();
         setInterval(rotateTravauxMembers, 8000);
 
         const sections = document.querySelectorAll('.feed-section');

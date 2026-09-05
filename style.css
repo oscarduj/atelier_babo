@@ -494,11 +494,17 @@ h2 { font-size: 1.8rem; }
     text-decoration: none;
     transition: transform 0.3s ease;
 }
-.travaux-cell:hover { transform: translateY(-3px); }
+.travaux-cell:hover {
+    transform: scale(1.035) translateY(-3px);
+    z-index: 2;
+    position: relative;
+}
 
 .travaux-cell-box {
     flex: 1;
     min-height: 0;
+    position: relative;
+    overflow: hidden;
     border: 1px dashed var(--border-color);
     background-color: var(--box-bg);
     display: flex;
@@ -513,6 +519,28 @@ h2 { font-size: 1.8rem; }
     transition: border-color 0.3s ease;
 }
 .travaux-cell:hover .travaux-cell-box { border-color: var(--secondary-color); }
+
+/* Calques de fondu-enchaîné : deux couches superposées, on alterne laquelle est visible
+   pour obtenir un vrai crossfade plutôt qu'un changement brut, avec un léger zoom lent
+   qui accompagne chaque image tant qu'elle est affichée. */
+.cell-photo-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transform: scale(1);
+    transition: opacity 1.3s ease, transform 3.8s ease-out;
+}
+.cell-photo-layer.active {
+    opacity: 1;
+    transform: scale(1.08);
+}
+.cell-box-text {
+    position: relative;
+    z-index: 1;
+}
 
 .travaux-cell-title {
     font-size: 0.95rem;
@@ -872,7 +900,7 @@ h2 { font-size: 1.8rem; }
         padding: 2.5rem 1.25rem;
     }
 
-    /*  La grille asymétrique redevient une simple colonne — les spans n'ont plus de sens ici */
+    /* La grille asymétrique redevient une simple colonne — les spans n'ont plus de sens ici */
     .travaux-asym-grid {
         grid-template-columns: 1fr;
         grid-template-rows: none;
