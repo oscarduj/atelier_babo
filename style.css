@@ -234,8 +234,8 @@ body.standalone-page {
     position: fixed;
     top: 0;
     left: 0;
-    width: 130px;
-    height: 26px;
+    width: 150px;
+    height: 44px;
     pointer-events: none;
     z-index: 250;
     opacity: 0;
@@ -244,12 +244,27 @@ body.standalone-page {
 }
 .carousel-arrow-cursor.visible { opacity: 1; }
 .carousel-arrow-cursor.flip { transform: translate(-50%, -50%) scaleX(-1); }
-.carousel-arrow-cursor svg {
+.eye-arrow-grid {
+    display: grid;
     width: 100%;
     height: 100%;
-    fill: none;
-    stroke: var(--text-color);
-    stroke-width: 1.4;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    line-height: 1;
+    user-select: none;
+    transform-origin: center;
+}
+.eye-arrow-grid span { text-align: center; }
+.eac-sclera { color: #7a8288; opacity: 0.75; }
+.eac-iris { color: var(--secondary-color); }
+.eac-pupil { color: var(--text-color); }
+/* Clignement occasionnel du curseur-œil, comme celui du boot */
+.carousel-arrow-cursor.blinking .eye-arrow-grid {
+    animation: eye-arrow-blink 0.32s ease;
+}
+@keyframes eye-arrow-blink {
+    0%, 100% { transform: scaleY(1); }
+    45% { transform: scaleY(0.08); }
 }
 
 /* --- LOGO "DVD" REBONDISSANT --- */
@@ -1063,7 +1078,7 @@ h2 { font-size: 1.8rem; }
 .sound-toggle:hover { color: #EAE8E4; border-color: #4a4a4a; }
 .sound-toggle.is-off { color: #555555; }
 
-/* Portail d'entrée — carré noir sur fond blanc, à cliquer pour lancer le boot */
+/* Portail d'entrée — cube 3D sur fond blanc, à cliquer pour lancer le boot */
 .boot-gate {
     position: absolute;
     inset: 0;
@@ -1073,6 +1088,7 @@ h2 { font-size: 1.8rem; }
     justify-content: center;
     z-index: 30;
     cursor: pointer;
+    perspective: 700px;
     transition: opacity 0.6s ease;
 }
 .boot-gate.hidden {
@@ -1083,14 +1099,25 @@ h2 { font-size: 1.8rem; }
     position: relative;
     width: clamp(50px, 12vw, 100px);
     aspect-ratio: 1 / 1;
-    background: #000000;
-    transition: transform 0.25s ease;
-    animation: square-breathe 3.4s ease-in-out infinite;
+    --cube-half: clamp(25px, 6vw, 50px);
+    --energy: 0.15;
+    transform-style: preserve-3d;
 }
-.boot-gate:hover .boot-gate-square { transform: scale(1.08); }
+.cube-face {
+    position: absolute;
+    inset: 0;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.cube-front  { transform: translateZ(var(--cube-half)); }
+.cube-back   { transform: rotateY(180deg) translateZ(var(--cube-half)); }
+.cube-right  { transform: rotateY(90deg) translateZ(var(--cube-half)); }
+.cube-left   { transform: rotateY(-90deg) translateZ(var(--cube-half)); }
+.cube-top    { transform: rotateX(90deg) translateZ(var(--cube-half)); }
+.cube-bottom { transform: rotateX(-90deg) translateZ(var(--cube-half)); }
 
-/* Halo large en dégradé, porté par un pseudo-élément pour ne pas entrer en
-   conflit avec le transform du survol. C'est lui qui donne le gros de l'effet. */
+/* Halo dont l'intensité suit la variable --energy, pilotée en JS selon la proximité
+   du curseur — plus on s'approche, plus le noyau (le cube) concentre l'énergie. */
 .boot-gate-square::before {
     content: "";
     position: absolute;
@@ -1098,42 +1125,14 @@ h2 { font-size: 1.8rem; }
     top: 50%;
     width: 620%;
     height: 620%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(calc(0.78 + var(--energy) * 0.55));
     background: radial-gradient(circle,
-        rgba(0, 0, 0, 0.40) 0%,
-        rgba(0, 0, 0, 0.22) 26%,
-        rgba(0, 0, 0, 0.09) 48%,
-        rgba(0, 0, 0, 0) 70%);
+        rgba(0, 0, 0, calc(0.32 + var(--energy) * 0.5)) 0%,
+        rgba(0, 0, 0, calc(0.16 + var(--energy) * 0.3)) 30%,
+        rgba(0, 0, 0, calc(0.05 + var(--energy) * 0.12)) 55%,
+        rgba(0, 0, 0, 0) 74%);
     pointer-events: none;
     z-index: -1;
-    animation: halo-breathe 3.4s ease-in-out infinite;
-}
-
-/* Aura sombre qui pulse autour du carré, comme une respiration */
-@keyframes square-breathe {
-    0%, 100% {
-        box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.42),
-                    0 0 70px 26px rgba(0, 0, 0, 0.22),
-                    0 0 130px 48px rgba(0, 0, 0, 0.10);
-    }
-    50% {
-        box-shadow: 0 0 62px 24px rgba(0, 0, 0, 0.62),
-                    0 0 125px 52px rgba(0, 0, 0, 0.34),
-                    0 0 230px 90px rgba(0, 0, 0, 0.17);
-    }
-}
-
-/* Le halo respire en décalé du carré : il gonfle un peu plus lentement,
-   ce qui évite l'effet "clignotement" et donne un souffle plus organique. */
-@keyframes halo-breathe {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(0.82);
-        opacity: 0.55;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.18);
-        opacity: 1;
-    }
 }
 
 /* Oeil organique en caractères */
@@ -1221,17 +1220,33 @@ h2 { font-size: 1.8rem; }
     transform: translate(-50%, -10px);
     width: min(86vw, 300px);
     background: #161616;
-    border: 1px solid #333333;
-    border-radius: 6px;
-    padding: 1rem 1.1rem;
+    border: 1px solid #3a3a3a;
+    border-radius: 2px;
     z-index: 5;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.35s ease, transform 0.35s ease;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
     text-align: left;
+    overflow: hidden;
 }
-.perm-popup.visible { opacity: 1; transform: translate(-50%, 0); }
+.perm-popup.visible { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.perm-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    background: #1e1e1e;
+    border-bottom: 1px solid #333333;
+}
+.perm-titlebar-dot { width: 7px; height: 7px; border-radius: 50%; background: #666666; flex-shrink: 0; }
+.perm-titlebar-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: #777777;
+    letter-spacing: 1px;
+}
+.perm-body { padding: 1rem 1.1rem; }
 .perm-header { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.6rem; }
 .perm-dot { width: 7px; height: 7px; border-radius: 50%; background: #A3B1C2; flex-shrink: 0; }
 .perm-url {
@@ -1263,13 +1278,16 @@ h2 { font-size: 1.8rem; }
     letter-spacing: 0.5px;
     background: transparent;
     border: 1px solid #333333;
+    border-radius: 2px;
     color: #999999;
     padding: 0.4rem 0.8rem;
-    border-radius: 3px;
+    cursor: pointer;
     transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
+.perm-btn:hover { border-color: #666666; color: #EAE8E4; }
 .perm-btn.perm-allow { color: #EAE8E4; border-color: #4a4a4a; }
-.perm-btn.perm-allow.perm-pressed {
+.perm-btn.perm-allow.perm-pressed,
+.perm-btn.perm-block.perm-pressed {
     background: #A3B1C2;
     color: #101010;
     border-color: #A3B1C2;
@@ -1287,6 +1305,22 @@ h2 { font-size: 1.8rem; }
 .perm-popup.granted .perm-items,
 .perm-popup.granted .perm-actions { display: none; }
 .perm-popup.granted .perm-granted-msg { display: block; }
+
+/* Cascade de fausses fenêtres d'erreur, entre la fermeture de l'œil et l'apparition du logo */
+.fake-error-popup {
+    position: absolute;
+    z-index: 550;
+    background: #161616;
+    border: 1px solid #4a4a4a;
+    border-radius: 2px;
+    color: #EAE8E4;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+    padding: 0.45rem 0.7rem;
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
 
 @media (max-width: 480px) {
     .eye-status, .eye-bar { letter-spacing: 0.5px; }
