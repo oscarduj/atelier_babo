@@ -1096,25 +1096,49 @@ h2 { font-size: 1.8rem; }
     perspective: 700px;
     transition: opacity 0.6s ease;
     --gate-energy: 0.15;
+    overflow: hidden;
 }
 .boot-gate.hidden {
     opacity: 0;
     pointer-events: none;
 }
+.boot-gate.diving-bg {
+    background: #000000;
+    transition: background 0.6s ease;
+}
+/* Bruit blanc "vintage", en fond — grain pixelisé façon vieille télévision sans signal,
+   dont l'intensité suit elle aussi --gate-energy, en plus doux qu'avant (plus de paliers
+   intermédiaires = transition moins abrupte). */
+.boot-noise-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    mix-blend-mode: multiply;
+    opacity: calc(0.08 + var(--gate-energy) * 0.22);
+    pointer-events: none;
+    z-index: 0;
+}
 /* Texture d'énergie sombre sur l'arrière-plan (pas un halo local autour du cube) :
    toute la page du portail s'assombrit progressivement à mesure que le curseur
-   s'approche du cube, comme si l'énergie se propageait depuis le noyau. */
+   s'approche du cube, comme si l'énergie se propageait depuis le noyau. Davantage
+   de paliers que la première version, pour un dégradé qui se voit moins "par bonds". */
 .boot-gate::before {
     content: "";
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 50% 50%,
         rgba(0, 0, 0, calc(0.10 + var(--gate-energy) * 0.55)) 0%,
-        rgba(0, 0, 0, calc(0.05 + var(--gate-energy) * 0.32)) 32%,
-        rgba(0, 0, 0, calc(0.02 + var(--gate-energy) * 0.14)) 58%,
-        rgba(0, 0, 0, 0) 85%);
+        rgba(0, 0, 0, calc(0.08 + var(--gate-energy) * 0.46)) 18%,
+        rgba(0, 0, 0, calc(0.06 + var(--gate-energy) * 0.36)) 34%,
+        rgba(0, 0, 0, calc(0.04 + var(--gate-energy) * 0.25)) 50%,
+        rgba(0, 0, 0, calc(0.02 + var(--gate-energy) * 0.15)) 66%,
+        rgba(0, 0, 0, calc(0.01 + var(--gate-energy) * 0.07)) 80%,
+        rgba(0, 0, 0, 0) 94%);
     pointer-events: none;
     z-index: 0;
+    transition: opacity 0.4s ease;
 }
 .boot-gate-square {
     position: relative;
@@ -1163,16 +1187,14 @@ h2 { font-size: 1.8rem; }
 
 .eye-screen {
     position: absolute;
-    top: 50%;
+    top: 82%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     opacity: 0;
-    transition: opacity 0.4s ease;
     pointer-events: none;
     white-space: nowrap;
 }
-.eye-screen.visible { opacity: 1; }
 .eye-status {
     font-family: 'Share Tech Mono', monospace;
     font-size: clamp(0.6rem, 1.7vw, 0.85rem);
@@ -1217,9 +1239,9 @@ h2 { font-size: 1.8rem; }
 /* Faux popup de permission caméra/micro — purement décoratif */
 .perm-popup {
     position: absolute;
-    top: 10%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -10px);
+    transform: translate(-50%, -46%);
     width: min(86vw, 300px);
     background: #161616;
     border: 1px solid #3a3a3a;
@@ -1232,7 +1254,7 @@ h2 { font-size: 1.8rem; }
     text-align: left;
     overflow: hidden;
 }
-.perm-popup.visible { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.perm-popup.visible { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
 .perm-titlebar {
     display: flex;
     align-items: center;
@@ -1325,6 +1347,14 @@ h2 { font-size: 1.8rem; }
     pointer-events: none;
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
 }
+.fake-error-cursor {
+    display: inline-block;
+    width: 0.55em;
+    margin-left: 0.15em;
+    background: #A3B1C2;
+    animation: fake-error-cursor-blink 0.9s steps(1) infinite;
+}
+@keyframes fake-error-cursor-blink { 50% { opacity: 0; } }
 
 @media (max-width: 480px) {
     .eye-status, .eye-bar { letter-spacing: 0.5px; }
