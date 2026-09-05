@@ -1141,50 +1141,66 @@
            Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
            Les 4 membres tournent entre les 4 emplacements toutes les 8s, pour qu'aucun
            ne reste cantonné à une case plus petite que les autres sur la durée. */
+        const yoonPhotos = [
+            'images/travaux/yoon/yoon-1.jpg', 'images/travaux/yoon/yoon-2.jpg',
+            'images/travaux/yoon/yoon-3.jpg', 'images/travaux/yoon/yoon-4.jpg'
+        ];
+        const tomPhotos = [
+            'images/travaux/tom/tom-1.jpg', 'images/travaux/tom/tom-2.jpg',
+            'images/travaux/tom/tom-3.jpg', 'images/travaux/tom/tom-4.jpg',
+            'images/travaux/tom/tom-5.jpg', 'images/travaux/tom/tom-6.jpg'
+        ];
         const oscarPhotos = [
-            'images/travaux/oscar/oscar-1.jpg', 'images/travaux/oscar/oscar-2.jpg',
-            'images/travaux/oscar/oscar-3.jpg', 'images/travaux/oscar/oscar-4.jpg',
-            'images/travaux/oscar/oscar-5.jpg', 'images/travaux/oscar/oscar-6.jpg',
-            'images/travaux/oscar/oscar-7.jpg', 'images/travaux/oscar/oscar-8.jpg',
-            'images/travaux/oscar/oscar-9.jpg', 'images/travaux/oscar/oscar-10.jpg'
+            'images/travaux/oscar/oscar-11.jpg', 'images/travaux/oscar/oscar-12.jpg',
+            'images/travaux/oscar/oscar-13.jpg', 'images/travaux/oscar/oscar-14.jpg',
+            'images/travaux/oscar/oscar-15.jpg', 'images/travaux/oscar/oscar-16.jpg',
+            'images/travaux/oscar/oscar-17.jpg'
         ];
         const travauxMembers = [
-            { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]' },
-            { name: 'Tom Lecointre', href: 'travaux/tom-lecointre.html', label: '[ TOM LECOINTRE ]' },
+            { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]', photos: yoonPhotos },
+            { name: 'Tom Lecointre', href: 'travaux/tom-lecointre.html', label: '[ TOM LECOINTRE ]', photos: tomPhotos },
             { name: 'Oscar Dujarrier', href: 'travaux/oscar-dujarrier.html', label: '', photos: oscarPhotos },
             { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '[ WENJIE TONG ]' }
         ];
         let travauxOffset = 0;
 
-        // L'index avance en continu depuis le chargement de la page — il n'est JAMAIS remis
-        // à zéro par la rotation des membres, seule la case cible (et donc ses calques) change.
-        let oscarPhotoIndex = 0;
-        let oscarActiveLayer = 0;
-        let oscarTargetBox = null;
+        // Chaque membre ayant des photos garde son propre état de défilement (index, calque
+        // actif, case cible actuelle) directement sur son objet. L'index avance en continu
+        // depuis le chargement de la page — il n'est JAMAIS remis à zéro par la rotation des
+        // membres, seule la case cible change.
+        travauxMembers.forEach(member => {
+            if (member.photos) {
+                member._photoIndex = 0;
+                member._activeLayer = 0;
+                member._targetBox = null;
+            }
+        });
 
-        function advanceOscarPhoto() {
-            if (!oscarTargetBox) return;
-            const layers = oscarTargetBox.querySelectorAll('.cell-photo-layer');
+        function advanceMemberPhoto(member) {
+            if (!member._targetBox) return;
+            const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
             if (layers.length < 2) return;
-            oscarPhotoIndex = (oscarPhotoIndex + 1) % oscarPhotos.length;
-            const nextIdx = 1 - oscarActiveLayer;
-            layers[nextIdx].style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
+            member._photoIndex = (member._photoIndex + 1) % member.photos.length;
+            const nextIdx = 1 - member._activeLayer;
+            layers[nextIdx].style.backgroundImage = `url('${member.photos[member._photoIndex]}')`;
             layers[nextIdx].classList.add('active');
-            layers[oscarActiveLayer].classList.remove('active');
-            oscarActiveLayer = nextIdx;
+            layers[member._activeLayer].classList.remove('active');
+            member._activeLayer = nextIdx;
         }
-        // Affiche tout de suite l'image en cours sur la case qu'Oscar vient de rejoindre,
-        // sans attendre le prochain tick — sinon la case resterait vide jusqu'à 2.6s.
-        function showOscarPhotoOnCurrentBox() {
-            if (!oscarTargetBox) return;
-            const layers = oscarTargetBox.querySelectorAll('.cell-photo-layer');
+        // Affiche tout de suite l'image en cours sur la case que le membre vient de
+        // rejoindre, sans attendre le prochain tick — sinon la case resterait vide un moment.
+        function showMemberPhotoOnCurrentBox(member) {
+            if (!member._targetBox) return;
+            const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
             if (layers.length < 2) return;
             layers.forEach(l => { l.classList.remove('active'); l.style.backgroundImage = ''; });
-            layers[0].style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
+            layers[0].style.backgroundImage = `url('${member.photos[member._photoIndex]}')`;
             layers[0].classList.add('active');
-            oscarActiveLayer = 0;
+            member._activeLayer = 0;
         }
-        setInterval(advanceOscarPhoto, 2600);
+        travauxMembers.forEach(member => {
+            if (member.photos) setInterval(() => advanceMemberPhoto(member), 2600);
+        });
 
         function rotateTravauxMembers() {
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
@@ -1196,7 +1212,7 @@
             });
 
             setTimeout(() => {
-                oscarTargetBox = null;
+                travauxMembers.forEach(m => { if (m.photos) m._targetBox = null; });
 
                 slots.forEach((slot, i) => {
                     const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
@@ -1205,7 +1221,7 @@
                     const textEl = box.querySelector('.cell-box-text');
                     if (member.photos) {
                         textEl.style.display = 'none';
-                        oscarTargetBox = box;
+                        member._targetBox = box;
                     } else {
                         box.querySelectorAll('.cell-photo-layer').forEach(l => {
                             l.classList.remove('active');
@@ -1216,16 +1232,22 @@
                     }
                     slot.querySelector('.travaux-cell-title').textContent = member.name;
                 });
-                showOscarPhotoOnCurrentBox();
+                travauxMembers.forEach(m => { if (m.photos) showMemberPhotoOnCurrentBox(m); });
 
                 slots.forEach(slot => { slot.style.opacity = '1'; });
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
             }, 420);
         }
-        // Position initiale d'Oscar = travaux-cell-3 (voir le HTML)
-        oscarTargetBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
-        oscarTargetBox.querySelector('.cell-box-text').style.display = 'none';
-        showOscarPhotoOnCurrentBox();
+        // Position initiale (voir le HTML) : Yoon = case 1, Tom = case 2, Oscar = case 3
+        travauxMembers[0]._targetBox = document.querySelector('.travaux-cell-1 .travaux-cell-box');
+        travauxMembers[1]._targetBox = document.querySelector('.travaux-cell-2 .travaux-cell-box');
+        travauxMembers[2]._targetBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
+        travauxMembers.forEach(member => {
+            if (member.photos) {
+                member._targetBox.querySelector('.cell-box-text').style.display = 'none';
+                showMemberPhotoOnCurrentBox(member);
+            }
+        });
         setInterval(rotateTravauxMembers, 8000);
 
         const sections = document.querySelectorAll('.feed-section');
