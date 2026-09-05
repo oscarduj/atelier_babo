@@ -887,7 +887,7 @@
             document.getElementById('perm-block-btn').classList.remove('perm-pressed');
 
             sfx.eyeOpen();
-            animateOpenProgress(0, 1, 3200, () => {
+            animateOpenProgress(0, 1, 4200, () => {
                 startEyeLive();
                 runLoadingSequence();
             });
@@ -899,7 +899,7 @@
         function runLoadingSequence() {
             const statusEl = document.getElementById('eye-status');
             const barEl = document.getElementById('eye-bar');
-            const stepDuration = 950;
+            const stepDuration = 1300;
 
             bootStatuses.forEach((label, i) => {
                 setTimeout(() => {
@@ -911,16 +911,16 @@
 
             setTimeout(() => {
                 sfx.blink();
-                animateOpenProgress(1, 0.1, 480, () => animateOpenProgress(0.1, 1, 480));
+                animateOpenProgress(1, 0.1, 620, () => animateOpenProgress(0.1, 1, 620));
             }, bootStatuses.length * stepDuration * 0.5);
 
             const closeDelay = bootStatuses.length * stepDuration + 700;
             setTimeout(() => {
                 stopEyeLive();
                 sfx.eyeClose();
-                animateOpenProgress(1, 0, 1100, () => {
+                animateOpenProgress(1, 0, 1500, () => {
                     showFakePermissionPopup(() => {
-                        spawnErrorCascade(1700, () => {
+                        spawnErrorCascade(2200, () => {
                             playEyeSwallowAnimation(() => {
                                 setTimeout(revealWordmarkFromCenter, 200);
                             });
@@ -961,6 +961,8 @@
 
         // Cascade dense de fausses fenêtres façon intrusion/piratage, juste avant que le
         // logo n'apparaisse — la page se remplit rapidement avant que tout ne soit absorbé.
+        const fakeErrorTitles = ['ERREUR', 'ALERTE_SYSTÈME', 'ÉCHEC_CRITIQUE', 'SYSTEM_FAILURE', 'INTRUSION'];
+        const fakeErrorButtons = ['FERMER', 'IGNORER', 'REDÉMARRER'];
         const fakeErrorMessages = [
             'root@unknown:~# ACCÈS NON AUTORISÉ', '[ALERTE] INTRUSION DÉTECTÉE — 192.168.4.17',
             'TENTATIVE DE CONNEXION... ÉCHEC', 'root@atelier:~# sudo rm -rf /',
@@ -975,14 +977,28 @@
         function spawnErrorCascade(duration, onDone) {
             const container = document.getElementById('boot-overlay');
             const spawnTimer = setInterval(() => {
+                const title = fakeErrorTitles[Math.floor(Math.random() * fakeErrorTitles.length)];
+                const message = fakeErrorMessages[Math.floor(Math.random() * fakeErrorMessages.length)];
+                const btnLabel = fakeErrorButtons[Math.floor(Math.random() * fakeErrorButtons.length)];
                 const err = document.createElement('div');
                 err.className = 'fake-error-popup';
-                err.innerHTML = fakeErrorMessages[Math.floor(Math.random() * fakeErrorMessages.length)] + '<span class="fake-error-cursor">_</span>';
-                err.style.left = Math.random() * 82 + '%';
-                err.style.top = Math.random() * 82 + '%';
+                err.innerHTML = `
+                    <div class="fake-error-titlebar">
+                        <span class="fake-error-title">${title}</span>
+                        <span class="fake-error-close">×</span>
+                    </div>
+                    <div class="fake-error-body">
+                        <span class="fake-error-icon">×</span>
+                        <span class="fake-error-message">${message}</span>
+                    </div>
+                    <div class="fake-error-actions">
+                        <span class="fake-error-btn">${btnLabel}</span>
+                    </div>`;
+                err.style.left = Math.random() * 78 + '%';
+                err.style.top = Math.random() * 78 + '%';
                 container.appendChild(err);
                 sfx.statusTick();
-            }, 30);
+            }, 34);
 
             setTimeout(() => {
                 clearInterval(spawnTimer);
@@ -999,7 +1015,7 @@
                 const rect = el.getBoundingClientRect();
                 const dx = cx - (rect.left + rect.width / 2);
                 const dy = cy - (rect.top + rect.height / 2);
-                el.style.transition = 'transform 0.55s cubic-bezier(0.6, 0, 1, 0.45), opacity 0.5s ease';
+                el.style.transition = 'transform 0.75s cubic-bezier(0.6, 0, 1, 0.45), opacity 0.65s ease';
                 requestAnimationFrame(() => {
                     el.style.transform = `translate(${dx}px, ${dy}px) scale(0.04)`;
                     el.style.opacity = '0';
@@ -1010,7 +1026,7 @@
             setTimeout(() => {
                 popups.forEach(el => el.remove());
                 if (onDone) onDone();
-            }, 600);
+            }, 800);
         }
 
         // Le mot se matérialise depuis sa lettre centrale, comme s'il émergeait du même point
@@ -1037,7 +1053,7 @@
             let maxDelay = 0;
             spans.forEach((span, i) => {
                 const dist = Math.abs(i - centerIndex);
-                const delay = dist * 55;
+                const delay = dist * 70;
                 maxDelay = Math.max(maxDelay, delay);
                 setTimeout(() => {
                     span.classList.add('wm-visible');
@@ -1045,7 +1061,7 @@
                 }, delay);
             });
 
-            setTimeout(dismissBootOverlay, maxDelay + 1700);
+            setTimeout(dismissBootOverlay, maxDelay + 2100);
         }
 
         function dismissBootOverlay() {
@@ -1072,7 +1088,7 @@
                 gate.classList.add('hidden');
                 wipe.classList.remove('active');
                 playBoot();
-            }, 620);
+            }, 850);
         });
 
         /* ---- Cube 3D réactif du portail ----
