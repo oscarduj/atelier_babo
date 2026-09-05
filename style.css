@@ -644,6 +644,76 @@ h2 { font-size: 1.8rem; }
     background-color: var(--box-bg);
 }
 
+/* --- ENTRÉES DE PROJET (pages individuelles) --- */
+.project-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+}
+.project-entry {
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 2.2rem;
+}
+.project-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.project-entry-head {
+    margin-bottom: 0.9rem;
+}
+.project-entry-head h4 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    color: var(--text-color);
+    margin-bottom: 0.3rem;
+}
+.project-entry-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--secondary-color);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.project-entry p {
+    font-size: 0.92rem;
+    color: var(--desc-color);
+    line-height: 1.65;
+    margin-bottom: 0.9rem;
+}
+.project-entry p:last-child { margin-bottom: 0; }
+.project-entry-sub {
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border-color);
+}
+.project-entry-sub h5 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.5px;
+}
+.project-entry blockquote {
+    font-style: italic;
+    color: var(--text-color);
+    border-left: 2px solid var(--secondary-color);
+    padding-left: 1.2rem;
+    margin: 1.2rem 0;
+    line-height: 1.9;
+    white-space: pre-line;
+    font-size: 0.9rem;
+}
+.project-entry-crossref {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+}
+.project-entry-crossref a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--secondary-color);
+}
+.project-entry-crossref a:hover { opacity: 0.7; }
+
 .contact-links-grid {
     display: flex;
     gap: 1.5rem;
@@ -671,6 +741,9 @@ h2 { font-size: 1.8rem; }
 }
 
 .curation-item {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     border: 1px dashed var(--border-color);
     padding: 1.5rem;
     background-color: var(--box-bg);
