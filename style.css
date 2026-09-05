@@ -35,6 +35,16 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* Les pages individuelles (artistes/collectif) ne sont pas en scroll-snap plein écran
+   comme l'accueil : elles doivent pouvoir défiler normalement, quelle que soit leur
+   longueur — sans cette règle, le body hérité de l'accueil bloque tout défilement dès
+   que le contenu dépasse un écran. */
+body.standalone-page {
+    display: block;
+    height: auto;
+    overflow: visible;
+}
+
 /* --- MENU LATÉRAL --- */
 .side-nav {
     position: fixed; 
@@ -492,15 +502,15 @@ h2 { font-size: 1.8rem; }
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    transition: transform 0.2s ease-out, opacity 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 .travaux-cell:hover {
     z-index: 2;
     position: relative;
 }
 /* Effet "spotlight" : dès que la souris est quelque part sur la grille, les autres
-   cases s'assombrissent légèrement — celle survolée reste à pleine opacité. */
-.travaux-asym-grid:hover .travaux-cell { opacity: 0.55; }
+   cases s'assombrissent — celle survolée reste à pleine opacité. */
+.travaux-asym-grid:hover .travaux-cell { opacity: 0.45; }
 .travaux-asym-grid:hover .travaux-cell:hover { opacity: 1; }
 
 .travaux-cell-box {
@@ -520,7 +530,7 @@ h2 { font-size: 1.8rem; }
     text-align: center;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease-out;
 }
 .travaux-cell:hover .travaux-cell-box {
     border-color: var(--secondary-color);

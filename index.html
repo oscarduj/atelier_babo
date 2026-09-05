@@ -1331,19 +1331,23 @@
             });
         });
 
-        // Inclinaison 3D subtile des blocs Travaux, qui suit la position du curseur —
-        // amplitude volontairement faible (±5°) pour rester discret, pas gadget.
+        // Inclinaison 3D subtile de l'image des blocs Travaux, qui suit la position du
+        // curseur — amplitude volontairement faible (±5°) pour rester discret, pas gadget.
+        // Appliquée à la boîte-image seule (pas à la case entière) : sur le Collectif,
+        // bien plus grand que les autres cases, incliner tout le bloc faisait suffisamment
+        // bouger le texte du dessous pour qu'il chevauche l'image.
         document.querySelectorAll('.travaux-cell').forEach(cell => {
+            const box = cell.querySelector('.travaux-cell-box');
             cell.addEventListener('mousemove', (e) => {
                 const rect = cell.getBoundingClientRect();
                 const px = (e.clientX - rect.left) / rect.width;
                 const py = (e.clientY - rect.top) / rect.height;
                 const rotateY = (px - 0.5) * 10;
                 const rotateX = (0.5 - py) * 10;
-                cell.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.03) translateY(-3px)`;
+                box.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.04)`;
             });
             cell.addEventListener('mouseleave', () => {
-                cell.style.transform = '';
+                box.style.transform = '';
             });
         });
     </script>
