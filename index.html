@@ -1,1284 +1,1351 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
-
-html.dark-mode {
-    --bg-color: #101010;        
-    --text-color: #EAE8E4;      
-    --accent-color: #FFFFFF;    
-    --secondary-color: #A3B1C2; 
-    --border-color: #262626;    
-    --box-bg: rgba(163, 177, 194, 0.01);
-    --desc-color: #999999;
-    --hover-bg: rgba(163, 177, 194, 0.08);
-}
-
-html.light-mode {
-  /* === MODE CLAIR === */
-  --bg-color: #fafafa;           
-  --text-color: #0a0a0a;         
-  --accent-color: #ff6b35;      
-  --secondary-color: #cc5429;    
-  --border-color: #d0d0d0;       
-  --box-bg: #f0f0f0;             
-  --hover-color: #cc5429;        
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body { 
-    background-color: var(--bg-color); 
-    color: var(--text-color); 
-    font-family: 'Space Grotesk', sans-serif; 
-    display: flex; 
-    height: 100vh; 
-    height: 100dvh;
-    overflow: hidden; 
-    transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* --- MENU LATÉRAL --- */
-.side-nav {
-    position: fixed; 
-    top: 0; 
-    left: -240px; 
-    width: 280px; 
-    height: 100vh;
-    height: 100dvh;
-    border-right: 1px solid var(--border-color); 
-    padding: 3rem 2rem;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-between;
-    background-color: var(--bg-color); 
-    z-index: 100;
-    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
-}
-
-.side-nav:hover { 
-    left: 0; 
-}
-
-.side-nav::after {
-    content: ""; 
-    position: absolute; 
-    right: 10px; 
-    top: 50%; 
-    width: 2px; 
-    height: 40px;
-    background-color: var(--secondary-color); 
-    opacity: 0.5;
-}
-
-.hamburger-btn { display: none; }
-
-.nav-top {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.nav-logo { 
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 1.1rem; 
-    color: var(--secondary-color); 
-    letter-spacing: 1px;
-}
-
-.theme-switch {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    background: transparent;
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    padding: 0.5rem 0.8rem;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.3s ease;
-    letter-spacing: 1px;
-    width: fit-content;
-}
-
-.theme-switch:hover {
-    border-color: var(--secondary-color);
-    color: var(--secondary-color);
-    background-color: var(--hover-bg);
-}
-
-.nav-item {
-    font-family: 'Share Tech Mono', monospace; 
-    font-size: 0.95rem; 
-    color: var(--text-color); 
-    opacity: 0.35;
-    text-decoration: none; 
-    text-transform: uppercase; 
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-    display: block; 
-    margin-bottom: 1.5rem;
-    padding: 0.4rem 0.6rem;
-    border-left: 2px solid transparent;
-}
-
-.nav-item:hover {
-    opacity: 0.85;
-    transform: translateX(8px);
-    color: var(--secondary-color);
-}
-
-.nav-item.active { 
-    color: var(--secondary-color) !important; 
-    opacity: 1 !important; 
-    background-color: var(--hover-bg); 
-    border-left: 4px solid var(--secondary-color); 
-    font-weight: 700; 
-    padding-left: 1rem;
-    transform: translateX(10px);
-}
-
-.nav-status {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--desc-color);
-}
-
-/* --- FLUX MAGNÉTIQUE --- */
-.main-feed { 
-    flex: 1; 
-    height: 100vh; 
-    height: 100dvh;
-    overflow-y: scroll; 
-    scroll-snap-type: y mandatory; 
-}
-
-/* --- SECTIONS --- */
-.feed-section {
-    min-height: 100vh; 
-    min-height: 100dvh;
-    padding: 3rem 6rem;
-    border-bottom: 1px solid var(--border-color);
-    display: flex; 
-    flex-direction: column; 
-    justify-content: flex-start;
-    padding-top: 3.5rem;
-    scroll-snap-align: start;
-    opacity: 1; 
-    transition: border-color 0.4s ease;
-}
-
-/* --- STYLE DE LA SECTION ACCUEIL AVEC VIDÉO --- */
-.hero-section-video {
-    position: relative;
-    overflow: hidden;
-    padding: 0 !important;
-}
-
-.hero-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 1.1s ease;
-}
-
-.hero-video.active { opacity: 1; }
-
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 1;
-}
-
-.hero-tag-corner {
-    position: absolute;
-    top: 4.4rem;
-    right: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--secondary-color);
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-}
-
-/* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
-.carousel-nav-zone {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    z-index: 2;
-    cursor: none;
-}
-.carousel-nav-prev { left: 0; }
-.carousel-nav-next { right: 0; }
-
-.carousel-arrow-cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 130px;
-    height: 26px;
-    pointer-events: none;
-    z-index: 250;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease;
-}
-.carousel-arrow-cursor.visible { opacity: 1; }
-.carousel-arrow-cursor.flip { transform: translate(-50%, -50%) scaleX(-1); }
-.carousel-arrow-cursor svg {
-    width: 100%;
-    height: 100%;
-    fill: none;
-    stroke: var(--text-color);
-    stroke-width: 1.4;
-}
-
-/* --- LOGO "DVD" REBONDISSANT --- */
-.dvd-logo {
-    position: absolute;
-    width: clamp(150px, 22vw, 280px);
-    z-index: 3;
-    cursor: pointer;
-    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
-}
-.dvd-logo img {
-    width: 100%;
-    display: block;
-    pointer-events: none;
-}
-.dvd-shatter {
-    position: absolute;
-    z-index: 4;
-    pointer-events: none;
-}
-.dvd-shatter-piece {
-    position: absolute;
-    background-repeat: no-repeat;
-    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
-}
-
-@media (max-width: 900px) {
-    .carousel-arrow-cursor { display: none; }
-    .carousel-nav-zone { cursor: default; }
-}
-
-.carousel-mobile-btn { display: none; }
-@media (max-width: 900px) {
-    .carousel-mobile-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 30%;
-        transform: translateY(-50%);
-        width: 42px;
-        height: 42px;
-        background: rgba(16, 16, 16, 0.55);
-        border: 1px solid rgba(163, 177, 194, 0.4);
-        border-radius: 50%;
-        z-index: 3;
-        color: var(--text-color);
-        padding: 0;
-    }
-    .carousel-mobile-btn svg { width: 18px; height: 18px; }
-    .carousel-mobile-prev { left: 1rem; }
-    .carousel-mobile-next { right: 1rem; }
-}
-
-.carousel-dots {
-    position: absolute;
-    bottom: 1.8rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.6rem;
-    z-index: 3;
-}
-.carousel-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(234, 232, 228, 0.35);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
-}
-.carousel-dot:hover { background: rgba(234, 232, 228, 0.6); }
-.carousel-dot.active {
-    background: #EAE8E4;
-    transform: scale(1.3);
-}
-
-/* --- SOUS-BARRE DE NAVIGATION --- */
-.sub-nav-bar {
-    display: flex;
-    gap: 1.5rem;
-    margin: 1rem 0 1.5rem 0;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.6rem;
-}
-
-.sub-nav-btn {
-    background: transparent;
-    border: none;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--desc-color);
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
-    padding-bottom: 0.2rem;
-}
-
-.sub-nav-btn:hover {
-    color: var(--text-color);
-}
-
-.sub-nav-btn.active {
-    color: var(--secondary-color);
-    border-bottom: 2px solid var(--secondary-color);
-    font-weight: 700;
-}
-
-/* --- CARROUSEL --- */
-.horizontal-scroll-container {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    padding: 1rem 0 2rem 0;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    scrollbar-color: var(--secondary-color) var(--border-color);
-}
-
-.horizontal-scroll-container::-webkit-scrollbar {
-    height: 4px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-thumb {
-    background-color: var(--secondary-color);
-}
-
-.artist-card {
-    min-width: 240px;
-    max-width: 240px;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    scroll-snap-align: start;
-    transition: transform 0.3s ease;
-}
-
-.artist-card:hover {
-    transform: translateY(-5px);
-}
-
-.artist-img-box {
-    height: 280px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    background-color: var(--box-bg);
-    margin-bottom: 0.8rem;
-    transition: border-color 0.3s ease;
-}
-
-.artist-card:hover .artist-img-box {
-    border-color: var(--secondary-color);
-}
-
-.artist-name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-color);
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
-}
-
-.artist-practice {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--desc-color);
-}
-
-/* --- TYPOGRAPHIE & PLACEHOLDERS --- */
-.tag { 
-    font-family: 'Share Tech Mono', monospace; 
-    color: var(--secondary-color); 
-    font-size: 0.75rem; 
-    margin-bottom: 0.4rem; 
-    display: block; 
-    letter-spacing: 0.5px;
-}
-
-h1, h2 { 
-    text-transform: uppercase; 
-    margin-bottom: 0.3rem;
-}
-
-h1 { font-size: 2rem; line-height: 1.1; }
-h2 { font-size: 1.8rem; }
-
-.section-desc {
-    font-size: 0.85rem;
-    color: var(--desc-color);
-    margin-bottom: 1.2rem;
-}
-
-.placeholder-box { 
-    height: 280px; 
-    border: 1px dashed var(--border-color); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--desc-color); 
-    font-family: 'Share Tech Mono', monospace;
-}
-
-/* --- LOGO AGRANDI --- */
-.nav-logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.nav-logo-img {
-    max-width: 380px;
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: opacity 0.3s ease;
-}
-
-.nav-logo-img:hover {
-    opacity: 0.8;
-}
-
-/* --- SECTION TRAVAUX : GRILLE ASYMÉTRIQUE --- */
-.travaux-asym-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 260px 260px 200px;
-    gap: 1.2rem;
-}
-
-/* Collectif : gros bloc 2x2 en haut à gauche, l'ancre visuelle de la page */
-.travaux-cell-collectif { grid-column: 1 / 3; grid-row: 1 / 3; }
-/* Hyunseok et Tom : deux petites cases en haut à droite */
-.travaux-cell-1 { grid-column: 3 / 4; grid-row: 1 / 2; }
-.travaux-cell-2 { grid-column: 4 / 5; grid-row: 1 / 2; }
-/* Oscar : bande large sous les deux petites cases */
-.travaux-cell-3 { grid-column: 3 / 5; grid-row: 2 / 3; }
-/* Wenjie : bande pleine largeur tout en bas */
-.travaux-cell-4 { grid-column: 1 / 5; grid-row: 3 / 4; }
-
-.travaux-cell {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    transition: transform 0.2s ease-out, opacity 0.3s ease;
-}
-.travaux-cell:hover {
-    z-index: 2;
-    position: relative;
-}
-/* Effet "spotlight" : dès que la souris est quelque part sur la grille, les autres
-   cases s'assombrissent légèrement — celle survolée reste à pleine opacité. */
-.travaux-asym-grid:hover .travaux-cell { opacity: 0.55; }
-.travaux-asym-grid:hover .travaux-cell:hover { opacity: 1; }
-
-.travaux-cell-box {
-    flex: 1;
-    min-height: 0;
-    position: relative;
-    overflow: hidden;
-    border: 1px dashed var(--border-color);
-    border-radius: 7px;
-    background-color: var(--box-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--secondary-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    text-align: center;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.travaux-cell:hover .travaux-cell-box {
-    border-color: var(--secondary-color);
-    box-shadow: 0 16px 28px -10px rgba(0, 0, 0, 0.4);
-}
-
-/* Calques de fondu-enchaîné : deux couches superposées, on alterne laquelle est visible
-   pour obtenir un vrai crossfade plutôt qu'un changement brut. Le zoom lent qui
-   accompagne l'image affichée n'est appliqué qu'au Collectif (voir plus bas) — les
-   membres changent de position toutes les 8s, trop vite pour qu'un zoom se voie
-   sans à-coup. */
-.cell-photo-layer {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0;
-    transition: opacity 1.3s ease;
-}
-.cell-photo-layer.active {
-    opacity: 1;
-}
-.travaux-cell-collectif .cell-photo-layer {
-    transition: opacity 1.3s ease, transform 3.8s ease-out;
-}
-.travaux-cell-collectif .cell-photo-layer.active {
-    transform: scale(1.08);
-}
-.cell-box-text {
-    position: relative;
-    z-index: 1;
-}
-
-.travaux-cell-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text-color);
-    text-transform: uppercase;
-}
-.travaux-cell-collectif .travaux-cell-title { font-size: 1.15rem; }
-
-.travaux-cell-sub {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--desc-color);
-    margin-top: 0.1rem;
-}
-
-/* --- PAGES INDIVIDUELLES DES ARTISTES --- */
-.artist-page-container {
-    padding: 4rem 6rem;
-    max-width: 900px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.back-link {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 2rem;
-    transition: opacity 0.3s ease;
-}
-
-.back-link:hover {
-    opacity: 0.7;
-}
-
-.artist-header {
-    margin-bottom: 2.5rem;
-}
-
-.artist-header h1 {
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    color: var(--text-color);
-    margin-top: 0.5rem;
-}
-
-.artist-bio-section, 
-.artist-projects-section, 
-.artist-contact-section {
-    margin-bottom: 2.5rem;
-}
-
-.artist-bio-section h3, 
-.artist-projects-section h3, 
-.artist-contact-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-    letter-spacing: 1px;
-}
-
-.artist-bio-section p {
-    font-size: 1rem;
-    color: var(--desc-color);
-    line-height: 1.6;
-}
-
-.artist-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.artist-img-placeholder {
-    height: 200px;
-    border: 1px dashed var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--desc-color);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    background-color: var(--box-bg);
-}
-
-/* --- ENTRÉES DE PROJET (pages individuelles) --- */
-.project-entries {
-    display: flex;
-    flex-direction: column;
-    gap: 2.2rem;
-}
-.project-entry {
-    border-bottom: 1px dashed var(--border-color);
-    padding-bottom: 2.2rem;
-}
-.project-entry:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-.project-entry-head {
-    margin-bottom: 0.9rem;
-}
-.project-entry-head h4 {
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    color: var(--text-color);
-    margin-bottom: 0.3rem;
-}
-.project-entry-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--secondary-color);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-.project-entry p {
-    font-size: 0.92rem;
-    color: var(--desc-color);
-    line-height: 1.65;
-    margin-bottom: 0.9rem;
-}
-.project-entry p:last-child { margin-bottom: 0; }
-.project-entry-sub {
-    margin: 1rem 0;
-    padding-left: 1rem;
-    border-left: 2px solid var(--border-color);
-}
-.project-entry-sub h5 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    color: var(--secondary-color);
-    margin-bottom: 0.3rem;
-    letter-spacing: 0.5px;
-}
-.project-entry blockquote {
-    font-style: italic;
-    color: var(--text-color);
-    border-left: 2px solid var(--secondary-color);
-    padding-left: 1.2rem;
-    margin: 1.2rem 0;
-    line-height: 1.9;
-    white-space: pre-line;
-    font-size: 0.9rem;
-}
-.project-entry-crossref {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-}
-.project-entry-crossref a {
-    color: var(--secondary-color);
-    text-decoration: none;
-    border-bottom: 1px solid var(--secondary-color);
-}
-.project-entry-crossref a:hover { opacity: 0.7; }
-
-.contact-links-grid {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.contact-btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    border-bottom: 1px solid var(--secondary-color);
-    padding-bottom: 0.2rem;
-    transition: opacity 0.3s ease;
-}
-
-.contact-btn:hover {
-    opacity: 0.7;
-}
-
-/* --- CURATION --- */
-.curation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.curation-item {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    border: 1px dashed var(--border-color);
-    padding: 1.5rem;
-    background-color: var(--box-bg);
-    transition: border-color 0.3s ease;
-}
-
-.curation-item:hover {
-    border-color: var(--secondary-color);
-}
-
-.curation-item .curation-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: block;
-    margin-bottom: 0.6rem;
-}
-
-.curation-item h4 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    margin-bottom: 0.6rem;
-    color: var(--text-color);
-}
-
-.curation-item p {
-    font-size: 0.85rem;
-    color: var(--desc-color);
-    line-height: 1.5;
-}
-
-/* --- STRUCTURES / MÉCÈNES --- */
-.partners-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.2rem;
-}
-
-.partner-card {
-    border: 1px dashed var(--border-color);
-    padding: 1.2rem;
-    background-color: var(--box-bg);
-    transition: border-color 0.3s ease;
-}
-
-.partner-card:hover {
-    border-color: var(--secondary-color);
-}
-
-.partner-name {
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-color);
-    margin-bottom: 0.3rem;
-}
-
-.partner-type {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--desc-color);
-    text-transform: uppercase;
-}
-
-/* --- EXPOS --- */
-.expo-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.expo-item {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
-}
-
-.expo-date {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--secondary-color);
-    min-width: 110px;
-    letter-spacing: 0.5px;
-}
-
-.expo-info h4 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    color: var(--text-color);
-    margin-bottom: 0.2rem;
-}
-
-.expo-info p {
-    font-size: 0.8rem;
-    color: var(--desc-color);
-}
-
-.expo-status {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    color: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
-    padding: 0.15rem 0.5rem;
-    margin-left: auto;
-    height: fit-content;
-    white-space: nowrap;
-}
-
-/* --- SOUTIEN --- */
-.soutien-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.2rem;
-    margin-bottom: 1.5rem;
-}
-
-.soutien-card {
-    border: 1px dashed var(--border-color);
-    padding: 1.5rem;
-    background-color: var(--box-bg);
-}
-
-.soutien-card h4 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    color: var(--secondary-color);
-    margin-bottom: 0.6rem;
-}
-
-.soutien-card p {
-    font-size: 0.85rem;
-    color: var(--desc-color);
-    line-height: 1.5;
-    margin-bottom: 1rem;
-}
-
-/* --- CONTACT --- */
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-.contact-info-block {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.contact-info-block .info-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 0.2rem;
-}
-
-.contact-info-block .info-value {
-    font-size: 0.9rem;
-    color: var(--text-color);
-}
-
-@media (max-width: 900px) {
-    body { overflow-y: auto; height: auto; flex-direction: column; }
-
-    /* Bouton hamburger — toujours visible, seul point d'entrée du menu sur mobile */
-    .hamburger-btn {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 5px;
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        width: 34px;
-        height: 34px;
-        background-color: var(--bg-color);
-        border: 1px solid var(--border-color);
-        cursor: pointer;
-        z-index: 210;
-        padding: 0;
-    }
-    .hamburger-btn span {
-        display: block;
-        width: 18px;
-        height: 2px;
-        margin: 0 auto;
-        background-color: var(--text-color);
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
-    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Le menu reste replié (hors écran) tant qu'on n'a pas ouvert le hamburger */
-    .side-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: auto;
-        max-height: 88vh;
-        overflow-y: auto;
-        padding: 4.5rem 1.5rem 1.5rem;
-        transform: translateY(-100%);
-        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
-        z-index: 205;
-    }
-    .side-nav.menu-open {
-        transform: translateY(0);
-    }
-    .side-nav::after { display: none; }
-    .nav-top { flex-wrap: wrap; gap: 0.6rem; }
-    .nav-links {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.3rem 1rem;
-    }
-    .nav-item {
-        margin-bottom: 0;
-        font-size: 0.8rem;
-    }
-    .nav-item:hover,
-    .nav-item.active {
-        transform: none;
-    }
-
-    /* Les sections s'adaptent à leur contenu au lieu d'être bloquées à 100vh */
-    .main-feed { height: auto; overflow: visible; }
-    .feed-section {
-        height: auto;
-        min-height: 100vh;
-        min-height: 100dvh;
-        padding: 2.5rem 1.25rem;
-    }
-
-    /* La grille asymétrique redevient une simple colonne — les spans n'ont plus de sens ici */
-    .travaux-asym-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: none;
-        gap: 1rem;
-    }
-    .travaux-cell-collectif,
-    .travaux-cell-1,
-    .travaux-cell-2,
-    .travaux-cell-3,
-    .travaux-cell-4 {
-        grid-column: 1 / 2;
-        grid-row: auto;
-    }
-    .travaux-cell-box { min-height: 240px; }
-
-    .artist-page-container { padding: 2rem; }
-    .contact-grid { grid-template-columns: 1fr; }
-    .expo-item { flex-direction: column; }
-    .expo-status { margin-left: 0; }
-}
-
-@media (max-width: 480px) {
-    .nav-links { grid-template-columns: 1fr; }
-}
-
-/* ============================================================
-   SYSTÈME DE BOOT — écran d'entrée (portail, œil, popup, logo)
-   Volontairement en couleurs fixes (pas de var(--...)) : cette
-   séquence se joue avant tout choix de thème par le visiteur.
-   ============================================================ */
-.boot-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 500;
-    background: #101010;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    overflow: hidden;
-    transition: opacity 0.9s ease;
-}
-.boot-overlay.dismissed {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.sound-toggle {
-    position: fixed;
-    top: 1.2rem;
-    right: 1.2rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    background: rgba(16, 16, 16, 0.72);
-    border: 1px solid #333333;
-    color: #999999;
-    padding: 0.5rem 0.8rem;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    border-radius: 3px;
-    z-index: 600;
-    transition: color 0.25s ease, border-color 0.25s ease;
-}
-.sound-toggle:hover { color: #EAE8E4; border-color: #4a4a4a; }
-.sound-toggle.is-off { color: #555555; }
-
-/* Portail d'entrée — carré noir sur fond blanc, à cliquer pour lancer le boot */
-.boot-gate {
-    position: absolute;
-    inset: 0;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 30;
-    cursor: pointer;
-    transition: opacity 0.6s ease;
-}
-.boot-gate.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-.boot-gate-square {
-    position: relative;
-    width: clamp(50px, 12vw, 100px);
-    aspect-ratio: 1 / 1;
-    background: #000000;
-    transition: transform 0.25s ease;
-    animation: square-breathe 3.4s ease-in-out infinite;
-}
-.boot-gate:hover .boot-gate-square { transform: scale(1.08); }
-
-/* Halo large en dégradé, porté par un pseudo-élément pour ne pas entrer en
-   conflit avec le transform du survol. C'est lui qui donne le gros de l'effet. */
-.boot-gate-square::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 620%;
-    height: 620%;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle,
-        rgba(0, 0, 0, 0.40) 0%,
-        rgba(0, 0, 0, 0.22) 26%,
-        rgba(0, 0, 0, 0.09) 48%,
-        rgba(0, 0, 0, 0) 70%);
-    pointer-events: none;
-    z-index: -1;
-    animation: halo-breathe 3.4s ease-in-out infinite;
-}
-
-/* Aura sombre qui pulse autour du carré, comme une respiration */
-@keyframes square-breathe {
-    0%, 100% {
-        box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.42),
-                    0 0 70px 26px rgba(0, 0, 0, 0.22),
-                    0 0 130px 48px rgba(0, 0, 0, 0.10);
-    }
-    50% {
-        box-shadow: 0 0 62px 24px rgba(0, 0, 0, 0.62),
-                    0 0 125px 52px rgba(0, 0, 0, 0.34),
-                    0 0 230px 90px rgba(0, 0, 0, 0.17);
-    }
-}
-
-/* Le halo respire en décalé du carré : il gonfle un peu plus lentement,
-   ce qui évite l'effet "clignotement" et donne un souffle plus organique. */
-@keyframes halo-breathe {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(0.82);
-        opacity: 0.55;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.18);
-        opacity: 1;
-    }
-}
-
-/* Oeil organique en caractères */
-.eye-wrap {
-    width: min(98vw, 820px);
-    margin: 0 auto 1.5rem;
-    position: relative;
-}
-#eye-grid {
-    display: grid;
-    grid-template-columns: repeat(54, 1fr);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(7px, 1.55vw, 13px);
-    line-height: 1.05;
-    user-select: none;
-    position: relative;
-}
-.eye-cell {
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-.eye-cell.lit { opacity: 1; }
-.eye-cell.band-sclera { color: #52585d; }
-.eye-cell.band-iris { color: #A3B1C2; }
-
-.eye-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    white-space: nowrap;
-}
-.eye-screen.visible { opacity: 1; }
-.eye-status {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.6rem, 1.7vw, 0.85rem);
-    color: #EAE8E4;
-    letter-spacing: 1px;
-    margin-bottom: 0.35rem;
-}
-.eye-bar {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.6rem, 1.7vw, 0.85rem);
-    color: #A3B1C2;
-    letter-spacing: 1px;
-}
-
-/* Logo qui se matérialise depuis le centre */
-#boot-overlay .wordmark {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(1.8rem, 6vw, 4rem);
-    letter-spacing: 2px;
-    margin-top: 0.5rem;
-}
-#boot-overlay .wm-char {
-    display: inline-block;
-    opacity: 0;
-    transform: scale(0.15);
-    filter: blur(3px);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
-}
-#boot-overlay .wm-char.wm-visible {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-}
-#boot-overlay .cursor {
-    display: inline-block;
-    width: 0.5em;
-    background: #A3B1C2;
-    animation: boot-cursor-blink 1s steps(1) infinite;
-}
-@keyframes boot-cursor-blink { 50% { opacity: 0; } }
-
-/* Faux popup de permission caméra/micro — purement décoratif */
-.perm-popup {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -10px);
-    width: min(86vw, 300px);
-    background: #161616;
-    border: 1px solid #333333;
-    border-radius: 6px;
-    padding: 1rem 1.1rem;
-    z-index: 5;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-    text-align: left;
-}
-.perm-popup.visible { opacity: 1; transform: translate(-50%, 0); }
-.perm-header { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.6rem; }
-.perm-dot { width: 7px; height: 7px; border-radius: 50%; background: #A3B1C2; flex-shrink: 0; }
-.perm-url {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: #999999;
-    letter-spacing: 0.5px;
-}
-.perm-message {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.85rem;
-    color: #EAE8E4;
-    margin-bottom: 0.7rem;
-}
-.perm-items { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
-.perm-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: #A3B1C2;
-}
-.perm-icon { width: 15px; height: 15px; flex-shrink: 0; }
-.perm-actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
-.perm-btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.5px;
-    background: transparent;
-    border: 1px solid #333333;
-    color: #999999;
-    padding: 0.4rem 0.8rem;
-    border-radius: 3px;
-    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-.perm-btn.perm-allow { color: #EAE8E4; border-color: #4a4a4a; }
-.perm-btn.perm-allow.perm-pressed {
-    background: #A3B1C2;
-    color: #101010;
-    border-color: #A3B1C2;
-}
-.perm-granted-msg {
-    display: none;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: #A3B1C2;
-    letter-spacing: 1.5px;
-    text-align: center;
-    padding: 0.4rem 0;
-}
-.perm-popup.granted .perm-message,
-.perm-popup.granted .perm-items,
-.perm-popup.granted .perm-actions { display: none; }
-.perm-popup.granted .perm-granted-msg { display: block; }
-
-@media (max-width: 480px) {
-    .eye-status, .eye-bar { letter-spacing: 0.5px; }
-    .sound-toggle { top: 0.8rem; right: 0.8rem; font-size: 0.65rem; padding: 0.4rem 0.6rem; }
-}
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER BABO // COLLECTIF</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
+
+    <div class="boot-overlay" id="boot-overlay">
+        <div class="boot-gate" id="boot-gate">
+            <div class="boot-gate-square"></div>
+        </div>
+
+        <div class="perm-popup" id="perm-popup">
+            <div class="perm-header">
+                <span class="perm-dot"></span>
+                <span class="perm-url">atelierbabo.fr</span>
+            </div>
+            <p class="perm-message">souhaite accéder à :</p>
+            <div class="perm-items">
+                <div class="perm-item">
+                    <svg class="perm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="14" height="12" rx="2"/><path d="M17 10l4-2v9l-4-2"/><circle cx="10" cy="13" r="3"/></svg>
+                    Caméra
+                </div>
+                <div class="perm-item">
+                    <svg class="perm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
+                    Microphone
+                </div>
+            </div>
+            <div class="perm-actions">
+                <button class="perm-btn perm-block" type="button">Bloquer</button>
+                <button class="perm-btn perm-allow" id="perm-allow-btn" type="button">Autoriser</button>
+            </div>
+            <p class="perm-granted-msg">ACCÈS ACCORDÉ</p>
+        </div>
+
+        <div class="eye-wrap" id="eye-wrap">
+            <div id="eye-grid"></div>
+            <div class="eye-screen" id="eye-screen">
+                <div class="eye-status" id="eye-status">INIT</div>
+                <div class="eye-bar" id="eye-bar">[------------]</div>
+            </div>
+        </div>
+        <div class="wordmark" id="boot-wordmark"></div>
+    </div>
+
+    <button class="hamburger-btn" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <header class="side-nav" id="side-nav">
+        <div class="nav-top">
+            <div class="nav-logo">ATELIER_BABO</div>
+            <button id="theme-toggle" class="theme-switch">MODE: <span id="theme-text">NUIT</span></button>
+            <button id="ambient-toggle" class="theme-switch">AMBIANCE: <span id="ambient-text">OFF</span></button>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="#accueil" class="nav-item active" data-target="accueil">01. ACCUEIL</a>
+            <a href="#travaux" class="nav-item" data-target="travaux">02. TRAVAUX</a>
+            <a href="#curation" class="nav-item" data-target="curation">03. CURATION</a>
+            <a href="#collaborateurs" class="nav-item" data-target="collaborateurs">04. COLLABORATEURS</a>
+            <a href="#expos" class="nav-item" data-target="expos">05. EXPOS</a>
+            <a href="#soutien" class="nav-item" data-target="soutien">06. SOUTIEN</a>
+            <a href="#contact" class="nav-item" data-target="contact">07. CONTACT</a>
+        </nav>
+        
+        <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
+    </header>
+
+    <main class="main-feed">
+        <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
+        <section id="accueil" class="feed-section active hero-section-video">
+            <div class="hero-video-carousel" id="hero-carousel">
+                <video class="hero-video active" autoplay muted loop playsinline data-index="0">
+                    <source src="videos/accueil/fond-accueil.mp4" type="video/mp4">
+                </video>
+                <video class="hero-video" autoplay muted loop playsinline data-index="1">
+                    <source src="videos/accueil/fond-accueil-2.mp4" type="video/mp4">
+                </video>
+                <video class="hero-video" autoplay muted loop playsinline data-index="2">
+                    <source src="videos/accueil/fond-accueil-3.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="video-overlay"></div>
+
+            <div class="carousel-nav-zone carousel-nav-prev" id="carousel-prev"></div>
+            <div class="carousel-nav-zone carousel-nav-next" id="carousel-next"></div>
+            <div class="carousel-arrow-cursor" id="carousel-arrow">
+                <svg viewBox="0 0 130 26"><line x1="2" y1="13" x2="112" y2="13"/><path d="M95 2 L120 13 L95 24"/></svg>
+            </div>
+
+            <button class="carousel-mobile-btn carousel-mobile-prev" id="carousel-mobile-prev" type="button" aria-label="Vidéo précédente">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="carousel-mobile-btn carousel-mobile-next" id="carousel-mobile-next" type="button" aria-label="Vidéo suivante">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <div class="carousel-dots" id="carousel-dots"></div>
+
+            <div class="hero-tag-corner">// ACCUEIL</div>
+
+            <div class="dvd-logo" id="dvd-logo">
+                <img src="images/accueil/Logo.png" alt="ATELIER BABO">
+            </div>
+        </section>
+
+        <!-- 02. TRAVAUX -->
+        <section id="travaux" class="feed-section">
+            <div class="section-content" style="width: 100%;">
+                <span class="tag">ARCHIVE // PROJETS</span>
+                <h2>TRAVAUX</h2>
+                <p class="section-desc">Projets collectifs et recherches individuelles des membres.</p>
+
+                <div class="travaux-asym-grid">
+                    <a href="travaux/collectif.html" class="travaux-cell travaux-cell-collectif">
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ PROJETS DU COLLECTIF ATELIER BABO ]</span>
+                        </div>
+                        <span class="travaux-cell-title">Collectif</span>
+                        <span class="travaux-cell-sub">Voir les créations et installations communes</span>
+                    </a>
+                    <a href="travaux/hyunseok-yoon.html" class="travaux-cell travaux-cell-1">
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ HYUNSEOK YOON ]</span>
+                        </div>
+                        <span class="travaux-cell-title">Hyunseok Yoon</span>
+                    </a>
+                    <a href="travaux/tom-lecointre.html" class="travaux-cell travaux-cell-2">
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ TOM LECOINTRE ]</span>
+                        </div>
+                        <span class="travaux-cell-title">Tom Lecointre</span>
+                    </a>
+                    <a href="travaux/oscar-dujarrier.html" class="travaux-cell travaux-cell-3">
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ OSCAR DUJARRIER ]</span>
+                        </div>
+                        <span class="travaux-cell-title">Oscar Dujarrier</span>
+                    </a>
+                    <a href="travaux/wenjie-tong.html" class="travaux-cell travaux-cell-4">
+                        <div class="travaux-cell-box">
+                            <div class="cell-photo-layer"></div>
+                            <div class="cell-photo-layer"></div>
+                            <span class="cell-box-text">[ WENJIE TONG ]</span>
+                        </div>
+                        <span class="travaux-cell-title">Wenjie Tong</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. CURATION -->
+        <section id="curation" class="feed-section">
+            <div class="section-content">
+                <span class="tag">PENSÉE // RECHERCHE</span>
+                <h2>CURATION</h2>
+                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
+                <div class="curation-grid">
+                    <a href="travaux/collectif.html" class="curation-item">
+                        <span class="curation-tag">INSTALLATION // ENTRE ERREUR, CENSURE ET IMAGINATION</span>
+                        <h4>L'esthétique du raté</h4>
+                        <p>Plutôt qu'une vision stable du monde, les images générées par IA révèlent leurs propres instabilités — erreurs, censures, distorsions. Une esthétique du contournement où l'imaginaire surgit là où la représentation échoue.</p>
+                    </a>
+                    <a href="travaux/oscar-dujarrier.html" class="curation-item">
+                        <span class="curation-tag">RECHERCHE // BABOSPHERE</span>
+                        <h4>Le vivant réduit en données</h4>
+                        <p>Scan, analyse, reproduction : à mesure que le vivant devient une suite d'informations exploitables, il risque de perdre sa complexité et sa part d'inconnu — une réflexion post-humaniste sur la matière transformée en objet calculable.</p>
+                    </a>
+                    <a href="travaux/collectif.html" class="curation-item">
+                        <span class="curation-tag">INSTALLATION SONORE // EAURACLE</span>
+                        <h4>Écouter la disparition</h4>
+                        <p>Inspirée de Bachelard, Héraclite et Coccia, une installation qui donne une voix à ce qui ne parle pas — l'eau comme matière de résonance, de métamorphose et de disparition.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. COLLABORATEURS -->
+        <section id="collaborateurs" class="feed-section">
+            <div class="section-content" style="width: 100%;">
+                <span class="tag">RÉSEAU // IMPLICATION</span>
+                <h2>COLLABORATEURS</h2>
+                
+                <div class="sub-nav-bar">
+                    <button class="sub-nav-btn active" data-cat="artistes">ARTISTES</button>
+                    <button class="sub-nav-btn" data-cat="structures">STRUCTURES</button>
+                    <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
+                </div>
+
+                <div id="cat-artistes" class="collab-category-content active">
+                    <p class="section-desc">Glissez vers la droite pour découvrir les artistes du collectif.</p>
+                    <div class="horizontal-scroll-container">
+                        <a href="artistes/goshe.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE G0SHE ]</div>
+                            <span class="artist-name">g0she</span>
+                            <span class="artist-practice">Arts Numériques</span>
+                        </a>
+                        <a href="artistes/nino.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE NINO ]</div>
+                            <span class="artist-name">Nino</span>
+                            <span class="artist-practice">Plastique & Son</span>
+                        </a>
+                        <a href="artistes/quidenovie.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE QUIDENOVIE ]</div>
+                            <span class="artist-name">quideNovie</span>
+                            <span class="artist-practice">Recherche & Code</span>
+                        </a>
+                        <a href="artistes/collectif-naif.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE COLLECTIF NAÏF ]</div>
+                            <span class="artist-name">collectif naïf</span>
+                            <span class="artist-practice">Création Collaborative</span>
+                        </a>
+                        <a href="artistes/hugo-denise.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE HUGO DENISE ]</div>
+                            <span class="artist-name">Hugo Denise</span>
+                            <span class="artist-practice">Installation & Matière</span>
+                        </a>
+                        <a href="artistes/leon-chotard.html" class="artist-card">
+                            <div class="artist-img-box">[ IMAGE LÉON CHOTARD ]</div>
+                            <span class="artist-name">Léon Chotard</span>
+                            <span class="artist-practice">Génératif & Visuel</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="cat-structures" class="collab-category-content" style="display: none;">
+                    <p class="section-desc">Partenaires institutionnels, galeries et espaces de diffusion.</p>
+                    <div class="partners-grid">
+                        <div class="partner-card">
+                            <div class="partner-name">La Gaîté Lyrique</div>
+                            <div class="partner-type">Lieu de diffusion</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="partner-name">École Nationale Supérieure d'Art</div>
+                            <div class="partner-type">Établissement partenaire</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="partner-name">Collectif Point Ligne Plan</div>
+                            <div class="partner-type">Résidence & recherche</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="partner-name">Fab Lab Local</div>
+                            <div class="partner-type">Espace technique</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cat-mecenes" class="collab-category-content" style="display: none;">
+                    <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
+                    <div class="partners-grid">
+                        <div class="partner-card">
+                            <div class="partner-name">Fondation des Arts Numériques</div>
+                            <div class="partner-type">Grand mécène</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="partner-name">Cercle des Amis d'Atelier Babo</div>
+                            <div class="partner-type">Soutien récurrent</div>
+                        </div>
+                        <div class="partner-card">
+                            <div class="partner-name">Donateurs individuels</div>
+                            <div class="partner-type">Contribution ponctuelle</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. EXPOS -->
+        <section id="expos" class="feed-section">
+            <div class="section-content" style="width: 100%;">
+                <span class="tag">ESPACE // TEMPOREL</span>
+                <h2>EXPOS</h2>
+                <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
+                <div class="expo-list">
+                    <div class="expo-item">
+                        <span class="expo-date">2026</span>
+                        <div class="expo-info">
+                            <h4>DNSEP — Diplôme national supérieur d'expression plastique</h4>
+                            <p>Présentation des versions finales de Babosphere, Eauracle et Signal Faible : perturbation du visible.</p>
+                        </div>
+                        <span class="expo-status">À venir</span>
+                    </div>
+                    <div class="expo-item">
+                        <span class="expo-date">2026</span>
+                        <div class="expo-info">
+                            <h4>Un possible d'images encore… — ésadhar, Rouen</h4>
+                            <p>Exposition collective imaginée par Jason Karaïndros (projet Fenêtre sur rue), réunissant 17 étudiant·es de l'ésadhar. Atelier Babo y présentait Signal Faible : perturbation du visible 2.0.</p>
+                        </div>
+                        <span class="expo-status">Archivé</span>
+                    </div>
+                    <div class="expo-item">
+                        <span class="expo-date">2025</span>
+                        <div class="expo-info">
+                            <h4>Journée portes ouvertes — Babosphere Beta 1.5</h4>
+                            <p>Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l'espace.</p>
+                        </div>
+                        <span class="expo-status">Archivé</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06. SOUTIEN -->
+        <section id="soutien" class="feed-section">
+            <div class="section-content">
+                <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
+                <h2>SOUTIEN</h2>
+                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
+                <div class="soutien-grid">
+                    <div class="soutien-card">
+                        <h4>Don ponctuel</h4>
+                        <p>Contribuer librement au financement des projets et du matériel du collectif.</p>
+                        <a href="#" class="contact-btn">FAIRE UN DON</a>
+                    </div>
+                    <div class="soutien-card">
+                        <h4>Adhésion</h4>
+                        <p>Rejoindre le cercle des soutiens réguliers et suivre les avancées du collectif.</p>
+                        <a href="#" class="contact-btn">DEVENIR MEMBRE</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 07. CONTACT -->
+        <section id="contact" class="feed-section">
+            <div class="section-content" style="width: 100%;">
+                <span class="tag">CONNEXION // RÉSEAU</span>
+                <h2>CONTACT</h2>
+                <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
+                <div class="contact-grid">
+                    <div class="contact-info-block">
+                        <div>
+                            <span class="info-label">Email</span>
+                            <span class="info-value">contact@atelierbabo.fr</span>
+                        </div>
+                        <div>
+                            <span class="info-label">Localisation</span>
+                            <span class="info-value">Paris, France</span>
+                        </div>
+                        <div>
+                            <span class="info-label">Réseaux</span>
+                            <div class="contact-links-grid" style="margin-top: 0.4rem;">
+                                <a href="https://instagram.com" target="_blank" class="contact-btn">INSTAGRAM</a>
+                                <a href="mailto:contact@atelierbabo.fr" class="contact-btn">EMAIL</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-info-block">
+                        <span class="info-label">Soumettre un projet</span>
+                        <p class="section-desc" style="margin-bottom: 0.5rem;">Décrivez votre projet et vos disponibilités, nous reviendrons vers vous rapidement.</p>
+                        <a href="mailto:contact@atelierbabo.fr?subject=Proposition%20de%20projet" class="contact-btn">ENVOYER UN EMAIL</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        /* ============ SYSTÈME DE BOOT — ÉCRAN D'ENTRÉE ============ */
+
+        /* ---- Moteur sonore (sons générés, aucun fichier audio) ---- */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (!Ctx) return null;
+                audioCtx = new Ctx();
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+        // Les navigateurs bloquent l'audio tant qu'aucune interaction n'a eu lieu :
+        // on débloque le contexte dès le premier clic ou toucher, silencieusement.
+        function unlockAudioOnce() {
+            getAudioCtx();
+            document.removeEventListener('click', unlockAudioOnce);
+            document.removeEventListener('touchstart', unlockAudioOnce);
+        }
+        document.addEventListener('click', unlockAudioOnce);
+        document.addEventListener('touchstart', unlockAudioOnce);
+
+        function playTone(freq, duration, type, startGain, freqEnd) {
+            if (!soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            try {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                if (freqEnd) osc.frequency.linearRampToValueAtTime(freqEnd, ctx.currentTime + duration);
+                gain.gain.setValueAtTime(startGain || 0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) { /* audio indisponible : on ignore sans casser la page */ }
+        }
+
+        // Clic bruité et filtré — un craquement sec, pas une note mélodique de jeu vidéo.
+        function playClick(duration, gain, filterFreq, q) {
+            if (!soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            try {
+                const size = Math.max(1, Math.floor(ctx.sampleRate * duration));
+                const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < size; i++) {
+                    data[i] = (Math.random() * 2 - 1) * (1 - i / size);
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = filterFreq || 2500;
+                filter.Q.value = q || 1.4;
+                const g = ctx.createGain();
+                g.gain.value = gain || 0.05;
+                noise.connect(filter);
+                filter.connect(g);
+                g.connect(ctx.destination);
+                noise.start();
+            } catch (e) { /* ignore */ }
+        }
+
+        // Nappe grave désaccordée (léger battement), pulsée par une modulation carrée pour un
+        // grain numérique — démarre une fois l'accès "accordé" par le faux popup.
+        let drone = null;
+        function startDrone() {
+            if (!soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx || drone) return;
+            try {
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                osc1.type = 'sine'; osc2.type = 'sine';
+                osc1.frequency.value = 55;
+                osc2.frequency.value = 55 * 1.008;
+                const lfo = ctx.createOscillator();
+                lfo.type = 'square';
+                lfo.frequency.value = 5.5;
+                const lfoGain = ctx.createGain();
+                lfoGain.gain.value = 0.012;
+                lfo.connect(lfoGain);
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.045, ctx.currentTime + 1.2);
+                lfoGain.connect(gain.gain);
+                osc1.connect(gain); osc2.connect(gain);
+                gain.connect(ctx.destination);
+                osc1.start(); osc2.start(); lfo.start();
+                drone = { osc1, osc2, lfo, gain };
+            } catch (e) { /* ignore */ }
+        }
+        function stopDrone(fadeSec) {
+            if (!drone) return;
+            const ctx = getAudioCtx();
+            const fade = fadeSec || 0.8;
+            try {
+                drone.gain.gain.cancelScheduledValues(ctx.currentTime);
+                drone.gain.gain.setValueAtTime(drone.gain.gain.value, ctx.currentTime);
+                drone.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + fade);
+                drone.osc1.stop(ctx.currentTime + fade + 0.05);
+                drone.osc2.stop(ctx.currentTime + fade + 0.05);
+                drone.lfo.stop(ctx.currentTime + fade + 0.05);
+            } catch (e) { /* ignore */ }
+            drone = null;
+        }
+
+        /* ---- Ambiance générative (style Aphex Twin / Pure Data) ----
+           Nappe désaccordée + texture de bruit filtré qui évolue lentement +
+           notes éparses aléatoires + reverb "faite main" à base de delay avec
+           feedback (une brique de base classique en Pure Data, pas de fichier
+           audio ni d'impulse response : tout est généré). */
+        let ambient = null;
+        let ambientPlaying = false;
+
+        function startAmbient() {
+            if (ambientPlaying) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            ambientPlaying = true;
+            try {
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0, ctx.currentTime);
+                master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 3.5);
+                master.connect(ctx.destination);
+
+                // Reverb maison : delay + feedback + filtre dans la boucle
+                const delay = ctx.createDelay(2);
+                delay.delayTime.value = 0.46;
+                const feedback = ctx.createGain();
+                feedback.gain.value = 0.4;
+                const delayFilter = ctx.createBiquadFilter();
+                delayFilter.type = 'lowpass';
+                delayFilter.frequency.value = 2200;
+                delay.connect(delayFilter);
+                delayFilter.connect(feedback);
+                feedback.connect(delay);
+                delay.connect(master);
+
+                // Nappe : cluster de 4 voix légèrement désaccordées
+                const padFreqs = [65.41, 98.0, 130.81, 164.81];
+                const padOscs = padFreqs.map(f => {
+                    const osc = ctx.createOscillator();
+                    osc.type = 'sine';
+                    osc.frequency.value = f * (1 + (Math.random() - 0.5) * 0.006);
+                    const g = ctx.createGain();
+                    g.gain.value = 0.035;
+                    osc.connect(g); g.connect(master); g.connect(delay);
+                    osc.start();
+                    return { osc, g };
+                });
+
+                // Texture de bruit filtré, dont la fréquence de coupure dérive lentement
+                const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
+                const noiseData = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < noiseData.length; i++) noiseData[i] = Math.random() * 2 - 1;
+                const noiseSrc = ctx.createBufferSource();
+                noiseSrc.buffer = noiseBuffer;
+                noiseSrc.loop = true;
+                const noiseFilter = ctx.createBiquadFilter();
+                noiseFilter.type = 'bandpass';
+                noiseFilter.frequency.value = 700;
+                noiseFilter.Q.value = 0.7;
+                const noiseGain = ctx.createGain();
+                noiseGain.gain.value = 0.015;
+                noiseSrc.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(master);
+                noiseSrc.start();
+
+                let lfoPhase = Math.random() * 10;
+                let noiseLfoRaf;
+                function driftNoiseFilter() {
+                    if (!ambientPlaying) return;
+                    lfoPhase += 0.0025;
+                    noiseFilter.frequency.value = 480 + Math.sin(lfoPhase) * 320 + Math.sin(lfoPhase * 0.37) * 160;
+                    noiseLfoRaf = requestAnimationFrame(driftNoiseFilter);
+                }
+                driftNoiseFilter();
+
+                // Notes éparses, aléatoires, sur une gamme ouverte — fragments mélodiques rares
+                const scale = [261.6, 293.7, 349.2, 392.0, 440.0, 523.2, 587.3];
+                let noteTimer = null;
+                function scheduleNote() {
+                    if (!ambientPlaying) return;
+                    noteTimer = setTimeout(() => {
+                        const freq = scale[Math.floor(Math.random() * scale.length)] * (Math.random() < 0.3 ? 0.5 : 1);
+                        const osc = ctx.createOscillator();
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        const g = ctx.createGain();
+                        g.gain.setValueAtTime(0, ctx.currentTime);
+                        g.gain.linearRampToValueAtTime(0.045, ctx.currentTime + 0.6);
+                        g.gain.linearRampToValueAtTime(0, ctx.currentTime + 3.4);
+                        osc.connect(g); g.connect(master); g.connect(delay);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 3.5);
+                        scheduleNote();
+                    }, 2600 + Math.random() * 5200);
+                }
+                scheduleNote();
+
+                ambient = { master, padOscs, noiseSrc, getNoteTimer: () => noteTimer, cancelNoteTimer: () => clearTimeout(noteTimer) };
+            } catch (e) { ambientPlaying = false; /* audio indisponible */ }
+        }
+
+        function stopAmbient() {
+            if (!ambientPlaying || !ambient) return;
+            ambientPlaying = false;
+            const ctx = getAudioCtx();
+            const { master, padOscs, noiseSrc, cancelNoteTimer } = ambient;
+            cancelNoteTimer();
+            try {
+                master.gain.cancelScheduledValues(ctx.currentTime);
+                master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+                master.gain.linearRampToValueAtTime(0, ctx.currentTime + 2);
+                setTimeout(() => {
+                    padOscs.forEach(p => { try { p.osc.stop(); } catch (e) { /* déjà arrêté */ } });
+                    try { noiseSrc.stop(); } catch (e) { /* déjà arrêté */ }
+                }, 2100);
+            } catch (e) { /* ignore */ }
+            ambient = null;
+        }
+
+        document.getElementById('ambient-toggle').addEventListener('click', function () {
+            const label = this.querySelector('#ambient-text');
+            if (ambientPlaying) {
+                stopAmbient();
+                label.textContent = 'OFF';
+            } else {
+                startAmbient();
+                label.textContent = 'ON';
+            }
+        });
+
+        const sfx = {
+            eyeOpen: () => playTone(85, 1.9, 'sine', 0.09, 240),
+            eyeClose: () => playTone(240, 1.2, 'sine', 0.08, 65),
+            blink: () => playTone(200, 0.16, 'sine', 0.05, 85),
+            popupAppear: () => playClick(0.05, 0.09, 3200, 2.2),
+            allowPress: () => playClick(0.035, 0.1, 1400, 3),
+            statusTick: () => playClick(0.025, 0.055, 4800, 1.8),
+            wordmarkChar: (dist) => { const f = 420 + dist * 35; playTone(f, 0.1, 'sine', 0.018, f * 1.05); },
+            logoDestroy: () => {
+                playClick(0.16, 0.13, 1600, 1.1);
+                setTimeout(() => playClick(0.11, 0.1, 3400, 2), 35);
+                setTimeout(() => playClick(0.13, 0.09, 800, 1.4), 80);
+                playTone(170, 0.55, 'sawtooth', 0.05, 35);
+            }
+        };
+
+        document.getElementById('sound-toggle').addEventListener('click', function () {
+            soundEnabled = !soundEnabled;
+            this.textContent = 'SON : ' + (soundEnabled ? 'ON' : 'OFF');
+            this.classList.toggle('is-off', !soundEnabled);
+            if (soundEnabled) getAudioCtx();
+        });
+
+        /* ---- L'œil, en caractères ---- */
+        const EYE_COLS = 54, EYE_ROWS = 21;
+        const CENTER_C = (EYE_COLS - 1) / 2, CENTER_R = (EYE_ROWS - 1) / 2;
+        const PUPIL_R = 0.30, IRIS_R = 0.64;
+        const SHIMMER_CHARS = {
+            sclera: ['.', '`', "'", ',', ':'],
+            iris: [':', ';', '+', 'x', '*', 'o', '1', '0']
+        };
+        let eyeCells = [];
+        let eyeRaf = null;
+        let lookX = 0, lookY = 0, lookTargetX = 0, lookTargetY = 0;
+        const MAX_LOOK = 0.17;
+
+        function eyeEnvelope(nx) {
+            const base = Math.pow(Math.max(0, 1 - nx * nx), 0.58);
+            const noise = Math.sin(nx * 8.5 + 1.4) * 0.09
+                        + Math.sin(nx * 19 - 0.6) * 0.05
+                        + Math.sin(nx * 33 + 2.1) * 0.03;
+            return Math.max(0.02, base + noise);
+        }
+
+        // La pupille suit le curseur, comme si l'œil observait le visiteur.
+        document.addEventListener('mousemove', (e) => {
+            const wrap = document.getElementById('eye-wrap');
+            if (!wrap) return;
+            const rect = wrap.getBoundingClientRect();
+            const halfW = rect.width / 2 || 1;
+            const halfH = rect.height / 2 || 1;
+            let dx = (e.clientX - (rect.left + halfW)) / halfW;
+            let dy = (e.clientY - (rect.top + halfH)) / halfH;
+            const mag = Math.sqrt(dx * dx + dy * dy);
+            if (mag > 1) { dx /= mag; dy /= mag; }
+            lookTargetX = dx * MAX_LOOK;
+            lookTargetY = dy * MAX_LOOK;
+        });
+
+        function buildEyeGrid() {
+            const grid = document.getElementById('eye-grid');
+            grid.innerHTML = '';
+            eyeCells = [];
+            for (let r = 0; r < EYE_ROWS; r++) {
+                for (let c = 0; c < EYE_COLS; c++) {
+                    const nx = (c - CENTER_C) / CENTER_C;
+                    const ny = (r - CENTER_R) / CENTER_R;
+                    const env = eyeEnvelope(nx);
+                    const outlineDist = Math.sqrt(nx * nx + (ny / env) * (ny / env));
+                    const cell = document.createElement('span');
+                    cell.className = 'eye-cell';
+                    grid.appendChild(cell);
+                    const jitter = (Math.random() - 0.5) * 0.16;
+                    eyeCells.push({
+                        el: cell, nx, ny,
+                        inEye: outlineDist <= 1,
+                        revealThreshold: outlineDist + jitter,
+                        grown: false, band: null, nextShimmer: 0
+                    });
+                }
+            }
+        }
+
+        function randomChar(band) {
+            const set = SHIMMER_CHARS[band];
+            return set[Math.floor(Math.random() * set.length)];
+        }
+
+        function renderCell(cell, elapsed) {
+            if (!cell.grown) return;
+            const dx = cell.nx - lookX, dy = cell.ny - lookY;
+            const pupilDist = Math.sqrt(dx * dx + dy * dy);
+            const band = pupilDist <= PUPIL_R ? 'core-blank' : (pupilDist <= IRIS_R ? 'iris' : 'sclera');
+
+            if (band === 'core-blank') {
+                if (cell.band !== 'core-blank') {
+                    cell.el.classList.remove('lit', 'band-sclera', 'band-iris');
+                    cell.el.textContent = '';
+                }
+                cell.band = 'core-blank';
+                return;
+            }
+            const bandChanged = cell.band !== band;
+            const dueShimmer = elapsed !== undefined && elapsed >= cell.nextShimmer;
+            if (bandChanged || dueShimmer || !cell.el.textContent) {
+                cell.el.textContent = randomChar(band);
+                cell.nextShimmer = (elapsed || 0) + 1300 + Math.random() * 2600;
+            }
+            if (bandChanged) {
+                cell.el.classList.remove('band-sclera', 'band-iris');
+                cell.el.classList.add('lit', 'band-' + band);
+            }
+            cell.band = band;
+        }
+
+        function setOpenProgress(p) {
+            eyeCells.forEach(cell => {
+                const shouldGrow = cell.inEye && cell.revealThreshold <= p;
+                if (shouldGrow !== cell.grown) {
+                    cell.grown = shouldGrow;
+                    if (!shouldGrow) {
+                        cell.band = null;
+                        cell.el.classList.remove('lit', 'band-sclera', 'band-iris');
+                        cell.el.textContent = '';
+                    }
+                }
+                if (cell.grown) renderCell(cell, 0);
+            });
+        }
+
+        function animateOpenProgress(from, to, duration, onDone) {
+            const start = performance.now();
+            function tick(now) {
+                const t = Math.min(1, (now - start) / duration);
+                const eased = 1 - Math.pow(1 - t, 3);
+                setOpenProgress(from + (to - from) * eased);
+                if (t < 1) requestAnimationFrame(tick);
+                else if (onDone) onDone();
+            }
+            requestAnimationFrame(tick);
+        }
+
+        let eyeLiveStart = 0;
+        function eyeLiveLoop(now) {
+            if (!eyeLiveStart) eyeLiveStart = now;
+            const elapsed = now - eyeLiveStart;
+            lookX += (lookTargetX - lookX) * 0.02;
+            lookY += (lookTargetY - lookY) * 0.02;
+            eyeCells.forEach(cell => { if (cell.grown) renderCell(cell, elapsed); });
+            eyeRaf = requestAnimationFrame(eyeLiveLoop);
+        }
+        function startEyeLive() {
+            stopEyeLive();
+            eyeLiveStart = 0;
+            eyeRaf = requestAnimationFrame(eyeLiveLoop);
+        }
+        function stopEyeLive() {
+            if (eyeRaf) cancelAnimationFrame(eyeRaf);
+            eyeRaf = null;
+        }
+
+        function renderBar(pct) {
+            const total = 12;
+            const filled = Math.round((pct / 100) * total);
+            return '[' + '■'.repeat(filled) + '-'.repeat(total - filled) + ']';
+        }
+
+        const bootStatuses = ['DÉTECTION_PRÉSENCE', 'ANALYSE_EN_COURS', 'SUIVI_OCULAIRE_ACTIF', 'IDENTIFICATION_OK'];
+
+        function playBoot() {
+            const wordmark = document.getElementById('boot-wordmark');
+            const eyeScreen = document.getElementById('eye-screen');
+            const statusEl = document.getElementById('eye-status');
+            const permPopup = document.getElementById('perm-popup');
+
+            wordmark.innerHTML = '';
+            buildEyeGrid();
+            setOpenProgress(0);
+            eyeScreen.classList.remove('visible');
+            statusEl.textContent = bootStatuses[0];
+            document.getElementById('eye-bar').textContent = renderBar(0);
+            permPopup.classList.remove('visible', 'granted');
+            document.getElementById('perm-allow-btn').classList.remove('perm-pressed');
+
+            sfx.eyeOpen();
+            animateOpenProgress(0, 1, 3200, () => {
+                startEyeLive();
+                eyeScreen.classList.add('visible');
+                runLoadingSequence();
+            });
+        }
+
+        // Faux popup de permission caméra/micro — jamais d'appel réel à getUserMedia().
+        // Le bouton "Autoriser" s'active tout seul, sans action du visiteur.
+        function showFakePermissionPopup() {
+            const popup = document.getElementById('perm-popup');
+            const allowBtn = document.getElementById('perm-allow-btn');
+            popup.classList.remove('granted');
+            allowBtn.classList.remove('perm-pressed');
+            popup.classList.add('visible');
+            sfx.popupAppear();
+
+            setTimeout(() => { allowBtn.classList.add('perm-pressed'); sfx.allowPress(); }, 1100);
+            setTimeout(() => { popup.classList.add('granted'); startDrone(); }, 1500);
+            setTimeout(() => { popup.classList.remove('visible'); }, 2700);
+        }
+
+        function runLoadingSequence() {
+            const statusEl = document.getElementById('eye-status');
+            const barEl = document.getElementById('eye-bar');
+            const stepDuration = 950;
+
+            showFakePermissionPopup();
+
+            bootStatuses.forEach((label, i) => {
+                setTimeout(() => {
+                    statusEl.textContent = label;
+                    barEl.textContent = renderBar(Math.round(((i + 1) / bootStatuses.length) * 100));
+                    sfx.statusTick();
+                }, i * stepDuration);
+            });
+
+            setTimeout(() => {
+                sfx.blink();
+                animateOpenProgress(1, 0.1, 480, () => animateOpenProgress(0.1, 1, 480));
+            }, bootStatuses.length * stepDuration * 0.5);
+
+            const closeDelay = bootStatuses.length * stepDuration + 700;
+            setTimeout(() => {
+                document.getElementById('eye-screen').classList.remove('visible');
+                stopEyeLive();
+                sfx.eyeClose();
+                stopDrone(1.6);
+                animateOpenProgress(1, 0, 1400, () => {
+                    setTimeout(revealWordmarkFromCenter, 200);
+                });
+            }, closeDelay);
+        }
+
+        // Le mot se matérialise depuis sa lettre centrale, comme s'il émergeait du même point
+        // que l'œil — puis le voile de boot s'efface pour révéler le site.
+        function revealWordmarkFromCenter() {
+            const wordmark = document.getElementById('boot-wordmark');
+            const text = 'ATELIER_BABO';
+            wordmark.innerHTML = '';
+            const centerIndex = (text.length - 1) / 2;
+            const spans = [];
+
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = text[i];
+                span.className = 'wm-char';
+                wordmark.appendChild(span);
+                spans.push(span);
+            }
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            cursor.innerHTML = '&nbsp;';
+            wordmark.appendChild(cursor);
+
+            let maxDelay = 0;
+            spans.forEach((span, i) => {
+                const dist = Math.abs(i - centerIndex);
+                const delay = dist * 55;
+                maxDelay = Math.max(maxDelay, delay);
+                setTimeout(() => {
+                    span.classList.add('wm-visible');
+                    sfx.wordmarkChar(dist);
+                }, delay);
+            });
+
+            setTimeout(dismissBootOverlay, maxDelay + 1700);
+        }
+
+        function dismissBootOverlay() {
+            const overlay = document.getElementById('boot-overlay');
+            overlay.classList.add('dismissed');
+            setTimeout(() => { overlay.style.display = 'none'; }, 900);
+
+            // L'ambiance prend le relais dès que le boot est terminé — plus besoin de cliquer.
+            startAmbient();
+            const ambientLabel = document.getElementById('ambient-text');
+            if (ambientLabel) ambientLabel.textContent = 'ON';
+        }
+
+        // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
+        document.getElementById('boot-gate').addEventListener('click', () => {
+            document.getElementById('boot-gate').classList.add('hidden');
+            playBoot();
+        });
+
+        /* ============ FIN SYSTÈME DE BOOT ============ */
+
+        /* ---- Carrousel vidéo de l'Accueil : défilement auto + manuel ---- */
+        const heroVideos = Array.from(document.querySelectorAll('.hero-video'));
+        let currentHeroIndex = 0;
+        let heroAutoTimer = null;
+
+        function goToHeroVideo(index) {
+            const total = heroVideos.length;
+            if (total <= 1) return;
+            currentHeroIndex = ((index % total) + total) % total;
+            heroVideos.forEach((v, i) => {
+                if (i === currentHeroIndex) {
+                    v.classList.add('active');
+                    v.currentTime = 0;
+                    v.play().catch(() => { /* lecture bloquée, sans conséquence */ });
+                } else {
+                    v.classList.remove('active');
+                }
+            });
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentHeroIndex);
+            });
+            resetHeroAutoAdvance();
+        }
+        function resetHeroAutoAdvance() {
+            clearTimeout(heroAutoTimer);
+            if (heroVideos.length <= 1) return;
+            heroAutoTimer = setTimeout(() => goToHeroVideo(currentHeroIndex + 1), 9000);
+        }
+
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carouselArrow = document.getElementById('carousel-arrow');
+        const carouselMobilePrev = document.getElementById('carousel-mobile-prev');
+        const carouselMobileNext = document.getElementById('carousel-mobile-next');
+
+        // Les zones/curseur ne prennent leur sens qu'avec plusieurs vidéos : masqués tant
+        // qu'il n'y en a qu'une seule. Ajouter des <video class="hero-video"> les activera.
+        const carouselDots = document.getElementById('carousel-dots');
+        if (heroVideos.length > 1) {
+            carouselPrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
+            carouselNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
+            carouselMobilePrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
+            carouselMobileNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
+
+            heroVideos.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', 'Aller à la vidéo ' + (i + 1));
+                dot.addEventListener('click', () => goToHeroVideo(i));
+                carouselDots.appendChild(dot);
+            });
+
+            // Swipe horizontal (tactile) : seuil de 50px, et nettement plus horizontal que
+            // vertical pour ne jamais entrer en conflit avec le scroll normal de la page.
+            let touchStartX = 0, touchStartY = 0;
+            const heroStage = document.getElementById('accueil');
+            heroStage.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            heroStage.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                const dy = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                    goToHeroVideo(dx < 0 ? currentHeroIndex + 1 : currentHeroIndex - 1);
+                }
+            }, { passive: true });
+
+            resetHeroAutoAdvance();
+        } else {
+            carouselPrev.style.display = 'none';
+            carouselNext.style.display = 'none';
+            carouselMobilePrev.style.display = 'none';
+            carouselMobileNext.style.display = 'none';
+            carouselDots.style.display = 'none';
+        }
+
+        function positionCarouselArrow(e) {
+            carouselArrow.style.left = e.clientX + 'px';
+            carouselArrow.style.top = e.clientY + 'px';
+        }
+        [carouselPrev, carouselNext].forEach(zone => {
+            zone.addEventListener('mousemove', positionCarouselArrow);
+            zone.addEventListener('mouseleave', () => carouselArrow.classList.remove('visible'));
+        });
+        carouselPrev.addEventListener('mouseenter', (e) => {
+            carouselArrow.classList.add('visible', 'flip');
+            positionCarouselArrow(e);
+        });
+        carouselNext.addEventListener('mouseenter', (e) => {
+            carouselArrow.classList.remove('flip');
+            carouselArrow.classList.add('visible');
+            positionCarouselArrow(e);
+        });
+
+        /* ---- Logo "DVD" rebondissant, destructible au clic ---- */
+        function initDvdLogo() {
+            const logo = document.getElementById('dvd-logo');
+            const stage = document.getElementById('accueil');
+            if (!logo || !stage) return;
+
+            let x = 20 + Math.random() * 30;
+            let y = 20 + Math.random() * 30;
+            let vx = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+            let vy = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+            let destroyed = false;
+
+            function tick() {
+                if (destroyed) return;
+                const stageRect = stage.getBoundingClientRect();
+                const logoRect = logo.getBoundingClientRect();
+                const wPct = (logoRect.width / stageRect.width) * 100;
+                const hPct = (logoRect.height / stageRect.height) * 100;
+
+                x += vx; y += vy;
+                if (x <= 0) { x = 0; vx *= -1; }
+                if (x >= 100 - wPct) { x = 100 - wPct; vx *= -1; }
+                if (y <= 0) { y = 0; vy *= -1; }
+                if (y >= 100 - hPct) { y = 100 - hPct; vy *= -1; }
+
+                logo.style.left = x + '%';
+                logo.style.top = y + '%';
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+
+            logo.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (destroyed) return;
+                destroyed = true;
+                sfx.logoDestroy();
+                destroyDvdLogo(logo, stage);
+
+                // Réapparaît après 5 minutes, comme si la machine régénérait son emblème.
+                setTimeout(() => {
+                    x = 20 + Math.random() * 30;
+                    y = 20 + Math.random() * 30;
+                    vx = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+                    vy = (Math.random() < 0.5 ? -1 : 1) * 0.05;
+                    logo.style.display = 'block';
+                    logo.style.opacity = '0';
+                    logo.style.transition = 'opacity 0.8s ease';
+                    requestAnimationFrame(() => { logo.style.opacity = '1'; });
+                    destroyed = false;
+                    requestAnimationFrame(tick);
+                }, 5 * 60 * 1000);
+            });
+        }
+
+        function destroyDvdLogo(logo, stage) {
+            const logoRect = logo.getBoundingClientRect();
+            const stageRect = stage.getBoundingClientRect();
+            const cols = 6, rows = 2;
+            const pieceW = logoRect.width / cols;
+            const pieceH = logoRect.height / rows;
+
+            const wrap = document.createElement('div');
+            wrap.className = 'dvd-shatter';
+            wrap.style.left = (logoRect.left - stageRect.left) + 'px';
+            wrap.style.top = (logoRect.top - stageRect.top) + 'px';
+            wrap.style.width = logoRect.width + 'px';
+            wrap.style.height = logoRect.height + 'px';
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'dvd-shatter-piece';
+                    piece.style.width = pieceW + 'px';
+                    piece.style.height = pieceH + 'px';
+                    piece.style.left = (c * pieceW) + 'px';
+                    piece.style.top = (r * pieceH) + 'px';
+                    piece.style.backgroundImage = "url('images/accueil/Logo.png')";
+                    piece.style.backgroundSize = logoRect.width + 'px ' + logoRect.height + 'px';
+                    piece.style.backgroundPosition = (-c * pieceW) + 'px ' + (-r * pieceH) + 'px';
+                    wrap.appendChild(piece);
+
+                    requestAnimationFrame(() => {
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist = 160 + Math.random() * 280;
+                        const dx = Math.cos(angle) * dist;
+                        const dy = Math.sin(angle) * dist;
+                        const rot = (Math.random() - 0.5) * 720;
+                        piece.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg) scale(0.15)`;
+                        piece.style.opacity = '0';
+                    });
+                }
+            }
+            stage.appendChild(wrap);
+            logo.style.display = 'none';
+            setTimeout(() => wrap.remove(), 1100);
+        }
+
+        initDvdLogo();
+
+        /* ---- Photos qui défilent dans les cases Collectif et Oscar ----
+           Chaque case a 2 calques superposés (.cell-photo-layer) : on prépare la photo
+           suivante sur le calque caché, puis on bascule lequel est "actif" pour obtenir
+           un vrai fondu-enchaîné (plutôt qu'un changement brut), avec un léger zoom lent
+           porté par la transition CSS elle-même. */
+
+        // Collectif : case fixe, rythme plus lent (4.2s par image, contre 2.6s avant).
+        const collectifPhotos = [
+            'images/travaux/collectif/collectif-1.jpg',
+            'images/travaux/collectif/collectif-2.jpg',
+            'images/travaux/collectif/collectif-3.jpg',
+            'images/travaux/collectif/collectif-4.jpg',
+            'images/travaux/collectif/collectif-5.jpg'
+        ];
+        let collectifPhotoIndex = 0;
+        let collectifActiveLayer = 0;
+
+        function getCollectifLayers() {
+            const box = document.querySelector('.travaux-cell-collectif .travaux-cell-box');
+            return box ? box.querySelectorAll('.cell-photo-layer') : null;
+        }
+        function advanceCollectifPhoto() {
+            const layers = getCollectifLayers();
+            if (!layers || layers.length < 2) return;
+            collectifPhotoIndex = (collectifPhotoIndex + 1) % collectifPhotos.length;
+            const nextIdx = 1 - collectifActiveLayer;
+            layers[nextIdx].style.backgroundImage = `url('${collectifPhotos[collectifPhotoIndex]}')`;
+            layers[nextIdx].classList.add('active');
+            layers[collectifActiveLayer].classList.remove('active');
+            collectifActiveLayer = nextIdx;
+        }
+        (function initCollectifPhoto() {
+            const layers = getCollectifLayers();
+            if (!layers || layers.length < 2) return;
+            const box = document.querySelector('.travaux-cell-collectif .travaux-cell-box');
+            const textEl = box.querySelector('.cell-box-text');
+            if (textEl) textEl.style.display = 'none';
+            layers[0].style.backgroundImage = `url('${collectifPhotos[0]}')`;
+            layers[0].classList.add('active');
+        })();
+        setInterval(advanceCollectifPhoto, 4200);
+
+        /* ---- Rotation des membres dans la grille Travaux ----
+           Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
+           Les 4 membres tournent entre les 4 emplacements toutes les 8s, pour qu'aucun
+           ne reste cantonné à une case plus petite que les autres sur la durée. */
+        const yoonPhotos = [
+            'images/travaux/yoon/yoon-1.jpg', 'images/travaux/yoon/yoon-2.jpg',
+            'images/travaux/yoon/yoon-3.jpg', 'images/travaux/yoon/yoon-4.jpg'
+        ];
+        const tomPhotos = [
+            'images/travaux/tom/tom-1.jpg', 'images/travaux/tom/tom-2.jpg',
+            'images/travaux/tom/tom-3.jpg', 'images/travaux/tom/tom-4.jpg',
+            'images/travaux/tom/tom-5.jpg', 'images/travaux/tom/tom-6.jpg'
+        ];
+        const oscarPhotos = [
+            'images/travaux/oscar/oscar-11.jpg', 'images/travaux/oscar/oscar-12.jpg',
+            'images/travaux/oscar/oscar-13.jpg', 'images/travaux/oscar/oscar-14.jpg',
+            'images/travaux/oscar/oscar-15.jpg', 'images/travaux/oscar/oscar-16.jpg',
+            'images/travaux/oscar/oscar-17.jpg'
+        ];
+        const tongPhotos = [
+            'images/travaux/tong/tong-1.jpg', 'images/travaux/tong/tong-2.jpg',
+            'images/travaux/tong/tong-3.jpg', 'images/travaux/tong/tong-4.jpg',
+            'images/travaux/tong/tong-5.jpg'
+        ];
+        const travauxMembers = [
+            { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]', photos: yoonPhotos },
+            { name: 'Tom Lecointre', href: 'travaux/tom-lecointre.html', label: '[ TOM LECOINTRE ]', photos: tomPhotos },
+            { name: 'Oscar Dujarrier', href: 'travaux/oscar-dujarrier.html', label: '', photos: oscarPhotos },
+            { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '', photos: tongPhotos }
+        ];
+        let travauxOffset = 0;
+
+        // Chaque membre ayant des photos garde son propre état de défilement (index, calque
+        // actif, case cible actuelle) directement sur son objet. Contrairement à une version
+        // précédente, la photo n'avance plus toute seule sur un minuteur indépendant : elle
+        // change uniquement au moment où la personne change de position (donc toutes les 8s,
+        // en même temps que la rotation), pas plus vite.
+        travauxMembers.forEach(member => {
+            if (member.photos) {
+                member._photoIndex = 0;
+                member._activeLayer = 0;
+                member._targetBox = null;
+            }
+        });
+
+        // Affiche l'image en cours sur la case, SANS avancer l'index — utilisé uniquement
+        // pour le tout premier affichage au chargement de la page.
+        function showMemberPhotoOnCurrentBox(member) {
+            if (!member._targetBox) return;
+            const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
+            if (layers.length < 2) return;
+            layers.forEach(l => { l.classList.remove('active'); l.style.backgroundImage = ''; });
+            layers[0].style.backgroundImage = `url('${member.photos[member._photoIndex]}')`;
+            layers[0].classList.add('active');
+            member._activeLayer = 0;
+        }
+        // Avance à l'image suivante ET l'affiche sur la case (nouvelle ou non) — appelé
+        // uniquement depuis rotateTravauxMembers, au moment précis du changement de position.
+        function advanceAndShowMemberPhoto(member) {
+            if (!member._targetBox) return;
+            const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
+            if (layers.length < 2) return;
+            member._photoIndex = (member._photoIndex + 1) % member.photos.length;
+            const nextIdx = 1 - member._activeLayer;
+            layers[nextIdx].style.backgroundImage = `url('${member.photos[member._photoIndex]}')`;
+            layers[nextIdx].classList.add('active');
+            layers[member._activeLayer].classList.remove('active');
+            member._activeLayer = nextIdx;
+        }
+
+        function rotateTravauxMembers() {
+            const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
+            if (slots.some(s => !s)) return;
+
+            slots.forEach(slot => {
+                slot.style.transition = 'opacity 0.4s ease';
+                slot.style.opacity = '0';
+            });
+
+            setTimeout(() => {
+                travauxMembers.forEach(m => { if (m.photos) m._targetBox = null; });
+
+                slots.forEach((slot, i) => {
+                    const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
+                    slot.href = member.href;
+                    const box = slot.querySelector('.travaux-cell-box');
+                    const textEl = box.querySelector('.cell-box-text');
+                    if (member.photos) {
+                        textEl.style.display = 'none';
+                        member._targetBox = box;
+                    } else {
+                        box.querySelectorAll('.cell-photo-layer').forEach(l => {
+                            l.classList.remove('active');
+                            l.style.backgroundImage = '';
+                        });
+                        textEl.style.display = '';
+                        textEl.textContent = member.label;
+                    }
+                    slot.querySelector('.travaux-cell-title').textContent = member.name;
+                });
+                travauxMembers.forEach(m => { if (m.photos) advanceAndShowMemberPhoto(m); });
+
+                slots.forEach(slot => { slot.style.opacity = '1'; });
+                travauxOffset = (travauxOffset + 1) % travauxMembers.length;
+            }, 420);
+        }
+        // Position initiale (voir le HTML) : Yoon = case 1, Tom = case 2, Oscar = case 3, Wenjie = case 4
+        travauxMembers[0]._targetBox = document.querySelector('.travaux-cell-1 .travaux-cell-box');
+        travauxMembers[1]._targetBox = document.querySelector('.travaux-cell-2 .travaux-cell-box');
+        travauxMembers[2]._targetBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
+        travauxMembers[3]._targetBox = document.querySelector('.travaux-cell-4 .travaux-cell-box');
+        travauxMembers.forEach(member => {
+            if (member.photos) {
+                member._targetBox.querySelector('.cell-box-text').style.display = 'none';
+                showMemberPhotoOnCurrentBox(member);
+            }
+        });
+        setInterval(rotateTravauxMembers, 8000);
+
+        const sections = document.querySelectorAll('.feed-section');
+        const navItems = document.querySelectorAll('.nav-item');
+        const mainFeed = document.querySelector('.main-feed');
+        const sideNav = document.querySelector('.side-nav');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeText = document.getElementById('theme-text');
+        const htmlRoot = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            if (htmlRoot.classList.contains('dark-mode')) {
+                htmlRoot.classList.remove('dark-mode');
+                htmlRoot.classList.add('light-mode');
+                themeText.textContent = 'JOUR';
+            } else {
+                htmlRoot.classList.remove('light-mode');
+                htmlRoot.classList.add('dark-mode');
+                themeText.textContent = 'NUIT';
+            }
+        });
+
+        const subNavBtns = document.querySelectorAll('.sub-nav-btn');
+        const collabContents = document.querySelectorAll('.collab-category-content');
+
+        subNavBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                subNavBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const targetCat = btn.getAttribute('data-cat');
+                collabContents.forEach(content => {
+                    content.style.display = 'none';
+                    if (content.id === 'cat-' + targetCat) {
+                        content.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        // IntersectionObserver plutôt qu'un listener de scroll : fonctionne que ce soit
+        // .main-feed qui scroll (desktop) ou le body (mobile), sans dépendre du conteneur actif.
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const current = entry.target.getAttribute('id');
+
+                sections.forEach(section => section.classList.remove('active'));
+                entry.target.classList.add('active');
+
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-target') === current) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => sectionObserver.observe(section));
+
+        // Menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = sideNav.classList.toggle('menu-open');
+            hamburgerBtn.classList.toggle('open', isOpen);
+        });
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sideNav.classList.remove('menu-open');
+                hamburgerBtn.classList.remove('open');
+            });
+        });
+
+        // Inclinaison 3D subtile des blocs Travaux, qui suit la position du curseur —
+        // amplitude volontairement faible (±5°) pour rester discret, pas gadget.
+        document.querySelectorAll('.travaux-cell').forEach(cell => {
+            cell.addEventListener('mousemove', (e) => {
+                const rect = cell.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width;
+                const py = (e.clientY - rect.top) / rect.height;
+                const rotateY = (px - 0.5) * 10;
+                const rotateX = (0.5 - py) * 10;
+                cell.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.03) translateY(-3px)`;
+            });
+            cell.addEventListener('mouseleave', () => {
+                cell.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
