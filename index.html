@@ -12,7 +12,7 @@
 
     <div class="boot-overlay" id="boot-overlay">
         <div class="boot-gate" id="boot-gate">
-            <canvas class="boot-noise-canvas" id="boot-noise-canvas"></canvas>
+            <div class="boot-dive-wipe" id="boot-dive-wipe"></div>
             <div class="boot-gate-square" id="boot-gate-square">
                 <div class="cube-face cube-front"></div>
                 <div class="cube-face cube-back"></div>
@@ -403,11 +403,84 @@
         // on débloque le contexte dès le premier clic ou toucher, silencieusement.
         function unlockAudioOnce() {
             getAudioCtx();
+            startGateNoise();
             document.removeEventListener('click', unlockAudioOnce);
             document.removeEventListener('touchstart', unlockAudioOnce);
         }
         document.addEventListener('click', unlockAudioOnce);
         document.addEventListener('touchstart', unlockAudioOnce);
+
+        /* ---- Bruit blanc du portail, qui devient un bruit de glitch au survol du cube ----
+           Souffle continu et discret tant qu'on ne touche pas au cube ; dès qu'on le
+           survole, le filtre s'ouvre et le gain se met à trembler par à-coups pour un
+           grain heurté, façon signal qui accroche. */
+        let gateNoiseSrc = null, gateNoiseFilter = null, gateNoiseGain = null;
+        let gateGlitchInterval = null;
+
+        function startGateNoise() {
+            if (gateNoiseSrc || !soundEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+            try {
+                const bufferSize = ctx.sampleRate * 2;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                const src = ctx.createBufferSource();
+                src.buffer = buffer;
+                src.loop = true;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 2600;
+
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.018, ctx.currentTime + 0.8);
+
+                src.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+                src.start();
+
+                gateNoiseSrc = src;
+                gateNoiseFilter = filter;
+                gateNoiseGain = gain;
+            } catch (e) { /* audio indisponible */ }
+        }
+
+        function stopGateNoise() {
+            if (!gateNoiseSrc) return;
+            const ctx = getAudioCtx();
+            try {
+                if (gateGlitchInterval) { clearInterval(gateGlitchInterval); gateGlitchInterval = null; }
+                gateNoiseGain.gain.cancelScheduledValues(ctx.currentTime);
+                gateNoiseGain.gain.setValueAtTime(gateNoiseGain.gain.value, ctx.currentTime);
+                gateNoiseGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+                const src = gateNoiseSrc;
+                setTimeout(() => { try { src.stop(); } catch (e) { /* déjà arrêté */ } }, 350);
+            } catch (e) { /* ignore */ }
+            gateNoiseSrc = null; gateNoiseFilter = null; gateNoiseGain = null;
+        }
+
+        function setGateNoiseGlitch(active) {
+            if (!gateNoiseFilter || !gateNoiseGain) return;
+            const ctx = getAudioCtx();
+            if (active && !gateGlitchInterval) {
+                gateNoiseFilter.frequency.linearRampToValueAtTime(9000, ctx.currentTime + 0.12);
+                gateGlitchInterval = setInterval(() => {
+                    const now = ctx.currentTime;
+                    gateNoiseGain.gain.cancelScheduledValues(now);
+                    gateNoiseGain.gain.setValueAtTime(Math.random() < 0.5 ? 0.06 : 0.008, now);
+                }, 65);
+            } else if (!active && gateGlitchInterval) {
+                clearInterval(gateGlitchInterval);
+                gateGlitchInterval = null;
+                gateNoiseFilter.frequency.linearRampToValueAtTime(2600, ctx.currentTime + 0.3);
+                gateNoiseGain.gain.cancelScheduledValues(ctx.currentTime);
+                gateNoiseGain.gain.linearRampToValueAtTime(0.018, ctx.currentTime + 0.3);
+            }
+        }
 
         function playTone(freq, duration, type, startGain, freqEnd) {
             if (!soundEnabled) return;
@@ -987,31 +1060,29 @@
         }
 
         // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
+        // Transition : un disque noir s'étend depuis le centre jusqu'à recouvrir tout
+        // l'écran (effet 2D classique de "fondu depuis un point"), pas un effet 3D.
         document.getElementById('boot-gate').addEventListener('click', () => {
             const gate = document.getElementById('boot-gate');
-            cubeDiving = true;
-            cubeDiveStart = performance.now();
-            gate.classList.add('diving-bg');
+            const wipe = document.getElementById('boot-dive-wipe');
             sfx.eyeOpen();
+            stopGateNoise();
+            wipe.classList.add('active');
             setTimeout(() => {
                 gate.classList.add('hidden');
-                gate.classList.remove('diving-bg');
-                cubeDiving = false;
-                cubeRotX = 0; cubeRotY = 0;
+                wipe.classList.remove('active');
                 playBoot();
-            }, 680);
+            }, 620);
         });
 
         /* ---- Cube 3D réactif du portail ----
            Tourne plus franchement au repos ; plus le curseur s'approche, plus il
-           accélère et plus l'arrière-plan concentre son énergie — la courbe est
-           adoucie (smoothstep) pour une transition progressive, pas un à-coup. */
+           accélère et plus l'arrière-plan concentre son énergie (vignettage) — la
+           courbe est adoucie (smoothstep) pour une transition progressive. */
         let cubeRotX = 0, cubeRotY = 0;
         let cubeProximity = 0;
         let cubeHovering = false;
         let cubeIdlePhase = Math.random() * 10;
-        let cubeDiving = false;
-        let cubeDiveStart = 0;
         const smoothstep = (t) => t * t * (3 - 2 * t);
 
         document.addEventListener('mousemove', (e) => {
@@ -1023,34 +1094,16 @@
             const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
             cubeProximity = smoothstep(1 - Math.min(1, dist / 460));
         });
-        document.getElementById('boot-gate').addEventListener('mouseenter', () => { cubeHovering = true; });
-        document.getElementById('boot-gate').addEventListener('mouseleave', () => { cubeHovering = false; });
+        document.getElementById('boot-gate').addEventListener('mouseenter', () => {
+            cubeHovering = true;
+            setGateNoiseGlitch(true);
+        });
+        document.getElementById('boot-gate').addEventListener('mouseleave', () => {
+            cubeHovering = false;
+            setGateNoiseGlitch(false);
+        });
 
-        // Bruit blanc "vintage" en fond, qui se change en blocs de glitch coloré
-        // dès qu'on survole directement le cube.
-        const noiseCanvas = document.getElementById('boot-noise-canvas');
-        const noiseCtx = noiseCanvas ? noiseCanvas.getContext('2d') : null;
-        const NOISE_W = 140, NOISE_H = 80;
-        if (noiseCanvas) { noiseCanvas.width = NOISE_W; noiseCanvas.height = NOISE_H; }
-
-        function renderNoise(glitchAmount) {
-            if (!noiseCtx) return;
-            const img = noiseCtx.createImageData(NOISE_W, NOISE_H);
-            for (let i = 0; i < img.data.length; i += 4) {
-                let r, g, b;
-                if (Math.random() < glitchAmount * 0.55) {
-                    const bright = Math.random() < 0.5 ? 255 : 0;
-                    r = bright; g = Math.random() < 0.5 ? bright : 255 - bright; b = Math.floor(Math.random() * 255);
-                } else {
-                    const v = Math.random() * 255;
-                    r = g = b = v;
-                }
-                img.data[i] = r; img.data[i + 1] = g; img.data[i + 2] = b; img.data[i + 3] = 255;
-            }
-            noiseCtx.putImageData(img, 0, 0);
-        }
-
-        function cubeLoop(now) {
+        function cubeLoop() {
             const gate = document.getElementById('boot-gate');
             const square = document.getElementById('boot-gate-square');
             if (gate && square && !gate.classList.contains('hidden')) {
@@ -1060,15 +1113,9 @@
                 const speed = 0.45 + energy * 3.2;
                 cubeRotX += speed * 0.6;
                 cubeRotY += speed;
-
-                let scaleFactor = cubeHovering ? 1.08 : 1;
-                if (cubeDiving) {
-                    const t = Math.min(1, (now - cubeDiveStart) / 680);
-                    scaleFactor = 1 + (t * t * t) * 26;
-                }
+                const scaleFactor = cubeHovering ? 1.08 : 1;
                 square.style.transform = `rotateX(${cubeRotX.toFixed(2)}deg) rotateY(${cubeRotY.toFixed(2)}deg) scale(${scaleFactor})`;
                 gate.style.setProperty('--gate-energy', energy.toFixed(3));
-                renderNoise(cubeDiving ? 1 : (cubeHovering ? 0.85 : energy * 0.5));
             }
             requestAnimationFrame(cubeLoop);
         }
