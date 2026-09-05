@@ -1078,6 +1078,31 @@
 
         initDvdLogo();
 
+        /* ---- Photos qui défilent dans les cases Collectif et Oscar ---- */
+
+        // Collectif : case fixe, défilement simple et continu.
+        const collectifPhotos = [
+            'images/travaux/collectif/collectif-1.jpg',
+            'images/travaux/collectif/collectif-2.jpg',
+            'images/travaux/collectif/collectif-3.jpg',
+            'images/travaux/collectif/collectif-4.jpg',
+            'images/travaux/collectif/collectif-5.jpg'
+        ];
+        let collectifPhotoIndex = 0;
+        function applyCollectifPhoto() {
+            const box = document.querySelector('.travaux-cell-collectif .travaux-cell-box');
+            if (!box) return;
+            box.style.backgroundImage = `url('${collectifPhotos[collectifPhotoIndex]}')`;
+            box.style.backgroundSize = 'cover';
+            box.style.backgroundPosition = 'center';
+            box.style.backgroundRepeat = 'no-repeat';
+        }
+        applyCollectifPhoto();
+        setInterval(() => {
+            collectifPhotoIndex = (collectifPhotoIndex + 1) % collectifPhotos.length;
+            applyCollectifPhoto();
+        }, 2600);
+
         /* ---- Rotation des membres dans la grille Travaux ----
            Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
            Les 4 membres tournent entre les 4 emplacements toutes les 8s, pour qu'aucun
@@ -1097,28 +1122,24 @@
         ];
         let travauxOffset = 0;
 
-        // Fait défiler les photos d'Oscar dans la case (quelle qu'elle soit) qu'il occupe
-        // au moment donné. Le minuteur est relancé à chaque rotation des 4 membres.
-        let oscarPhotoTimer = null;
+        // L'index avance en continu depuis le chargement de la page — il n'est JAMAIS remis
+        // à zéro par la rotation des membres, seule la case cible change. Sans ça, un cycle
+        // complet (26s) n'a jamais le temps de se terminer entre deux rotations (8s) : c'était
+        // exactement le bug précédent.
         let oscarPhotoIndex = 0;
-        function applyOscarPhoto(box) {
-            box.style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
-            box.style.backgroundSize = 'cover';
-            box.style.backgroundPosition = 'center';
-            box.style.backgroundRepeat = 'no-repeat';
+        let oscarTargetBox = null;
+
+        function applyOscarPhoto() {
+            if (!oscarTargetBox) return;
+            oscarTargetBox.style.backgroundImage = `url('${oscarPhotos[oscarPhotoIndex]}')`;
+            oscarTargetBox.style.backgroundSize = 'cover';
+            oscarTargetBox.style.backgroundPosition = 'center';
+            oscarTargetBox.style.backgroundRepeat = 'no-repeat';
         }
-        function startOscarPhotoCycle(box) {
-            oscarPhotoIndex = 0;
-            applyOscarPhoto(box);
-            oscarPhotoTimer = setInterval(() => {
-                oscarPhotoIndex = (oscarPhotoIndex + 1) % oscarPhotos.length;
-                applyOscarPhoto(box);
-            }, 2600);
-        }
-        function stopOscarPhotoCycle() {
-            if (oscarPhotoTimer) clearInterval(oscarPhotoTimer);
-            oscarPhotoTimer = null;
-        }
+        setInterval(() => {
+            oscarPhotoIndex = (oscarPhotoIndex + 1) % oscarPhotos.length;
+            applyOscarPhoto();
+        }, 2600);
 
         function rotateTravauxMembers() {
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
@@ -1130,29 +1151,31 @@
             });
 
             setTimeout(() => {
-                stopOscarPhotoCycle();
+                if (oscarTargetBox) oscarTargetBox.style.backgroundImage = '';
+                oscarTargetBox = null;
+
                 slots.forEach((slot, i) => {
                     const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
                     slot.href = member.href;
                     const box = slot.querySelector('.travaux-cell-box');
-                    box.style.backgroundImage = '';
                     if (member.photos) {
                         box.textContent = '';
-                        startOscarPhotoCycle(box);
+                        oscarTargetBox = box;
                     } else {
+                        box.style.backgroundImage = '';
                         box.textContent = member.label;
                     }
                     slot.querySelector('.travaux-cell-title').textContent = member.name;
                 });
+                applyOscarPhoto(); // affiche tout de suite l'image courante sur la nouvelle case
+
                 slots.forEach(slot => { slot.style.opacity = '1'; });
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
             }, 420);
         }
-        // Position initiale d'Oscar = travaux-cell-3 (voir le HTML) : on lance son défilement
-        // directement dessus, sans passer par une rotation complète (qui provoquerait un
-        // fondu inutile dès le chargement de la page).
-        const oscarInitialBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
-        if (oscarInitialBox) startOscarPhotoCycle(oscarInitialBox);
+        // Position initiale d'Oscar = travaux-cell-3 (voir le HTML)
+        oscarTargetBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
+        applyOscarPhoto();
         setInterval(rotateTravauxMembers, 8000);
 
         const sections = document.querySelectorAll('.feed-section');
@@ -1214,7 +1237,7 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
-        //  menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
+        // Menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
         const hamburgerBtn = document.getElementById('hamburger-btn');
         hamburgerBtn.addEventListener('click', () => {
             const isOpen = sideNav.classList.toggle('menu-open');
