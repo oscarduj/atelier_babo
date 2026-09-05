@@ -1165,9 +1165,10 @@
         let travauxOffset = 0;
 
         // Chaque membre ayant des photos garde son propre état de défilement (index, calque
-        // actif, case cible actuelle) directement sur son objet. L'index avance en continu
-        // depuis le chargement de la page — il n'est JAMAIS remis à zéro par la rotation des
-        // membres, seule la case cible change.
+        // actif, case cible actuelle) directement sur son objet. Contrairement à une version
+        // précédente, la photo n'avance plus toute seule sur un minuteur indépendant : elle
+        // change uniquement au moment où la personne change de position (donc toutes les 8s,
+        // en même temps que la rotation), pas plus vite.
         travauxMembers.forEach(member => {
             if (member.photos) {
                 member._photoIndex = 0;
@@ -1176,7 +1177,20 @@
             }
         });
 
-        function advanceMemberPhoto(member) {
+        // Affiche l'image en cours sur la case, SANS avancer l'index — utilisé uniquement
+        // pour le tout premier affichage au chargement de la page.
+        function showMemberPhotoOnCurrentBox(member) {
+            if (!member._targetBox) return;
+            const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
+            if (layers.length < 2) return;
+            layers.forEach(l => { l.classList.remove('active'); l.style.backgroundImage = ''; });
+            layers[0].style.backgroundImage = `url('${member.photos[member._photoIndex]}')`;
+            layers[0].classList.add('active');
+            member._activeLayer = 0;
+        }
+        // Avance à l'image suivante ET l'affiche sur la case (nouvelle ou non) — appelé
+        // uniquement depuis rotateTravauxMembers, au moment précis du changement de position.
+        function advanceAndShowMemberPhoto(member) {
             if (!member._targetBox) return;
             const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
             if (layers.length < 2) return;
@@ -1187,20 +1201,6 @@
             layers[member._activeLayer].classList.remove('active');
             member._activeLayer = nextIdx;
         }
-        // Affiche tout de suite l'image en cours sur la case que le membre vient de
-        // rejoindre, sans attendre le prochain tick — sinon la case resterait vide un moment.
-        function showMemberPhotoOnCurrentBox(member) {
-            if (!member._targetBox) return;
-            const layers = member._targetBox.querySelectorAll('.cell-photo-layer');
-            if (layers.length < 2) return;
-            layers.forEach(l => { l.classList.remove('active'); l.style.backgroundImage = ''; });
-            layers[0].style.backgroundImage = `url('${member.photos[member._photoIndex]}')`;
-            layers[0].classList.add('active');
-            member._activeLayer = 0;
-        }
-        travauxMembers.forEach(member => {
-            if (member.photos) setInterval(() => advanceMemberPhoto(member), 2600);
-        });
 
         function rotateTravauxMembers() {
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
@@ -1232,7 +1232,7 @@
                     }
                     slot.querySelector('.travaux-cell-title').textContent = member.name;
                 });
-                travauxMembers.forEach(m => { if (m.photos) showMemberPhotoOnCurrentBox(m); });
+                travauxMembers.forEach(m => { if (m.photos) advanceAndShowMemberPhoto(m); });
 
                 slots.forEach(slot => { slot.style.opacity = '1'; });
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
@@ -1319,6 +1319,22 @@
             item.addEventListener('click', () => {
                 sideNav.classList.remove('menu-open');
                 hamburgerBtn.classList.remove('open');
+            });
+        });
+
+        // Inclinaison 3D subtile des blocs Travaux, qui suit la position du curseur —
+        // amplitude volontairement faible (±5°) pour rester discret, pas gadget.
+        document.querySelectorAll('.travaux-cell').forEach(cell => {
+            cell.addEventListener('mousemove', (e) => {
+                const rect = cell.getBoundingClientRect();
+                const px = (e.clientX - rect.left) / rect.width;
+                const py = (e.clientY - rect.top) / rect.height;
+                const rotateY = (px - 0.5) * 10;
+                const rotateX = (0.5 - py) * 10;
+                cell.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.03) translateY(-3px)`;
+            });
+            cell.addEventListener('mouseleave', () => {
+                cell.style.transform = '';
             });
         });
     </script>

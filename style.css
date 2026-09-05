@@ -492,13 +492,16 @@ h2 { font-size: 1.8rem; }
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease-out, opacity 0.3s ease;
 }
 .travaux-cell:hover {
-    transform: scale(1.035) translateY(-3px);
     z-index: 2;
     position: relative;
 }
+/* Effet "spotlight" : dès que la souris est quelque part sur la grille, les autres
+   cases s'assombrissent légèrement — celle survolée reste à pleine opacité. */
+.travaux-asym-grid:hover .travaux-cell { opacity: 0.55; }
+.travaux-asym-grid:hover .travaux-cell:hover { opacity: 1; }
 
 .travaux-cell-box {
     flex: 1;
@@ -506,6 +509,7 @@ h2 { font-size: 1.8rem; }
     position: relative;
     overflow: hidden;
     border: 1px dashed var(--border-color);
+    border-radius: 7px;
     background-color: var(--box-bg);
     display: flex;
     align-items: center;
@@ -516,13 +520,18 @@ h2 { font-size: 1.8rem; }
     text-align: center;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.travaux-cell:hover .travaux-cell-box { border-color: var(--secondary-color); }
+.travaux-cell:hover .travaux-cell-box {
+    border-color: var(--secondary-color);
+    box-shadow: 0 16px 28px -10px rgba(0, 0, 0, 0.4);
+}
 
 /* Calques de fondu-enchaîné : deux couches superposées, on alterne laquelle est visible
-   pour obtenir un vrai crossfade plutôt qu'un changement brut, avec un léger zoom lent
-   qui accompagne chaque image tant qu'elle est affichée. */
+   pour obtenir un vrai crossfade plutôt qu'un changement brut. Le zoom lent qui
+   accompagne l'image affichée n'est appliqué qu'au Collectif (voir plus bas) — les
+   membres changent de position toutes les 8s, trop vite pour qu'un zoom se voie
+   sans à-coup. */
 .cell-photo-layer {
     position: absolute;
     inset: 0;
@@ -530,11 +539,15 @@ h2 { font-size: 1.8rem; }
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    transform: scale(1);
-    transition: opacity 1.3s ease, transform 3.8s ease-out;
+    transition: opacity 1.3s ease;
 }
 .cell-photo-layer.active {
     opacity: 1;
+}
+.travaux-cell-collectif .cell-photo-layer {
+    transition: opacity 1.3s ease, transform 3.8s ease-out;
+}
+.travaux-cell-collectif .cell-photo-layer.active {
     transform: scale(1.08);
 }
 .cell-box-text {
