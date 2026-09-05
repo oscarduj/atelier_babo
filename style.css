@@ -245,15 +245,20 @@ body.standalone-page {
 .carousel-arrow-cursor.visible { opacity: 1; }
 .carousel-arrow-cursor.flip { transform: translate(-50%, -50%) scaleX(-1); }
 .eye-arrow-grid {
+    position: absolute;
+    inset: 0;
     display: grid;
-    width: 100%;
-    height: 100%;
     font-family: 'Share Tech Mono', monospace;
     font-size: 9px;
     line-height: 1;
     user-select: none;
     transform-origin: center;
+    opacity: 0;
+    transition: opacity 0.15s ease;
 }
+#eye-classic-grid { opacity: 1; }
+.carousel-arrow-cursor.arrow-mode #eye-classic-grid { opacity: 0; }
+.carousel-arrow-cursor.arrow-mode #eye-arrow-grid { opacity: 1; }
 .eye-arrow-grid span { text-align: center; }
 .eac-sclera { color: #7a8288; opacity: 0.75; }
 .eac-iris { color: var(--secondary-color); }
@@ -1090,18 +1095,34 @@ h2 { font-size: 1.8rem; }
     cursor: pointer;
     perspective: 700px;
     transition: opacity 0.6s ease;
+    --gate-energy: 0.15;
 }
 .boot-gate.hidden {
     opacity: 0;
     pointer-events: none;
+}
+/* Texture d'énergie sombre sur l'arrière-plan (pas un halo local autour du cube) :
+   toute la page du portail s'assombrit progressivement à mesure que le curseur
+   s'approche du cube, comme si l'énergie se propageait depuis le noyau. */
+.boot-gate::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%,
+        rgba(0, 0, 0, calc(0.10 + var(--gate-energy) * 0.55)) 0%,
+        rgba(0, 0, 0, calc(0.05 + var(--gate-energy) * 0.32)) 32%,
+        rgba(0, 0, 0, calc(0.02 + var(--gate-energy) * 0.14)) 58%,
+        rgba(0, 0, 0, 0) 85%);
+    pointer-events: none;
+    z-index: 0;
 }
 .boot-gate-square {
     position: relative;
     width: clamp(50px, 12vw, 100px);
     aspect-ratio: 1 / 1;
     --cube-half: clamp(25px, 6vw, 50px);
-    --energy: 0.15;
     transform-style: preserve-3d;
+    z-index: 1;
 }
 .cube-face {
     position: absolute;
@@ -1115,25 +1136,6 @@ h2 { font-size: 1.8rem; }
 .cube-left   { transform: rotateY(-90deg) translateZ(var(--cube-half)); }
 .cube-top    { transform: rotateX(90deg) translateZ(var(--cube-half)); }
 .cube-bottom { transform: rotateX(-90deg) translateZ(var(--cube-half)); }
-
-/* Halo dont l'intensité suit la variable --energy, pilotée en JS selon la proximité
-   du curseur — plus on s'approche, plus le noyau (le cube) concentre l'énergie. */
-.boot-gate-square::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 620%;
-    height: 620%;
-    transform: translate(-50%, -50%) scale(calc(0.78 + var(--energy) * 0.55));
-    background: radial-gradient(circle,
-        rgba(0, 0, 0, calc(0.32 + var(--energy) * 0.5)) 0%,
-        rgba(0, 0, 0, calc(0.16 + var(--energy) * 0.3)) 30%,
-        rgba(0, 0, 0, calc(0.05 + var(--energy) * 0.12)) 55%,
-        rgba(0, 0, 0, 0) 74%);
-    pointer-events: none;
-    z-index: -1;
-}
 
 /* Oeil organique en caractères */
 .eye-wrap {
@@ -1315,11 +1317,13 @@ h2 { font-size: 1.8rem; }
     border-radius: 2px;
     color: #EAE8E4;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
+    font-size: 0.85rem;
     letter-spacing: 0.5px;
-    padding: 0.45rem 0.7rem;
+    padding: 0.75rem 1.1rem;
+    min-width: 200px;
+    max-width: 280px;
     pointer-events: none;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
 }
 
 @media (max-width: 480px) {

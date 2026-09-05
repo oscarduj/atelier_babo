@@ -104,6 +104,7 @@
             <div class="carousel-nav-zone carousel-nav-prev" id="carousel-prev"></div>
             <div class="carousel-nav-zone carousel-nav-next" id="carousel-next"></div>
             <div class="carousel-arrow-cursor" id="carousel-arrow">
+                <div class="eye-arrow-grid" id="eye-classic-grid"></div>
                 <div class="eye-arrow-grid" id="eye-arrow-grid"></div>
             </div>
 
@@ -871,19 +872,24 @@
                 sfx.eyeClose();
                 stopDrone(1.6);
                 animateOpenProgress(1, 0, 1400, () => {
-                    spawnErrorCascade(950, () => {
+                    spawnErrorCascade(1700, () => {
                         setTimeout(revealWordmarkFromCenter, 150);
                     });
                 });
             }, closeDelay);
         }
 
-        // Cascade rapide de fausses fenêtres d'erreur système, juste avant que le logo
-        // n'apparaisse — comme si la machine bégayait un instant avant de se stabiliser.
+        // Cascade dense de fausses fenêtres d'erreur, juste avant que le logo n'apparaisse —
+        // la page se remplit rapidement avant de se stabiliser d'un coup.
         const fakeErrorMessages = [
-            'ERR_MEMOIRE_CORROMPUE_0x00F3', 'ACCES_REFUSE_0xE04', 'PROCESSUS_INTERROMPU',
-            'PANIQUE_NOYAU', 'DEBORDEMENT_TAMPON', 'FAUTE_DE_SEGMENTATION',
-            'DEFAILLANCE_SYSTEME_0x77', 'POINTEUR_NUL', 'TRACE_PERDUE', 'CONNEXION_PERDUE'
+            'ERREUR 404 — PAGE INTROUVABLE', 'ERREUR 500 — ERREUR SERVEUR INTERNE',
+            'ERREUR 403 — ACCÈS REFUSÉ', 'ERREUR 502 — PASSERELLE INVALIDE',
+            'ERR_CONNECTION_TIMED_OUT', 'DNS_PROBE_FINISHED_NXDOMAIN',
+            'ERR_MEMOIRE_CORROMPUE_0x00F3', 'PANIQUE_NOYAU_0x0000007E',
+            'FAUTE_DE_SEGMENTATION', 'PROCESSUS_INTERROMPU',
+            'CONNEXION_RÉINITIALISÉE', 'DÉFAILLANCE_SYSTÈME_CRITIQUE',
+            'ACCÈS_MÉMOIRE_REFUSÉ', 'ERREUR 0xC000021A', 'DÉBORDEMENT_DE_TAMPON',
+            'POINTEUR_NUL_DÉRÉFÉRENCÉ', 'ERREUR 0x0000007B', 'TRACE_SYSTÈME_PERDUE'
         ];
         function spawnErrorCascade(duration, onDone) {
             const container = document.getElementById('boot-overlay');
@@ -892,12 +898,12 @@
                 const err = document.createElement('div');
                 err.className = 'fake-error-popup';
                 err.textContent = fakeErrorMessages[Math.floor(Math.random() * fakeErrorMessages.length)];
-                err.style.left = (4 + Math.random() * 78) + '%';
-                err.style.top = (6 + Math.random() * 78) + '%';
+                err.style.left = Math.random() * 88 + '%';
+                err.style.top = Math.random() * 88 + '%';
                 container.appendChild(err);
                 spawned.push(err);
                 sfx.statusTick();
-            }, 65);
+            }, 30);
 
             setTimeout(() => {
                 clearInterval(spawnTimer);
@@ -991,7 +997,7 @@
                 cubeRotY += speed;
                 const hoverScale = cubeHovering ? 1.08 : 1;
                 square.style.transform = `rotateX(${cubeRotX.toFixed(2)}deg) rotateY(${cubeRotY.toFixed(2)}deg) scale(${hoverScale})`;
-                square.style.setProperty('--energy', energy.toFixed(3));
+                gate.style.setProperty('--gate-energy', energy.toFixed(3));
             }
             requestAnimationFrame(cubeLoop);
         }
@@ -1032,10 +1038,34 @@
         const carouselNext = document.getElementById('carousel-next');
         const carouselArrow = document.getElementById('carousel-arrow');
 
-        // Le curseur-flèche est un œil étiré en pointe, généré comme celui du boot :
-        // large et arrondi à l'arrière, resserré en pointe à l'avant (le sens du geste).
-        (function buildEyeArrow() {
-            const grid = document.getElementById('eye-arrow-grid');
+        // Deux formes générées comme l'œil du boot : une classique (symétrique, arrondie),
+        // et une effilée en pointe qui ne sert qu'aux deux extrémités de la page.
+        function buildClassicEyeGrid(gridId) {
+            const grid = document.getElementById(gridId);
+            const cols = 16, rows = 8;
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            const cx = (cols - 1) / 2, cy = (rows - 1) / 2;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const nx = (c - cx) / cx;
+                    const ny = (r - cy) / cy;
+                    const envelope = Math.pow(Math.max(0, 1 - nx * nx), 0.55);
+                    const span = document.createElement('span');
+                    if (Math.abs(ny) <= envelope) {
+                        const distCore = Math.sqrt(nx * nx + ny * ny);
+                        let band, chars;
+                        if (distCore < 0.3) { band = 'eac-pupil'; chars = ['@', '#']; }
+                        else if (distCore < 0.6) { band = 'eac-iris'; chars = [':', '+', 'x', '*']; }
+                        else { band = 'eac-sclera'; chars = ['.', "'", '`']; }
+                        span.className = band;
+                        span.textContent = chars[Math.floor(Math.random() * chars.length)];
+                    }
+                    grid.appendChild(span);
+                }
+            }
+        }
+        function buildArrowEyeGrid(gridId) {
+            const grid = document.getElementById(gridId);
             const cols = 26, rows = 8;
             grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             const cy = (rows - 1) / 2;
@@ -1058,7 +1088,9 @@
                     grid.appendChild(span);
                 }
             }
-        })();
+        }
+        buildClassicEyeGrid('eye-classic-grid');
+        buildArrowEyeGrid('eye-arrow-grid');
 
         function scheduleArrowBlink() {
             setTimeout(() => {
@@ -1117,20 +1149,28 @@
             carouselDots.style.display = 'none';
         }
 
+        // La flèche n'apparaît qu'aux deux extrémités de la page (17% de la largeur de
+        // chaque côté) — ailleurs dans la zone de navigation, l'œil reste classique.
+        const ARROW_EDGE_THRESHOLD = 0.17;
         function positionCarouselArrow(e) {
             carouselArrow.style.left = e.clientX + 'px';
             carouselArrow.style.top = e.clientY + 'px';
+
+            const w = window.innerWidth;
+            const nearLeft = e.clientX < w * ARROW_EDGE_THRESHOLD;
+            const nearRight = e.clientX > w * (1 - ARROW_EDGE_THRESHOLD);
+            carouselArrow.classList.toggle('arrow-mode', nearLeft || nearRight);
+            carouselArrow.classList.toggle('flip', nearLeft);
         }
         [carouselPrev, carouselNext].forEach(zone => {
             zone.addEventListener('mousemove', positionCarouselArrow);
-            zone.addEventListener('mouseleave', () => carouselArrow.classList.remove('visible'));
+            zone.addEventListener('mouseleave', () => carouselArrow.classList.remove('visible', 'arrow-mode'));
         });
         carouselPrev.addEventListener('mouseenter', (e) => {
-            carouselArrow.classList.add('visible', 'flip');
+            carouselArrow.classList.add('visible');
             positionCarouselArrow(e);
         });
         carouselNext.addEventListener('mouseenter', (e) => {
-            carouselArrow.classList.remove('flip');
             carouselArrow.classList.add('visible');
             positionCarouselArrow(e);
         });
@@ -1140,7 +1180,7 @@
            Chaque rebond fait légèrement grossir le logo. Cliqué autour du double de sa
            taille d'origine, il se divise en deux logos frais. Livré à lui-même au-delà
            d'une taille maximale, il explose tout seul en fragments. */
-        const LOGO_GROW_PER_BOUNCE = 0.09;
+        const LOGO_GROW_PER_BOUNCE = 0.125;
         const LOGO_SPLIT_SCALE = 2.0;
         const LOGO_SPLIT_WINDOW = 0.18;
         const LOGO_MAX_SCALE = 3.4;
