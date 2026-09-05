@@ -1132,6 +1132,9 @@
         (function initCollectifPhoto() {
             const layers = getCollectifLayers();
             if (!layers || layers.length < 2) return;
+            const box = document.querySelector('.travaux-cell-collectif .travaux-cell-box');
+            const textEl = box.querySelector('.cell-box-text');
+            if (textEl) textEl.style.display = 'none';
             layers[0].style.backgroundImage = `url('${collectifPhotos[0]}')`;
             layers[0].classList.add('active');
         })();
@@ -1156,11 +1159,16 @@
             'images/travaux/oscar/oscar-15.jpg', 'images/travaux/oscar/oscar-16.jpg',
             'images/travaux/oscar/oscar-17.jpg'
         ];
+        const tongPhotos = [
+            'images/travaux/tong/tong-1.jpg', 'images/travaux/tong/tong-2.jpg',
+            'images/travaux/tong/tong-3.jpg', 'images/travaux/tong/tong-4.jpg',
+            'images/travaux/tong/tong-5.jpg'
+        ];
         const travauxMembers = [
             { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]', photos: yoonPhotos },
             { name: 'Tom Lecointre', href: 'travaux/tom-lecointre.html', label: '[ TOM LECOINTRE ]', photos: tomPhotos },
             { name: 'Oscar Dujarrier', href: 'travaux/oscar-dujarrier.html', label: '', photos: oscarPhotos },
-            { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '[ WENJIE TONG ]' }
+            { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '', photos: tongPhotos }
         ];
         let travauxOffset = 0;
 
@@ -1238,10 +1246,11 @@
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
             }, 420);
         }
-        // Position initiale (voir le HTML) : Yoon = case 1, Tom = case 2, Oscar = case 3
+        // Position initiale (voir le HTML) : Yoon = case 1, Tom = case 2, Oscar = case 3, Wenjie = case 4
         travauxMembers[0]._targetBox = document.querySelector('.travaux-cell-1 .travaux-cell-box');
         travauxMembers[1]._targetBox = document.querySelector('.travaux-cell-2 .travaux-cell-box');
         travauxMembers[2]._targetBox = document.querySelector('.travaux-cell-3 .travaux-cell-box');
+        travauxMembers[3]._targetBox = document.querySelector('.travaux-cell-4 .travaux-cell-box');
         travauxMembers.forEach(member => {
             if (member.photos) {
                 member._targetBox.querySelector('.cell-box-text').style.display = 'none';
