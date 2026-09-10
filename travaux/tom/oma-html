@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O.M.A — TOM LECOINTRE // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../tom.css">
+</head>
+<body class="standalone-page tom-page">
+    <main class="artist-page-container">
+        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">TOM LECOINTRE // PROJET</span>
+            <h1>O.M.A (One Meter Array)</h1>
+        </header>
+
+        <div class="tom-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/tom-projets/oma.jpg" alt="O.M.A (One Meter Array)" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2026 · Projet en cours<br>
+                        Installation sculpturale
+                    </div>
+                    <p>Dispositif d'émission et de réception à échelle réduite, inspiré du Square Kilometre Array (SKA). Dans ce projet, je m'intéresse à ce que captent, filtrent ou rendent invisible les dispositifs de communications civils comme militaires.</p>
+                    <p>Par la fabrication d'une antenne parabolique, j'imagine les flux qu'elle met en circulation, jusqu'à envisager l'envoi d'un message personnel vers une altérité extraterrestre, en écho au message d'Arecibo. La parabole devient un point d'ancrage pour interroger des régimes de visibilité et de transmission, révélant les infrastructures discrètes qui organisent notre rapport au monde.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

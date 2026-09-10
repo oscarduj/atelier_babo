@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U — TOM LECOINTRE // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../tom.css">
+</head>
+<body class="standalone-page tom-page">
+    <main class="artist-page-container">
+        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">TOM LECOINTRE // PROJET</span>
+            <h1>U</h1>
+        </header>
+
+        <div class="tom-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/tom-projets/u.jpg" alt="U" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Sculpture en verre à l'uranium, lampe UV
+                    </div>
+                    <p>Sculpture prenant la forme d'un empilement de vaisselle en ouraline. En mobilisant ce matériau lié à l'ère atomique, la sculpture détourne des objets domestiques ordinaires pour les faire basculer vers un registre ambigu, entre vestige, artefact et forme quasi architecturale.</p>
+                    <p>Par sa translucidité et sa légère radioactivité, l'ouraline agit comme le révélateur d'une mémoire matérielle discrète, inscrite dans des objets issus d'une période marquée par l'optimisme technologique et ses dérives. À travers un geste d'accumulation, la sculpture évoque un environnement spéculatif où les objets persistent au-delà de leurs usages, brouillant les frontières entre production industrielle et héritage invisible des systèmes humains.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
