@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DÉ-CONSTRUCTION — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Dé-construction</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/deconstruction.jpg" alt="Dé-construction" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Installation vidéo
+                    </div>
+                    <p>Une image fragmentée en blocs de couleurs saturées, rejouée dans un dispositif sculptural : un cube lumineux monté sur socle.</p>
+                    <p>La pièce interroge la manière dont l'image numérique se décompose en unités discrètes, une matière calculée plutôt qu'une surface continue.</p>
+                    <p class="project-entry-crossref">Amorce le travail sur la matérialité de l'image poursuivi dans <a href="stase.html">Stase</a> et <a href="bruit-eau.html">Le bruit de l'eau</a>.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

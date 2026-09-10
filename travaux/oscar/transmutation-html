@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSMUTATION — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Transmutation</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/transmutation.jpg" alt="Transmutation" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Vidéo générative par codage · Sélectionnée au Video Art Academy (VIDEOFORMES, 2025)
+                    </div>
+                    <p>Une vidéo où l'image est traduite en texte par un système de codage, avant de revenir, par endroits, à sa forme visuelle.</p>
+                    <p>Le processus explore la conversion de l'image en langage, révélant l'instabilité de son statut : tantôt donnée lisible, tantôt forme reconnaissable, jamais totalement l'un ou l'autre.</p>
+                    <p class="project-entry-crossref">Amorce le travail sur la matérialité de l'image poursuivi dans <a href="stase.html">Stase</a> et <a href="bruit-eau.html">Le bruit de l'eau</a>.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
