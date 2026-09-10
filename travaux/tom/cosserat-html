@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSSERAT — TOM LECOINTRE // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../tom.css">
+</head>
+<body class="standalone-page tom-page">
+    <main class="artist-page-container">
+        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">TOM LECOINTRE // PROJET</span>
+            <h1>COSSERAT, manufacture du vide</h1>
+        </header>
+
+        <div class="tom-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/tom-projets/cosserat.jpg" alt="COSSERAT, manufacture du vide" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2022<br>
+                        Vidéo 360°
+                    </div>
+                    <p>La manufacture de Cosserat était autrefois un fleuron de l'industrie textile française, notamment réputée pour son velours d'Utrecht, dont elle détenait le quasi-monopole au sein du pays. Après la fermeture du site, la manufacture est devenue un espace hors du temps, un espace liminal.</p>
+                    <p>Mais cet état est sur le point de changer : Cosserat va subir de profondes transformations en vue d'une réhabilitation. J'ai donc cherché à produire une archive vidéo. En résulte un système mécanique capable de remplacer le plasticien, pour effectuer des prises de vue dans des secteurs trop dangereux et interdits d'accès aux humains.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

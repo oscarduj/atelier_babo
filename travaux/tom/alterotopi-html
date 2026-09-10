@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALTERTOPIE — TOM LECOINTRE // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../tom.css">
+</head>
+<body class="standalone-page tom-page">
+    <main class="artist-page-container">
+        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">TOM LECOINTRE // PROJET</span>
+            <h1>ALTERTOPIE</h1>
+        </header>
+
+        <div class="tom-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/tom-projets/altertopie.jpg" alt="ALTERTOPIE" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2022 · Sélectionnée au Video Art Academy (Festival VIDEOFORMES, 2025)<br>
+                        Vidéo · 3m12s
+                    </div>
+                    <p>Altertopie est une performance filmée et restituée dans l'espace d'exposition grâce à un écran translucide de 3 m par 2 m. C'est une invitation à imaginer, voire identifier les causes et l'impact de la vie de l'Homme sur le territoire qu'il occupe.</p>
+                    <p>Le projet explore les limites entre habitable et inhabitable, en prenant notamment référence à George Perec dans <em>Espèce d'espace</em>. Du latin <em>alter</em> « autre » et du grec <em>tópos</em> « lieu », le terme désigne ici ces espaces, à la frontière d'un réel à un autre. Une frontière résolument fascinante qui nous préserve — ou non — de ce qui peut bien se trouver de l'autre côté.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

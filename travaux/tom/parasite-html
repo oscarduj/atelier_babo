@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARASITE #1 — TOM LECOINTRE // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../tom.css">
+</head>
+<body class="standalone-page tom-page">
+    <main class="artist-page-container">
+        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">TOM LECOINTRE // PROJET</span>
+            <h1>PARASITE #1</h1>
+        </header>
+
+        <div class="tom-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/tom-projets/parasite.jpg" alt="PARASITE #1" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Sculpture · Tronc, argile crue
+                    </div>
+                    <p>En hybridant une forme organique avec des éléments industriels, le projet imagine un scénario d'évolution où le vivant intégrerait progressivement les déchets produits par l'activité humaine. Le métal, habituellement perçu comme étranger ou polluant, devient ici une matière assimilée, presque digérée, suggérant des formes de cohabitation ou d'adaptation forcée.</p>
+                    <p>La sculpture propose ainsi une vision spéculative d'un écosystème transformé, où les frontières entre nature et production humaine s'estompent, et où les organismes évoluent en réponse aux conditions imposées par l'Anthropocène.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
