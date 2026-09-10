@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STASE — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Stase</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/stase.jpg" alt="Stase" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2025 – 2026<br>
+                        Installation vidéo · 10 tissus lestés · 50×50 cm — 150×240 cm<br>
+                        Vidéoprojecteurs, câbles, structure, son
+                    </div>
+                    <p>À partir de mots-clés, une intelligence artificielle tente de générer une image, mais le processus est délibérément contraint pour qu'elle n'atteigne jamais son résultat. Bloquée dans une narration de stase, l'image reste incomplète — on n'en perçoit que des traces —, révélant au passage les différentes étapes de sa génération.</p>
+                    <p>De par sa dépendance à ce système technique, cette image, bien que reconnue comme telle, ne se verra jamais accorder par le public la même valeur qu'une photographie. Un son en forme d'électrocardiogramme amplifie cette stase, comme une image maintenue en vie sans jamais parvenir à naître.</p>
+                    <p>L'installation rend par ailleurs visible la chaîne technique qui produit cette image : vidéoprojecteurs, câbles et structure sont exposés comme composantes à part entière de l'œuvre plutôt que dissimulés.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
