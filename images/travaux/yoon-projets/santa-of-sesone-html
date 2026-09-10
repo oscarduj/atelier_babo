@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANTA'S OFF-SEASON — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Santa's OFF-Season</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/santa-off-season.jpg" alt="Santa's OFF-Season" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2026<br>
+                        Série photographique générée par IA · 10 cm × 15 cm
+                    </div>
+                    <p>Santa's OFF Season explore la figure de Santa Claus en dehors de la période de Noël. Image mondialisée, il apparaît ici dans des situations ordinaires, loin de son rôle. La question est simple : que reste-t-il lorsqu'on enlève le costume et la fonction ?</p>
+                    <p>À travers une série d'images, Santa est placé dans des espaces du quotidien. Dans ces contextes, il reste reconnaissable, mais devient aussi une présence plus humaine, proche d'un individu ordinaire. Au-delà du personnage, le projet évoque les rôles que chacun joue dans la société. Entre routine, fatigue et moments de liberté, il propose une réflexion sur ce qui subsiste lorsque ces constructions disparaissent.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

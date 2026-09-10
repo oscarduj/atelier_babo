@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELEPHANT MAN — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Elephant Man : la vie à l'étranger</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/elephant-man.jpg" alt="Elephant Man : la vie à l'étranger" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2022<br>
+                        Série photographique · 125 cm × 59 cm
+                    </div>
+                    <p>Elephant Man est une série d'autoportraits construite autour de la notion de masque. Elle prend la forme d'une suite de six images présentées comme une séquence. On y retrouve les sensations liées à la vie dans un environnement étranger. La distance, le décalage et une forme d'isolement amènent à dissimuler certaines émotions, comme un moyen de protection.</p>
+                    <p>J'ai traduit cet état à travers la construction d'émotions artificielles, superposées comme un masque. Le plastique transparent qui recouvre le visage apparaît froid et rigide, tandis que ses couches successives suggèrent des états émotionnels fabriqués. Cependant, la transparence du matériau laisse apparaître ce qui tente d'être caché. Malgré cette construction, une part de fragilité reste visible.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

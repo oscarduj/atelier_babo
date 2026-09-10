@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTE E3Ɛ — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Porte E3Ɛ</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/porte-e3e.jpg" alt="Porte E3Ɛ" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Installation multimédia
+                    </div>
+                    <p>Ce projet prend la forme d'un espace d'entrée, conçu comme une zone de transition avant d'entrer dans un univers onirique. Un texte lumineux, inspiré des enseignes et des dispositifs de signalisation, agit comme une porte symbolique vers un autre état. Il associe des éléments personnels et géographiques, suggérant à la fois un passage et une transformation.</p>
+                    <p>Un chariot placé dans l'espace fonctionne comme une archive mobile, réunissant des références et des éléments de recherche. À proximité, une animation visuelle projette un mouvement continu, proche d'une aspiration. Elle évoque le moment où l'on quitte la réalité pour glisser vers un autre espace mental. L'ensemble propose une expérience sensorielle, construite autour de la lumière, du mouvement et de l'idée de passage.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

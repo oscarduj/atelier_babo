@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UN CAUCHEMAR DANS UN CAUCHEMAR — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Un cauchemar dans un cauchemar</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/cauchemar.jpg" alt="Un cauchemar dans un cauchemar" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Installation immersive vidéo et sonore
+                    </div>
+                    <p>Dans un monde numérique composé de 0 et de 1 se déploie un cauchemar. À l'intérieur de cet espace, dix personnes racontent chacune leur propre rêve troublé. Images et sons se superposent et s'accumulent, formant une structure dense qui évoque l'architecture d'un vaste système de données, proche des signaux transmis par une intelligence artificielle.</p>
+                    <p>Au fil de ce processus, les émotions et les souvenirs humains semblent eux aussi pouvoir être convertis en données. À mesure que les expériences individuelles se croisent et se mêlent, leur sens initial se dissout progressivement, se transformant en un autre type de récit, comme s'il avait été recomposé par une intelligence artificielle. Dans ce contexte, l'IA n'apparaît plus comme un simple outil, mais comme un agent capable de modifier notre perception du monde.</p>
+                    <p>Cette installation révèle que nous vivons déjà dans un environnement de coexistence avec l'intelligence artificielle. L'espace numérique façonne continuellement notre perception et notre identité ; à travers la métaphore du cauchemar, l'œuvre suggère que le rôle de l'IA dépasse désormais l'assistance technique pour atteindre un niveau où l'expérience humaine elle-même peut être réécrite et recomposée.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

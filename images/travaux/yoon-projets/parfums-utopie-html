@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARFUMS DE L'UTOPIE — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Parfums de l'Utopie</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/parfums-utopie.jpg" alt="Parfums de l'Utopie" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2024<br>
+                        Installation olfactive, vidéo-mapping
+                    </div>
+                    <p>Parfums de l'Utopie est une installation qui associe odeur, vidéo-mapping et image. Le projet part d'une question simple : si l'utopie avait un parfum, à quoi ressemblerait-elle ? À travers cette idée, j'ai imaginé un espace où les quatre saisons restent sensibles et distinctes, alors qu'aujourd'hui, avec le dérèglement climatique, ces repères deviennent de plus en plus flous.</p>
+                    <p>Quatre parfums ont été créés, chacun lié à une saison. Ils sont contenus dans des boîtes perforées, d'où les odeurs s'échappent lentement. Chaque parfum évoque une image, un souvenir ou une sensation. En regardant à l'intérieur, le visiteur ne voit que son propre regard, comme un retour à une mémoire personnelle.</p>
+                    <p>Sur chaque boîte, une animation 3D est projetée par vidéo-mapping. Les particules en mouvement créent une surface instable, proche du sable ou de la poussière. L'ensemble forme un espace entre odeur, lumière et souvenir, où chaque élément agit comme une trace d'un temps fragile.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
