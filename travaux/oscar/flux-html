@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLUX — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Flux</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/flux.jpg" alt="Flux" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2023<br>
+                        Installation vidéo et sonore
+                    </div>
+                    <p>Plusieurs projections saturées d'images et de textures se superposent dans l'espace, jusqu'à l'illisibilité.</p>
+                    <p>Flux met en scène l'accumulation continue d'images qui caractérise notre environnement médiatique contemporain, où voir devient synonyme d'être submergé.</p>
+                    <p class="project-entry-crossref">Prolonge <a href="livre-blanc.html">Livre blanc</a> (2023), mène à <a href="vivre-flux.html">Vivre à travers le flux</a> (2025–26).</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

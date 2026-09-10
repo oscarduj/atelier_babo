@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVRE BLANC — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Livre blanc</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/livre-blanc.jpg" alt="Livre blanc" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        Mars 2023<br>
+                        Installation d'éditions · A4
+                    </div>
+                    <p>Une édition rassemble des centaines d'articles de presse consacrés à la réforme des retraites, alors omniprésente dans les médias.</p>
+                    <p>Extraits de leur support d'origine, les textes sont mis sur un pied d'égalité — imprimés, superposés, jusqu'à ce que les termes récurrents se chevauchent et que le sens cède la place au non-sens.</p>
+                    <p>Conçue à l'origine comme un fichier numérique reproductible à l'infini, l'édition est pourtant exposée sous une forme qui la contredit : accrochée au mur, numérotée comme un tirage limité.</p>
+                    <p>Un geste ironique qui critique la manière dont les institutions imposent aux œuvres nées de la reproductibilité les codes de l'unicité et de l'aura — un débat hérité de Walter Benjamin, prolongé jusqu'à l'esthétique post-média de Lev Manovich.</p>
+                    <p class="project-entry-crossref">Mène à <a href="flux.html">Flux</a> (2023).</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
