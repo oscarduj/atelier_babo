@@ -73,10 +73,18 @@ body.yoon-page::before {
 }
 
 /* ============================================================
-   PAGE HUB — fond rouge plein écran
+   PAGE HUB — défilement en plein écran (même mécanique que la page
+   d'accueil du site). Écran 1 rouge électrique avec la démarche
+   centrée en grand ; écran 2 blanc pour la galerie des travaux.
    ============================================================ */
 body.yoon-hub {
-    --bg-color: #d11a1a;
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    --bg-color: #e51616;
     --text-color: #ffffff;
     --accent-color: #ffffff;
     --secondary-color: #ffffff;
@@ -84,53 +92,89 @@ body.yoon-hub {
     --box-bg: rgba(255, 255, 255, 0.04);
     --desc-color: rgba(255, 255, 255, 0.75);
 }
-body.yoon-hub .back-link { color: rgba(255, 255, 255, 0.8); }
+body.yoon-hub .back-link {
+    color: rgba(255, 255, 255, 0.8);
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 20;
+}
+body.yoon-hub .artist-page-container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
 
-.yoon-hero { padding: 5rem 6rem 2rem; }
+/* --- Écran 1 : rouge électrique, démarche centrée en grand --- */
+.yoon-screen-hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 6vw;
+    background: #e51616;
+}
 .yoon-hero-tag {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.78rem;
     letter-spacing: 2px;
     opacity: 0.75;
     display: block;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
 }
 .yoon-hero-name {
     font-family: 'EB Garamond', serif;
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(3rem, 8.5vw, 6.5rem);
+    font-size: clamp(2.6rem, 6.5vw, 4.8rem);
     line-height: 1;
-    margin: 0 0 1rem;
-}
-.yoon-hero-line {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1.3rem;
-    opacity: 0.85;
+    margin: 0 0 2.5rem;
 }
 
-/* Citation "surlignée" inversée (fond blanc, texte rouge) — pas de jaune,
-   réservé à Tom. */
-.yoon-highlight-quote { max-width: 780px; padding: 3rem 6rem 1rem; }
-.yoon-highlight-quote p {
+/* Démarche : dominante, centrée, chaque ligne surlignée grâce à
+   box-decoration-break (fond blanc, texte rouge — pas de jaune,
+   réservé à Tom). */
+.yoon-demarche-quote { max-width: 920px; }
+.yoon-demarche-quote p {
     display: inline;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1.05rem;
-    line-height: 2.2;
+    font-size: clamp(1rem, 2.1vw, 1.35rem);
+    line-height: 2.3;
     background: #ffffff;
-    color: #d11a1a;
+    color: #b81010;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    padding: 0.15em 0.35em;
+    padding: 0.12em 0.35em;
 }
 
-.yoon-gallery-section { padding: 2rem 6rem 5rem; }
-.yoon-gallery-section h3 {
+/* --- Écran 2 : fond blanc, galerie des travaux --- */
+.yoon-screen-gallery {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    background: #f4f4f0;
+    color: #0a0a0a;
+    padding: 6rem 6vw 4rem;
+}
+.yoon-screen-gallery .artist-bio-section,
+.yoon-screen-gallery .artist-contact-section {
+    --text-color: #0a0a0a;
+    --accent-color: #b81010;
+    --secondary-color: #b81010;
+    --border-color: #d8d8d2;
+    --box-bg: rgba(184, 16, 16, 0.03);
+    --desc-color: #555555;
+}
+.yoon-screen-gallery h3 {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.8rem;
     letter-spacing: 2px;
-    opacity: 0.7;
+    color: #b81010;
     margin-bottom: 2rem;
     text-transform: uppercase;
 }
@@ -139,12 +183,12 @@ body.yoon-hub .back-link { color: rgba(255, 255, 255, 0.8); }
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 1.8rem 1.5rem;
 }
-.yoon-gallery-item { text-decoration: none; color: #ffffff; display: block; }
+.yoon-gallery-item { text-decoration: none; color: #0a0a0a; display: block; }
 .yoon-gallery-thumb {
     aspect-ratio: 4 / 3;
     overflow: hidden;
     margin-bottom: 0.7rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(184, 16, 16, 0.04);
 }
 .yoon-gallery-thumb img {
     width: 100%; height: 100%; object-fit: cover;
@@ -158,16 +202,17 @@ body.yoon-hub .back-link { color: rgba(255, 255, 255, 0.8); }
     font-style: italic;
     font-size: 1.25rem;
     display: block;
+    color: #0a0a0a;
 }
 .yoon-gallery-date {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.7rem;
-    opacity: 0.65;
+    color: #666666;
     letter-spacing: 0.5px;
 }
 
 @media (max-width: 760px) {
-    .yoon-hero, .yoon-highlight-quote, .yoon-gallery-section {
+    .yoon-screen-hero, .yoon-screen-gallery {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }

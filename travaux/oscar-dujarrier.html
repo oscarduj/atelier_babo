@@ -8,98 +8,104 @@
     <link rel="stylesheet" href="../oscar.css">
 </head>
 <body class="standalone-page oscar-hub">
-    <main class="artist-page-container">
-        <a href="../index.html#travaux" class="back-link">← RETOUR AUX TRAVAUX</a>
+    <a href="../index.html#travaux" class="back-link">← RETOUR AUX TRAVAUX</a>
 
-        <section class="oscar-hero">
+    <main class="artist-page-container">
+
+        <!-- ÉCRAN 1 : bleu électrique, démarche centrée en grand.
+             Espace prévu pour des objets blancs en rotation (à venir). -->
+        <section class="oscar-screen-hero">
             <span class="oscar-hero-tag">PORTFOLIO — 2026</span>
             <h1 class="oscar-hero-name">Oscar Dujarrier</h1>
-            <p class="oscar-hero-line">matière en suspens</p>
+            <div class="oscar-demarche-quote">
+                <p>Entre installation vidéo, sculpture et dispositifs numériques, cette pratique déploie des formes hybrides où ces médiums se répondent et se contaminent — une interrogation constante de la matérialité de l'image numérique et de la saturation qui structure l'expérience contemporaine des images.</p>
+            </div>
         </section>
 
-        <div class="oscar-highlight-quote">
-            <p>Entre installation vidéo, sculpture et dispositifs numériques, cette pratique déploie des formes hybrides où ces médiums se répondent et se contaminent — une interrogation constante de la matérialité de l'image numérique et de la saturation qui structure l'expérience contemporaine des images.</p>
-        </div>
+        <!-- ÉCRAN 2 : fond blanc, mind map puis galerie des travaux -->
+        <section class="oscar-screen-gallery">
+            <section class="oscar-mindmap-section">
+                <h3>Généalogie des projets</h3>
 
-        <section class="oscar-mindmap-section">
-            <h3>GÉNÉALOGIE DES PROJETS</h3>
-
-            <div class="mindmap-branch">
-                <div class="mindmap-node">Livre blanc<span>2023 — accumulation de texte</span></div>
-                <span class="mindmap-arrow">→</span>
-                <div class="mindmap-node">Flux<span>2023 — saturation de l'image</span></div>
-                <span class="mindmap-arrow">→</span>
-                <div class="mindmap-node mindmap-node-end">Vivre à travers le flux<span>2025 – 2026 — immersion jusqu'à l'épuisement</span></div>
-            </div>
-
-            <div class="mindmap-branch">
-                <div class="mindmap-node">Matérialité de l'image<span>De-construction / Transmutation, 2024</span></div>
-                <span class="mindmap-arrow">→</span>
-                <div class="mindmap-node-group">
-                    <div class="mindmap-node mindmap-node-end">Le bruit de l'eau<span>2026 — l'image se confond avec le signal</span></div>
-                    <div class="mindmap-node mindmap-node-end">Stase<span>2025 – 2026 — l'image qui ne se stabilise jamais</span></div>
+                <div class="mindmap-branch">
+                    <div class="mindmap-node">Livre blanc<span>2023 — accumulation de texte</span></div>
+                    <span class="mindmap-arrow">→</span>
+                    <div class="mindmap-node">Flux<span>2023 — saturation de l'image</span></div>
+                    <span class="mindmap-arrow">→</span>
+                    <div class="mindmap-node mindmap-node-end">Vivre à travers le flux<span>2025 – 2026 — immersion jusqu'à l'épuisement</span></div>
                 </div>
-            </div>
+
+                <div class="mindmap-branch">
+                    <div class="mindmap-node">Matérialité de l'image<span>De-construction / Transmutation, 2024</span></div>
+                    <span class="mindmap-arrow">→</span>
+                    <div class="mindmap-node-group">
+                        <div class="mindmap-node mindmap-node-end">Le bruit de l'eau<span>2026 — l'image se confond avec le signal</span></div>
+                        <div class="mindmap-node mindmap-node-end">Stase<span>2025 – 2026 — l'image qui ne se stabilise jamais</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="oscar-gallery-section">
+                <h3>Travaux</h3>
+                <div class="oscar-gallery-grid">
+                    <a href="oscar/stase.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/stase.jpg" alt="Stase"></div>
+                        <span class="oscar-gallery-title">Stase</span>
+                        <span class="oscar-gallery-date">2025 – 2026</span>
+                    </a>
+                    <a href="oscar/bruit-eau.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l'eau"></div>
+                        <span class="oscar-gallery-title">Le bruit de l'eau</span>
+                        <span class="oscar-gallery-date">2026</span>
+                    </a>
+                    <a href="oscar/vivre-flux.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/vivre-flux.jpg" alt="Vivre à travers le flux"></div>
+                        <span class="oscar-gallery-title">Vivre à travers le flux</span>
+                        <span class="oscar-gallery-date">2025 – 2026</span>
+                    </a>
+                    <a href="oscar/transmutation.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/transmutation.jpg" alt="Transmutation"></div>
+                        <span class="oscar-gallery-title">Transmutation</span>
+                        <span class="oscar-gallery-date">2024</span>
+                    </a>
+                    <a href="oscar/deconstruction.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/deconstruction.jpg" alt="Dé-construction"></div>
+                        <span class="oscar-gallery-title">Dé-construction</span>
+                        <span class="oscar-gallery-date">2024</span>
+                    </a>
+                    <a href="oscar/flux.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/flux.jpg" alt="Flux"></div>
+                        <span class="oscar-gallery-title">Flux</span>
+                        <span class="oscar-gallery-date">2023</span>
+                    </a>
+                    <a href="oscar/livre-blanc.html" class="oscar-gallery-item">
+                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/livre-blanc.jpg" alt="Livre blanc"></div>
+                        <span class="oscar-gallery-title">Livre blanc</span>
+                        <span class="oscar-gallery-date">Mars 2023</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="artist-bio-section">
+                <h3>AU SEIN DU COLLECTIF — BABO</h3>
+                <p>BABO, mot coréen signifiant « idiot », désigne une façon d'être à côté des cadres habituels. Le collectif s'est formé en 2023 à l'ésadhar, puis constitué en association en 2025.</p>
+                <p>L'essentiel de cette pratique se construit aujourd'hui à travers Babo : des projets menés à plusieurs, où la vidéo, la sculpture, l'installation et l'art numérique se répondent selon la même exigence que le travail personnel présenté ici.</p>
+                <p class="project-entry-crossref">Voir <a href="collectif.html">Babosphere, Signal faible, Trois dimensions et Portrait immatériel</a> sur la page du Collectif.</p>
+            </section>
+
+            <section class="artist-contact-section">
+                <h3>CONTACT</h3>
+                <div class="contact-links-grid">
+                    <a href="mailto:oscar.dujarrier001@gmail.com" class="contact-btn">EMAIL</a>
+                    <a href="tel:+33788890201" class="contact-btn">07 88 89 02 01</a>
+                </div>
+            </section>
         </section>
 
-        <section class="oscar-gallery-section">
-            <h3>Travaux</h3>
-            <div class="oscar-gallery-grid">
-                <a href="oscar/stase.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/stase.jpg" alt="Stase"></div>
-                    <span class="oscar-gallery-title">Stase</span>
-                    <span class="oscar-gallery-date">2025 – 2026</span>
-                </a>
-                <a href="oscar/bruit-eau.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l'eau"></div>
-                    <span class="oscar-gallery-title">Le bruit de l'eau</span>
-                    <span class="oscar-gallery-date">2026</span>
-                </a>
-                <a href="oscar/vivre-flux.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/vivre-flux.jpg" alt="Vivre à travers le flux"></div>
-                    <span class="oscar-gallery-title">Vivre à travers le flux</span>
-                    <span class="oscar-gallery-date">2025 – 2026</span>
-                </a>
-                <a href="oscar/transmutation.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/transmutation.jpg" alt="Transmutation"></div>
-                    <span class="oscar-gallery-title">Transmutation</span>
-                    <span class="oscar-gallery-date">2024</span>
-                </a>
-                <a href="oscar/deconstruction.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/deconstruction.jpg" alt="Dé-construction"></div>
-                    <span class="oscar-gallery-title">Dé-construction</span>
-                    <span class="oscar-gallery-date">2024</span>
-                </a>
-                <a href="oscar/flux.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/flux.jpg" alt="Flux"></div>
-                    <span class="oscar-gallery-title">Flux</span>
-                    <span class="oscar-gallery-date">2023</span>
-                </a>
-                <a href="oscar/livre-blanc.html" class="oscar-gallery-item">
-                    <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/livre-blanc.jpg" alt="Livre blanc"></div>
-                    <span class="oscar-gallery-title">Livre blanc</span>
-                    <span class="oscar-gallery-date">Mars 2023</span>
-                </a>
-            </div>
-        </section>
-
-        <section class="artist-bio-section">
-            <h3>AU SEIN DU COLLECTIF — BABO</h3>
-            <p>BABO, mot coréen signifiant « idiot », désigne une façon d'être à côté des cadres habituels. Le collectif s'est formé en 2023 à l'ésadhar, puis constitué en association en 2025.</p>
-            <p>L'essentiel de cette pratique se construit aujourd'hui à travers Babo : des projets menés à plusieurs, où la vidéo, la sculpture, l'installation et l'art numérique se répondent selon la même exigence que le travail personnel présenté ici.</p>
-            <p class="project-entry-crossref">Voir <a href="collectif.html">Babosphere, Signal faible, Trois dimensions et Portrait immatériel</a> sur la page du Collectif.</p>
-        </section>
-
-        <section class="artist-contact-section">
-            <h3>CONTACT</h3>
-            <div class="contact-links-grid">
-                <a href="mailto:oscar.dujarrier001@gmail.com" class="contact-btn">EMAIL</a>
-                <a href="tel:+33788890201" class="contact-btn">07 88 89 02 01</a>
-            </div>
-        </section>
     </main>
 </body>
 </html>
+
 
 
 

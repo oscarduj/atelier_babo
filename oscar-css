@@ -102,11 +102,18 @@ body.oscar-page {
 }
 
 /* ============================================================
-   PAGE HUB — fond bleu plein écran, point d'entrée du travail
-   d'Oscar. Contraste volontaire avec le noir des pages de projet :
-   entrée vive et dense, lecture posée une fois à l'intérieur.
+   PAGE HUB — défilement en plein écran (même mécanique que la page
+   d'accueil du site : chaque écran se cale en place). Écran 1 bleu
+   électrique avec la démarche centrée en grand ; écran 2 blanc pour
+   la galerie des travaux.
    ============================================================ */
 body.oscar-hub {
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
     --bg-color: #1414e2;
     --text-color: #ffffff;
     --accent-color: #f5e83c;
@@ -115,10 +122,32 @@ body.oscar-hub {
     --box-bg: rgba(255, 255, 255, 0.04);
     --desc-color: rgba(255, 255, 255, 0.75);
 }
-body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
+body.oscar-hub .back-link {
+    color: rgba(255, 255, 255, 0.8);
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 20;
+}
+body.oscar-hub .artist-page-container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
 
-.oscar-hero {
-    padding: 5rem 6rem 2rem;
+/* --- Écran 1 : bleu électrique, démarche centrée en grand --- */
+.oscar-screen-hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 6vw;
+    background: #1414e2;
 }
 .oscar-hero-tag {
     font-family: 'Share Tech Mono', monospace;
@@ -126,43 +155,64 @@ body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
     letter-spacing: 2px;
     opacity: 0.75;
     display: block;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
 }
 .oscar-hero-name {
     font-family: 'EB Garamond', serif;
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(3rem, 8.5vw, 6.5rem);
+    font-size: clamp(2.6rem, 6.5vw, 4.8rem);
     line-height: 1;
-    margin: 0 0 1rem;
-}
-.oscar-hero-line {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1.3rem;
-    opacity: 0.85;
+    margin: 0 0 2.5rem;
 }
 
-/* Citation en "surligneur" — chaque ligne récupère son propre bloc de
-   fond grâce à box-decoration-break, comme un texte passé au marqueur. */
-.oscar-highlight-quote {
-    max-width: 780px;
-    padding: 3rem 6rem 1rem;
+/* Démarche : dominante, centrée, chaque ligne surlignée grâce à
+   box-decoration-break, comme un texte passé au marqueur. */
+.oscar-demarche-quote {
+    max-width: 920px;
 }
-.oscar-highlight-quote p {
+.oscar-demarche-quote p {
     display: inline;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1.05rem;
-    line-height: 2.2;
+    font-size: clamp(1rem, 2.1vw, 1.35rem);
+    line-height: 2.3;
     background: #f5e83c;
     color: #14149c;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    padding: 0.15em 0.35em;
+    padding: 0.12em 0.35em;
+}
+
+/* --- Écran 2 : fond blanc, la galerie des travaux --- */
+.oscar-screen-gallery {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    background: #f4f4f0;
+    color: #0a0a0a;
+    padding: 6rem 6vw 4rem;
+}
+.oscar-screen-gallery,
+.oscar-screen-gallery .artist-bio-section,
+.oscar-screen-gallery .artist-contact-section {
+    --text-color: #0a0a0a;
+    --accent-color: #14149c;
+    --secondary-color: #14149c;
+    --border-color: #d8d8d2;
+    --box-bg: rgba(20, 20, 156, 0.03);
+    --desc-color: #555555;
+}
+.oscar-screen-gallery h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #14149c;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
 }
 
 /* --- Mind map : généalogie des projets --- */
-.oscar-mindmap-section { padding: 3.5rem 6rem 4rem; }
+.oscar-mindmap-section { padding: 0 0 4rem; }
 .oscar-mindmap-section h3 {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.8rem;
@@ -181,7 +231,8 @@ body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
 .mindmap-node {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.82rem;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #0a0a0a;
+    border: 1px solid rgba(20, 20, 156, 0.25);
     padding: 0.75rem 1.1rem;
     display: flex;
     flex-direction: column;
@@ -190,15 +241,16 @@ body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
 }
 .mindmap-node span {
     font-size: 0.68rem;
-    opacity: 0.6;
+    color: #666666;
 }
 .mindmap-node-end {
-    border-color: #f5e83c;
-    color: #f5e83c;
+    border-color: #14149c;
+    color: #14149c;
 }
 .mindmap-arrow {
     font-size: 1.1rem;
-    opacity: 0.55;
+    color: #14149c;
+    opacity: 0.5;
     flex-shrink: 0;
 }
 .mindmap-node-group {
@@ -208,15 +260,7 @@ body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
 }
 
 /* --- Galerie : une image par travail, clic vers sa page --- */
-.oscar-gallery-section { padding: 1rem 6rem 5rem; }
-.oscar-gallery-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    opacity: 0.7;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-}
+.oscar-gallery-section { padding: 1rem 0 3rem; }
 .oscar-gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -224,14 +268,14 @@ body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
 }
 .oscar-gallery-item {
     text-decoration: none;
-    color: #ffffff;
+    color: #0a0a0a;
     display: block;
 }
 .oscar-gallery-thumb {
     aspect-ratio: 4 / 3;
     overflow: hidden;
     margin-bottom: 0.7rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(20, 20, 156, 0.04);
 }
 .oscar-gallery-thumb img {
     width: 100%;
@@ -250,16 +294,17 @@ body.oscar-hub .back-link { color: rgba(255, 255, 255, 0.8); }
     font-style: italic;
     font-size: 1.25rem;
     display: block;
+    color: #0a0a0a;
 }
 .oscar-gallery-date {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.7rem;
-    opacity: 0.65;
+    color: #666666;
     letter-spacing: 0.5px;
 }
 
 @media (max-width: 760px) {
-    .oscar-hero, .oscar-highlight-quote, .oscar-mindmap-section, .oscar-gallery-section {
+    .oscar-screen-hero, .oscar-screen-gallery {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }
