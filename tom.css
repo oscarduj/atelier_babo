@@ -1,0 +1,274 @@
+/* ============================================================
+   DA — TOM LECOINTRE
+   Même grammaire structurelle qu'Oscar et Yoon (héro plein écran
+   avec callouts + démarche centrée + images animées, puis écran
+   blanc pour la galerie), recolorée en jaune.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500&family=Share+Tech+Mono&display=swap');
+
+/* --- Pages de projet individuelles : fond sombre, accent jaune --- */
+body.tom-page {
+    --bg-color: #050505;
+    --text-color: #EAE8E4;
+    --accent-color: #e8c31a;
+    --secondary-color: #e8c31a;
+    --border-color: #262626;
+    --box-bg: rgba(232, 195, 26, 0.03);
+    --desc-color: #9a9a9a;
+}
+body.tom-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        repeating-linear-gradient(rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 3px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.tom-page .artist-page-container { position: relative; z-index: 1; }
+
+.tom-page .tag { font-family: 'Share Tech Mono', monospace; color: var(--accent-color); }
+.tom-page .back-link { color: var(--accent-color); }
+.tom-page .artist-header h1 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 3.4rem;
+    letter-spacing: 0.5px;
+    text-transform: none;
+}
+.tom-page .artist-bio-section h3,
+.tom-page .artist-projects-section h3,
+.tom-page .artist-contact-section h3 {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent-color);
+}
+.tom-page .project-entry-head h4 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+    text-transform: none;
+    letter-spacing: 0.3px;
+}
+.tom-page .project-entry-tag { color: var(--accent-color); }
+.tom-page .contact-btn { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+
+.tom-pulse-line {
+    position: relative;
+    height: 1px;
+    background: var(--accent-color, #e8c31a);
+    opacity: 0.4;
+    margin: 2.5rem 0;
+    animation: tom-pulse 3.4s ease-in-out infinite;
+}
+@keyframes tom-pulse {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.55; }
+}
+
+/* ============================================================
+   PAGE HUB — défilement plein écran. Écran 1 jaune électrique avec
+   la démarche centrée en grand, callouts en coins et images animées ;
+   écran 2 blanc pour la galerie des travaux.
+   ============================================================ */
+body.tom-hub {
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    --bg-color: #e8c31a;
+    --text-color: #14120a;
+    --accent-color: #14120a;
+    --secondary-color: #14120a;
+    --border-color: rgba(20, 18, 10, 0.3);
+    --box-bg: rgba(20, 18, 10, 0.04);
+    --desc-color: rgba(20, 18, 10, 0.75);
+}
+body.tom-hub .back-link {
+    color: rgba(20, 18, 10, 0.8);
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 20;
+}
+body.tom-hub .artist-page-container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* --- Écran 1 : jaune électrique, démarche centrée en grand --- */
+.tom-screen-hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 6vw;
+    background: #e8c31a;
+    overflow: hidden;
+}
+.tom-hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    opacity: 0.75;
+    display: block;
+    margin-bottom: 1rem;
+}
+.tom-hero-name {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 6.5vw, 4.8rem);
+    line-height: 1;
+    margin: 0 0 2.5rem;
+    color: #14120a;
+}
+
+/* Callouts en coins — fragments authentiques de la démarche de Tom */
+.tom-hero-callout {
+    position: absolute;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    max-width: 230px;
+    opacity: 0.65;
+    text-align: left;
+    color: #14120a;
+}
+.tom-hero-callout .callout-num {
+    color: #ffffff;
+    opacity: 1;
+    margin-right: 0.3em;
+}
+.tom-hero-callout .callout-title {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.2rem;
+}
+.tom-hero-callout-tl { top: 2.5rem; left: 2.5rem; }
+.tom-hero-callout-tr { top: 2.5rem; right: 2.5rem; text-align: right; }
+.tom-hero-callout-bl { bottom: 2.5rem; left: 2.5rem; }
+.tom-hero-callout-br { bottom: 2.5rem; right: 2.5rem; text-align: right; }
+
+/* Deux images animées (rotation lente continue), issues de ses propres
+   travaux, teintées en jaune-duotone sombre, encadrant la citation. */
+.tom-hero-accent-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1.8rem;
+    border: 1px solid rgba(20, 18, 10, 0.3);
+    animation: tom-accent-spin 26s linear infinite;
+}
+.tom-hero-accent-img.is-bottom {
+    margin: 2rem auto 0;
+    animation-duration: 32s;
+    animation-direction: reverse;
+}
+.tom-hero-accent-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) sepia(1) hue-rotate(-8deg) saturate(3.5) brightness(0.85) contrast(1.1);
+}
+@keyframes tom-accent-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Démarche : dominante, centrée, chaque ligne surlignée grâce à
+   box-decoration-break (fond sombre, texte jaune — inversé par
+   rapport à l'écran, pour rester lisible sur le jaune vif). */
+.tom-demarche-quote { max-width: 1180px; }
+.tom-demarche-quote p {
+    display: inline;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(1.05rem, 2.4vw, 1.55rem);
+    line-height: 2.3;
+    background: #14120a;
+    color: #e8c31a;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.12em 0.35em;
+}
+
+/* --- Écran 2 : fond blanc, galerie des travaux --- */
+.tom-screen-gallery {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    background: #f4f4f0;
+    color: #0a0a0a;
+    padding: 6rem 6vw 4rem;
+}
+.tom-screen-gallery .artist-bio-section,
+.tom-screen-gallery .artist-contact-section {
+    --text-color: #0a0a0a;
+    --accent-color: #9c7c0a;
+    --secondary-color: #9c7c0a;
+    --border-color: #d8d8d2;
+    --box-bg: rgba(156, 124, 10, 0.04);
+    --desc-color: #555555;
+}
+.tom-screen-gallery h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #9c7c0a;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+.tom-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.8rem 1.5rem;
+}
+.tom-gallery-item { text-decoration: none; color: #0a0a0a; display: block; }
+.tom-gallery-thumb {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 0.7rem;
+    background: rgba(156, 124, 10, 0.05);
+}
+.tom-gallery-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.35) contrast(1.05);
+    transition: transform 0.45s ease, filter 0.45s ease;
+    display: block;
+}
+.tom-gallery-item:hover .tom-gallery-thumb img { transform: scale(1.06); filter: grayscale(0) contrast(1); }
+.tom-gallery-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    display: block;
+    color: #0a0a0a;
+}
+.tom-gallery-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: #666666;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 760px) {
+    .tom-hero-callout { display: none; }
+    .tom-screen-hero, .tom-screen-gallery {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
