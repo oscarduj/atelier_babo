@@ -23,10 +23,6 @@
         </div>
 
         <div class="perm-popup" id="perm-popup">
-            <div class="perm-titlebar">
-                <span class="perm-titlebar-dot"></span>
-                <span class="perm-titlebar-text">SYSTEM_ACCESS.EXE</span>
-            </div>
             <div class="perm-body">
                 <div class="perm-header">
                     <span class="perm-dot"></span>
@@ -187,7 +183,7 @@
                         <h4>L'esthétique du raté</h4>
                         <p>Plutôt qu'une vision stable du monde, les images générées par IA révèlent leurs propres instabilités — erreurs, censures, distorsions. Une esthétique du contournement où l'imaginaire surgit là où la représentation échoue.</p>
                     </a>
-                    <a href="travaux/oscar-dujarrier.html" class="curation-item">
+                    <a href="travaux/collectif.html" class="curation-item">
                         <span class="curation-tag">RECHERCHE // BABOSPHERE</span>
                         <h4>Le vivant réduit en données</h4>
                         <p>Scan, analyse, reproduction : à mesure que le vivant devient une suite d'informations exploitables, il risque de perdre sa complexité et sa part d'inconnu — une réflexion post-humaniste sur la matière transformée en objet calculable.</p>
@@ -401,84 +397,11 @@
         // on débloque le contexte dès le premier clic ou toucher, silencieusement.
         function unlockAudioOnce() {
             getAudioCtx();
-            startGateNoise();
             document.removeEventListener('click', unlockAudioOnce);
             document.removeEventListener('touchstart', unlockAudioOnce);
         }
         document.addEventListener('click', unlockAudioOnce);
         document.addEventListener('touchstart', unlockAudioOnce);
-
-        /* ---- Bruit blanc du portail, qui devient un bruit de glitch au survol du cube ----
-           Souffle continu et discret tant qu'on ne touche pas au cube ; dès qu'on le
-           survole, le filtre s'ouvre et le gain se met à trembler par à-coups pour un
-           grain heurté, façon signal qui accroche. */
-        let gateNoiseSrc = null, gateNoiseFilter = null, gateNoiseGain = null;
-        let gateGlitchInterval = null;
-
-        function startGateNoise() {
-            if (gateNoiseSrc || !soundEnabled) return;
-            const ctx = getAudioCtx();
-            if (!ctx) return;
-            try {
-                const bufferSize = ctx.sampleRate * 2;
-                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-                const src = ctx.createBufferSource();
-                src.buffer = buffer;
-                src.loop = true;
-
-                const filter = ctx.createBiquadFilter();
-                filter.type = 'lowpass';
-                filter.frequency.value = 2600;
-
-                const gain = ctx.createGain();
-                gain.gain.setValueAtTime(0, ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.018, ctx.currentTime + 0.8);
-
-                src.connect(filter);
-                filter.connect(gain);
-                gain.connect(ctx.destination);
-                src.start();
-
-                gateNoiseSrc = src;
-                gateNoiseFilter = filter;
-                gateNoiseGain = gain;
-            } catch (e) { /* audio indisponible */ }
-        }
-
-        function stopGateNoise() {
-            if (!gateNoiseSrc) return;
-            const ctx = getAudioCtx();
-            try {
-                if (gateGlitchInterval) { clearInterval(gateGlitchInterval); gateGlitchInterval = null; }
-                gateNoiseGain.gain.cancelScheduledValues(ctx.currentTime);
-                gateNoiseGain.gain.setValueAtTime(gateNoiseGain.gain.value, ctx.currentTime);
-                gateNoiseGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
-                const src = gateNoiseSrc;
-                setTimeout(() => { try { src.stop(); } catch (e) { /* déjà arrêté */ } }, 350);
-            } catch (e) { /* ignore */ }
-            gateNoiseSrc = null; gateNoiseFilter = null; gateNoiseGain = null;
-        }
-
-        function setGateNoiseGlitch(active) {
-            if (!gateNoiseFilter || !gateNoiseGain) return;
-            const ctx = getAudioCtx();
-            if (active && !gateGlitchInterval) {
-                gateNoiseFilter.frequency.linearRampToValueAtTime(9000, ctx.currentTime + 0.12);
-                gateGlitchInterval = setInterval(() => {
-                    const now = ctx.currentTime;
-                    gateNoiseGain.gain.cancelScheduledValues(now);
-                    gateNoiseGain.gain.setValueAtTime(Math.random() < 0.5 ? 0.06 : 0.008, now);
-                }, 65);
-            } else if (!active && gateGlitchInterval) {
-                clearInterval(gateGlitchInterval);
-                gateGlitchInterval = null;
-                gateNoiseFilter.frequency.linearRampToValueAtTime(2600, ctx.currentTime + 0.3);
-                gateNoiseGain.gain.cancelScheduledValues(ctx.currentTime);
-                gateNoiseGain.gain.linearRampToValueAtTime(0.018, ctx.currentTime + 0.3);
-            }
-        }
 
         function playTone(freq, duration, type, startGain, freqEnd) {
             if (!soundEnabled) return;
@@ -1001,40 +924,25 @@
         }
 
         // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
-        // Transition : au clic, la rotation du cube se fige à l'angle où elle en est,
-        // puis seul le zoom prend le relais — la sensation d'entrer dans la boîte noire.
-        // L'échelle nécessaire est calculée à partir de la taille réelle de l'écran,
-        // pour être certain de recouvrir toute la page quelle que soit sa taille.
-        let cubeDiving = false;
+        // Transition : c'est le FOND qui vire au noir (pas le cube qui grossit) — le
+        // cube continue simplement de tourner normalement pendant que l'arrière-plan
+        // avale la page.
         document.getElementById('boot-gate').addEventListener('click', () => {
             const gate = document.getElementById('boot-gate');
-            const square = document.getElementById('boot-gate-square');
-            cubeDiving = true;
             sfx.eyeOpen();
-            stopGateNoise();
             gate.classList.add('diving');
-
-            const rect = square.getBoundingClientRect();
-            const currentSize = Math.max(rect.width, rect.height) || 80;
-            const neededSize = Math.max(window.innerWidth, window.innerHeight) * 1.6;
-            const scaleNeeded = neededSize / currentSize;
-
-            square.style.transition = 'transform 0.9s cubic-bezier(0.65, 0, 0.85, 0.35)';
-            square.style.transform = `rotateY(${cubeRotY.toFixed(2)}deg) scale(${scaleNeeded.toFixed(2)})`;
             setTimeout(() => {
                 gate.classList.add('hidden');
                 gate.classList.remove('diving');
-                square.style.transition = '';
-                cubeDiving = false;
                 cubeRotY = 0;
                 playBoot();
             }, 900);
         });
 
         /* ---- Cube 3D réactif du portail ----
-           Tourne sur un seul axe (Y) ; plus le curseur s'approche, plus il accélère et
-           plus l'arrière-plan concentre son énergie (vignettage) — la courbe est
-           adoucie (smoothstep) pour une transition progressive. */
+           Tourne sur un seul axe (Y) ; plus le curseur s'approche du centre, plus il
+           accélère nettement et plus l'arrière-plan concentre son énergie (vignettage)
+           — la courbe est adoucie (smoothstep) pour une transition progressive. */
         let cubeRotY = 0;
         let cubeProximity = 0;
         let cubeHovering = false;
@@ -1050,23 +958,17 @@
             const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
             cubeProximity = smoothstep(1 - Math.min(1, dist / 460));
         });
-        document.getElementById('boot-gate').addEventListener('mouseenter', () => {
-            cubeHovering = true;
-            setGateNoiseGlitch(true);
-        });
-        document.getElementById('boot-gate').addEventListener('mouseleave', () => {
-            cubeHovering = false;
-            setGateNoiseGlitch(false);
-        });
+        document.getElementById('boot-gate').addEventListener('mouseenter', () => { cubeHovering = true; });
+        document.getElementById('boot-gate').addEventListener('mouseleave', () => { cubeHovering = false; });
 
         function cubeLoop() {
             const gate = document.getElementById('boot-gate');
             const square = document.getElementById('boot-gate-square');
-            if (gate && square && !gate.classList.contains('hidden') && !cubeDiving) {
+            if (gate && square && !gate.classList.contains('hidden')) {
                 cubeIdlePhase += 0.015;
                 const idleEnergy = Math.sin(cubeIdlePhase) * 0.12 + 0.12;
                 const energy = Math.min(1, idleEnergy + cubeProximity * 0.85);
-                const speed = 0.45 + energy * 3.2;
+                const speed = 0.45 + energy * 4.6;
                 cubeRotY += speed;
                 const scaleFactor = cubeHovering ? 1.08 : 1;
                 square.style.transform = `rotateY(${cubeRotY.toFixed(2)}deg) scale(${scaleFactor})`;

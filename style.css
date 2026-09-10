@@ -685,6 +685,13 @@ h2 { font-size: 1.8rem; }
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
+.project-entry-specs {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--desc-color);
+    line-height: 1.6;
+    margin: 0.6rem 0 1rem;
+}
 .project-entry p {
     font-size: 0.92rem;
     color: var(--desc-color);
@@ -1083,9 +1090,8 @@ h2 { font-size: 1.8rem; }
     opacity: 0;
     pointer-events: none;
 }
-/* Plongée : le fond blanc vire au noir pendant que le cube (rotation figée à cet
-   instant) grossit jusqu'à recouvrir l'écran — la sensation d'y entrer, pas un
-   disque indépendant qui s'étendrait par-dessus une rotation qui continuerait. */
+/* Plongée : c'est le FOND qui vire au noir — le cube continue simplement de tourner
+   normalement, sans grossir ni se figer. */
 .boot-gate.diving {
     background: #000000;
     transition: background 0.9s ease;
@@ -1207,7 +1213,7 @@ h2 { font-size: 1.8rem; }
     width: min(86vw, 300px);
     background: #161616;
     border: 1px solid #3a3a3a;
-    border-radius: 2px;
+    border-radius: 5px;
     z-index: 5;
     opacity: 0;
     pointer-events: none;
@@ -1217,22 +1223,7 @@ h2 { font-size: 1.8rem; }
     overflow: hidden;
 }
 .perm-popup.visible { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
-.perm-titlebar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.8rem;
-    background: #1e1e1e;
-    border-bottom: 1px solid #333333;
-}
-.perm-titlebar-dot { width: 7px; height: 7px; border-radius: 50%; background: #666666; flex-shrink: 0; }
-.perm-titlebar-text {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    color: #777777;
-    letter-spacing: 1px;
-}
-.perm-body { padding: 1rem 1.1rem; }
+.perm-body { padding: 1.1rem 1.1rem 1rem; }
 .perm-header { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.6rem; }
 .perm-dot { width: 7px; height: 7px; border-radius: 50%; background: #A3B1C2; flex-shrink: 0; }
 .perm-url {
