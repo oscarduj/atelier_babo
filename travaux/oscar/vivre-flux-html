@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIVRE À TRAVERS LE FLUX — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Vivre à travers le flux</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/vivre-flux.jpg" alt="Vivre à travers le flux" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2025 – 2026<br>
+                        Vidéo, recherche-performance · 1h07
+                    </div>
+                    <p>Enfermé plusieurs heures durant, un corps effectue une recherche continue sur le flux — un mélange de voix propre et de voix d'intelligence artificielle, qui se répondent et se confondent.</p>
+                    <p>Fatigue, erreur, saturation, ennui s'accumulent pour produire une pièce indigeste, à l'image de son sujet.</p>
+                    <p>Face à la difficulté croissante de lire, sélectionner et hiérarchiser l'information dans un contexte de surabondance numérique, l'œuvre n'observe pas le flux à distance : elle s'y immerge, jusqu'à l'épuisement.</p>
+                    <p class="project-entry-crossref">Prolonge <a href="flux.html">Flux</a> (2023) et <a href="livre-blanc.html">Livre blanc</a> (2023).</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

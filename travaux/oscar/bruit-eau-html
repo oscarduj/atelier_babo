@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LE BRUIT DE L'EAU — OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+</head>
+<body class="standalone-page oscar-page">
+    <main class="artist-page-container">
+        <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">OSCAR DUJARRIER // PROJET</span>
+            <h1>Le bruit de l'eau</h1>
+        </header>
+
+        <div class="oscar-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l'eau" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2026<br>
+                        Vidéo · Dispositif cathodique · Lecteur DVD · Dimensions variables
+                    </div>
+                    <p>L'eau est le milieu dans lequel la vie s'est transformée. Elle rend possible l'émergence des formes. Dans cette vidéo, l'intelligence artificielle est envisagée selon une logique similaire : une entité de données au sein de laquelle des images naissent.</p>
+                    <p>En manipulant les paramètres de cette matrice numérique par un travail de méta-prompting, le processus de génération est progressivement détourné. Alors même que l'eau est demandée à l'image, elle est poussée à se décomposer de plus en plus, jusqu'à faire émerger du bruit. L'image quitte alors la représentation pour révéler sa matière première : un flux instable, où l'eau finit par se confondre avec le signal. Un travail de texte accompagne cette dérive, entre apparition et disparition.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
