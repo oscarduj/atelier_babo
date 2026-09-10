@@ -234,8 +234,8 @@ body.standalone-page {
     position: fixed;
     top: 0;
     left: 0;
-    width: 150px;
-    height: 44px;
+    width: 130px;
+    height: 26px;
     pointer-events: none;
     z-index: 250;
     opacity: 0;
@@ -244,32 +244,12 @@ body.standalone-page {
 }
 .carousel-arrow-cursor.visible { opacity: 1; }
 .carousel-arrow-cursor.flip { transform: translate(-50%, -50%) scaleX(-1); }
-.eye-arrow-grid {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    line-height: 1;
-    user-select: none;
-    transform-origin: center;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-}
-#eye-classic-grid { opacity: 1; }
-.carousel-arrow-cursor.arrow-mode #eye-classic-grid { opacity: 0; }
-.carousel-arrow-cursor.arrow-mode #eye-arrow-grid { opacity: 1; }
-.eye-arrow-grid span { text-align: center; }
-.eac-sclera { color: #7a8288; opacity: 0.75; }
-.eac-iris { color: var(--secondary-color); }
-.eac-pupil { color: var(--text-color); }
-/* Clignement occasionnel du curseur-œil, comme celui du boot */
-.carousel-arrow-cursor.blinking .eye-arrow-grid {
-    animation: eye-arrow-blink 0.32s ease;
-}
-@keyframes eye-arrow-blink {
-    0%, 100% { transform: scaleY(1); }
-    45% { transform: scaleY(0.08); }
+.carousel-arrow-cursor svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--text-color);
+    stroke-width: 1.4;
 }
 
 /* --- LOGO "DVD" REBONDISSANT --- */
@@ -279,6 +259,7 @@ body.standalone-page {
     z-index: 3;
     cursor: pointer;
     filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+    transform-origin: top left;
 }
 .dvd-logo img {
     width: 100%;
@@ -1310,72 +1291,6 @@ h2 { font-size: 1.8rem; }
 .perm-popup.granted .perm-items,
 .perm-popup.granted .perm-actions { display: none; }
 .perm-popup.granted .perm-granted-msg { display: block; }
-
-/* Cascade de fausses fenêtres d'erreur, entre la fermeture de l'œil et l'apparition du logo —
-   même grammaire visuelle que le popup de permission (barre de titre, corps, actions),
-   dans la palette du site plutôt que le bleu/rouge classique des popups système. */
-.fake-error-popup {
-    position: absolute;
-    z-index: 550;
-    background: #161616;
-    border: 1px solid #4a4a4a;
-    border-radius: 2px;
-    color: #EAE8E4;
-    font-family: 'Share Tech Mono', monospace;
-    min-width: 215px;
-    max-width: 260px;
-    pointer-events: none;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
-    overflow: hidden;
-}
-.fake-error-titlebar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.4rem 0.6rem;
-    background: #1e1e1e;
-    border-bottom: 1px solid #333333;
-    font-size: 0.66rem;
-    letter-spacing: 1px;
-    color: #999999;
-}
-.fake-error-close { color: #777777; font-size: 0.8rem; line-height: 1; }
-.fake-error-body {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.9rem 0.8rem;
-}
-.fake-error-icon {
-    flex-shrink: 0;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 1.5px solid #A3B1C2;
-    color: #A3B1C2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-}
-.fake-error-message {
-    font-size: 0.72rem;
-    letter-spacing: 0.4px;
-    line-height: 1.35;
-}
-.fake-error-actions {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0.5rem 0.7rem 0.7rem;
-}
-.fake-error-btn {
-    font-size: 0.64rem;
-    letter-spacing: 0.5px;
-    border: 1px solid #4a4a4a;
-    color: #999999;
-    padding: 0.3rem 0.7rem;
-    border-radius: 2px;
-}
 
 @media (max-width: 480px) {
     .eye-status, .eye-bar { letter-spacing: 0.5px; }
