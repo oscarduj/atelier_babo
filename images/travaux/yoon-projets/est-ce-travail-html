@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EST-CE UN TRAVAIL ? — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Est-ce un travail ?</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/est-ce-travail.jpg" alt="Est-ce un travail ?" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2026 · Projet en cours<br>
+                        Installation, dispositif automatisé
+                    </div>
+                    <p>Le projet part de mon expérience comme agent de musée. En répétant les mêmes actions toute la journée, je me suis demandé si mon travail pouvait être remplacé par une machine. Dans l'installation, le bras motorisé prend un billet, le dépose, puis recommence. Le mouvement se prolonge comme un rythme.</p>
+                    <p>À travers cette action, je m'intéresse à la dimension mécanique de certains gestes liés au travail. Cette approche ouvre une réflexion sur notre époque. Depuis la révolution industrielle, les machines ont transformé nos façons de travailler, avec l'IA et les robots, cette transformation continue. Pourtant, la manière de définir ces actions reste incertaine. Le robot accomplit la même tâche, sans être payé. Alors, si on lui attribue une valeur ou une rémunération, est-ce que cela devient du travail ? Le projet part de cette question.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

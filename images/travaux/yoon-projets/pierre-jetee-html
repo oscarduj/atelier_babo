@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNE PIERRE JETÉE — HYUNSEOK YOON // ATELIER BABO</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../yoon.css">
+</head>
+<body class="standalone-page yoon-page">
+    <main class="artist-page-container">
+        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+
+        <header class="artist-header">
+            <span class="tag">HYUNSEOK YOON // PROJET</span>
+            <h1>Une pierre jetée pour plaisanter peut tuer quelqu'un</h1>
+        </header>
+
+        <div class="yoon-pulse-line"></div>
+
+        <section class="artist-projects-section">
+            <div class="project-entries">
+                <article class="project-entry">
+                    <div class="artist-gallery" style="margin-bottom: 2rem;">
+                        <img src="../../images/travaux/yoon-projets/pierre-jetee.jpg" alt="Une pierre jetée pour plaisanter peut tuer quelqu'un" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    </div>
+                    <div class="project-entry-specs">
+                        2026 · Projet en cours<br>
+                        Court-métrage
+                    </div>
+                    <p>Court-métrage mélangeant réalité et fiction. À partir d'expériences personnelles, je montre une violence ordinaire souvent banalisée dans le langage quotidien. Un homme coréen se filme dans la ville, un personnage lui lance une remarque et fait basculer la situation. La scène reprend autour d'une table, où les échanges deviennent peu à peu des formes de jugement. Les identités des convives sont réduites et transformées en stéréotypes.</p>
+                    <p>La violence n'est pas directe. Elle passe par des mots, des attitudes. Inspiré par les logiques des réseaux sociaux, le film montre comment cette violence est adoucie, mais aussi plus facile à accepter. Les visages disparaissent derrière des masques, et la frontière du réel devient floue. Le film montre jusqu'où une « blague » peut-elle aller, et à quel moment devient-elle une forme de violence ?</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

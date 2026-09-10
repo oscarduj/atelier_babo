@@ -1,0 +1,174 @@
+/* ============================================================
+   DA — HYUNSEOK YOON
+   Même grammaire structurelle que la page d'Oscar (héro plein
+   fond + citation + galerie cliquable vers des pages dédiées),
+   recolorée en rouge. Pas de jaune ici (réservé à Tom), pas de
+   mind map (contrairement à Oscar, aucune filiation entre les
+   projets n'a été indiquée — je ne l'invente pas).
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500&family=Share+Tech+Mono&display=swap');
+
+/* --- Pages de projet individuelles : fond sombre, accent rouge --- */
+body.yoon-page {
+    --bg-color: #050505;
+    --text-color: #EAE8E4;
+    --accent-color: #e5342a;
+    --secondary-color: #e5342a;
+    --border-color: #262626;
+    --box-bg: rgba(229, 52, 42, 0.03);
+    --desc-color: #9a9a9a;
+}
+body.yoon-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        repeating-linear-gradient(rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 3px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.yoon-page .artist-page-container { position: relative; z-index: 1; }
+
+.yoon-page .tag { font-family: 'Share Tech Mono', monospace; color: var(--accent-color); }
+.yoon-page .back-link { color: var(--accent-color); }
+.yoon-page .artist-header h1 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 3.4rem;
+    letter-spacing: 0.5px;
+    text-transform: none;
+}
+.yoon-page .artist-bio-section h3,
+.yoon-page .artist-projects-section h3,
+.yoon-page .artist-contact-section h3 {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent-color);
+}
+.yoon-page .project-entry-head h4 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+    text-transform: none;
+    letter-spacing: 0.3px;
+}
+.yoon-page .project-entry-tag { color: var(--accent-color); }
+.yoon-page .contact-btn { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+
+/* Ligne qui pulse doucement — même signature que sur la page d'Oscar */
+.yoon-pulse-line {
+    position: relative;
+    height: 1px;
+    background: var(--accent-color, #e5342a);
+    opacity: 0.4;
+    margin: 2.5rem 0;
+    animation: yoon-pulse 3.4s ease-in-out infinite;
+}
+@keyframes yoon-pulse {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.55; }
+}
+
+/* ============================================================
+   PAGE HUB — fond rouge plein écran
+   ============================================================ */
+body.yoon-hub {
+    --bg-color: #d11a1a;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --secondary-color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.3);
+    --box-bg: rgba(255, 255, 255, 0.04);
+    --desc-color: rgba(255, 255, 255, 0.75);
+}
+body.yoon-hub .back-link { color: rgba(255, 255, 255, 0.8); }
+
+.yoon-hero { padding: 5rem 6rem 2rem; }
+.yoon-hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    opacity: 0.75;
+    display: block;
+    margin-bottom: 1.2rem;
+}
+.yoon-hero-name {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(3rem, 8.5vw, 6.5rem);
+    line-height: 1;
+    margin: 0 0 1rem;
+}
+.yoon-hero-line {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    opacity: 0.85;
+}
+
+/* Citation "surlignée" inversée (fond blanc, texte rouge) — pas de jaune,
+   réservé à Tom. */
+.yoon-highlight-quote { max-width: 780px; padding: 3rem 6rem 1rem; }
+.yoon-highlight-quote p {
+    display: inline;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.05rem;
+    line-height: 2.2;
+    background: #ffffff;
+    color: #d11a1a;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.15em 0.35em;
+}
+
+.yoon-gallery-section { padding: 2rem 6rem 5rem; }
+.yoon-gallery-section h3 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+.yoon-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.8rem 1.5rem;
+}
+.yoon-gallery-item { text-decoration: none; color: #ffffff; display: block; }
+.yoon-gallery-thumb {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+}
+.yoon-gallery-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.35) contrast(1.05);
+    transition: transform 0.45s ease, filter 0.45s ease;
+    display: block;
+}
+.yoon-gallery-item:hover .yoon-gallery-thumb img { transform: scale(1.06); filter: grayscale(0) contrast(1); }
+.yoon-gallery-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    display: block;
+}
+.yoon-gallery-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    opacity: 0.65;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 760px) {
+    .yoon-hero, .yoon-highlight-quote, .yoon-gallery-section {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
