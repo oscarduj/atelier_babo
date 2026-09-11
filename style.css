@@ -1,12 +1,13 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
 html.dark-mode {
-    --bg-color: #101010;        
+    --bg-color: #020A19;        
     --text-color: #EAE8E4;      
     --accent-color: #FFFFFF;    
     --secondary-color: #A3B1C2; 
-    --border-color: #262626;    
-    --box-bg: rgba(163, 177, 194, 0.01);
+    --border-color: #1a2334;    
+    --box-bg: rgba(163, 177, 194, 0.02);
     --desc-color: #999999;
     --hover-bg: rgba(163, 177, 194, 0.08);
 }
@@ -481,12 +482,24 @@ h2 { font-size: 1.8rem; }
     opacity: 0.8;
 }
 
-/* --- SECTION TRAVAUX : GRILLE ASYMÉTRIQUE --- */
+/* --- SECTION TRAVAUX : GRILLE ASYMÉTRIQUE ---
+   Hauteurs en fr (proportions 1.3 / 1.3 / 1, comme les 260/260/200px
+   d'origine) plutôt qu'en px fixes, et la grille grandit pour remplir
+   tout l'espace vertical disponible — sinon, sur un grand écran, le
+   bas de la section restait vide sous la grille. */
+#travaux .section-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
 .travaux-asym-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 260px 260px 200px;
+    grid-template-rows: 1.3fr 1.3fr 1fr;
     gap: 1.2rem;
+    flex: 1;
+    min-height: 0;
 }
 
 /* Collectif : gros bloc 2x2 en haut à gauche, l'ancre visuelle de la page */
@@ -1039,7 +1052,7 @@ h2 { font-size: 1.8rem; }
     position: fixed;
     inset: 0;
     z-index: 500;
-    background: #101010;
+    background: #020A19;
     display: flex;
     align-items: center;
     justify-content: center;
