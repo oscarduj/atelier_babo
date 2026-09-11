@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
     </script>
@@ -877,37 +878,41 @@
  
         // Le mot se matérialise depuis sa lettre centrale, comme s'il émergeait du même point
         // que l'œil — puis le voile de boot s'efface pour révéler le site.
+        // SplitText + le stagger natif "from: center" de GSAP remplacent ici le calcul de
+        // délai par caractère que je faisais à la main.
+        gsap.registerPlugin(SplitText);
+ 
         function revealWordmarkFromCenter() {
             const wordmark = document.getElementById('boot-wordmark');
-            const text = 'ATELIER_BABO';
-            wordmark.innerHTML = '';
-            const centerIndex = (text.length - 1) / 2;
-            const spans = [];
+            wordmark.textContent = 'ATELIER_BABO';
  
-            for (let i = 0; i < text.length; i++) {
-                const span = document.createElement('span');
-                span.textContent = text[i];
-                span.className = 'wm-char';
-                wordmark.appendChild(span);
-                spans.push(span);
-            }
+            const split = SplitText.create(wordmark, { type: 'chars', charsClass: 'wm-char' });
+            const chars = split.chars;
+            const centerIndex = (chars.length - 1) / 2;
+ 
             const cursor = document.createElement('span');
             cursor.className = 'cursor';
             cursor.innerHTML = '&nbsp;';
             wordmark.appendChild(cursor);
  
-            let maxDelay = 0;
-            spans.forEach((span, i) => {
-                const dist = Math.abs(i - centerIndex);
-                const delay = dist * 70;
-                maxDelay = Math.max(maxDelay, delay);
-                setTimeout(() => {
-                    span.classList.add('wm-visible');
-                    sfx.wordmarkChar(dist);
-                }, delay);
+            gsap.set(chars, { opacity: 0, scale: 0.15, filter: 'blur(3px)' });
+            gsap.to(chars, {
+                opacity: 1,
+                scale: 1,
+                filter: 'blur(0px)',
+                duration: 0.5,
+                ease: 'back.out(1.7)',
+                stagger: {
+                    each: 0.07,
+                    from: 'center',
+                    onStart: function () {
+                        const el = this.targets()[0];
+                        const dist = Math.abs(chars.indexOf(el) - centerIndex);
+                        sfx.wordmarkChar(dist);
+                    },
+                },
+                onComplete: () => setTimeout(dismissBootOverlay, 1700),
             });
- 
-            setTimeout(dismissBootOverlay, maxDelay + 2100);
         }
  
         function dismissBootOverlay() {
@@ -1515,7 +1520,7 @@
         const gate = document.getElementById('boot-gate');
  
         if (container && gate) {
-            let scene, camera, renderer, cubeMesh, keyLight;
+            let scene, camera, renderer, cubeMesh, keyLight, particles, particleMaterial;
             let rotY = 0;
             let proximity = 0;
             let idlePhase = Math.random() * 10;
@@ -1526,7 +1531,10 @@
  
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-                camera.position.set(0, 0, 3.4);
+                // Reculée par rapport à la taille du cube pour garder de la marge : en
+                // diagonale (rotation sur un axe), la largeur apparente du cube grimpe
+                // jusqu'à côté×√2 — sans cette marge, les coins sortaient du cadre.
+                camera.position.set(0, 0, 4.0);
  
                 renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
                 renderer.setSize(size, size);
@@ -1551,6 +1559,32 @@
                 const rimLight = new THREE.PointLight(0xffffff, 1.2, 12);
                 rimLight.position.set(-2, -1.4, 1.8);
                 scene.add(rimLight);
+ 
+                // Particules en orbite autour du cube — invisibles au repos, elles
+                // n'apparaissent (et ne tournent) que lorsque l'énergie monte, comme
+                // des étincelles arrachées par la vitesse.
+                const PARTICLE_COUNT = 70;
+                const positions = new Float32Array(PARTICLE_COUNT * 3);
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = Math.acos(2 * Math.random() - 1);
+                    const r = 1.3 + Math.random() * 0.9;
+                    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+                    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+                    positions[i * 3 + 2] = r * Math.cos(phi);
+                }
+                const particleGeometry = new THREE.BufferGeometry();
+                particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                particleMaterial = new THREE.PointsMaterial({
+                    color: 0xA3B1C2,
+                    size: 0.035,
+                    transparent: true,
+                    opacity: 0,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                });
+                particles = new THREE.Points(particleGeometry, particleMaterial);
+                scene.add(particles);
  
                 window.addEventListener('resize', onResize);
             }
@@ -1583,10 +1617,16 @@
                     const speed = 0.0131 + energy * 0.131; // équivalent radians de l'ancien 0.75–8.25°/frame
                     rotY += speed;
                     cubeMesh.rotation.y = rotY;
-                    cubeMesh.rotation.x = rotY * 0.15;
                     cubeMesh.material.emissiveIntensity = 0.3 + energy * 1.1;
                     keyLight.intensity = 1.6 + energy * 2.6;
                     gate.style.setProperty('--gate-energy', energy.toFixed(3));
+ 
+                    // Particules : n'apparaissent qu'au-delà d'un certain seuil d'énergie,
+                    // tournent un peu plus vite que le cube pour un léger effet de traînée.
+                    particles.rotation.y = rotY * 1.35;
+                    particles.rotation.x = rotY * 0.4;
+                    particleMaterial.opacity = Math.max(0, (energy - 0.35) / 0.65) * 0.85;
+ 
                     renderer.render(scene, camera);
                 }
                 requestAnimationFrame(animate);
