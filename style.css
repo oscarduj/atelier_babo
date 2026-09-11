@@ -1125,22 +1125,14 @@ h2 { font-size: 1.8rem; }
     position: relative;
     width: clamp(50px, 12vw, 100px);
     aspect-ratio: 1 / 1;
-    --cube-half: clamp(25px, 6vw, 50px);
-    transform-style: preserve-3d;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.cube-face {
-    position: absolute;
-    inset: 0;
-    background: #000000;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+.boot-gate-square canvas {
+    display: block;
 }
-.cube-front  { transform: translateZ(var(--cube-half)); }
-.cube-back   { transform: rotateY(180deg) translateZ(var(--cube-half)); }
-.cube-right  { transform: rotateY(90deg) translateZ(var(--cube-half)); }
-.cube-left   { transform: rotateY(-90deg) translateZ(var(--cube-half)); }
-.cube-top    { transform: rotateX(90deg) translateZ(var(--cube-half)); }
-.cube-bottom { transform: rotateX(-90deg) translateZ(var(--cube-half)); }
 
 /* Oeil organique en caractères */
 .eye-wrap {

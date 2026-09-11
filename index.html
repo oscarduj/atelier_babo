@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr" class="dark-mode">
 <head>
@@ -5,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    </script>
 </head>
 <body>
  
@@ -12,14 +17,7 @@
  
     <div class="boot-overlay" id="boot-overlay">
         <div class="boot-gate" id="boot-gate">
-            <div class="boot-gate-square" id="boot-gate-square">
-                <div class="cube-face cube-front"></div>
-                <div class="cube-face cube-back"></div>
-                <div class="cube-face cube-right"></div>
-                <div class="cube-face cube-left"></div>
-                <div class="cube-face cube-top"></div>
-                <div class="cube-face cube-bottom"></div>
-            </div>
+            <div class="boot-gate-square" id="boot-gate-square"></div>
         </div>
  
         <div class="perm-popup" id="perm-popup">
@@ -925,8 +923,8 @@
  
         // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
         // Transition : c'est le FOND qui vire au noir (pas le cube qui grossit) — le
-        // cube continue simplement de tourner normalement pendant que l'arrière-plan
-        // avale la page.
+        // cube (module Three.js séparé, voir plus bas) continue simplement de tourner
+        // pendant que l'arrière-plan avale la page.
         document.getElementById('boot-gate').addEventListener('click', () => {
             const gate = document.getElementById('boot-gate');
             sfx.eyeOpen();
@@ -934,49 +932,12 @@
             setTimeout(() => {
                 gate.classList.add('hidden');
                 gate.classList.remove('diving');
-                cubeRotY = 0;
                 playBoot();
             }, 900);
         });
  
-        /* ---- Cube 3D réactif du portail ----
-           Tourne sur un seul axe (Y) ; plus le curseur s'approche du centre, plus il
-           accélère nettement et plus l'arrière-plan concentre son énergie (vignettage)
-           — la courbe est adoucie (smoothstep) pour une transition progressive. */
-        let cubeRotY = 0;
-        let cubeProximity = 0;
-        let cubeHovering = false;
-        let cubeIdlePhase = Math.random() * 10;
-        const smoothstep = (t) => t * t * (3 - 2 * t);
- 
-        document.addEventListener('mousemove', (e) => {
-            const square = document.getElementById('boot-gate-square');
-            if (!square) return;
-            const rect = square.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-            cubeProximity = smoothstep(1 - Math.min(1, dist / 460));
-        });
-        document.getElementById('boot-gate').addEventListener('mouseenter', () => { cubeHovering = true; });
-        document.getElementById('boot-gate').addEventListener('mouseleave', () => { cubeHovering = false; });
- 
-        function cubeLoop() {
-            const gate = document.getElementById('boot-gate');
-            const square = document.getElementById('boot-gate-square');
-            if (gate && square && !gate.classList.contains('hidden')) {
-                cubeIdlePhase += 0.015;
-                const idleEnergy = Math.sin(cubeIdlePhase) * 0.12 + 0.12;
-                const energy = Math.min(1, idleEnergy + cubeProximity * 0.85);
-                const speed = 0.75 + energy * 7.5;
-                cubeRotY += speed;
-                const scaleFactor = cubeHovering ? 1.08 : 1;
-                square.style.transform = `rotateY(${cubeRotY.toFixed(2)}deg) scale(${scaleFactor})`;
-                gate.style.setProperty('--gate-energy', energy.toFixed(3));
-            }
-            requestAnimationFrame(cubeLoop);
-        }
-        requestAnimationFrame(cubeLoop);
+        /* Le cube du portail est désormais un vrai objet 3D (Three.js), pas une
+           simulation CSS — voir le <script type="module"> tout en bas du fichier. */
  
         /* ============ FIN SYSTÈME DE BOOT ============ */
  
@@ -1540,6 +1501,100 @@
         navItems.forEach(item => {
             item.addEventListener('mouseenter', () => scrambleText(item, 380));
         });
+    </script>
+ 
+    <script type="module">
+        /* ---- Cube du portail en vrai 3D (Three.js) ----
+           Reprend exactement la même logique que l'ancienne version CSS (rotation sur
+           un axe, vitesse liée à la proximité du curseur, énergie transmise au
+           vignettage via --gate-energy) mais avec un vrai objet, un vrai matériau et
+           de vraies lumières plutôt qu'une simulation de transform. */
+        import * as THREE from 'three';
+ 
+        const container = document.getElementById('boot-gate-square');
+        const gate = document.getElementById('boot-gate');
+ 
+        if (container && gate) {
+            let scene, camera, renderer, cubeMesh, keyLight;
+            let rotY = 0;
+            let proximity = 0;
+            let idlePhase = Math.random() * 10;
+            const smoothstep = (t) => t * t * (3 - 2 * t);
+ 
+            function initThreeCube() {
+                const size = container.clientWidth || 80;
+ 
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+                camera.position.set(0, 0, 3.4);
+ 
+                renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(size, size);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                container.appendChild(renderer.domElement);
+ 
+                const geometry = new THREE.BoxGeometry(1.7, 1.7, 1.7);
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0x030303,
+                    metalness: 0.55,
+                    roughness: 0.35,
+                    emissive: 0x0a0e18,
+                    emissiveIntensity: 0.4,
+                });
+                cubeMesh = new THREE.Mesh(geometry, material);
+                scene.add(cubeMesh);
+ 
+                scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+                keyLight = new THREE.PointLight(0xA3B1C2, 2.2, 12);
+                keyLight.position.set(2.2, 2, 2.5);
+                scene.add(keyLight);
+                const rimLight = new THREE.PointLight(0xffffff, 1.2, 12);
+                rimLight.position.set(-2, -1.4, 1.8);
+                scene.add(rimLight);
+ 
+                window.addEventListener('resize', onResize);
+            }
+ 
+            function onResize() {
+                const size = container.clientWidth || 80;
+                renderer.setSize(size, size);
+                camera.updateProjectionMatrix();
+            }
+ 
+            document.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+                proximity = smoothstep(1 - Math.min(1, dist / 460));
+            });
+            gate.addEventListener('mouseenter', () => {
+                gsap.to(cubeMesh.scale, { x: 1.1, y: 1.1, z: 1.1, duration: 0.35, ease: 'power2.out' });
+            });
+            gate.addEventListener('mouseleave', () => {
+                gsap.to(cubeMesh.scale, { x: 1, y: 1, z: 1, duration: 0.35, ease: 'power2.out' });
+            });
+ 
+            function animate() {
+                if (!gate.classList.contains('hidden')) {
+                    idlePhase += 0.015;
+                    const idleEnergy = Math.sin(idlePhase) * 0.12 + 0.12;
+                    const energy = Math.min(1, idleEnergy + proximity * 0.85);
+                    const speed = 0.0131 + energy * 0.131; // équivalent radians de l'ancien 0.75–8.25°/frame
+                    rotY += speed;
+                    cubeMesh.rotation.y = rotY;
+                    cubeMesh.rotation.x = rotY * 0.15;
+                    cubeMesh.material.emissiveIntensity = 0.3 + energy * 1.1;
+                    keyLight.intensity = 1.6 + energy * 2.6;
+                    gate.style.setProperty('--gate-energy', energy.toFixed(3));
+                    renderer.render(scene, camera);
+                }
+                requestAnimationFrame(animate);
+            }
+ 
+            initThreeCube();
+            requestAnimationFrame(animate);
+        }
     </script>
 </body>
 </html>
