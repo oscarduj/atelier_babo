@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr" class="dark-mode">
 <head>
@@ -8,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
     <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
     </script>
@@ -1430,6 +1430,35 @@
         }, { threshold: 0.5 });
  
         sections.forEach(section => sectionObserver.observe(section));
+ 
+        /* ---- Apparition progressive des images et blocs ----
+           Chaque section révèle ses cartes/cases en fondu + léger décalage vertical,
+           avec un temps de décalage entre chacune, la première fois qu'on l'atteint.
+           ScrollTrigger est configuré sur .main-feed (le vrai conteneur de défilement
+           ici, pas la fenêtre) puisque le site utilise son propre scroll-snap. */
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll('.feed-section').forEach((section) => {
+            const blocks = section.querySelectorAll(
+                '.travaux-cell, .artist-card, .curation-item, .expo-item, .soutien-card, .partner-card'
+            );
+            if (!blocks.length) return;
+            gsap.set(blocks, { opacity: 0, y: 26 });
+            ScrollTrigger.create({
+                trigger: section,
+                scroller: '.main-feed',
+                start: 'top 75%',
+                once: true,
+                onEnter: () => {
+                    gsap.to(blocks, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.7,
+                        ease: 'power2.out',
+                        stagger: 0.08,
+                    });
+                },
+            });
+        });
  
         // Menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
         const hamburgerBtn = document.getElementById('hamburger-btn');
