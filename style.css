@@ -158,6 +158,13 @@ body.standalone-page {
     overflow-y: scroll; 
     scroll-snap-type: y mandatory; 
 }
+/* Lenis ne supporte pas le scroll-snap CSS natif : cette classe n'est ajoutée par le
+   module Lenis qu'une fois lui-même initialisé avec succès (voir index.html) — tant
+   que ce n'est pas le cas (échec de chargement, prefers-reduced-motion), le
+   scroll-snap natif ci-dessus reste pleinement actif. */
+.main-feed.lenis-active {
+    scroll-snap-type: none;
+}
 
 /* --- SECTIONS --- */
 .feed-section {
@@ -1191,15 +1198,6 @@ h2 { font-size: 1.8rem; }
 }
 #boot-overlay .wm-char {
     display: inline-block;
-    opacity: 0;
-    transform: scale(0.15);
-    filter: blur(3px);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
-}
-#boot-overlay .wm-char.wm-visible {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
 }
 #boot-overlay .cursor {
     display: inline-block;

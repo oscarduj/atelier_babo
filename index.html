@@ -9,7 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
     <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.mjs",
+        "lenis/snap": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis-snap.mjs"
+    } }
     </script>
 </head>
 <body>
@@ -1663,6 +1667,52 @@
  
             initThreeCube();
             requestAnimationFrame(animate);
+        }
+    </script>
+ 
+    <script type="module">
+        /* ---- Défilement fluide (Lenis) ----
+           Lenis ne supporte pas le scroll-snap CSS natif (limitation documentée) : on
+           utilise donc son propre plugin Snap, qui reproduit le même comportement
+           "une section par écran" sans lutter contre le lissage. Le scroll-snap CSS
+           natif reste en place par défaut et ne se désactive QUE si Lenis charge et
+           s'initialise avec succès — sinon (CDN indisponible, prefers-reduced-motion),
+           le site garde son scroll-snap natif classique, sans étape intermédiaire. */
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+        if (!prefersReducedMotion) {
+            try {
+                const { default: Lenis } = await import('lenis');
+                const { Snap } = await import('lenis/snap');
+ 
+                const mainFeed = document.querySelector('.main-feed');
+                if (mainFeed) {
+                    const lenis = new Lenis({
+                        wrapper: mainFeed,
+                        content: mainFeed,
+                        duration: 1.1,
+                        smoothWheel: true,
+                    });
+ 
+                    const snap = new Snap(lenis, { type: 'mandatory', duration: 0.7 });
+                    document.querySelectorAll('.feed-section').forEach((section) => {
+                        snap.addElement(section, { align: ['start'] });
+                    });
+ 
+                    function raf(time) {
+                        lenis.raf(time);
+                        requestAnimationFrame(raf);
+                    }
+                    requestAnimationFrame(raf);
+ 
+                    // Le scroll-snap CSS natif est neutralisé seulement maintenant que
+                    // Lenis + Snap ont pris le relais avec succès.
+                    mainFeed.classList.add('lenis-active');
+                }
+            } catch (e) {
+                // Lenis indisponible (CDN, réseau...) : le scroll-snap CSS natif
+                // n'a jamais été désactivé, le site reste pleinement fonctionnel.
+            }
         }
     </script>
 </body>
