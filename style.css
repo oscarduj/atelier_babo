@@ -1,12 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
+/* ============================================================
+   TRANSITIONS ENTRE PAGES — View Transitions natives (cross-document)
+   Pure CSS, aucun JS : un fondu enchaîné sobre entre deux pages quand
+   on clique un lien vers une autre page du site. Fonctionne dans
+   Chrome/Edge (126+) et Safari (18.2+) ; ignoré sans erreur ailleurs
+   (Firefox notamment) — dégradation silencieuse vers la navigation
+   normale, aucun risque de casse. Cette règle est dans le fichier
+   partagé par toutes les pages : l'aller ET le retour l'ont donc tous
+   les deux, condition nécessaire pour que la transition se déclenche. */
+@view-transition {
+    navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
 html.dark-mode {
-    --bg-color: #020A19;        
+    --bg-color: #0d0d0c;        
     --text-color: #EAE8E4;      
     --accent-color: #FFFFFF;    
     --secondary-color: #A3B1C2; 
-    --border-color: #1a2334;    
-    --box-bg: rgba(163, 177, 194, 0.02);
+    --border-color: #262625;    
+    --box-bg: rgba(163, 177, 194, 0.015);
     --desc-color: #999999;
     --hover-bg: rgba(163, 177, 194, 0.08);
 }
@@ -304,31 +323,6 @@ body.standalone-page {
     fill: none;
     stroke: var(--text-color);
     stroke-width: 1.4;
-}
-
-/* --- LOGO "DVD" REBONDISSANT --- */
-.dvd-logo {
-    position: absolute;
-    width: clamp(150px, 22vw, 280px);
-    z-index: 3;
-    cursor: pointer;
-    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
-    transform-origin: top left;
-}
-.dvd-logo img {
-    width: 100%;
-    display: block;
-    pointer-events: none;
-}
-.dvd-shatter {
-    position: absolute;
-    z-index: 4;
-    pointer-events: none;
-}
-.dvd-shatter-piece {
-    position: absolute;
-    background-repeat: no-repeat;
-    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
 }
 
 @media (max-width: 900px) {
@@ -1105,7 +1099,7 @@ h2 { font-size: 1.8rem; }
     position: fixed;
     inset: 0;
     z-index: 500;
-    background: #020A19;
+    background: #0d0d0c;
     display: flex;
     align-items: center;
     justify-content: center;
