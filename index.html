@@ -1628,7 +1628,8 @@
         const mainFeedEl = document.querySelector('.main-feed');
 
         if (bgCanvas && mainFeedEl) {
-            let scene, camera, renderer, ambientPoints;
+            let scene, camera, renderer, ambientPoints, gridHelper;
+            let mouseX = 0, mouseY = 0, camRotY = 0, camRotX = 0;
             const meteors = [];
             let lastTime = performance.now();
 
@@ -1669,6 +1670,14 @@
                 ambientPoints = new THREE.Points(ambientGeom, ambientMat);
                 scene.add(ambientPoints);
 
+                // Grille "carte" — un horizon en fil de fer qui reste sous la caméra à
+                // chaque section (repositionnée en même temps qu'elle, voir goToSection).
+                gridHelper = new THREE.GridHelper(160, 26, 0xA3B1C2, 0xA3B1C2);
+                gridHelper.material.transparent = true;
+                gridHelper.material.opacity = 0.1;
+                gridHelper.position.y = -10;
+                scene.add(gridHelper);
+
                 for (let i = 0; i < 6; i++) {
                     const m = createMeteor();
                     m.delay = Math.random() * 8;
@@ -1677,6 +1686,12 @@
                 }
 
                 window.addEventListener('resize', onSiteResize);
+                // Parallax léger : la caméra suit doucement le curseur, jamais de façon
+                // brusque (amorti dans animateSiteBg, pas appliqué directement ici).
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+                });
 
                 // Observer dédié : la caméra ne bouge qu'à l'arrivée sur une nouvelle
                 // section, jamais en continu — indépendant de l'observer de nav du
@@ -1692,6 +1707,7 @@
             function goToSection(id) {
                 const targetY = SECTION_Y[id] ?? 0;
                 gsap.to(camera.position, { y: targetY, duration: 1.6, ease: 'power2.inOut' });
+                gsap.to(gridHelper.position, { y: targetY - 10, duration: 1.6, ease: 'power2.inOut' });
                 gsap.to(bgCanvas, { opacity: VIDEO_SECTIONS.has(id) ? 0 : 1, duration: 0.6, ease: 'power1.out' });
             }
 
@@ -1753,6 +1769,13 @@
 
                 ambientPoints.rotation.y += 0.00025;
                 meteors.forEach((m) => updateMeteor(m, dt));
+
+                // Parallax : interpolation douce (jamais un mouvement direct au pixel)
+                // vers une légère rotation de la caméra suivant le curseur.
+                camRotY += (mouseX * 0.05 - camRotY) * 0.04;
+                camRotX += (-mouseY * 0.03 - camRotX) * 0.04;
+                camera.rotation.y = camRotY;
+                camera.rotation.x = camRotX;
 
                 renderer.render(scene, camera);
             }
