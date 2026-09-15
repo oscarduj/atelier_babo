@@ -812,10 +812,20 @@ h2 { font-size: 1.8rem; }
 }
 
 /* --- CURATION --- */
+.curation-section { position: relative; overflow: hidden; }
+.curation-3d-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+.curation-section .section-content { position: relative; z-index: 1; }
+
 .curation-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
+    perspective: 1200px;
 }
 
 .curation-item {
@@ -824,12 +834,27 @@ h2 { font-size: 1.8rem; }
     color: inherit;
     border: 1px dashed var(--border-color);
     padding: 1.5rem;
-    background-color: var(--box-bg);
-    transition: border-color 0.3s ease;
+    background-color: var(--bg-color);
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                opacity 0.4s ease,
+                filter 0.4s ease;
 }
 
+/* Au survol de la grille, tout s'estompe légèrement sauf la carte visée, qui
+   avance vers le regard (translateZ) — une mise au point plutôt qu'un simple
+   changement de couleur. */
+.curation-grid:hover .curation-item {
+    opacity: 0.5;
+    filter: blur(1px);
+}
 .curation-item:hover {
     border-color: var(--secondary-color);
+    transform: translateZ(50px) scale(1.04);
+    opacity: 1 !important;
+    filter: blur(0) !important;
+    z-index: 2;
 }
 
 .curation-item .curation-tag {
@@ -888,51 +913,58 @@ h2 { font-size: 1.8rem; }
     text-transform: uppercase;
 }
 
-/* --- EXPOS --- */
+/* --- EXPOS : chaque entrée écrite comme un objet de code --- */
 .expo-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-.expo-item {
-    display: flex;
     gap: 1.5rem;
-    align-items: flex-start;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
 }
 
-.expo-date {
+.expo-code-block {
+    counter-reset: expoline;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--secondary-color);
-    min-width: 110px;
-    letter-spacing: 0.5px;
+    font-size: 0.82rem;
+    line-height: 1.75;
+    background: var(--box-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.9rem 0;
+    transition: border-color 0.3s ease;
 }
+.expo-code-block:hover { border-color: var(--secondary-color); }
 
-.expo-info h4 {
-    font-size: 1rem;
-    text-transform: uppercase;
+.expo-code-line {
+    counter-increment: expoline;
+    padding: 0 1.2rem 0 3.6rem;
+    position: relative;
     color: var(--text-color);
-    margin-bottom: 0.2rem;
+    white-space: pre-wrap;
 }
-
-.expo-info p {
-    font-size: 0.8rem;
+.expo-code-line::before {
+    content: counter(expoline, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    width: 2.6rem;
+    text-align: right;
     color: var(--desc-color);
+    opacity: 0.45;
 }
+.expo-code-brace { padding-left: 1.2rem; }
+.expo-code-brace::before { content: ""; }
 
-.expo-status {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    color: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
-    padding: 0.15rem 0.5rem;
-    margin-left: auto;
-    height: fit-content;
-    white-space: nowrap;
+.code-key { color: var(--secondary-color); }
+.code-punct { color: var(--desc-color); opacity: 0.6; }
+.code-string { color: var(--text-color); }
+.code-status {
+    font-weight: 700;
+}
+.code-status-pending { color: var(--secondary-color); }
+.code-status-archived { color: var(--desc-color); }
+
+@media (max-width: 760px) {
+    .expo-code-block { font-size: 0.72rem; }
+    .expo-code-line { padding-left: 2.8rem; }
+    .expo-code-line::before { width: 2rem; }
 }
 
 /* --- SOUTIEN --- */
@@ -961,6 +993,53 @@ h2 { font-size: 1.8rem; }
     color: var(--desc-color);
     line-height: 1.5;
     margin-bottom: 1rem;
+}
+
+/* --- SOUTIEN : galerie coulisses --- */
+.soutien-process-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+.soutien-process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+}
+.soutien-process-item {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: #000;
+}
+.soutien-process-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(0.3);
+    transition: filter 0.4s ease, transform 0.5s ease;
+}
+.soutien-process-item:hover video {
+    filter: grayscale(0);
+    transform: scale(1.04);
+}
+.soutien-process-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.5rem 0.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3px;
+    color: #EAE8E4;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
 }
 
 /* --- CONTACT --- */
@@ -1082,8 +1161,6 @@ h2 { font-size: 1.8rem; }
 
     .artist-page-container { padding: 2rem; }
     .contact-grid { grid-template-columns: 1fr; }
-    .expo-item { flex-direction: column; }
-    .expo-status { margin-left: 0; }
 }
 
 @media (max-width: 480px) {

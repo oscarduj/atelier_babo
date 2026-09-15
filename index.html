@@ -181,7 +181,8 @@
         </section>
 
         <!-- 03. CURATION -->
-        <section id="curation" class="feed-section">
+        <section id="curation" class="feed-section curation-section">
+            <canvas id="curation-3d-bg" class="curation-3d-bg"></canvas>
             <div class="section-content">
                 <span class="tag">PENSÉE // RECHERCHE</span>
                 <h2>CURATION
@@ -306,30 +307,30 @@
                 <span class="tag">ESPACE // TEMPOREL</span>
                 <h2>EXPOS</h2>
                 <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
-                <div class="expo-list">
-                    <div class="expo-item">
-                        <span class="expo-date">2026</span>
-                        <div class="expo-info">
-                            <h4>DNSEP — Diplôme national supérieur d'expression plastique</h4>
-                            <p>Présentation des versions finales de Babosphere, Eauracle et Signal Faible : perturbation du visible.</p>
-                        </div>
-                        <span class="expo-status">À venir</span>
+                <div class="expo-list expo-code-list">
+                    <div class="expo-code-block">
+                        <div class="expo-code-line expo-code-brace">{</div>
+                        <div class="expo-code-line"><span class="code-key">date</span><span class="code-punct">:</span> <span class="code-string">"2026"</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">titre</span><span class="code-punct">:</span> <span class="code-string">"DNSEP — Diplôme national supérieur d'expression plastique"</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">description</span><span class="code-punct">:</span> <span class="code-string">"Présentation des versions finales de Babosphere, Eauracle et Signal Faible : perturbation du visible."</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">statut</span><span class="code-punct">:</span> <span class="code-status code-status-pending">"à_venir"</span></div>
+                        <div class="expo-code-line expo-code-brace">}</div>
                     </div>
-                    <div class="expo-item">
-                        <span class="expo-date">2026</span>
-                        <div class="expo-info">
-                            <h4>Un possible d'images encore… — ésadhar, Rouen</h4>
-                            <p>Exposition collective imaginée par Jason Karaïndros (projet Fenêtre sur rue), réunissant 17 étudiant·es de l'ésadhar. Atelier Babo y présentait Signal Faible : perturbation du visible 2.0.</p>
-                        </div>
-                        <span class="expo-status">Archivé</span>
+                    <div class="expo-code-block">
+                        <div class="expo-code-line expo-code-brace">{</div>
+                        <div class="expo-code-line"><span class="code-key">date</span><span class="code-punct">:</span> <span class="code-string">"2026"</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">titre</span><span class="code-punct">:</span> <span class="code-string">"Un possible d'images encore… — ésadhar, Rouen"</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">description</span><span class="code-punct">:</span> <span class="code-string">"Exposition collective imaginée par Jason Karaïndros (projet Fenêtre sur rue), réunissant 17 étudiant·es de l'ésadhar. Atelier Babo y présentait Signal Faible : perturbation du visible 2.0."</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">statut</span><span class="code-punct">:</span> <span class="code-status code-status-archived">"archivé"</span></div>
+                        <div class="expo-code-line expo-code-brace">}</div>
                     </div>
-                    <div class="expo-item">
-                        <span class="expo-date">2025</span>
-                        <div class="expo-info">
-                            <h4>Journée portes ouvertes — Babosphere Beta 1.5</h4>
-                            <p>Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l'espace.</p>
-                        </div>
-                        <span class="expo-status">Archivé</span>
+                    <div class="expo-code-block">
+                        <div class="expo-code-line expo-code-brace">{</div>
+                        <div class="expo-code-line"><span class="code-key">date</span><span class="code-punct">:</span> <span class="code-string">"2025"</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">titre</span><span class="code-punct">:</span> <span class="code-string">"Journée portes ouvertes — Babosphere Beta 1.5"</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">description</span><span class="code-punct">:</span> <span class="code-string">"Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l'espace."</span><span class="code-punct">,</span></div>
+                        <div class="expo-code-line"><span class="code-key">statut</span><span class="code-punct">:</span> <span class="code-status code-status-archived">"archivé"</span></div>
+                        <div class="expo-code-line expo-code-brace">}</div>
                     </div>
                 </div>
             </div>
@@ -351,6 +352,30 @@
                         <h4>Adhésion</h4>
                         <p>Rejoindre le cercle des soutiens réguliers et suivre les avancées du collectif.</p>
                         <a href="#" class="contact-btn">DEVENIR MEMBRE</a>
+                    </div>
+                </div>
+
+                <h3 class="soutien-process-title">// COULISSES</h3>
+                <div class="soutien-process-grid">
+                    <div class="soutien-process-item">
+                        <video autoplay muted loop playsinline><source src="videos/soutien/screenrecording.mp4" type="video/mp4"></video>
+                        <span class="soutien-process-label">Modélisation 3D — Eauracle</span>
+                    </div>
+                    <div class="soutien-process-item">
+                        <video autoplay muted loop playsinline><source src="videos/soutien/img-0254.mp4" type="video/mp4"></video>
+                        <span class="soutien-process-label">Traitement du scan — Babosphere</span>
+                    </div>
+                    <div class="soutien-process-item">
+                        <video autoplay muted loop playsinline><source src="videos/soutien/img-1472.mp4" type="video/mp4"></video>
+                        <span class="soutien-process-label">Soudure — atelier</span>
+                    </div>
+                    <div class="soutien-process-item">
+                        <video autoplay muted loop playsinline><source src="videos/soutien/rpreplay.mp4" type="video/mp4"></video>
+                        <span class="soutien-process-label">Maquette numérique</span>
+                    </div>
+                    <div class="soutien-process-item">
+                        <video autoplay muted loop playsinline><source src="videos/soutien/img-4389.mp4" type="video/mp4"></video>
+                        <span class="soutien-process-label">Sur le terrain</span>
                     </div>
                 </div>
             </div>
@@ -1588,5 +1613,90 @@
          Piste pour y revenir : tester Lenis SEUL d'abord (sans le plugin Snap, juste le
          lissage), en conditions réelles avec la console ouverte, avant de rajouter le
          snap par-dessus une fois le lissage de base confirmé fonctionnel. -->
+
+    <script type="module">
+        /* ---- Fond 3D de la section Curation ----
+           Champ de points qui dérive lentement en arrière-plan, purement décoratif —
+           si Three.js échoue à charger, le canvas reste vide et la section fonctionne
+           normalement (aucune dépendance bloquante). */
+        import * as THREE from 'three';
+
+        const curationSection = document.querySelector('.curation-section');
+        const curationCanvas = document.getElementById('curation-3d-bg');
+
+        if (curationSection && curationCanvas) {
+            let scene, camera, renderer, points;
+            let raf = null;
+
+            function initCurationBg() {
+                const w = curationSection.clientWidth;
+                const h = curationSection.clientHeight;
+
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
+                camera.position.z = 18;
+
+                renderer = new THREE.WebGLRenderer({ canvas: curationCanvas, alpha: true, antialias: true });
+                renderer.setSize(w, h);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+                const COUNT = 90;
+                const positions = new Float32Array(COUNT * 3);
+                for (let i = 0; i < COUNT; i++) {
+                    positions[i * 3] = (Math.random() - 0.5) * 30;
+                    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+                    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+                }
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                const material = new THREE.PointsMaterial({
+                    color: 0xA3B1C2,
+                    size: 0.08,
+                    transparent: true,
+                    opacity: 0.5,
+                });
+                points = new THREE.Points(geometry, material);
+                scene.add(points);
+
+                window.addEventListener('resize', onCurationResize);
+            }
+
+            function onCurationResize() {
+                const w = curationSection.clientWidth;
+                const h = curationSection.clientHeight;
+                if (!w || !h) return;
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            }
+
+            function animateCurationBg() {
+                raf = requestAnimationFrame(animateCurationBg);
+                points.rotation.y += 0.0006;
+                points.rotation.x += 0.0002;
+                renderer.render(scene, camera);
+            }
+
+            // Ne tourne que lorsque la section est visible (observée via la même logique
+            // que le reste du site) — pas de rendu inutile pour une section hors écran.
+            const curationObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        if (!raf) animateCurationBg();
+                    } else if (raf) {
+                        cancelAnimationFrame(raf);
+                        raf = null;
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            try {
+                initCurationBg();
+                curationObserver.observe(curationSection);
+            } catch (e) {
+                // WebGL indisponible : le canvas reste vide, la section reste utilisable.
+            }
+        }
+    </script>
 </body>
 </html>
