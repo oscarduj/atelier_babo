@@ -1614,12 +1614,12 @@
 
     <script type="module">
         /* ---- Fond 3D partagé par toute la page ----
-           Un seul canvas fixe, derrière les 7 sections. La caméra descend le long
-           d'une "carte" verticale au fil du scroll (position liée à la fraction
-           défilée de .main-feed) plutôt que de changer de décor à chaque section —
-           c'est ça qui donne l'impression de survoler un même terrain en continu.
-           Un champ de points ambiant reste discret en permanence ; par-dessus,
-           quelques météores (courtes traînées) filent à intervalles aléatoires.
+           Un seul canvas fixe, derrière les sections. Chaque section a sa propre
+           position de caméra fixe sur la "carte" — la caméra ne bouge QUE lorsqu'on
+           arrive sur une nouvelle section (pas en continu pendant le scroll), pour
+           rester prévisible et ne jamais interférer avec la position du texte.
+           Masqué automatiquement sur Accueil et Soutien, qui ont déjà leur propre
+           vidéo de fond — pas de superposition.
            Purement décoratif : si Three.js échoue à charger, le canvas reste vide
            et le site fonctionne normalement (aucune dépendance bloquante). */
         import * as THREE from 'three';
@@ -1630,8 +1630,14 @@
         if (bgCanvas && mainFeedEl) {
             let scene, camera, renderer, ambientPoints;
             const meteors = [];
-            let scrollFraction = 0;
             let lastTime = performance.now();
+
+            // Une position de caméra fixe par section — pas de calcul continu.
+            const SECTION_Y = {
+                accueil: 0, travaux: -28, curation: -56, collaborateurs: -84,
+                expos: -112, soutien: -140, contact: -168,
+            };
+            const VIDEO_SECTIONS = new Set(['accueil', 'soutien']);
 
             function initSiteBg() {
                 const w = window.innerWidth;
@@ -1645,7 +1651,6 @@
                 renderer.setSize(w, h);
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-                // Champ ambiant, étalé sur toute la hauteur conceptuelle de la page.
                 const COUNT = 160;
                 const positions = new Float32Array(COUNT * 3);
                 for (let i = 0; i < COUNT; i++) {
@@ -1672,7 +1677,22 @@
                 }
 
                 window.addEventListener('resize', onSiteResize);
-                mainFeedEl.addEventListener('scroll', onScroll, { passive: true });
+
+                // Observer dédié : la caméra ne bouge qu'à l'arrivée sur une nouvelle
+                // section, jamais en continu — indépendant de l'observer de nav du
+                // script principal, pour rester autonome.
+                const bgSectionObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) goToSection(entry.target.id);
+                    });
+                }, { threshold: 0.5 });
+                document.querySelectorAll('.feed-section').forEach((s) => bgSectionObserver.observe(s));
+            }
+
+            function goToSection(id) {
+                const targetY = SECTION_Y[id] ?? 0;
+                gsap.to(camera.position, { y: targetY, duration: 1.6, ease: 'power2.inOut' });
+                gsap.to(bgCanvas, { opacity: VIDEO_SECTIONS.has(id) ? 0 : 1, duration: 0.6, ease: 'power1.out' });
             }
 
             function createMeteor() {
@@ -1718,11 +1738,6 @@
                 }
             }
 
-            function onScroll() {
-                const max = mainFeedEl.scrollHeight - mainFeedEl.clientHeight;
-                scrollFraction = max > 0 ? mainFeedEl.scrollTop / max : 0;
-            }
-
             function onSiteResize() {
                 const w = window.innerWidth;
                 const h = window.innerHeight;
@@ -1736,7 +1751,6 @@
                 const dt = Math.min(0.05, (now - lastTime) / 1000);
                 lastTime = now;
 
-                camera.position.y = -scrollFraction * 230;
                 ambientPoints.rotation.y += 0.00025;
                 meteors.forEach((m) => updateMeteor(m, dt));
 
@@ -1745,7 +1759,6 @@
 
             try {
                 initSiteBg();
-                onScroll();
                 requestAnimationFrame(animateSiteBg);
             } catch (e) {
                 // WebGL indisponible : le canvas reste vide, le site reste utilisable.

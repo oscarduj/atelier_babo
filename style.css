@@ -54,13 +54,16 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Fond 3D unique, fixe derrière les 7 sections — voir index.html pour la logique
-   (caméra liée au scroll, météores). Purement décoratif, jamais bloquant. */
+/* Fond 3D unique, fixe derrière les sections — voir index.html pour la logique
+   (position de caméra fixe par section, météores). Démarre invisible car Accueil
+   (la section de départ) a déjà sa propre vidéo de fond. Purement décoratif,
+   jamais bloquant. */
 .site-3d-bg {
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    opacity: 0;
 }
 
 /* Les pages individuelles (artistes/collectif) ne sont pas en scroll-snap plein écran
@@ -828,7 +831,6 @@ h2 { font-size: 1.8rem; }
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    perspective: 1200px;
 }
 
 .curation-item {
@@ -838,23 +840,25 @@ h2 { font-size: 1.8rem; }
     border: 1px dashed var(--border-color);
     padding: 1.5rem;
     background-color: var(--bg-color);
-    transform-style: preserve-3d;
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.3s ease,
                 opacity 0.4s ease,
-                filter 0.4s ease;
+                filter 0.4s ease,
+                box-shadow 0.45s ease;
 }
 
 /* Au survol de la grille, tout s'estompe légèrement sauf la carte visée, qui
-   avance vers le regard (translateZ) — une mise au point plutôt qu'un simple
-   changement de couleur. */
+   avance vers le regard (scale + ombre) — une mise au point plutôt qu'un simple
+   changement de couleur. Pas de perspective/translateZ : juste du 2D, pour
+   rester prévisible et ne jamais interférer avec la position du reste du texte. */
 .curation-grid:hover .curation-item {
     opacity: 0.5;
     filter: blur(1px);
 }
 .curation-item:hover {
     border-color: var(--secondary-color);
-    transform: translateZ(50px) scale(1.04);
+    transform: scale(1.045);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
     opacity: 1 !important;
     filter: blur(0) !important;
     z-index: 2;
