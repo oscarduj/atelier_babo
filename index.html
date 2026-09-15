@@ -86,6 +86,8 @@
         <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
     </header>
 
+    <canvas id="site-3d-bg" class="site-3d-bg"></canvas>
+
     <main class="main-feed">
         <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
         <section id="accueil" class="feed-section active hero-section-video">
@@ -181,8 +183,7 @@
         </section>
 
         <!-- 03. CURATION -->
-        <section id="curation" class="feed-section curation-section">
-            <canvas id="curation-3d-bg" class="curation-3d-bg"></canvas>
+        <section id="curation" class="feed-section">
             <div class="section-content">
                 <span class="tag">PENSÉE // RECHERCHE</span>
                 <h2>CURATION
@@ -337,7 +338,15 @@
         </section>
 
         <!-- 06. SOUTIEN -->
-        <section id="soutien" class="feed-section">
+        <section id="soutien" class="feed-section soutien-section">
+            <div class="soutien-video-bg" id="soutien-video-bg">
+                <video class="soutien-bg-video active" autoplay muted loop playsinline data-index="0"><source src="videos/soutien/screenrecording.mp4" type="video/mp4"></video>
+                <video class="soutien-bg-video" autoplay muted loop playsinline data-index="1"><source src="videos/soutien/img-0254.mp4" type="video/mp4"></video>
+                <video class="soutien-bg-video" autoplay muted loop playsinline data-index="2"><source src="videos/soutien/img-1472.mp4" type="video/mp4"></video>
+                <video class="soutien-bg-video" autoplay muted loop playsinline data-index="3"><source src="videos/soutien/rpreplay.mp4" type="video/mp4"></video>
+                <video class="soutien-bg-video" autoplay muted loop playsinline data-index="4"><source src="videos/soutien/img-4389.mp4" type="video/mp4"></video>
+            </div>
+            <div class="soutien-video-overlay"></div>
             <div class="section-content">
                 <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
                 <h2>SOUTIEN</h2>
@@ -352,30 +361,6 @@
                         <h4>Adhésion</h4>
                         <p>Rejoindre le cercle des soutiens réguliers et suivre les avancées du collectif.</p>
                         <a href="#" class="contact-btn">DEVENIR MEMBRE</a>
-                    </div>
-                </div>
-
-                <h3 class="soutien-process-title">// COULISSES</h3>
-                <div class="soutien-process-grid">
-                    <div class="soutien-process-item">
-                        <video autoplay muted loop playsinline><source src="videos/soutien/screenrecording.mp4" type="video/mp4"></video>
-                        <span class="soutien-process-label">Modélisation 3D — Eauracle</span>
-                    </div>
-                    <div class="soutien-process-item">
-                        <video autoplay muted loop playsinline><source src="videos/soutien/img-0254.mp4" type="video/mp4"></video>
-                        <span class="soutien-process-label">Traitement du scan — Babosphere</span>
-                    </div>
-                    <div class="soutien-process-item">
-                        <video autoplay muted loop playsinline><source src="videos/soutien/img-1472.mp4" type="video/mp4"></video>
-                        <span class="soutien-process-label">Soudure — atelier</span>
-                    </div>
-                    <div class="soutien-process-item">
-                        <video autoplay muted loop playsinline><source src="videos/soutien/rpreplay.mp4" type="video/mp4"></video>
-                        <span class="soutien-process-label">Maquette numérique</span>
-                    </div>
-                    <div class="soutien-process-item">
-                        <video autoplay muted loop playsinline><source src="videos/soutien/img-4389.mp4" type="video/mp4"></video>
-                        <span class="soutien-process-label">Sur le terrain</span>
                     </div>
                 </div>
             </div>
@@ -1017,6 +1002,19 @@
             heroAutoTimer = setTimeout(() => goToHeroVideo(currentHeroIndex + 1), 9000);
         }
 
+        /* ---- Cycle automatique des vidéos de fond — section Soutien ----
+           Simple fondu enchaîné entre les 5 vidéos, sans contrôle manuel (contrairement
+           au carrousel de l'accueil) : c'est une ambiance, pas une navigation. */
+        const soutienVideos = Array.from(document.querySelectorAll('.soutien-bg-video'));
+        if (soutienVideos.length > 1) {
+            let soutienIndex = 0;
+            setInterval(() => {
+                soutienVideos[soutienIndex].classList.remove('active');
+                soutienIndex = (soutienIndex + 1) % soutienVideos.length;
+                soutienVideos[soutienIndex].classList.add('active');
+            }, 7000);
+        }
+
         const carouselPrev = document.getElementById('carousel-prev');
         const carouselNext = document.getElementById('carousel-next');
         const carouselArrow = document.getElementById('carousel-arrow');
@@ -1615,86 +1613,142 @@
          snap par-dessus une fois le lissage de base confirmé fonctionnel. -->
 
     <script type="module">
-        /* ---- Fond 3D de la section Curation ----
-           Champ de points qui dérive lentement en arrière-plan, purement décoratif —
-           si Three.js échoue à charger, le canvas reste vide et la section fonctionne
-           normalement (aucune dépendance bloquante). */
+        /* ---- Fond 3D partagé par toute la page ----
+           Un seul canvas fixe, derrière les 7 sections. La caméra descend le long
+           d'une "carte" verticale au fil du scroll (position liée à la fraction
+           défilée de .main-feed) plutôt que de changer de décor à chaque section —
+           c'est ça qui donne l'impression de survoler un même terrain en continu.
+           Un champ de points ambiant reste discret en permanence ; par-dessus,
+           quelques météores (courtes traînées) filent à intervalles aléatoires.
+           Purement décoratif : si Three.js échoue à charger, le canvas reste vide
+           et le site fonctionne normalement (aucune dépendance bloquante). */
         import * as THREE from 'three';
 
-        const curationSection = document.querySelector('.curation-section');
-        const curationCanvas = document.getElementById('curation-3d-bg');
+        const bgCanvas = document.getElementById('site-3d-bg');
+        const mainFeedEl = document.querySelector('.main-feed');
 
-        if (curationSection && curationCanvas) {
-            let scene, camera, renderer, points;
-            let raf = null;
+        if (bgCanvas && mainFeedEl) {
+            let scene, camera, renderer, ambientPoints;
+            const meteors = [];
+            let scrollFraction = 0;
+            let lastTime = performance.now();
 
-            function initCurationBg() {
-                const w = curationSection.clientWidth;
-                const h = curationSection.clientHeight;
+            function initSiteBg() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
 
                 scene = new THREE.Scene();
-                camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
-                camera.position.z = 18;
+                camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 200);
+                camera.position.z = 20;
 
-                renderer = new THREE.WebGLRenderer({ canvas: curationCanvas, alpha: true, antialias: true });
+                renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
                 renderer.setSize(w, h);
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-                const COUNT = 90;
+                // Champ ambiant, étalé sur toute la hauteur conceptuelle de la page.
+                const COUNT = 160;
                 const positions = new Float32Array(COUNT * 3);
                 for (let i = 0; i < COUNT; i++) {
-                    positions[i * 3] = (Math.random() - 0.5) * 30;
-                    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-                    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+                    positions[i * 3] = (Math.random() - 0.5) * 60;
+                    positions[i * 3 + 1] = (Math.random() - 0.5) * 320;
+                    positions[i * 3 + 2] = (Math.random() - 0.5) * 40 - 8;
                 }
-                const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                const material = new THREE.PointsMaterial({
+                const ambientGeom = new THREE.BufferGeometry();
+                ambientGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                const ambientMat = new THREE.PointsMaterial({
                     color: 0xA3B1C2,
-                    size: 0.08,
+                    size: 0.06,
                     transparent: true,
-                    opacity: 0.5,
+                    opacity: 0.35,
                 });
-                points = new THREE.Points(geometry, material);
-                scene.add(points);
+                ambientPoints = new THREE.Points(ambientGeom, ambientMat);
+                scene.add(ambientPoints);
 
-                window.addEventListener('resize', onCurationResize);
+                for (let i = 0; i < 6; i++) {
+                    const m = createMeteor();
+                    m.delay = Math.random() * 8;
+                    meteors.push(m);
+                    scene.add(m.mesh);
+                }
+
+                window.addEventListener('resize', onSiteResize);
+                mainFeedEl.addEventListener('scroll', onScroll, { passive: true });
             }
 
-            function onCurationResize() {
-                const w = curationSection.clientWidth;
-                const h = curationSection.clientHeight;
-                if (!w || !h) return;
+            function createMeteor() {
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
+                const material = new THREE.LineBasicMaterial({ color: 0xEAE8E4, transparent: true, opacity: 0 });
+                const mesh = new THREE.Line(geometry, material);
+                return {
+                    mesh, material, active: false, progress: 0, speed: 0, delay: 4,
+                    start: new THREE.Vector3(), dir: new THREE.Vector3(1, -0.35, 0).normalize(),
+                };
+            }
+
+            function spawnMeteor(m) {
+                m.start.set((Math.random() - 0.5) * 50 - 15, (Math.random() - 0.5) * 300, (Math.random() - 0.5) * 30 - 5);
+                m.speed = 0.6 + Math.random() * 0.9;
+                m.progress = 0;
+                m.active = true;
+            }
+
+            function updateMeteor(m, dt) {
+                if (!m.active) {
+                    m.delay -= dt;
+                    if (m.delay <= 0) spawnMeteor(m);
+                    return;
+                }
+                m.progress += m.speed * dt * 10;
+                const len = 3.2;
+                const head = m.start.clone().addScaledVector(m.dir, m.progress);
+                const tail = head.clone().addScaledVector(m.dir, -len);
+                const pos = m.mesh.geometry.attributes.position;
+                pos.setXYZ(0, tail.x, tail.y, tail.z);
+                pos.setXYZ(1, head.x, head.y, head.z);
+                pos.needsUpdate = true;
+
+                const fadeIn = Math.min(1, m.progress / 2);
+                const fadeOut = Math.max(0, 1 - Math.max(0, m.progress - 12) / 4);
+                m.material.opacity = Math.min(fadeIn, fadeOut) * 0.75;
+
+                if (m.progress > 16) {
+                    m.active = false;
+                    m.delay = 3 + Math.random() * 10;
+                }
+            }
+
+            function onScroll() {
+                const max = mainFeedEl.scrollHeight - mainFeedEl.clientHeight;
+                scrollFraction = max > 0 ? mainFeedEl.scrollTop / max : 0;
+            }
+
+            function onSiteResize() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
                 renderer.setSize(w, h);
                 camera.aspect = w / h;
                 camera.updateProjectionMatrix();
             }
 
-            function animateCurationBg() {
-                raf = requestAnimationFrame(animateCurationBg);
-                points.rotation.y += 0.0006;
-                points.rotation.x += 0.0002;
+            function animateSiteBg(now) {
+                requestAnimationFrame(animateSiteBg);
+                const dt = Math.min(0.05, (now - lastTime) / 1000);
+                lastTime = now;
+
+                camera.position.y = -scrollFraction * 230;
+                ambientPoints.rotation.y += 0.00025;
+                meteors.forEach((m) => updateMeteor(m, dt));
+
                 renderer.render(scene, camera);
             }
 
-            // Ne tourne que lorsque la section est visible (observée via la même logique
-            // que le reste du site) — pas de rendu inutile pour une section hors écran.
-            const curationObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        if (!raf) animateCurationBg();
-                    } else if (raf) {
-                        cancelAnimationFrame(raf);
-                        raf = null;
-                    }
-                });
-            }, { threshold: 0.1 });
-
             try {
-                initCurationBg();
-                curationObserver.observe(curationSection);
+                initSiteBg();
+                onScroll();
+                requestAnimationFrame(animateSiteBg);
             } catch (e) {
-                // WebGL indisponible : le canvas reste vide, la section reste utilisable.
+                // WebGL indisponible : le canvas reste vide, le site reste utilisable.
             }
         }
     </script>

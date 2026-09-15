@@ -54,6 +54,15 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* Fond 3D unique, fixe derrière les 7 sections — voir index.html pour la logique
+   (caméra liée au scroll, météores). Purement décoratif, jamais bloquant. */
+.site-3d-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
 /* Les pages individuelles (artistes/collectif) ne sont pas en scroll-snap plein écran
    comme l'accueil : elles doivent pouvoir défiler normalement, quelle que soit leur
    longueur — sans cette règle, le body hérité de l'accueil bloque tout défilement dès
@@ -221,6 +230,8 @@ body.standalone-page {
 
 /* --- FLUX MAGNÉTIQUE --- */
 .main-feed { 
+    position: relative;
+    z-index: 1;
     flex: 1; 
     height: 100vh; 
     height: 100dvh;
@@ -812,14 +823,6 @@ h2 { font-size: 1.8rem; }
 }
 
 /* --- CURATION --- */
-.curation-section { position: relative; overflow: hidden; }
-.curation-3d-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
-.curation-section .section-content { position: relative; z-index: 1; }
 
 .curation-grid {
     display: grid;
@@ -995,51 +998,33 @@ h2 { font-size: 1.8rem; }
     margin-bottom: 1rem;
 }
 
-/* --- SOUTIEN : galerie coulisses --- */
-.soutien-process-title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 1.5px;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    font-weight: 400;
+/* --- SOUTIEN : vidéos en fond de section (cycle automatique) --- */
+.soutien-section { position: relative; overflow: hidden; }
+.soutien-video-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
 }
-.soutien-process-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-}
-.soutien-process-item {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    background: #000;
-}
-.soutien-process-item video {
+.soutien-bg-video {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    filter: grayscale(0.3);
-    transition: filter 0.4s ease, transform 0.5s ease;
+    opacity: 0;
+    transition: opacity 1.4s ease;
 }
-.soutien-process-item:hover video {
-    filter: grayscale(0);
-    transform: scale(1.04);
-}
-.soutien-process-label {
+.soutien-bg-video.active { opacity: 0.55; }
+.soutien-video-overlay {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 0.5rem 0.6rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.3px;
-    color: #EAE8E4;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, var(--bg-color) 0%, rgba(13, 13, 12, 0.55) 35%, rgba(13, 13, 12, 0.55) 75%, var(--bg-color) 100%);
+}
+.soutien-section .section-content { position: relative; z-index: 2; }
+.soutien-card {
+    backdrop-filter: blur(2px);
+    background-color: rgba(13, 13, 12, 0.5);
 }
 
 /* --- CONTACT --- */
