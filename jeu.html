@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGNAL CACHÉ // ATELIER BABO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="jeu.css">
+</head>
+<body class="standalone-page jeu-page">
+    <main class="artist-page-container">
+        <a href="index.html#accueil" class="back-link">← RETOUR AU SITE</a>
+
+        <header class="artist-header">
+            <span class="tag">08 // SIGNAL CACHÉ</span>
+            <h1>Perte de signal</h1>
+        </header>
+
+        <p class="jeu-intro">Vous avez trouvé les trois clés. Ce qui suit n'a pas d'autre fonction que d'exister à côté du reste — espace, barre tactile ou clic pour sauter.</p>
+
+        <div class="jeu-stage">
+            <canvas id="game-canvas"></canvas>
+
+            <div class="jeu-overlay" id="jeu-overlay">
+                <p class="jeu-overlay-title" id="jeu-overlay-title">PRÊT ?</p>
+                <p class="jeu-overlay-sub" id="jeu-overlay-sub">Espace / clic / tap pour commencer</p>
+            </div>
+
+            <div class="jeu-unlock-toast" id="jeu-unlock-toast"></div>
+        </div>
+
+        <div class="jeu-download-block" id="jeu-download-block" style="display:none;">
+            <span class="jeu-download-label">Signal supplémentaire débloqué —</span>
+            <button type="button" id="jeu-download-btn" class="contact-btn">TÉLÉCHARGER L'ATTESTATION</button>
+        </div>
+
+        <section class="jeu-narrative" id="jeu-narrative" style="display:none;">
+            <p id="jeu-narrative-text"></p>
+        </section>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const overlay = document.getElementById('jeu-overlay');
+        const overlayTitle = document.getElementById('jeu-overlay-title');
+        const overlaySub = document.getElementById('jeu-overlay-sub');
+        const toast = document.getElementById('jeu-unlock-toast');
+        const downloadBlock = document.getElementById('jeu-download-block');
+        const downloadBtn = document.getElementById('jeu-download-btn');
+        const narrativeSection = document.getElementById('jeu-narrative');
+        const narrativeText = document.getElementById('jeu-narrative-text');
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        let W, H, groundY;
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            W = canvas.width = Math.floor(rect.width);
+            H = canvas.height = Math.floor(Math.min(rect.width * 0.38, 300));
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+            groundY = H * 0.78;
+            if (player) player.y = Math.min(player.y, groundY - player.h);
+        }
+
+        const GRAVITY = 0.9;
+        const JUMP_VELOCITY = -14;
+
+        const player = { x: 50, y: 0, w: 20, h: 20, vy: 0, jumping: false };
+        let obstacles = [];
+        let score = 0;
+        let bestScore = parseInt(localStorage.getItem('babo_game_best') || '0', 10);
+        let gameSpeed = 5;
+        let frame = 0;
+        let nextObstacleFrame = 60;
+        let running = false;
+        let gameOverFlag = false;
+        let unlockedNarrative = false;
+        let unlockedDownload = false;
+
+        const THRESHOLD_NARRATIVE = 150;
+        const THRESHOLD_DOWNLOAD = 400;
+
+        const NARRATIVE_TEXT = "TRANSMISSION REÇUE — Ce que vous voyez ici n'existe que pour ceux qui ont pris le temps de chercher, de cliquer, de perdre. C'est peut-être ça, être 바보 (babo) : accepter de rater, encore et encore, jusqu'à ce que le raté devienne une forme.";
+
+        function resetGame() {
+            resizeCanvas();
+            player.y = groundY - player.h;
+            player.vy = 0;
+            player.jumping = false;
+            obstacles = [];
+            score = 0;
+            gameSpeed = 5;
+            frame = 0;
+            nextObstacleFrame = 60;
+            gameOverFlag = false;
+            unlockedNarrative = false;
+            unlockedDownload = false;
+            downloadBlock.style.display = 'none';
+            narrativeSection.style.display = 'none';
+        }
+
+        function spawnObstacle() {
+            const h = 16 + Math.random() * 22;
+            obstacles.push({ x: W + 10, y: groundY - h, w: 12 + Math.random() * 10, h });
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 2600);
+        }
+
+        function checkUnlocks() {
+            if (!unlockedNarrative && score >= THRESHOLD_NARRATIVE) {
+                unlockedNarrative = true;
+                showToast('SIGNAL PARTIEL CAPTÉ');
+                narrativeText.textContent = NARRATIVE_TEXT;
+                narrativeSection.style.display = 'block';
+            }
+            if (!unlockedDownload && score >= THRESHOLD_DOWNLOAD) {
+                unlockedDownload = true;
+                showToast('SIGNAL COMPLET CAPTÉ');
+                downloadBlock.style.display = 'flex';
+            }
+        }
+
+        function update() {
+            frame++;
+            player.vy += GRAVITY;
+            player.y += player.vy;
+            if (player.y >= groundY - player.h) {
+                player.y = groundY - player.h;
+                player.vy = 0;
+                player.jumping = false;
+            }
+
+            gameSpeed = 5 + score / 220;
+
+            if (frame >= nextObstacleFrame) {
+                spawnObstacle();
+                nextObstacleFrame = frame + Math.max(38, 78 - Math.floor(score / 25));
+            }
+            obstacles.forEach((o) => { o.x -= gameSpeed; });
+            obstacles = obstacles.filter((o) => o.x + o.w > -10);
+
+            for (const o of obstacles) {
+                if (player.x < o.x + o.w && player.x + player.w > o.x &&
+                    player.y < o.y + o.h && player.y + player.h > o.y) {
+                    endGame();
+                    return;
+                }
+            }
+
+            score += 1;
+            checkUnlocks();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            ctx.strokeStyle = 'rgba(163, 177, 194, 0.4)';
+            ctx.beginPath();
+            ctx.moveTo(0, groundY + 0.5);
+            ctx.lineTo(W, groundY + 0.5);
+            ctx.stroke();
+
+            const glitch = (!prefersReducedMotion && Math.random() < 0.06) ? (Math.random() - 0.5) * 5 : 0;
+            ctx.fillStyle = '#EAE8E4';
+            ctx.fillRect(Math.round(player.x + glitch), Math.round(player.y), player.w, player.h);
+            if (glitch !== 0) {
+                ctx.fillStyle = 'rgba(163, 177, 194, 0.45)';
+                ctx.fillRect(Math.round(player.x - 3), Math.round(player.y), player.w, player.h);
+            }
+
+            ctx.fillStyle = '#c9302c';
+            obstacles.forEach((o) => ctx.fillRect(Math.round(o.x), Math.round(o.y), o.w, o.h));
+
+            ctx.font = '13px "Share Tech Mono", monospace';
+            ctx.fillStyle = 'rgba(234, 232, 228, 0.55)';
+            ctx.textAlign = 'left';
+            ctx.fillText('MEILLEUR ' + String(bestScore).padStart(5, '0'), 10, 20);
+            ctx.fillStyle = '#EAE8E4';
+            ctx.textAlign = 'right';
+            ctx.fillText(String(score).padStart(5, '0'), W - 10, 20);
+        }
+
+        function loop() {
+            if (!running || gameOverFlag) return;
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        function startGame() {
+            resetGame();
+            running = true;
+            overlay.classList.remove('visible');
+            requestAnimationFrame(loop);
+        }
+
+        function endGame() {
+            gameOverFlag = true;
+            running = false;
+            if (score > bestScore) {
+                bestScore = score;
+                try { localStorage.setItem('babo_game_best', String(bestScore)); } catch (e) { /* stockage indisponible */ }
+            }
+            overlayTitle.textContent = 'SIGNAL PERDU — ' + score;
+            overlaySub.textContent = 'Espace / clic / tap pour recommencer';
+            overlay.classList.add('visible');
+        }
+
+        function handleAction(e) {
+            if (e) e.preventDefault();
+            if (!running || gameOverFlag) { startGame(); return; }
+            if (!player.jumping) {
+                player.vy = JUMP_VELOCITY;
+                player.jumping = true;
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') handleAction(e);
+        });
+        canvas.addEventListener('pointerdown', handleAction);
+        overlay.addEventListener('pointerdown', handleAction);
+
+        downloadBtn.addEventListener('click', () => {
+            const date = new Date().toLocaleDateString('fr-FR');
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<rect width="800" height="500" fill="#020A19"/>
+<rect x="20" y="20" width="760" height="460" fill="none" stroke="#A3B1C2" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="400" y="120" text-anchor="middle" font-family="monospace" font-size="14" fill="#A3B1C2" letter-spacing="3">ATELIER BABO // SIGNAL CACHÉ</text>
+<text x="400" y="230" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="32" fill="#EAE8E4">Attestation de persistance</text>
+<text x="400" y="310" text-anchor="middle" font-family="monospace" font-size="58" fill="#c9302c">${score}</text>
+<text x="400" y="345" text-anchor="middle" font-family="monospace" font-size="11" fill="#999999" letter-spacing="2">POINTS DE SIGNAL RÉCUPÉRÉS</text>
+<text x="400" y="430" text-anchor="middle" font-family="monospace" font-size="11" fill="#666666">${date} — atelier-babo.com</text>
+</svg>`;
+            const blob = new Blob([svg], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'attestation-signal-babo.svg';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        player.y = groundY - player.h;
+        draw();
+    </script>
+</body>
+</html>

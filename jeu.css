@@ -1,0 +1,102 @@
+/* ============================================================
+   JEU — page débloquée après collecte des 3 clés cachées
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+.jeu-page .artist-header h1 {
+    font-family: 'EB Garamond', 'Georgia', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+.jeu-intro {
+    color: var(--desc-color);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 640px;
+    margin-bottom: 2rem;
+}
+
+.jeu-stage {
+    position: relative;
+    border: 1px solid var(--border-color);
+    background: #050505;
+    margin-bottom: 2rem;
+    touch-action: none;
+}
+#game-canvas {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.jeu-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 10, 25, 0.82);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+.jeu-overlay.visible { opacity: 1; pointer-events: auto; }
+.jeu-overlay-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1rem;
+    color: #EAE8E4;
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+}
+.jeu-overlay-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(234, 232, 228, 0.6);
+}
+
+.jeu-unlock-toast {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    color: #c9302c;
+    background: rgba(5, 5, 5, 0.85);
+    border: 1px solid #c9302c;
+    padding: 0.4rem 0.9rem;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+}
+.jeu-unlock-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.jeu-download-block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--desc-color);
+}
+
+.jeu-narrative {
+    max-width: 620px;
+    border-left: 2px solid #c9302c;
+    padding-left: 1.2rem;
+    margin-bottom: 2.5rem;
+}
+.jeu-narrative p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--desc-color);
+}

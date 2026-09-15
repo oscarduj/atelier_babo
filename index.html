@@ -10,21 +10,19 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
     <script type="importmap">
     { "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-        "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.mjs",
-        "lenis/snap": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis-snap.mjs"
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
     } }
     </script>
 </head>
 <body>
- 
+
     <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
- 
+
     <div class="boot-overlay" id="boot-overlay">
         <div class="boot-gate" id="boot-gate">
             <div class="boot-gate-square" id="boot-gate-square"></div>
         </div>
- 
+
         <div class="perm-popup" id="perm-popup">
             <div class="perm-body">
                 <div class="perm-header">
@@ -49,7 +47,7 @@
                 <p class="perm-granted-msg">ACCÈS ACCORDÉ</p>
             </div>
         </div>
- 
+
         <div class="eye-wrap" id="eye-wrap">
             <div id="eye-grid"></div>
             <div class="eye-screen" id="eye-screen">
@@ -59,11 +57,11 @@
         </div>
         <div class="wordmark" id="boot-wordmark"></div>
     </div>
- 
+
     <button class="hamburger-btn" id="hamburger-btn" aria-label="Menu">
         <span></span><span></span><span></span>
     </button>
- 
+
     <header class="side-nav" id="side-nav">
         <div class="nav-top">
             <div class="nav-logo">ATELIER_BABO</div>
@@ -79,11 +77,15 @@
             <a href="#expos" class="nav-item" data-target="expos">05. EXPOS</a>
             <a href="#soutien" class="nav-item" data-target="soutien">06. SOUTIEN</a>
             <a href="#contact" class="nav-item" data-target="contact">07. CONTACT</a>
+            <a href="jeu.html" class="nav-item nav-item-locked" id="nav-locked-item">
+                <span class="nav-locked-label">08. [ VERROUILLÉ ]</span>
+                <span class="nav-locked-count" id="nav-locked-count">0/3</span>
+            </a>
         </nav>
         
         <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
     </header>
- 
+
     <main class="main-feed">
         <!-- 01. ACCUEIL AVEC VIDÉO EN FOND -->
         <section id="accueil" class="feed-section active hero-section-video">
@@ -99,13 +101,13 @@
                 </video>
             </div>
             <div class="video-overlay"></div>
- 
+
             <div class="carousel-nav-zone carousel-nav-prev" id="carousel-prev"></div>
             <div class="carousel-nav-zone carousel-nav-next" id="carousel-next"></div>
             <div class="carousel-arrow-cursor" id="carousel-arrow">
                 <svg viewBox="0 0 130 26"><line x1="2" y1="13" x2="112" y2="13"/><path d="M95 2 L120 13 L95 24"/></svg>
             </div>
- 
+
             <button class="carousel-mobile-btn carousel-mobile-prev" id="carousel-mobile-prev" type="button" aria-label="Vidéo précédente">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
@@ -113,21 +115,26 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
             <div class="carousel-dots" id="carousel-dots"></div>
- 
-            <div class="hero-tag-corner">// ACCUEIL</div>
- 
+
+            <div class="hero-tag-corner">
+                // ACCUEIL
+                <button class="hidden-key" data-key-id="k1" type="button" aria-label="Objet trouvé">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
+                </button>
+            </div>
+
             <div class="dvd-logo" id="dvd-logo">
                 <img src="images/accueil/Logo.png" alt="ATELIER BABO">
             </div>
         </section>
- 
+
         <!-- 02. TRAVAUX -->
         <section id="travaux" class="feed-section">
             <div class="section-content" style="width: 100%;">
                 <span class="tag">ARCHIVE // PROJETS</span>
                 <h2>TRAVAUX</h2>
                 <p class="section-desc">Projets collectifs et recherches individuelles des membres.</p>
- 
+
                 <div class="travaux-asym-grid">
                     <a href="travaux/collectif.html" class="travaux-cell travaux-cell-collectif">
                         <div class="travaux-cell-box">
@@ -173,12 +180,16 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- 03. CURATION -->
         <section id="curation" class="feed-section">
             <div class="section-content">
                 <span class="tag">PENSÉE // RECHERCHE</span>
-                <h2>CURATION</h2>
+                <h2>CURATION
+                    <button class="hidden-key" data-key-id="k2" type="button" aria-label="Objet trouvé" style="vertical-align: middle;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
+                    </button>
+                </h2>
                 <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
                 <div class="curation-grid">
                     <a href="travaux/collectif.html" class="curation-item">
@@ -199,7 +210,7 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- 04. COLLABORATEURS -->
         <section id="collaborateurs" class="feed-section">
             <div class="section-content" style="width: 100%;">
@@ -211,7 +222,7 @@
                     <button class="sub-nav-btn" data-cat="structures">STRUCTURES</button>
                     <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
                 </div>
- 
+
                 <div id="cat-artistes" class="collab-category-content active">
                     <p class="section-desc">Glissez vers la droite pour découvrir les artistes du collectif.</p>
                     <div class="horizontal-scroll-container">
@@ -247,7 +258,7 @@
                         </a>
                     </div>
                 </div>
- 
+
                 <div id="cat-structures" class="collab-category-content" style="display: none;">
                     <p class="section-desc">Partenaires institutionnels, galeries et espaces de diffusion.</p>
                     <div class="partners-grid">
@@ -269,7 +280,7 @@
                         </div>
                     </div>
                 </div>
- 
+
                 <div id="cat-mecenes" class="collab-category-content" style="display: none;">
                     <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
                     <div class="partners-grid">
@@ -289,7 +300,7 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- 05. EXPOS -->
         <section id="expos" class="feed-section">
             <div class="section-content" style="width: 100%;">
@@ -324,7 +335,7 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- 06. SOUTIEN -->
         <section id="soutien" class="feed-section">
             <div class="section-content">
@@ -345,7 +356,7 @@
                 </div>
             </div>
         </section>
- 
+
         <!-- 07. CONTACT -->
         <section id="contact" class="feed-section">
             <div class="section-content" style="width: 100%;">
@@ -361,6 +372,9 @@
                         <div>
                             <span class="info-label">Localisation</span>
                             <span class="info-value">Paris, France</span>
+                            <button class="hidden-key" data-key-id="k3" type="button" aria-label="Objet trouvé" style="margin-left: 0.4rem;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
+                            </button>
                         </div>
                         <div>
                             <span class="info-label">Réseaux</span>
@@ -379,14 +393,14 @@
             </div>
         </section>
     </main>
- 
+
     <script>
         /* ============ SYSTÈME DE BOOT — ÉCRAN D'ENTRÉE ============ */
- 
+
         /* ---- Moteur sonore (sons générés, aucun fichier audio) ---- */
         let soundEnabled = true;
         let audioCtx = null;
- 
+
         function getAudioCtx() {
             if (!audioCtx) {
                 const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -405,7 +419,7 @@
         }
         document.addEventListener('click', unlockAudioOnce);
         document.addEventListener('touchstart', unlockAudioOnce);
- 
+
         function playTone(freq, duration, type, startGain, freqEnd) {
             if (!soundEnabled) return;
             const ctx = getAudioCtx();
@@ -424,7 +438,7 @@
                 osc.stop(ctx.currentTime + duration);
             } catch (e) { /* audio indisponible : on ignore sans casser la page */ }
         }
- 
+
         // Clic bruité et filtré — un craquement sec, pas une note mélodique de jeu vidéo.
         function playClick(duration, gain, filterFreq, q) {
             if (!soundEnabled) return;
@@ -451,7 +465,7 @@
                 noise.start();
             } catch (e) { /* ignore */ }
         }
- 
+
         // Nappe grave désaccordée (léger battement), pulsée par une modulation carrée pour un
         // grain numérique — démarre une fois l'accès "accordé" par le faux popup.
         let drone = null;
@@ -495,7 +509,7 @@
             } catch (e) { /* ignore */ }
             drone = null;
         }
- 
+
         /* ---- Ambiance générative (style Aphex Twin / Pure Data) ----
            Nappe désaccordée + texture de bruit filtré qui évolue lentement +
            notes éparses aléatoires + reverb "faite main" à base de delay avec
@@ -503,7 +517,7 @@
            audio ni d'impulse response : tout est généré). */
         let ambient = null;
         let ambientPlaying = false;
- 
+
         function startAmbient() {
             if (ambientPlaying) return;
             const ctx = getAudioCtx();
@@ -514,7 +528,7 @@
                 master.gain.setValueAtTime(0, ctx.currentTime);
                 master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 3.5);
                 master.connect(ctx.destination);
- 
+
                 // Reverb maison : delay + feedback + filtre dans la boucle
                 const delay = ctx.createDelay(2);
                 delay.delayTime.value = 0.46;
@@ -527,7 +541,7 @@
                 delayFilter.connect(feedback);
                 feedback.connect(delay);
                 delay.connect(master);
- 
+
                 // Nappe : cluster de 4 voix légèrement désaccordées
                 const padFreqs = [65.41, 98.0, 130.81, 164.81];
                 const padOscs = padFreqs.map(f => {
@@ -540,7 +554,7 @@
                     osc.start();
                     return { osc, g };
                 });
- 
+
                 // Texture de bruit filtré, dont la fréquence de coupure dérive lentement
                 const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
                 const noiseData = noiseBuffer.getChannelData(0);
@@ -556,7 +570,7 @@
                 noiseGain.gain.value = 0.015;
                 noiseSrc.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(master);
                 noiseSrc.start();
- 
+
                 let lfoPhase = Math.random() * 10;
                 let noiseLfoRaf;
                 function driftNoiseFilter() {
@@ -566,7 +580,7 @@
                     noiseLfoRaf = requestAnimationFrame(driftNoiseFilter);
                 }
                 driftNoiseFilter();
- 
+
                 // Notes éparses, aléatoires, sur une gamme ouverte — fragments mélodiques rares
                 const scale = [261.6, 293.7, 349.2, 392.0, 440.0, 523.2, 587.3];
                 let noteTimer = null;
@@ -588,11 +602,11 @@
                     }, 2600 + Math.random() * 5200);
                 }
                 scheduleNote();
- 
+
                 ambient = { master, padOscs, noiseSrc, getNoteTimer: () => noteTimer, cancelNoteTimer: () => clearTimeout(noteTimer) };
             } catch (e) { ambientPlaying = false; /* audio indisponible */ }
         }
- 
+
         function stopAmbient() {
             if (!ambientPlaying || !ambient) return;
             ambientPlaying = false;
@@ -610,7 +624,7 @@
             } catch (e) { /* ignore */ }
             ambient = null;
         }
- 
+
         document.getElementById('ambient-toggle').addEventListener('click', function () {
             const label = this.querySelector('#ambient-text');
             if (ambientPlaying) {
@@ -621,7 +635,7 @@
                 label.textContent = 'ON';
             }
         });
- 
+
         const sfx = {
             eyeOpen: () => playTone(85, 1.9, 'sine', 0.09, 240),
             eyeClose: () => playTone(240, 1.2, 'sine', 0.08, 65),
@@ -637,14 +651,14 @@
                 playTone(170, 0.55, 'sawtooth', 0.05, 35);
             }
         };
- 
+
         document.getElementById('sound-toggle').addEventListener('click', function () {
             soundEnabled = !soundEnabled;
             this.textContent = 'SON : ' + (soundEnabled ? 'ON' : 'OFF');
             this.classList.toggle('is-off', !soundEnabled);
             if (soundEnabled) getAudioCtx();
         });
- 
+
         /* ---- L'œil, en caractères ---- */
         const EYE_COLS = 54, EYE_ROWS = 21;
         const CENTER_C = (EYE_COLS - 1) / 2, CENTER_R = (EYE_ROWS - 1) / 2;
@@ -657,7 +671,7 @@
         let eyeRaf = null;
         let lookX = 0, lookY = 0, lookTargetX = 0, lookTargetY = 0;
         const MAX_LOOK = 0.17;
- 
+
         function eyeEnvelope(nx) {
             const base = Math.pow(Math.max(0, 1 - nx * nx), 0.58);
             const noise = Math.sin(nx * 8.5 + 1.4) * 0.09
@@ -665,7 +679,7 @@
                         + Math.sin(nx * 33 + 2.1) * 0.03;
             return Math.max(0.02, base + noise);
         }
- 
+
         // La pupille suit le curseur, comme si l'œil observait le visiteur.
         document.addEventListener('mousemove', (e) => {
             const wrap = document.getElementById('eye-wrap');
@@ -680,7 +694,7 @@
             lookTargetX = dx * MAX_LOOK;
             lookTargetY = dy * MAX_LOOK;
         });
- 
+
         function buildEyeGrid() {
             const grid = document.getElementById('eye-grid');
             grid.innerHTML = '';
@@ -704,18 +718,18 @@
                 }
             }
         }
- 
+
         function randomChar(band) {
             const set = SHIMMER_CHARS[band];
             return set[Math.floor(Math.random() * set.length)];
         }
- 
+
         function renderCell(cell, elapsed) {
             if (!cell.grown) return;
             const dx = cell.nx - lookX, dy = cell.ny - lookY;
             const pupilDist = Math.sqrt(dx * dx + dy * dy);
             const band = pupilDist <= PUPIL_R ? 'core-blank' : (pupilDist <= IRIS_R ? 'iris' : 'sclera');
- 
+
             if (band === 'core-blank') {
                 if (cell.band !== 'core-blank') {
                     cell.el.classList.remove('lit', 'band-sclera', 'band-iris');
@@ -736,7 +750,7 @@
             }
             cell.band = band;
         }
- 
+
         function setOpenProgress(p) {
             eyeCells.forEach(cell => {
                 const shouldGrow = cell.inEye && cell.revealThreshold <= p;
@@ -755,7 +769,7 @@
             const screen = document.getElementById('eye-screen');
             if (screen) screen.style.opacity = Math.max(0, Math.min(1, (p - 0.7) / 0.3));
         }
- 
+
         function animateOpenProgress(from, to, duration, onDone) {
             const start = performance.now();
             function tick(now) {
@@ -767,7 +781,7 @@
             }
             requestAnimationFrame(tick);
         }
- 
+
         let eyeLiveStart = 0;
         function eyeLiveLoop(now) {
             if (!eyeLiveStart) eyeLiveStart = now;
@@ -786,21 +800,21 @@
             if (eyeRaf) cancelAnimationFrame(eyeRaf);
             eyeRaf = null;
         }
- 
+
         function renderBar(pct) {
             const total = 12;
             const filled = Math.round((pct / 100) * total);
             return '[' + '■'.repeat(filled) + '-'.repeat(total - filled) + ']';
         }
- 
+
         const bootStatuses = ['DÉTECTION_PRÉSENCE', 'ANALYSE_EN_COURS', 'SUIVI_OCULAIRE_ACTIF', 'IDENTIFICATION_OK'];
- 
+
         function playBoot() {
             const wordmark = document.getElementById('boot-wordmark');
             const eyeScreen = document.getElementById('eye-screen');
             const statusEl = document.getElementById('eye-status');
             const permPopup = document.getElementById('perm-popup');
- 
+
             wordmark.innerHTML = '';
             buildEyeGrid();
             setOpenProgress(0);
@@ -809,14 +823,14 @@
             permPopup.classList.remove('visible', 'granted');
             document.getElementById('perm-allow-btn').classList.remove('perm-pressed');
             document.getElementById('perm-block-btn').classList.remove('perm-pressed');
- 
+
             sfx.eyeOpen();
             animateOpenProgress(0, 1, 4200, () => {
                 startEyeLive();
                 runLoadingSequence();
             });
         }
- 
+
         // Le chargement se déroule pendant que l'œil reste ouvert (barre intégrée à
         // l'œil) ; l'œil ne se ferme qu'une fois le chargement terminé — et c'est cette
         // fermeture qui déclenche l'apparition du popup, centré à l'écran.
@@ -824,7 +838,7 @@
             const statusEl = document.getElementById('eye-status');
             const barEl = document.getElementById('eye-bar');
             const stepDuration = 1300;
- 
+
             bootStatuses.forEach((label, i) => {
                 setTimeout(() => {
                     statusEl.textContent = label;
@@ -832,12 +846,12 @@
                     sfx.statusTick();
                 }, i * stepDuration);
             });
- 
+
             setTimeout(() => {
                 sfx.blink();
                 animateOpenProgress(1, 0.1, 620, () => animateOpenProgress(0.1, 1, 620));
             }, bootStatuses.length * stepDuration * 0.5);
- 
+
             const closeDelay = bootStatuses.length * stepDuration + 700;
             setTimeout(() => {
                 stopEyeLive();
@@ -850,7 +864,7 @@
                 });
             }, closeDelay);
         }
- 
+
         // Faux popup de permission caméra/micro, centré à l'écran — jamais d'appel réel
         // à getUserMedia(). Attend un vrai clic (l'un ou l'autre bouton, même résultat).
         function showFakePermissionPopup(onProceed) {
@@ -862,7 +876,7 @@
             blockBtn.classList.remove('perm-pressed');
             popup.classList.add('visible');
             sfx.popupAppear();
- 
+
             function proceed(pressedBtn) {
                 allowBtn.removeEventListener('click', onAllowClick);
                 blockBtn.removeEventListener('click', onBlockClick);
@@ -879,26 +893,26 @@
             allowBtn.addEventListener('click', onAllowClick);
             blockBtn.addEventListener('click', onBlockClick);
         }
- 
+
         // Le mot se matérialise depuis sa lettre centrale, comme s'il émergeait du même point
         // que l'œil — puis le voile de boot s'efface pour révéler le site.
         // SplitText + le stagger natif "from: center" de GSAP remplacent ici le calcul de
         // délai par caractère que je faisais à la main.
         gsap.registerPlugin(SplitText);
- 
+
         function revealWordmarkFromCenter() {
             const wordmark = document.getElementById('boot-wordmark');
             wordmark.textContent = 'ATELIER_BABO';
- 
+
             const split = SplitText.create(wordmark, { type: 'chars', charsClass: 'wm-char' });
             const chars = split.chars;
             const centerIndex = (chars.length - 1) / 2;
- 
+
             const cursor = document.createElement('span');
             cursor.className = 'cursor';
             cursor.innerHTML = '&nbsp;';
             wordmark.appendChild(cursor);
- 
+
             gsap.set(chars, { opacity: 0, scale: 0.15, filter: 'blur(3px)' });
             gsap.to(chars, {
                 opacity: 1,
@@ -918,18 +932,18 @@
                 onComplete: () => setTimeout(dismissBootOverlay, 1700),
             });
         }
- 
+
         function dismissBootOverlay() {
             const overlay = document.getElementById('boot-overlay');
             overlay.classList.add('dismissed');
             setTimeout(() => { overlay.style.display = 'none'; }, 900);
- 
+
             // L'ambiance prend le relais dès que le boot est terminé — plus besoin de cliquer.
             startAmbient();
             const ambientLabel = document.getElementById('ambient-text');
             if (ambientLabel) ambientLabel.textContent = 'ON';
         }
- 
+
         // Le boot ne se lance qu'au clic sur le carré — jamais automatiquement.
         // Transition : c'est le FOND qui vire au noir (pas le cube qui grossit) — le
         // cube (module Three.js séparé, voir plus bas) continue simplement de tourner
@@ -944,17 +958,17 @@
                 playBoot();
             }, 900);
         });
- 
+
         /* Le cube du portail est désormais un vrai objet 3D (Three.js), pas une
            simulation CSS — voir le <script type="module"> tout en bas du fichier. */
- 
+
         /* ============ FIN SYSTÈME DE BOOT ============ */
- 
+
         /* ---- Carrousel vidéo de l'Accueil : défilement auto + manuel ---- */
         const heroVideos = Array.from(document.querySelectorAll('.hero-video'));
         let currentHeroIndex = 0;
         let heroAutoTimer = null;
- 
+
         function goToHeroVideo(index) {
             const total = heroVideos.length;
             if (total <= 1) return;
@@ -978,14 +992,14 @@
             if (heroVideos.length <= 1) return;
             heroAutoTimer = setTimeout(() => goToHeroVideo(currentHeroIndex + 1), 9000);
         }
- 
+
         const carouselPrev = document.getElementById('carousel-prev');
         const carouselNext = document.getElementById('carousel-next');
         const carouselArrow = document.getElementById('carousel-arrow');
- 
+
         const carouselMobilePrev = document.getElementById('carousel-mobile-prev');
         const carouselMobileNext = document.getElementById('carousel-mobile-next');
- 
+
         // Les zones/curseur ne prennent leur sens qu'avec plusieurs vidéos : masqués tant
         // qu'il n'y en a qu'une seule. Ajouter des <video class="hero-video"> les activera.
         const carouselDots = document.getElementById('carousel-dots');
@@ -994,7 +1008,7 @@
             carouselNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
             carouselMobilePrev.addEventListener('click', () => goToHeroVideo(currentHeroIndex - 1));
             carouselMobileNext.addEventListener('click', () => goToHeroVideo(currentHeroIndex + 1));
- 
+
             heroVideos.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.type = 'button';
@@ -1003,7 +1017,7 @@
                 dot.addEventListener('click', () => goToHeroVideo(i));
                 carouselDots.appendChild(dot);
             });
- 
+
             // Swipe horizontal (tactile) : seuil de 50px, et nettement plus horizontal que
             // vertical pour ne jamais entrer en conflit avec le scroll normal de la page.
             let touchStartX = 0, touchStartY = 0;
@@ -1019,7 +1033,7 @@
                     goToHeroVideo(dx < 0 ? currentHeroIndex + 1 : currentHeroIndex - 1);
                 }
             }, { passive: true });
- 
+
             resetHeroAutoAdvance();
         } else {
             carouselPrev.style.display = 'none';
@@ -1028,7 +1042,7 @@
             carouselMobileNext.style.display = 'none';
             carouselDots.style.display = 'none';
         }
- 
+
         function positionCarouselArrow(e) {
             carouselArrow.style.left = e.clientX + 'px';
             carouselArrow.style.top = e.clientY + 'px';
@@ -1046,7 +1060,7 @@
             carouselArrow.classList.add('visible');
             positionCarouselArrow(e);
         });
- 
+
         /* ---- Logo(s) "DVD" rebondissant(s), avec croissance et division ----
            Chaque rebond fait légèrement grossir le logo. Cliqué autour du double de sa
            taille d'origine, il se divise en deux logos frais. Livré à lui-même au-delà
@@ -1057,7 +1071,7 @@
         const LOGO_MAX_SCALE = 3.4;
         const LOGO_MAX_COUNT = 7;
         let dvdLogos = [];
- 
+
         function createDvdLogo(x, y, vx, vy, scale, existingEl) {
             const stage = document.getElementById('accueil');
             const el = existingEl || document.createElement('div');
@@ -1080,7 +1094,7 @@
             dvdLogos.push(logo);
             return logo;
         }
- 
+
         function handleDvdLogoClick(logo) {
             if (logo.destroyed) return;
             logo.destroyed = true;
@@ -1091,7 +1105,7 @@
                 removeDvdLogo(logo, true);
             }
         }
- 
+
         // Division en deux logos frais (taille d'origine), vitesses divergentes.
         function splitDvdLogo(logo) {
             shatterDvdLogo(logo, false);
@@ -1101,7 +1115,7 @@
                 createDvdLogo(logo.x, logo.y, Math.cos(angle) * 0.055, Math.sin(angle) * 0.055, 1);
             }
         }
- 
+
         // Explosion en fragments (clic hors fenêtre de division, ou taille maximale atteinte).
         function removeDvdLogo(logo, respawn) {
             shatterDvdLogo(logo, true);
@@ -1113,7 +1127,7 @@
                 }, 5 * 60 * 1000);
             }
         }
- 
+
         function shatterDvdLogo(logo, removeEl) {
             const stage = document.getElementById('accueil');
             const logoRect = logo.el.getBoundingClientRect();
@@ -1121,14 +1135,14 @@
             const cols = 6, rows = 2;
             const pieceW = logoRect.width / cols;
             const pieceH = logoRect.height / rows;
- 
+
             const wrap = document.createElement('div');
             wrap.className = 'dvd-shatter';
             wrap.style.left = (logoRect.left - stageRect.left) + 'px';
             wrap.style.top = (logoRect.top - stageRect.top) + 'px';
             wrap.style.width = logoRect.width + 'px';
             wrap.style.height = logoRect.height + 'px';
- 
+
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const piece = document.createElement('div');
@@ -1141,7 +1155,7 @@
                     piece.style.backgroundSize = logoRect.width + 'px ' + logoRect.height + 'px';
                     piece.style.backgroundPosition = (-c * pieceW) + 'px ' + (-r * pieceH) + 'px';
                     wrap.appendChild(piece);
- 
+
                     requestAnimationFrame(() => {
                         const angle = Math.random() * Math.PI * 2;
                         const dist = 160 + Math.random() * 280;
@@ -1161,7 +1175,7 @@
                 if (!removeEl) logo.el.remove();
             }, 1100);
         }
- 
+
         function dvdLoop() {
             const stage = document.getElementById('accueil');
             if (stage) {
@@ -1170,7 +1184,7 @@
                     if (logo.destroyed) return;
                     const wPct = (logo.baseW * logo.scale / stageRect.width) * 100;
                     const hPct = (logo.baseH * logo.scale / stageRect.height) * 100;
- 
+
                     logo.x += logo.vx;
                     logo.y += logo.vy;
                     let bounced = false;
@@ -1178,7 +1192,7 @@
                     if (logo.x >= 100 - wPct) { logo.x = 100 - wPct; logo.vx *= -1; bounced = true; }
                     if (logo.y <= 0) { logo.y = 0; logo.vy *= -1; bounced = true; }
                     if (logo.y >= 100 - hPct) { logo.y = 100 - hPct; logo.vy *= -1; bounced = true; }
- 
+
                     if (bounced) {
                         logo.scale = Math.min(LOGO_MAX_SCALE, logo.scale + LOGO_GROW_PER_BOUNCE);
                         if (logo.scale >= LOGO_MAX_SCALE) {
@@ -1203,7 +1217,7 @@
             }
             requestAnimationFrame(dvdLoop);
         }
- 
+
         function initDvdLogo() {
             const existing = document.getElementById('dvd-logo');
             if (!existing) return;
@@ -1212,15 +1226,15 @@
                 (Math.random() < 0.5 ? -1 : 1) * 0.05, (Math.random() < 0.5 ? -1 : 1) * 0.05, 1, existing);
             requestAnimationFrame(dvdLoop);
         }
- 
+
         initDvdLogo();
- 
+
         /* ---- Photos qui défilent dans les cases Collectif et Oscar ----
            Chaque case a 2 calques superposés (.cell-photo-layer) : on prépare la photo
            suivante sur le calque caché, puis on bascule lequel est "actif" pour obtenir
            un vrai fondu-enchaîné (plutôt qu'un changement brut), avec un léger zoom lent
            porté par la transition CSS elle-même. */
- 
+
         // Collectif : case fixe, rythme plus lent (4.2s par image, contre 2.6s avant).
         const collectifPhotos = [
             'images/travaux/collectif/collectif-1.jpg',
@@ -1231,7 +1245,7 @@
         ];
         let collectifPhotoIndex = 0;
         let collectifActiveLayer = 0;
- 
+
         function getCollectifLayers() {
             const box = document.querySelector('.travaux-cell-collectif .travaux-cell-box');
             return box ? box.querySelectorAll('.cell-photo-layer') : null;
@@ -1256,7 +1270,7 @@
             layers[0].classList.add('active');
         })();
         setInterval(advanceCollectifPhoto, 4200);
- 
+
         /* ---- Rotation des membres dans la grille Travaux ----
            Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
            Les 4 membres tournent entre les 4 emplacements toutes les 8s, pour qu'aucun
@@ -1288,7 +1302,7 @@
             { name: 'Wenjie Tong', href: 'travaux/wenjie-tong.html', label: '', photos: tongPhotos }
         ];
         let travauxOffset = 0;
- 
+
         // Chaque membre ayant des photos garde son propre état de défilement (index, calque
         // actif, case cible actuelle) directement sur son objet. Contrairement à une version
         // précédente, la photo n'avance plus toute seule sur un minuteur indépendant : elle
@@ -1301,7 +1315,7 @@
                 member._targetBox = null;
             }
         });
- 
+
         // Affiche l'image en cours sur la case, SANS avancer l'index — utilisé uniquement
         // pour le tout premier affichage au chargement de la page.
         function showMemberPhotoOnCurrentBox(member) {
@@ -1326,19 +1340,19 @@
             layers[member._activeLayer].classList.remove('active');
             member._activeLayer = nextIdx;
         }
- 
+
         function rotateTravauxMembers() {
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
             if (slots.some(s => !s)) return;
- 
+
             slots.forEach(slot => {
                 slot.style.transition = 'opacity 0.4s ease';
                 slot.style.opacity = '0';
             });
- 
+
             setTimeout(() => {
                 travauxMembers.forEach(m => { if (m.photos) m._targetBox = null; });
- 
+
                 slots.forEach((slot, i) => {
                     const member = travauxMembers[(i + travauxOffset) % travauxMembers.length];
                     slot.href = member.href;
@@ -1358,7 +1372,7 @@
                     slot.querySelector('.travaux-cell-title').textContent = member.name;
                 });
                 travauxMembers.forEach(m => { if (m.photos) advanceAndShowMemberPhoto(m); });
- 
+
                 slots.forEach(slot => { slot.style.opacity = '1'; });
                 travauxOffset = (travauxOffset + 1) % travauxMembers.length;
             }, 420);
@@ -1375,7 +1389,7 @@
             }
         });
         setInterval(rotateTravauxMembers, 8000);
- 
+
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');
         const mainFeed = document.querySelector('.main-feed');
@@ -1383,7 +1397,7 @@
         const themeToggle = document.getElementById('theme-toggle');
         const themeText = document.getElementById('theme-text');
         const htmlRoot = document.documentElement;
- 
+
         themeToggle.addEventListener('click', () => {
             if (htmlRoot.classList.contains('dark-mode')) {
                 htmlRoot.classList.remove('dark-mode');
@@ -1395,15 +1409,15 @@
                 themeText.textContent = 'NUIT';
             }
         });
- 
+
         const subNavBtns = document.querySelectorAll('.sub-nav-btn');
         const collabContents = document.querySelectorAll('.collab-category-content');
- 
+
         subNavBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 subNavBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
- 
+
                 const targetCat = btn.getAttribute('data-cat');
                 collabContents.forEach(content => {
                     content.style.display = 'none';
@@ -1413,17 +1427,17 @@
                 });
             });
         });
- 
+
         // IntersectionObserver plutôt qu'un listener de scroll : fonctionne que ce soit
         // .main-feed qui scroll (desktop) ou le body (mobile), sans dépendre du conteneur actif.
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
                 const current = entry.target.getAttribute('id');
- 
+
                 sections.forEach(section => section.classList.remove('active'));
                 entry.target.classList.add('active');
- 
+
                 navItems.forEach(item => {
                     item.classList.remove('active');
                     if (item.getAttribute('data-target') === current) {
@@ -1432,9 +1446,9 @@
                 });
             });
         }, { threshold: 0.5 });
- 
+
         sections.forEach(section => sectionObserver.observe(section));
- 
+
         /* ---- Apparition progressive des images et blocs ----
            Chaque section révèle ses cartes/cases en fondu + léger décalage vertical,
            avec un temps de décalage entre chacune, la première fois qu'on l'atteint.
@@ -1463,7 +1477,70 @@
                 },
             });
         });
- 
+
+        /* ---- Clés rouges cachées → onglet caché déverrouillé ----
+           Trois objets discrets, intégrés au design (Accueil, Curation, Contact).
+           Progression sauvegardée en localStorage : elle survit à la fermeture du site. */
+        const KEY_STORAGE = 'babo_keys_collected';
+        function getCollectedKeys() {
+            try { return JSON.parse(localStorage.getItem(KEY_STORAGE) || '[]'); }
+            catch (e) { return []; }
+        }
+        function saveCollectedKeys(keys) {
+            try { localStorage.setItem(KEY_STORAGE, JSON.stringify(keys)); }
+            catch (e) { /* stockage indisponible : la session marche quand même */ }
+        }
+        function updateLockedNav(justUnlocked) {
+            const collected = getCollectedKeys();
+            const navLocked = document.getElementById('nav-locked-item');
+            if (!navLocked) return;
+            const countEl = document.getElementById('nav-locked-count');
+            const labelEl = navLocked.querySelector('.nav-locked-label');
+            if (collected.length >= 3) {
+                const wasLocked = !navLocked.classList.contains('unlocked');
+                navLocked.classList.add('unlocked');
+                if (labelEl) labelEl.textContent = '08. SIGNAL CACHÉ';
+                if (wasLocked && justUnlocked && window.gsap) {
+                    gsap.fromTo(navLocked,
+                        { scale: 1.2 },
+                        { scale: 1, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
+                    );
+                    playTone(520, 0.5, 'sine', 0.07, 780);
+                }
+            } else if (countEl) {
+                countEl.textContent = collected.length + '/3';
+            }
+        }
+        document.querySelectorAll('.hidden-key').forEach((btn) => {
+            const id = btn.dataset.keyId;
+            if (getCollectedKeys().includes(id)) btn.classList.add('collected');
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (btn.classList.contains('collected')) return;
+                btn.classList.add('collected');
+                playClick(0.06, 0.09, 3800, 2);
+                const current = getCollectedKeys();
+                if (!current.includes(id)) {
+                    current.push(id);
+                    saveCollectedKeys(current);
+                    updateLockedNav(current.length === 3);
+                }
+            });
+        });
+        updateLockedNav(false);
+
+        const navLockedItem = document.getElementById('nav-locked-item');
+        if (navLockedItem) {
+            navLockedItem.addEventListener('click', (e) => {
+                if (!navLockedItem.classList.contains('unlocked')) {
+                    e.preventDefault();
+                    navLockedItem.classList.remove('shake');
+                    void navLockedItem.offsetWidth;
+                    navLockedItem.classList.add('shake');
+                }
+            });
+        }
+
         // Menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
         const hamburgerBtn = document.getElementById('hamburger-btn');
         hamburgerBtn.addEventListener('click', () => {
@@ -1476,7 +1553,7 @@
                 hamburgerBtn.classList.remove('open');
             });
         });
- 
+
         // Inclinaison 3D subtile de l'image des blocs Travaux, qui suit la position du
         // curseur — amplitude volontairement faible (±5°) pour rester discret, pas gadget.
         // Appliquée à la boîte-image seule (pas à la case entière) : sur le Collectif,
@@ -1496,13 +1573,13 @@
                 box.style.transform = '';
             });
         });
- 
+
         /* ---- Effet "décodage" au survol des liens du menu ----
            Le texte défile en caractères aléatoires puis se fixe lettre
            par lettre, de gauche à droite, jusqu'à retrouver le bon mot. */
         const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         function isScramblable(ch) { return /[A-Za-zÀ-ÿ0-9]/.test(ch); }
- 
+
         function scrambleText(el, duration) {
             const original = el.dataset.originalText || el.textContent;
             el.dataset.originalText = original;
@@ -1510,7 +1587,7 @@
             const length = original.length;
             const startTime = performance.now();
             const perCharDelay = duration / length;
- 
+
             function tick(now) {
                 const elapsed = now - startTime;
                 let output = '';
@@ -1540,7 +1617,7 @@
             item.addEventListener('mouseenter', () => scrambleText(item, 380));
         });
     </script>
- 
+
     <script type="module">
         /* ---- Cube du portail en vrai 3D (Three.js) ----
            Reprend exactement la même logique que l'ancienne version CSS (rotation sur
@@ -1548,32 +1625,32 @@
            vignettage via --gate-energy) mais avec un vrai objet, un vrai matériau et
            de vraies lumières plutôt qu'une simulation de transform. */
         import * as THREE from 'three';
- 
+
         const container = document.getElementById('boot-gate-square');
         const gate = document.getElementById('boot-gate');
- 
+
         if (container && gate) {
             let scene, camera, renderer, cubeMesh, keyLight, particles, particleMaterial;
             let rotY = 0;
             let proximity = 0;
             let idlePhase = Math.random() * 10;
             const smoothstep = (t) => t * t * (3 - 2 * t);
- 
+
             function initThreeCube() {
                 const size = container.clientWidth || 80;
- 
+
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
                 // Reculée par rapport à la taille du cube pour garder de la marge : en
                 // diagonale (rotation sur un axe), la largeur apparente du cube grimpe
                 // jusqu'à côté×√2 — sans cette marge, les coins sortaient du cadre.
                 camera.position.set(0, 0, 4.0);
- 
+
                 renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
                 renderer.setSize(size, size);
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 container.appendChild(renderer.domElement);
- 
+
                 const geometry = new THREE.BoxGeometry(1.7, 1.7, 1.7);
                 const material = new THREE.MeshStandardMaterial({
                     color: 0x030303,
@@ -1584,7 +1661,7 @@
                 });
                 cubeMesh = new THREE.Mesh(geometry, material);
                 scene.add(cubeMesh);
- 
+
                 scene.add(new THREE.AmbientLight(0xffffff, 0.25));
                 keyLight = new THREE.PointLight(0xA3B1C2, 2.2, 12);
                 keyLight.position.set(2.2, 2, 2.5);
@@ -1592,7 +1669,7 @@
                 const rimLight = new THREE.PointLight(0xffffff, 1.2, 12);
                 rimLight.position.set(-2, -1.4, 1.8);
                 scene.add(rimLight);
- 
+
                 // Particules en orbite autour du cube — invisibles au repos, elles
                 // n'apparaissent (et ne tournent) que lorsque l'énergie monte, comme
                 // des étincelles arrachées par la vitesse.
@@ -1618,16 +1695,16 @@
                 });
                 particles = new THREE.Points(particleGeometry, particleMaterial);
                 scene.add(particles);
- 
+
                 window.addEventListener('resize', onResize);
             }
- 
+
             function onResize() {
                 const size = container.clientWidth || 80;
                 renderer.setSize(size, size);
                 camera.updateProjectionMatrix();
             }
- 
+
             document.addEventListener('mousemove', (e) => {
                 const rect = container.getBoundingClientRect();
                 const cx = rect.left + rect.width / 2;
@@ -1641,7 +1718,7 @@
             gate.addEventListener('mouseleave', () => {
                 gsap.to(cubeMesh.scale, { x: 1, y: 1, z: 1, duration: 0.35, ease: 'power2.out' });
             });
- 
+
             function animate() {
                 if (!gate.classList.contains('hidden')) {
                     idlePhase += 0.015;
@@ -1653,67 +1730,32 @@
                     cubeMesh.material.emissiveIntensity = 0.3 + energy * 1.1;
                     keyLight.intensity = 1.6 + energy * 2.6;
                     gate.style.setProperty('--gate-energy', energy.toFixed(3));
- 
+
                     // Particules : n'apparaissent qu'au-delà d'un certain seuil d'énergie,
                     // tournent un peu plus vite que le cube pour un léger effet de traînée.
                     particles.rotation.y = rotY * 1.35;
                     particles.rotation.x = rotY * 0.4;
                     particleMaterial.opacity = Math.max(0, (energy - 0.35) / 0.65) * 0.85;
- 
+
                     renderer.render(scene, camera);
                 }
                 requestAnimationFrame(animate);
             }
- 
+
             initThreeCube();
             requestAnimationFrame(animate);
         }
     </script>
- 
-    <script type="module">
-        /* ---- Défilement fluide (Lenis) ----
-           Lenis ne supporte pas le scroll-snap CSS natif (limitation documentée) : on
-           utilise donc son propre plugin Snap, qui reproduit le même comportement
-           "une section par écran" sans lutter contre le lissage. Le scroll-snap CSS
-           natif reste en place par défaut et ne se désactive QUE si Lenis charge et
-           s'initialise avec succès — sinon (CDN indisponible, prefers-reduced-motion),
-           le site garde son scroll-snap natif classique, sans étape intermédiaire. */
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- 
-        if (!prefersReducedMotion) {
-            try {
-                const { default: Lenis } = await import('lenis');
-                const { Snap } = await import('lenis/snap');
- 
-                const mainFeed = document.querySelector('.main-feed');
-                if (mainFeed) {
-                    const lenis = new Lenis({
-                        wrapper: mainFeed,
-                        content: mainFeed,
-                        duration: 1.1,
-                        smoothWheel: true,
-                    });
- 
-                    const snap = new Snap(lenis, { type: 'mandatory', duration: 0.7 });
-                    document.querySelectorAll('.feed-section').forEach((section) => {
-                        snap.addElement(section, { align: ['start'] });
-                    });
- 
-                    function raf(time) {
-                        lenis.raf(time);
-                        requestAnimationFrame(raf);
-                    }
-                    requestAnimationFrame(raf);
- 
-                    // Le scroll-snap CSS natif est neutralisé seulement maintenant que
-                    // Lenis + Snap ont pris le relais avec succès.
-                    mainFeed.classList.add('lenis-active');
-                }
-            } catch (e) {
-                // Lenis indisponible (CDN, réseau...) : le scroll-snap CSS natif
-                // n'a jamais été désactivé, le site reste pleinement fonctionnel.
-            }
-        }
-    </script>
+
+    <!-- ---- Défilement fluide (Lenis) — retiré pour l'instant ----
+         Le combo wrapper personnalisé (.main-feed) + plugin Snap cassait le défilement
+         à la molette. Pas une erreur isolée de configuration : une discussion GitHub
+         officielle du projet (darkroomengineering/lenis#383) décrit exactement le même
+         symptôme avec un wrapper personnalisé ("scroll wheel also stops working"). Le
+         site tourne pour l'instant sur son scroll-snap CSS natif classique (style.css),
+         qui fonctionne de façon fiable.
+         Piste pour y revenir : tester Lenis SEUL d'abord (sans le plugin Snap, juste le
+         lissage), en conditions réelles avec la console ouverte, avant de rajouter le
+         snap par-dessus une fois le lissage de base confirmé fonctionnel. -->
 </body>
 </html>
