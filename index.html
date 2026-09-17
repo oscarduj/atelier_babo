@@ -1628,7 +1628,9 @@
         const mainFeedEl = document.querySelector('.main-feed');
 
         if (bgCanvas && mainFeedEl) {
-            let scene, camera, renderer, ambientPoints, gridHelper;
+            let scene, camera, renderer;
+            let forestPoints, factoryPoints, cityPoints, oceanPoints, contactPoints;
+            let oceanBaseX = [], oceanBaseZ = [], oceanBaseY = 0;
             let mouseX = 0, mouseY = 0, camRotY = 0, camRotX = 0;
             const meteors = [];
             let lastTime = performance.now();
@@ -1652,31 +1654,106 @@
                 renderer.setSize(w, h);
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-                const COUNT = 160;
-                const positions = new Float32Array(COUNT * 3);
-                for (let i = 0; i < COUNT; i++) {
-                    positions[i * 3] = (Math.random() - 0.5) * 60;
-                    positions[i * 3 + 1] = (Math.random() - 0.5) * 320;
-                    positions[i * 3 + 2] = (Math.random() - 0.5) * 40 - 8;
+                // Quatre "environnements scannés" en nuage de points, un par section —
+                // chacun positionné à la hauteur de sa section. La distance de vue de la
+                // caméra fait qu'on ne voit naturellement qu'un seul environnement à la
+                // fois en passant d'une section à l'autre, sans logique d'affichage à gérer.
+                function makePoints(flat, size, opacity) {
+                    const geom = new THREE.BufferGeometry();
+                    geom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(flat), 3));
+                    const mat = new THREE.PointsMaterial({ color: 0xA3B1C2, size, transparent: true, opacity });
+                    return new THREE.Points(geom, mat);
                 }
-                const ambientGeom = new THREE.BufferGeometry();
-                ambientGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                const ambientMat = new THREE.PointsMaterial({
-                    color: 0xA3B1C2,
-                    size: 0.06,
-                    transparent: true,
-                    opacity: 0.35,
-                });
-                ambientPoints = new THREE.Points(ambientGeom, ambientMat);
-                scene.add(ambientPoints);
 
-                // Grille "carte" — un horizon en fil de fer qui reste sous la caméra à
-                // chaque section (repositionnée en même temps qu'elle, voir goToSection).
-                gridHelper = new THREE.GridHelper(160, 26, 0xA3B1C2, 0xA3B1C2);
-                gridHelper.material.transparent = true;
-                gridHelper.material.opacity = 0.1;
-                gridHelper.position.y = -10;
-                scene.add(gridHelper);
+                // Forêt (Travaux) : troncs verticaux + canopée diffuse au sommet de chacun.
+                function buildForest(baseY) {
+                    const pos = [];
+                    for (let t = 0; t < 14; t++) {
+                        const tx = (Math.random() - 0.5) * 50;
+                        const tz = (Math.random() - 0.5) * 40 - 5;
+                        const trunkH = 4 + Math.random() * 3;
+                        for (let i = 0; i < 18; i++) {
+                            pos.push(tx + (Math.random() - 0.5) * 0.3, baseY - 2 + (i / 18) * trunkH, tz + (Math.random() - 0.5) * 0.3);
+                        }
+                        const canopyY = baseY - 2 + trunkH;
+                        for (let i = 0; i < 26; i++) {
+                            const r = Math.random() * 2.2, th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI;
+                            pos.push(tx + r * Math.sin(ph) * Math.cos(th), canopyY + r * Math.cos(ph) * 0.7, tz + r * Math.sin(ph) * Math.sin(th));
+                        }
+                    }
+                    return makePoints(pos, 0.05, 0.45);
+                }
+
+                // Usine (Curation) : parallélépipèdes en arêtes de points — anguleux et
+                // alignés, à l'opposé de l'organique de la forêt.
+                function buildFactory(baseY) {
+                    const pos = [];
+                    const corners = [[-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]];
+                    const edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+                    for (let s = 0; s < 6; s++) {
+                        const cx = (Math.random() - 0.5) * 45, cz = (Math.random() - 0.5) * 35 - 5;
+                        const w = 3 + Math.random() * 4, h = 3 + Math.random() * 6, d = 3 + Math.random() * 4;
+                        edges.forEach(([a, b]) => {
+                            for (let i = 0; i <= 8; i++) {
+                                const t = i / 8;
+                                const x = corners[a][0] + (corners[b][0] - corners[a][0]) * t;
+                                const y = corners[a][1] + (corners[b][1] - corners[a][1]) * t;
+                                const z = corners[a][2] + (corners[b][2] - corners[a][2]) * t;
+                                pos.push(cx + x * w / 2, baseY - 2 + h / 2 + y * h / 2, cz + z * d / 2);
+                            }
+                        });
+                    }
+                    return makePoints(pos, 0.045, 0.4);
+                }
+
+                // Ville (Collaborateurs) : silhouette de tours à hauteurs variables, en
+                // arêtes verticales — la densité du réseau, littéralement.
+                function buildCity(baseY) {
+                    const pos = [];
+                    for (let cx = 0; cx < 6; cx++) {
+                        for (let cz = 0; cz < 5; cz++) {
+                            if (Math.random() < 0.25) continue;
+                            const x = (cx - 2.5) * 8 + (Math.random() - 0.5) * 2;
+                            const z = (cz - 2) * 8 - 5 + (Math.random() - 0.5) * 2;
+                            const height = 3 + Math.random() * 14, w = 1.2 + Math.random();
+                            [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(([ox, oz]) => {
+                                for (let i = 0; i <= 10; i++) {
+                                    pos.push(x + ox * w / 2, baseY - 2 + (i / 10) * height, z + oz * w / 2);
+                                }
+                            });
+                        }
+                    }
+                    return makePoints(pos, 0.04, 0.4);
+                }
+
+                // Océan (Expos) : surface étendue, dont l'ondulation est animée dans la
+                // boucle de rendu (voir animateSiteBg) plutôt que figée ici.
+                function buildOcean(baseY) {
+                    const pos = [];
+                    oceanBaseX = []; oceanBaseZ = []; oceanBaseY = baseY;
+                    const GRID = 26;
+                    for (let i = 0; i < GRID; i++) {
+                        for (let j = 0; j < GRID; j++) {
+                            const x = (i / (GRID - 1) - 0.5) * 60;
+                            const z = (j / (GRID - 1) - 0.5) * 50 - 5;
+                            oceanBaseX.push(x); oceanBaseZ.push(z);
+                            pos.push(x, baseY, z);
+                        }
+                    }
+                    return makePoints(pos, 0.05, 0.4);
+                }
+
+                forestPoints = buildForest(SECTION_Y.travaux);
+                factoryPoints = buildFactory(SECTION_Y.curation);
+                cityPoints = buildCity(SECTION_Y.collaborateurs);
+                oceanPoints = buildOcean(SECTION_Y.expos);
+                // Contact : champ neutre et épars, en contraste calme après les 4 décors.
+                const contactPos = [];
+                for (let i = 0; i < 60; i++) {
+                    contactPos.push((Math.random() - 0.5) * 50, SECTION_Y.contact + (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 30 - 5);
+                }
+                contactPoints = makePoints(contactPos, 0.05, 0.3);
+                [forestPoints, factoryPoints, cityPoints, oceanPoints, contactPoints].forEach((p) => scene.add(p));
 
                 for (let i = 0; i < 6; i++) {
                     const m = createMeteor();
@@ -1707,7 +1784,6 @@
             function goToSection(id) {
                 const targetY = SECTION_Y[id] ?? 0;
                 gsap.to(camera.position, { y: targetY, duration: 1.6, ease: 'power2.inOut' });
-                gsap.to(gridHelper.position, { y: targetY - 10, duration: 1.6, ease: 'power2.inOut' });
                 gsap.to(bgCanvas, { opacity: VIDEO_SECTIONS.has(id) ? 0 : 1, duration: 0.6, ease: 'power1.out' });
             }
 
@@ -1767,8 +1843,20 @@
                 const dt = Math.min(0.05, (now - lastTime) / 1000);
                 lastTime = now;
 
-                ambientPoints.rotation.y += 0.00025;
+                // Chaque environnement tourne très lentement sur lui-même, comme un objet
+                // qu'on observerait tourner sur un socle plutôt qu'un décor figé.
+                [forestPoints, factoryPoints, cityPoints, contactPoints].forEach((p) => { p.rotation.y += 0.00018; });
                 meteors.forEach((m) => updateMeteor(m, dt));
+
+                // L'océan : ondulation animée (deux fréquences superposées) plutôt qu'une
+                // surface plate, la seule structure dont la géométrie change à chaque frame.
+                const oceanPos = oceanPoints.geometry.attributes.position;
+                for (let i = 0; i < oceanBaseX.length; i++) {
+                    const wave = Math.sin(oceanBaseX[i] * 0.15 + now * 0.0008) * 0.6
+                               + Math.sin(oceanBaseZ[i] * 0.2 + now * 0.0006) * 0.4;
+                    oceanPos.setY(i, oceanBaseY + wave);
+                }
+                oceanPos.needsUpdate = true;
 
                 // Parallax : interpolation douce (jamais un mouvement direct au pixel)
                 // vers une légère rotation de la caméra suivant le curseur.
@@ -1789,4 +1877,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
