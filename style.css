@@ -305,6 +305,33 @@ body.standalone-page {
     gap: 0.5rem;
 }
 
+/* Logo 3D — proportionné à sa forme réelle (large bande basse, pas un carré) : le
+   logo lui-même couvre environ 18 unités de large pour 4,6 de haut une fois les 4
+   tuiles assemblées, d'où ce ratio plutôt que 1:1. Au-dessus des zones de clic du
+   carrousel (z-index 2) pour que le glisser-pivoter fonctionne sans déclencher la
+   navigation vidéo en dessous (voir stopPropagation dans le script). */
+.hero-logo-3d-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(64vw, 620px);
+    aspect-ratio: 3.8 / 1;
+    z-index: 3;
+    touch-action: none;
+}
+.hero-logo-3d-wrap canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+.hero-logo-3d-wrap.dragging canvas { cursor: grabbing; }
+
+@media (max-width: 700px) {
+    .hero-logo-3d-wrap { width: min(84vw, 480px); }
+}
+
 /* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
 .carousel-nav-zone {
     position: absolute;
