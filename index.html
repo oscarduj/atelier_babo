@@ -986,6 +986,7 @@
            Les citations se succèdent en fondu pendant que le cube tourne, puis
            laissent place à la question posée au visiteur. Le clic reste possible
            à tout moment : la séquence n'est pas un passage obligé. */
+        window.__cubeSlow = true; // ralenti tant que les citations défilent
         const GATE_QUOTES = [
             { t: "L'image n'est plus une surface, c'est un calcul.", c: "Atelier Babo" },
             { t: "Ce qui se dégrade garde la trace de ce qu'il fut.", c: "Rémanence, 2026" },
@@ -1007,7 +1008,15 @@
                 .fromTo(quoteEl, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out' })
                 .to(quoteEl, { opacity: 0, y: -18, duration: 0.9, ease: 'power2.in' }, '+=2.2');
             });
-            tl.to(inviteEl, { opacity: 1, duration: 1.2, ease: 'power2.out' }, '+=0.3');
+            // À la fin des citations : le cube descend vers le centre (rebond porté
+            // par la transition CSS) et reprend sa vitesse normale, puis la
+            // question apparaît.
+            tl.call(() => {
+                const sq = document.getElementById('boot-gate-square');
+                if (sq) sq.classList.add('cube-centered');
+                window.__cubeSlow = false;
+            })
+            .to(inviteEl, { opacity: 1, duration: 1.2, ease: 'power2.out' }, '+=1.1');
         }
         runGateSequence();
 
@@ -1618,7 +1627,10 @@
                     idlePhase += 0.015;
                     const idleEnergy = Math.sin(idlePhase) * 0.12 + 0.12;
                     const energy = Math.min(1, idleEnergy + proximity * 0.85);
-                    const speed = 0.0131 + energy * 0.131; // équivalent radians de l'ancien 0.75–8.25°/frame
+                    // Pendant les citations, le cube tourne au ralenti ; il reprend
+                    // sa vitesse normale une fois descendu au centre.
+                    const slow = window.__cubeSlow !== false;
+                    const speed = (0.0131 + energy * 0.131) * (slow ? 0.25 : 1);
                     rotY += speed;
                     cubeMesh.rotation.y = rotY;
                     cubeMesh.material.emissiveIntensity = 0.3 + energy * 1.1;
@@ -2049,7 +2061,7 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
 
   // Pas de rotation automatique : le logo reste fixe, légèrement de biais.
   // Il reste orientable à la main si le visiteur le saisit.
-  var targetRotY = -0.35, targetRotX = 0.12, curRotY = -0.35, curRotX = 0.12;
+  var targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
   var dragging = false, lastX = 0, lastY = 0;
 
   function onDown(e) {
