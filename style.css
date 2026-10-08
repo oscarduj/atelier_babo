@@ -24,6 +24,32 @@
 }
 
 
+/* --- Voile de transition entre pages (voir page-transition.js) --- */
+.page-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: var(--bg-color);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page-ready .page-veil { opacity: 0; }
+.page-veil-mark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 36px;
+    height: 1px;
+    margin-left: -18px;
+    background: var(--secondary-color);
+    opacity: 0;
+    transform: scaleX(0.2);
+    transition: opacity 0.3s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page-veil-mark { opacity: 0.8; transform: scaleX(1); }
+.page-ready .page-veil-mark { opacity: 0; transform: scaleX(0.2); }
+
 html.dark-mode {
     --bg-color: #0d0d0c;        
     --text-color: #EAE8E4;      
@@ -94,9 +120,16 @@ body.standalone-page {
     display: flex; 
     flex-direction: column; 
     justify-content: space-between;
-    background-color: var(--bg-color); 
+    /* Transparente : le fond de la page (vidéo, 3D) reste visible derrière.
+       Le flou garde les libellés lisibles sans masquer l'image. */
+    background-color: transparent;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     z-index: 100;
-    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
+    transition: left 0.5s cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 0.4s ease;
+}
+.side-nav:hover {
+    background-color: color-mix(in srgb, var(--bg-color) 55%, transparent);
 }
 
 .side-nav:hover { 
@@ -298,7 +331,7 @@ body.standalone-page {
 
 .hero-tag-corner {
     position: absolute;
-    top: 4.4rem;
+    top: 6.5rem;
     right: 2rem;
     z-index: 2;
     font-family: 'Share Tech Mono', monospace;
@@ -317,10 +350,9 @@ body.standalone-page {
    navigation vidéo en dessous (voir stopPropagation dans le script). */
 .hero-logo-3d-wrap {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(64vw, 620px);
+    top: 2.2rem;
+    right: 2rem;
+    width: min(34vw, 260px);
     aspect-ratio: 3.8 / 1;
     z-index: 3;
     touch-action: none;
@@ -334,7 +366,7 @@ body.standalone-page {
 .hero-logo-3d-wrap.dragging canvas { cursor: grabbing; }
 
 @media (max-width: 700px) {
-    .hero-logo-3d-wrap { width: min(84vw, 480px); }
+    .hero-logo-3d-wrap { width: min(52vw, 190px); top: 1.2rem; right: 1rem; }
 }
 
 /* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
@@ -491,7 +523,7 @@ body.standalone-page {
 
 .artist-img-box {
     height: 280px;
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -547,7 +579,7 @@ h2 { font-size: 1.8rem; }
 
 .placeholder-box { 
     height: 280px; 
-    border: 1px dashed var(--border-color); 
+    border: 1px solid var(--border-color); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -625,7 +657,7 @@ h2 { font-size: 1.8rem; }
     min-height: 0;
     position: relative;
     overflow: hidden;
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 7px;
     background-color: var(--box-bg);
     display: flex;
@@ -711,7 +743,7 @@ h2 { font-size: 1.8rem; }
 
 /* --- Cadre d'annonce (page Wenjie Tong) --- */
 .tong-notice {
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     background-color: var(--box-bg);
     padding: 2rem 2.2rem;
     margin-bottom: 2.5rem;
@@ -776,7 +808,7 @@ h2 { font-size: 1.8rem; }
 
 .artist-img-placeholder {
     height: 200px;
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -894,7 +926,7 @@ h2 { font-size: 1.8rem; }
     display: block;
     text-decoration: none;
     color: inherit;
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     padding: 1.5rem;
     background-color: var(--bg-color);
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
@@ -952,7 +984,7 @@ h2 { font-size: 1.8rem; }
 }
 
 .partner-card {
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     padding: 1.2rem;
     background-color: var(--box-bg);
     transition: border-color 0.3s ease;
@@ -1040,7 +1072,7 @@ h2 { font-size: 1.8rem; }
 }
 
 .soutien-card {
-    border: 1px dashed var(--border-color);
+    border: 1px solid var(--border-color);
     padding: 1.5rem;
     background-color: var(--box-bg);
 }
@@ -1349,14 +1381,32 @@ h2 { font-size: 1.8rem; }
     z-index: 0;
 }
 .boot-gate-square {
-    position: relative;
+    /* Placé dans le tiers haut, au-dessus des citations (qui occupent le centre),
+       plutôt que superposé à elles. */
+    position: absolute;
+    left: 50%;
+    top: 22%;
+    margin-left: calc(clamp(50px, 12vw, 100px) / -2);
     width: clamp(50px, 12vw, 100px);
     aspect-ratio: 1 / 1;
-    z-index: 1;
+    z-index: 6;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Descente d'entrée avec rebond, jouée une fois au chargement. */
+    animation: cube-drop 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+@keyframes cube-drop {
+    0%   { transform: translateY(-60vh); opacity: 0; }
+    60%  { opacity: 1; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .boot-gate-square { animation: none; }
+}
+
+/* Les citations occupent le centre, sous le cube. */
+.gate-quote { top: 56%; }
 .boot-gate-square canvas {
     display: block;
 }
@@ -1509,4 +1559,31 @@ h2 { font-size: 1.8rem; }
 @media (max-width: 480px) {
     .eye-status, .eye-bar { letter-spacing: 0.5px; }
     .sound-toggle { top: 0.8rem; right: 0.8rem; font-size: 0.65rem; padding: 0.4rem 0.6rem; }
-} 
+}
+/* --- Finitions : arrondis discrets et transitions homogènes --- */
+.curation-item,
+.partner-card,
+.soutien-card,
+.artist-img-box,
+.travaux-cell-box,
+.artist-img-placeholder,
+.tong-notice {
+    border-radius: 7px;
+}
+.curation-item,
+.partner-card,
+.soutien-card,
+.artist-card,
+.travaux-cell,
+.contact-btn,
+.nav-item,
+.sub-nav-btn {
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Survol plus franc sur les cartes partenaires/soutien, qui n'en avaient pas */
+.partner-card:hover,
+.soutien-card:hover {
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+.partner-card, .soutien-card { transition: border-color 0.3s ease, transform 0.35s ease; }

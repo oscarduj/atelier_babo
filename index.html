@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="ambient.js" defer></script>
+    <script src="page-transition.js" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
@@ -2045,12 +2047,13 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
   fitToContainer();
   window.addEventListener('resize', fitToContainer);
 
-  var autoRotate = true;
-  var targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
+  // Pas de rotation automatique : le logo reste fixe, légèrement de biais.
+  // Il reste orientable à la main si le visiteur le saisit.
+  var targetRotY = -0.35, targetRotX = 0.12, curRotY = -0.35, curRotX = 0.12;
   var dragging = false, lastX = 0, lastY = 0;
 
   function onDown(e) {
-    dragging = true; autoRotate = false; lastX = e.clientX; lastY = e.clientY;
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
     wrap.classList.add('dragging');
     e.stopPropagation();
   }
@@ -2069,7 +2072,6 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
 
   function animate() {
     requestAnimationFrame(animate);
-    if (autoRotate) targetRotY += 0.0022;
     curRotY += (targetRotY - curRotY) * 0.08;
     curRotX += (targetRotX - curRotX) * 0.08;
     letters.rotation.y = curRotY;
@@ -2083,4 +2085,4 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
         }
     </script>
 </body>
-</html> 
+</html>
