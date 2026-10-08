@@ -24,31 +24,30 @@
 }
 
 
-/* --- Voile de transition entre pages (voir page-transition.js) --- */
+/* --- Voile de transition entre pages (voir page-transition.js) ---
+   Les formes de découpe sont posées en JS ; ici on ne définit que
+   l'apparence du panneau et le fin liseré qui marque son bord. */
 .page-veil {
     position: fixed;
     inset: 0;
     z-index: 900;
-    background: var(--bg-color);
     pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    background: var(--bg-color);
+    will-change: clip-path;
 }
-.page-ready .page-veil { opacity: 0; }
-.page-veil-mark {
+.page-veil::after {
+    /* Liseré d'accent le long du bord d'attaque incliné */
+    content: "";
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 36px;
-    height: 1px;
-    margin-left: -18px;
-    background: var(--secondary-color);
-    opacity: 0;
-    transform: scaleX(0.2);
-    transition: opacity 0.3s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    inset: 0;
+    background: linear-gradient(100deg,
+        transparent 0%,
+        transparent calc(50% - 1px),
+        var(--secondary-color) 50%,
+        transparent calc(50% + 1px),
+        transparent 100%);
+    opacity: 0.5;
 }
-.page-veil-mark { opacity: 0.8; transform: scaleX(1); }
-.page-ready .page-veil-mark { opacity: 0; transform: scaleX(0.2); }
 
 html.dark-mode {
     --bg-color: #0d0d0c;        
@@ -1394,15 +1393,13 @@ h2 { font-size: 1.8rem; }
     align-items: center;
     justify-content: center;
     /* Descente d'entrée avec rebond, jouée une fois au chargement. */
-    animation: cube-drop 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    /* Descente vers le centre déclenchée en JS à la fin des citations
+       (voir runGateSequence dans index.html), avec rebond. */
+    transition: top 1.4s cubic-bezier(0.34, 1.45, 0.5, 1);
 }
-@keyframes cube-drop {
-    0%   { transform: translateY(-60vh); opacity: 0; }
-    60%  { opacity: 1; }
-    100% { transform: translateY(0); opacity: 1; }
-}
+.boot-gate-square.cube-centered { top: 44%; }
 @media (prefers-reduced-motion: reduce) {
-    .boot-gate-square { animation: none; }
+    .boot-gate-square { transition: none; }
 }
 
 /* Les citations occupent le centre, sous le cube. */
@@ -1587,3 +1584,97 @@ h2 { font-size: 1.8rem; }
     transform: translateY(-2px);
 }
 .partner-card, .soutien-card { transition: border-color 0.3s ease, transform 0.35s ease; }
+
+/* ============================================================
+   MODERNISATION — typographie, rythme et interactions
+   Resserre les titres, calme les couleurs secondaires, et donne
+   aux éléments interactifs un retour plus net et plus rapide.
+   ============================================================ */
+
+/* Titres : plus serrés, moins d'espacement de lettres parasite */
+h1, h2 {
+    letter-spacing: -0.015em;
+    font-weight: 700;
+}
+h1 { font-size: clamp(2rem, 4.6vw, 3.1rem); line-height: 1.04; }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
+
+/* Étiquettes de section : plus discrètes, mieux espacées */
+.tag {
+    font-size: 0.68rem;
+    letter-spacing: 1.6px;
+    opacity: 0.85;
+    margin-bottom: 0.7rem;
+}
+.section-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 62ch;
+    margin-bottom: 1.8rem;
+}
+
+/* Navigation : retour au survol plus franc, sans glissement mou */
+.nav-item {
+    border-radius: 3px;
+    transition: opacity 0.25s ease, color 0.25s ease,
+                transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.25s ease;
+}
+.nav-item:hover { transform: translateX(6px); opacity: 0.95; }
+
+/* Liens de contact : soulignement qui se déploie au lieu de pâlir */
+.contact-btn {
+    position: relative;
+    border-bottom-color: transparent;
+    transition: color 0.25s ease;
+}
+.contact-btn::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0.28);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.contact-btn:hover { opacity: 1; }
+.contact-btn:hover::after { transform: scaleX(1); }
+
+/* Cartes : élévation plus lisible que le simple changement de bordure */
+.artist-card:hover .artist-img-box,
+.curation-item:hover,
+.travaux-cell:hover .travaux-cell-box {
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+}
+
+/* Images des cartes : sortie de la désaturation plus douce */
+.artist-img-box, .travaux-cell-box { overflow: hidden; }
+
+/* Sous-navigation : onglet actif souligné proprement */
+.sub-nav-btn {
+    position: relative;
+    padding-bottom: 0.45rem;
+    border-bottom: none;
+}
+.sub-nav-btn.active { border-bottom: none; }
+.sub-nav-btn::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: var(--secondary-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sub-nav-btn.active::after { transform: scaleX(1); }
+
+/* Molette plus calme sur les carrousels horizontaux */
+.horizontal-scroll-container { scroll-behavior: smooth; }
+
+/* Sélection de texte aux couleurs du site */
+::selection {
+    background: var(--secondary-color);
+    color: var(--bg-color);
+}
