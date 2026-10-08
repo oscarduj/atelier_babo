@@ -1509,4 +1509,4 @@ h2 { font-size: 1.8rem; }
 @media (max-width: 480px) {
     .eye-status, .eye-bar { letter-spacing: 0.5px; }
     .sound-toggle { top: 0.8rem; right: 0.8rem; font-size: 0.65rem; padding: 0.4rem 0.6rem; }
-}
+} 
