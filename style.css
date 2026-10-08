@@ -17,6 +17,11 @@
     animation-duration: 0.45s;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* Mouvement réduit : la navigation reste instantanée, sans fondu. */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation: none; }
+}
 
 
 html.dark-mode {
@@ -704,6 +709,31 @@ h2 { font-size: 1.8rem; }
     opacity: 0.7;
 }
 
+/* --- Cadre d'annonce (page Wenjie Tong) --- */
+.tong-notice {
+    border: 1px dashed var(--border-color);
+    background-color: var(--box-bg);
+    padding: 2rem 2.2rem;
+    margin-bottom: 2.5rem;
+    max-width: 640px;
+}
+.tong-notice-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+}
+.tong-notice p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--desc-color);
+    margin-bottom: 0.8rem;
+}
+.tong-notice p:last-child { margin-bottom: 0; }
+
 .artist-header {
     margin-bottom: 2.5rem;
 }
@@ -1225,6 +1255,63 @@ h2 { font-size: 1.8rem; }
 .sound-toggle.is-off { color: #555555; }
 
 /* Portail d'entrée — cube 3D sur fond blanc, à cliquer pour lancer le boot */
+/* --- Citations du portail, puis invitation à entrer --- */
+.gate-quote {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(78vw, 820px);
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3.6vw, 2.9rem);
+    line-height: 1.25;
+    color: #0a0a0a;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+.gate-quote cite {
+    display: block;
+    margin-top: 1.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+.gate-invite {
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+.gate-invite-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    color: #0a0a0a;
+    margin-bottom: 0.7rem;
+}
+.gate-invite-hint {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    opacity: 0.45;
+}
+/* Pendant la plongée, le fond vire au noir : le texte doit s'inverser pour rester lisible */
+.boot-gate.diving .gate-quote,
+.boot-gate.diving .gate-invite-text,
+.boot-gate.diving .gate-invite-hint { color: #EAE8E4; }
+
 .boot-gate {
     position: absolute;
     inset: 0;
