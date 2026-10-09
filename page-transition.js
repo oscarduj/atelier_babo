@@ -139,3 +139,166 @@
     });
 })();
 
+/* ============================================================
+   NAVIGATION PARTAGÉE — barre latérale sur toutes les pages
+   ------------------------------------------------------------
+   Construite en JS et injectée dans chaque page, pour que la barre
+   ne disparaisse plus dès qu'on quitte l'accueil. Elle est volontairement
+   logée dans ce fichier plutôt que dans un script supplémentaire :
+   aucune page HTML n'a besoin d'être modifiée pour en bénéficier.
+
+   L'arborescence se déplie : Travaux → les 4 artistes + le collectif,
+   puis les travaux de chacun. La branche de la page courante est ouverte
+   et surlignée.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    // Préfixe relatif déduit du lien vers style.css déjà présent dans la page :
+    // fiable quelle que soit la profondeur et quel que soit le nom du dépôt.
+    function basePrefix() {
+        var l = document.querySelector('link[href$="style.css"]');
+        if (!l) return '';
+        return l.getAttribute('href').replace(/style\.css$/, '');
+    }
+    var B = basePrefix();
+
+    var OSCAR = [
+        ['Rémanence', 'travaux/oscar/stase.html'],
+        ["Le bruit de l'eau", 'travaux/oscar/bruit-eau.html'],
+        ['Vivre à travers le flux', 'travaux/oscar/vivre-flux.html'],
+        ['Transmutation', 'travaux/oscar/transmutation.html'],
+        ['Dé-construction', 'travaux/oscar/deconstruction.html'],
+        ['175 Zettaoctets', 'travaux/oscar/flux.html'],
+        ['Livre blanc', 'travaux/oscar/livre-blanc.html'],
+    ];
+    var YOON = [
+        ['Une pierre jetée…', 'travaux/yoon/pierre-jetee.html'],
+        ['Est-ce un travail ?', 'travaux/yoon/est-ce-travail.html'],
+        ["Santa's OFF-Season", 'travaux/yoon/santa-off-season.html'],
+        ['Un cauchemar…', 'travaux/yoon/cauchemar.html'],
+        ['Porte E3Ɛ', 'travaux/yoon/porte-e3e.html'],
+        ["Parfums de l'Utopie", 'travaux/yoon/parfums-utopie.html'],
+        ['Elephant Man', 'travaux/yoon/elephant-man.html'],
+    ];
+    var TOM = [
+        ['Compagnon 1', 'travaux/tom/compagnon-1.html'],
+        ['O.M.A', 'travaux/tom/oma.html'],
+        ['U', 'travaux/tom/u.html'],
+        ['PARASITE #1', 'travaux/tom/parasite.html'],
+        ['Nature 404', 'travaux/tom/nature-404.html'],
+        ['ALTERTOPIE', 'travaux/tom/altertopie.html'],
+        ['COSSERAT', 'travaux/tom/cosserat.html'],
+    ];
+
+    var TREE = [
+        ['01. ACCUEIL', 'index.html#accueil', null],
+        ['02. TRAVAUX', 'index.html#travaux', [
+            ['Collectif', 'travaux/collectif.html', null],
+            ['Oscar Dujarrier', 'travaux/oscar-dujarrier.html', OSCAR],
+            ['Hyunseok Yoon', 'travaux/hyunseok-yoon.html', YOON],
+            ['Tom Lecointre', 'travaux/tom-lecointre.html', TOM],
+            ['Wenjie Tong', 'travaux/wenjie-tong.html', null],
+        ]],
+        ['03. CURATION', 'index.html#curation', null],
+        ['04. COLLABORATEURS', 'index.html#collaborateurs', null],
+        ['05. EXPOS', 'index.html#expos', null],
+        ['06. SOUTIEN', 'index.html#soutien', null],
+        ['07. CONTACT', 'index.html#contact', null],
+    ];
+
+    var here = location.pathname.replace(/\/$/, '/index.html');
+    function isCurrent(href) {
+        var f = href.split('#')[0];
+        return f && here.indexOf('/' + f.replace(/^.*\//, '')) !== -1
+            && here.slice(-f.split('/').pop().length) === f.split('/').pop();
+    }
+
+    function buildList(items, depth) {
+        var ul = document.createElement('ul');
+        ul.className = 'nav-tree nav-tree-d' + depth;
+        var anyOpen = false;
+
+        items.forEach(function (it) {
+            var label = it[0], href = it[1], kids = it[2];
+            var li = document.createElement('li');
+            li.className = 'nav-tree-item';
+
+            var a = document.createElement('a');
+            a.className = depth === 0 ? 'nav-item' : 'nav-sub-item';
+            a.href = B + href;
+            a.textContent = label;
+            li.appendChild(a);
+
+            var open = isCurrent(href);
+            if (open) { a.classList.add('is-current'); anyOpen = true; }
+
+            if (kids) {
+                var sub = buildList(kids, depth + 1);
+                if (sub.open) { open = true; anyOpen = true; }
+                li.appendChild(sub.el);
+                li.classList.add('has-children');
+                if (open) li.classList.add('is-open');
+            }
+            ul.appendChild(li);
+        });
+        return { el: ul, open: anyOpen };
+    }
+
+    function buildNav() {
+        var existing = document.querySelector('.side-nav');
+        var links = buildList(TREE, 0).el;
+
+        if (existing) {
+            // Accueil : on remplace la liste existante par l'arborescence.
+            var old = existing.querySelector('.nav-links');
+            if (old) old.parentNode.replaceChild(links, old);
+            else existing.appendChild(links);
+            links.classList.add('nav-links');
+            return;
+        }
+
+        // Sous-pages : la barre n'existe pas encore, on la crée entière.
+        var nav = document.createElement('header');
+        nav.className = 'side-nav';
+        nav.id = 'side-nav';
+
+        var top = document.createElement('div');
+        top.className = 'nav-top';
+        var logo = document.createElement('a');
+        logo.className = 'nav-logo';
+        logo.href = B + 'index.html';
+        logo.textContent = 'ATELIER_BABO';
+        top.appendChild(logo);
+        nav.appendChild(top);
+
+        links.classList.add('nav-links');
+        nav.appendChild(links);
+
+        var status = document.createElement('div');
+        status.className = 'nav-status';
+        status.textContent = 'STATUS: ALL SYSTEMS OPERATIONAL';
+        nav.appendChild(status);
+
+        document.body.appendChild(nav);
+
+        // Bouton hamburger pour le mobile, comme sur l'accueil.
+        var burger = document.createElement('button');
+        burger.className = 'hamburger-btn';
+        burger.id = 'hamburger-btn';
+        burger.setAttribute('aria-label', 'Menu');
+        burger.innerHTML = '<span></span><span></span><span></span>';
+        burger.addEventListener('click', function () {
+            var o = nav.classList.toggle('menu-open');
+            burger.classList.toggle('open', o);
+        });
+        document.body.appendChild(burger);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildNav);
+    } else {
+        buildNav();
+    }
+})();
+

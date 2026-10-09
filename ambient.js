@@ -68,6 +68,11 @@
         if (playing) return;
         var c = getCtx();
         if (!c) return;
+        // Garde-fou : tant que le navigateur n'a pas accordé l'audio (pas encore
+        // de geste utilisateur), le contexte reste suspendu. Démarrer ici
+        // marquerait playing=true sans produire de son, et tous les gestes
+        // suivants seraient ignorés — c'était la cause du silence.
+        if (c.state !== 'running') return;
         playing = true;
         try {
             var master = c.createGain();
@@ -159,23 +164,25 @@
     // l'utilisateur n'a rien fait : on tente quand même tout de suite (certains
     // contextes l'autorisent), puis on guette un éventail large de gestes —
     // sur une page de lecture, le visiteur ne clique pas forcément un lien.
+    var EVENTS = ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel', 'scroll'];
     function unlock() {
-        start();
-        if (ctx && ctx.state === 'running') {
-            ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel'].forEach(function (ev) {
-                document.removeEventListener(ev, unlock);
-            });
+        var c = getCtx();
+        if (!c) return;
+        if (c.state === 'running') {
+            start();
+        } else {
+            // resume() est asynchrone : on attend sa résolution avant de démarrer.
+            c.resume().then(function () {
+                if (c.state === 'running') start();
+            }).catch(function () { /* geste encore manquant */ });
+        }
+        if (playing) {
+            EVENTS.forEach(function (ev) { document.removeEventListener(ev, unlock); });
         }
     }
-    ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel'].forEach(function (ev) {
+    EVENTS.forEach(function (ev) {
         document.addEventListener(ev, unlock, { passive: true });
     });
-    // Tentative immédiate (échoue silencieusement si le geste manque).
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', unlock);
-    } else {
-        unlock();
-    }
 
     // Coupe proprement avant de quitter la page, pour éviter que le son
     // se superpose au démarrage de la page suivante.
@@ -183,4 +190,5 @@
 
     window.BaboAmbient = { start: start, stop: stop, isPlaying: function () { return playing; } };
 })();
+
 
