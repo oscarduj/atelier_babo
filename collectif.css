@@ -12,7 +12,7 @@ body.collectif-page {
     height: 100dvh;
     overflow-y: scroll;
     overflow-x: hidden;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
     --c-night: #070a0d;
     --c-text: #ecebe6;
     --c-soft: #b9b8b1;
@@ -52,7 +52,7 @@ body.collectif-page .artist-page-container {
     display: grid;
     place-items: center;
     overflow: hidden;
-    padding: 5rem 1.5rem 11rem;
+    padding: 5rem 4rem 5rem;
 }
 .cs-media {
     position: absolute;
@@ -236,6 +236,7 @@ body.collectif-page .cd-title {
 .cd-video { display: block; width: 100%; background: #000000; }
 
 .ch-end {
+    scroll-snap-align: end;
     padding: 7rem 1.5rem 9rem;
     text-align: center;
     display: flex;
@@ -245,79 +246,156 @@ body.collectif-page .cd-title {
 }
 body.collectif-page .contact-btn { color: #ffffff; border-bottom-color: var(--c-gold); }
 
-/* ---------- Roue de navigation ---------- */
-.ch-wheel {
-    --r: 128px;
+/* ---------- Écrans-titres cliquables ---------- */
+.ch-splash.is-openable { cursor: pointer; }
+.ch-splash.is-openable .cs-media { transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.ch-splash.is-openable:hover .cs-media { transform: scale(1.03); }
+.ch-splash.is-openable:hover .cs-open { color: var(--c-gold); }
+button.cs-more {
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--c-gold);
+    cursor: pointer;
+    padding: 0 0 0.15rem;
+}
+
+/* ---------- Panneaux de projet (par-dessus la page) ---------- */
+.ch-panel {
     position: fixed;
-    left: 50%;
-    bottom: 0;
-    width: 340px;
-    height: 170px;
-    transform: translateX(-50%);
-    z-index: 40;
+    inset: 0;
+    /* au-dessus du menu du site : le panneau est une fenêtre modale */
+    z-index: 10000;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--c-night);
+    color: var(--c-text);
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
+    transform: translateY(4%);
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
-body.on-splash .ch-wheel { opacity: 1; pointer-events: auto; }
-.ch-wheel-ring {
-    position: absolute;
-    left: 50%;
-    bottom: 20px;
-    width: 200px;
-    height: 100px;
-    transform: translateX(-50%);
-    fill: none;
-    stroke: rgba(216, 180, 90, 0.55);
-    stroke-width: 1;
-}
-.ch-wheel-spokes {
-    transform-box: view-box;
-    transform-origin: 100px 100px;
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.ch-wheel-list { list-style: none; margin: 0; padding: 0; }
-.ch-wheel-list li {
-    --a: calc(180deg - (var(--k) * 30deg));
-    position: absolute;
-    left: calc(50% + cos(var(--a)) * var(--r));
-    bottom: calc(sin(var(--a)) * var(--r) + 14px);
-    transform: translateX(-50%);
-}
-.ch-wheel-list li:nth-child(1) { --k: 0; }
-.ch-wheel-list li:nth-child(2) { --k: 1; }
-.ch-wheel-list li:nth-child(3) { --k: 2; }
-.ch-wheel-list li:nth-child(4) { --k: 3; }
-.ch-wheel-list li:nth-child(5) { --k: 4; }
-.ch-wheel-list li:nth-child(6) { --k: 5; }
-.ch-wheel-list li:nth-child(7) { --k: 6; }
-.ch-wheel-list a {
+.ch-panel[hidden] { display: none; }
+.ch-panel.is-open { opacity: 1; transform: none; }
+body.panel-open { overflow: hidden; }
+body.panel-open .back-link,
+body.panel-open .ch-rail { visibility: hidden; }
+.cp-bar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 6vw;
+    background: rgba(7, 10, 13, 0.92);
+    border-bottom: 1px solid rgba(216, 180, 90, 0.25);
+}
+.cp-bar-title {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--c-gold);
     text-transform: uppercase;
-    white-space: nowrap;
-    color: rgba(255, 255, 255, 0.65);
+}
+.cp-bar-title span { margin: 0 0.4em; }
+.cp-close,
+.cp-step {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: none;
+    border: 1px solid rgba(236, 235, 230, 0.4);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+}
+.cp-close:hover,
+.cp-step:hover { border-color: var(--c-gold); color: var(--c-gold); }
+.cp-close:focus-visible,
+.cp-step:focus-visible { outline: 1px dashed var(--c-gold); outline-offset: 3px; }
+.ch-panel .ch-detail { border-top: none; padding-top: 3rem; }
+.cp-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 2rem 6vw 4rem;
+    border-top: 1px solid rgba(216, 180, 90, 0.18);
+}
+
+/* ---------- Index des chapitres (bord droit) ---------- */
+.ch-rail {
+    position: fixed;
+    right: 1.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+}
+.ch-rail ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.9rem;
+    position: relative;
+}
+/* le fin trait doré qui relie les numéros */
+.ch-rail ol::before {
+    content: "";
+    position: absolute;
+    right: 0.55rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: rgba(216, 180, 90, 0.35);
+}
+.ch-rail a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-direction: row-reverse;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
     text-decoration: none;
 }
-.ch-wheel-list i {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    border: 1px solid var(--c-gold);
-    flex-shrink: 0;
+.ch-rail b {
+    position: relative;
+    font-weight: 400;
+    min-width: 1.15rem;
+    text-align: center;
+    padding: 0.1rem 0;
+    background: var(--c-night);
+    background: transparent;
 }
-.ch-wheel-list a.is-active { color: var(--c-gold); }
-.ch-wheel-list a.is-active i { background: var(--c-gold); }
-.ch-wheel-list a:hover { color: #ffffff; }
-.ch-wheel-list a:focus-visible { outline: 1px dashed var(--c-gold); outline-offset: 3px; }
-/* À gauche de la roue, le texte se place avant le point */
-.ch-wheel-list li:nth-child(-n+3) a { flex-direction: row-reverse; }
-.ch-wheel-list li:nth-child(-n+3) { transform: translateX(-100%); }
-.ch-wheel-list li:nth-child(n+5) { transform: none; }
+.ch-rail span {
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    white-space: nowrap;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+.ch-rail a:hover span,
+.ch-rail a:focus-visible span,
+.ch-rail a.is-active span { opacity: 1; transform: none; }
+.ch-rail a.is-active { color: var(--c-gold); }
+.ch-rail a.is-active b::after {
+    content: "";
+    position: absolute;
+    right: -0.5rem;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    margin-top: -2.5px;
+    border-radius: 50%;
+    background: var(--c-gold);
+}
+.ch-rail a:hover { color: #ffffff; }
+.ch-rail a:focus-visible { outline: 1px dashed var(--c-gold); outline-offset: 3px; }
 
 @media (min-width: 901px) {
     body.collectif-page .back-link { left: 3.2rem; }
@@ -327,14 +405,14 @@ body.on-splash .ch-wheel { opacity: 1; pointer-events: auto; }
     .ch-detail { grid-template-columns: 1fr; padding: 4rem 1.2rem; }
 }
 @media (max-width: 760px) {
-    .ch-wheel { --r: 104px; width: 100%; height: 125px; }
-    .ch-wheel-ring { width: 160px; height: 80px; }
-    /* sur téléphone : seuls les points, et le nom du chapitre en cours */
-    .ch-wheel-list a span { display: none; }
-    .ch-wheel-list a.is-active span { display: inline; }
-    .ch-splash { padding-bottom: 9rem; }
+    .ch-splash { padding: 5rem 2.6rem 5rem 1.2rem; }
+    body.collectif-page .cs-title { font-size: 10.5vw; }
+    .ch-rail { right: 0.6rem; }
+    .ch-rail a span { display: none; }
+    .cp-bar { padding: 0.8rem 1.2rem; }
+    .cp-nav { padding: 1.5rem 1.2rem 3rem; flex-direction: column; }
     .cd-grid { gap: 0.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .ch-wheel, .ch-wheel-spokes { transition: none; }
+    .ch-panel, .ch-splash.is-openable .cs-media, .ch-rail span { transition: none; }
 }
