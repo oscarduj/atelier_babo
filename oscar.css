@@ -1,105 +1,12 @@
 /* ============================================================
    DA — OSCAR DUJARRIER
-   Reprend le langage visuel de son propre portfolio (serif italique
-   pour les titres, monospace pour le technique, accent rouille sur
-   fond noir) plutôt que d'inventer un système à part. Le grain et le
-   balayage font écho à ses pièces autour du signal, du bruit et de
-   l'image qui ne se stabilise jamais tout à fait (Stase, Le bruit de
-   l'eau, Transmutation).
-
-   Ce fichier vient PAR-DESSUS style.css : il ne touche pas à la nav
-   commune ni aux autres pages, seulement à cette page-ci.
+   Deux registres qui se répondent sur toutes ses pages :
+   - le bleu électrique et le crème des vieilles interfaces (fenêtres,
+     menus, texte surligné) ;
+   - le trait noir sur papier blanc du tiroir de classement.
+   Ce fichier vient PAR-DESSUS style.css et ne touche qu'aux pages
+   d'Oscar (body.oscar-hub et body.oscar-work).
    ============================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500&family=Share+Tech+Mono&display=swap');
-
-body.oscar-page {
-    --bg-color: #050505;
-    --text-color: #EAE8E4;
-    --accent-color: #c9491f;
-    --secondary-color: #c9491f;
-    --border-color: #262626;
-    --box-bg: rgba(201, 73, 31, 0.03);
-    --desc-color: #9a9a9a;
-}
-
-/* Grain persistant + lignes de balayage très discrètes, en fond fixe —
-   jamais assez présents pour gêner la lecture, juste assez pour ne
-   jamais laisser l'image du fond se stabiliser complètement. */
-.oscar-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-        repeating-linear-gradient(rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 3px),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-}
-
-/* Ligne qui pulse doucement, écho du son d'électrocardiogramme de Stase —
-   une signature discrète plutôt qu'un motif décoratif appuyé. */
-.oscar-pulse-line {
-    position: relative;
-    height: 1px;
-    background: var(--accent-color);
-    opacity: 0.4;
-    margin: 2.5rem 0;
-    animation: oscar-pulse 3.4s ease-in-out infinite;
-}
-@keyframes oscar-pulse {
-    0%, 100% { opacity: 0.15; }
-    50% { opacity: 0.55; }
-}
-
-.oscar-page .tag {
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent-color);
-}
-
-.oscar-page .artist-header h1 {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 3.4rem;
-    letter-spacing: 0.5px;
-    text-transform: none;
-    color: var(--text-color);
-}
-
-.oscar-page .back-link {
-    color: var(--accent-color);
-}
-
-.oscar-page .artist-bio-section h3,
-.oscar-page .artist-projects-section h3,
-.oscar-page .artist-contact-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent-color);
-}
-
-.oscar-page .project-entry-head h4 {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.5rem;
-    text-transform: none;
-    letter-spacing: 0.3px;
-}
-
-.oscar-page .project-entry-tag {
-    color: var(--accent-color);
-}
-
-.oscar-page .contact-btn {
-    color: var(--accent-color);
-    border-bottom-color: var(--accent-color);
-}
-
-.oscar-page .artist-page-container {
-    position: relative;
-    z-index: 1;
-}
 
 /* ============================================================
    PAGE HUB — trois écrans.
@@ -838,136 +745,268 @@ body.oscar-hub .os-h {
 }
 
 /* ============================================================
-   PAGES DE PROJET — défilement plein écran façon TikTok : l'image
-   occupe tout l'écran, le texte suit sur l'écran d'après. Informations
-   techniques en surimpression (repère, medium) pour un rendu pro.
+   PAGES D'ŒUVRE — le dossier sorti du tiroir.
+   1. Écran bleu : une fenêtre de logiciel « lit » l'œuvre (le logiciel
+      change selon le médium), fiche technique à côté.
+   2. Écran blanc : le dossier ouvert, trait noir, onglet à la même
+      place que dans le tiroir ; texte, puis dossiers voisins.
    ============================================================ */
-body.oscar-project-page {
+body.oscar-work {
     display: block;
     height: 100vh;
     height: 100dvh;
     overflow-y: scroll;
     overflow-x: hidden;
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
+    --o-blue: #1414e2;
+    --o-cream: #eae8d6;
+    --o-ink: #000000;
+    --o-paper: #ffffff;
+    --bg-color: var(--o-blue);
+    --text-color: var(--o-cream);
+    --border-color: rgba(234, 232, 214, 0.35);
+    --desc-color: rgba(234, 232, 214, 0.75);
+    background: var(--o-blue);
 }
-body.oscar-project-page .back-link {
+body.oscar-work .back-link {
     position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 30;
-    mix-blend-mode: difference;
+    top: 1.2rem;
+    left: 1.2rem;
+    z-index: 60;
+    margin: 0;
+    padding: 0.35rem 0.6rem;
+    background: var(--o-blue);
+    color: var(--o-cream);
+    border: 1px solid var(--o-cream);
 }
-body.oscar-project-page .artist-page-container {
+body.oscar-work .artist-page-container {
     max-width: none;
     padding: 0;
     margin: 0;
     width: 100%;
 }
-
-.oscar-project-screen {
+.work-screen {
     min-height: 100vh;
     min-height: 100dvh;
     scroll-snap-align: start;
-    position: relative;
 }
 
-/* Écran image : plein cadre, repères techniques en coin façon viseur */
-.oscar-project-screen-image {
+/* ---------- Écran 1 : la fenêtre ---------- */
+.work-screen-window {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
+    padding: 4.2rem 4vw 2.5rem;
+    background: var(--o-blue);
+}
+.work-window { width: min(100%, 1180px); }
+.work-window-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.4vw, 2rem);
+    padding: clamp(0.9rem, 2vw, 1.4rem);
+    align-items: stretch;
+}
+.ow-view {
+    position: relative;
+    height: clamp(16rem, 62vh, 40rem);
     overflow: hidden;
+    border: 1.5px solid var(--o-cream);
     background: #000000;
 }
-.oscar-project-screen-image img {
+.ow-view > img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
-.oscar-project-screen-image::before {
+.work-fiche {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+body.oscar-work .work-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    text-transform: none;
+    font-size: clamp(2rem, 4.4vw, 3.6rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--o-cream);
+    margin: 0 0 1.4rem;
+}
+.work-fields {
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+.work-fields div {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 0.6rem;
+}
+.work-open {
+    margin-top: auto;
+    align-self: flex-start;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    letter-spacing: 1px;
+    background: var(--o-cream);
+    color: var(--o-blue);
+    text-decoration: none;
+    padding: 0.1em 0.4em;
+}
+.work-open:hover { background: transparent; color: var(--o-cream); box-shadow: inset 0 0 0 1.5px var(--o-cream); }
+.work-open:focus-visible { outline: 1.5px dashed var(--o-cream); outline-offset: 4px; }
+
+/* ---------- Écran 2 : le dossier ouvert ---------- */
+.work-screen-dossier {
+    background: var(--o-paper);
+    color: var(--o-ink);
+    padding: 6rem 6vw 4rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+.dossier-open {
+    --tab-x: 30%;
+    position: relative;
+    width: min(100%, 860px);
+    margin-top: 2rem;
+    border: 1.5px solid var(--o-ink);
+    border-radius: 4px 4px 0 0;
+    background: var(--o-paper);
+    padding: clamp(1.4rem, 4vw, 2.6rem);
+}
+.dossier-open.tab-b { --tab-x: 64%; }
+/* La feuille de derrière : le dossier a une épaisseur */
+.dossier-open::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.25) 42%, transparent 68%);
-    z-index: 1;
+    left: 8px;
+    right: -8px;
+    top: 8px;
+    bottom: -8px;
+    border: 1.5px solid var(--o-ink);
+    border-top: none;
+    border-left: none;
+    pointer-events: none;
 }
-.oscar-project-readout {
+.dossier-open-tab {
     position: absolute;
-    top: 2rem;
-    left: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 1.5px;
-    color: rgba(255, 255, 255, 0.7);
-    text-transform: uppercase;
-}
-.oscar-project-readout-right {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 1.5px;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: right;
-    text-transform: uppercase;
-}
-.oscar-project-scroll-hint {
-    position: absolute;
-    bottom: 1.6rem;
-    right: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 1.5px;
-    color: rgba(255, 255, 255, 0.55);
-    writing-mode: vertical-rl;
-    animation: oscar-scroll-hint-blink 2s ease-in-out infinite;
-}
-@keyframes oscar-scroll-hint-blink {
-    0%, 100% { opacity: 0.55; }
-    50% { opacity: 1; }
-}
-.oscar-project-overlay {
-    position: relative;
-    z-index: 2;
-    padding: 3rem 3rem 4rem;
-    width: 100%;
-}
-.oscar-project-overlay h1 {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(2.4rem, 6.5vw, 4.4rem);
-    color: #ffffff;
-    margin: 0 0 0.6rem;
-    text-transform: none;
-    line-height: 1.05;
-}
-.oscar-project-overlay .specs {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.5px;
-}
-
-/* Écran texte */
-.oscar-project-screen-text {
+    bottom: calc(100% - 1px);
+    left: var(--tab-x);
+    width: 33%;
+    height: 32px;
     display: flex;
     align-items: center;
-    background: #050505;
-    padding: 6rem 6vw;
+    justify-content: center;
+    z-index: 1;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--o-paper);
+    white-space: nowrap;
+    padding: 0 0.8rem;
 }
-.oscar-project-text-inner { max-width: 740px; margin: 0 auto; width: 100%; }
-.oscar-project-text-inner p {
-    font-size: 1.02rem;
-    line-height: 1.8;
-    color: #9a9a9a;
-    margin-bottom: 1.4rem;
+.dossier-open-tab::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -3px 0;
+    z-index: -1;
+    background: var(--o-ink);
+    border-radius: 7px 7px 0 0;
+    transform: perspective(70px) rotateX(16deg);
+    transform-origin: bottom;
 }
-.oscar-project-text-inner p:last-child { margin-bottom: 0; }
-.oscar-project-text-inner .project-entry-crossref { margin-top: 1.4rem; }
+.dossier-open-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.4rem 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.8rem;
+    border-bottom: 1.5px dashed var(--o-ink);
+}
+.dossier-open-text { max-width: 64ch; }
+.dossier-open-text p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #111111;
+    margin: 0 0 1.2rem;
+}
+.dossier-open-text .dossier-crossref {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: #333333;
+    margin-top: 1.8rem;
+}
+.dossier-open-text a {
+    color: var(--o-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.dossier-open-text a:hover { background: var(--o-ink); color: var(--o-paper); text-decoration: none; }
+.dossier-nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.8rem;
+    margin-top: 2.6rem;
+    padding-top: 1.2rem;
+    border-top: 1.5px solid var(--o-ink);
+}
+.dossier-nav-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    color: var(--o-ink);
+    text-decoration: none;
+    border: 1.5px solid var(--o-ink);
+    border-radius: 4px;
+    padding: 0.35rem 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dossier-nav-btn:last-child { text-align: right; }
+.dossier-nav-btn.is-home { background: var(--o-ink); color: var(--o-paper); text-align: center; }
+.dossier-nav-btn.is-empty { border: none; }
+a.dossier-nav-btn:hover { background: var(--o-ink); color: var(--o-paper); }
+a.dossier-nav-btn.is-home:hover { background: var(--o-paper); color: var(--o-ink); }
+a.dossier-nav-btn:focus-visible { outline: 1.5px dashed var(--o-ink); outline-offset: 3px; }
 
+@media (min-width: 901px) {
+    .work-screen-window { padding-left: max(4vw, 4.5rem); }
+    .work-screen-dossier { padding-left: max(6vw, 5rem); }
+    body.oscar-work .back-link { left: 3.2rem; }
+}
+@media (max-width: 900px) {
+    body.oscar-work .back-link { left: auto; right: 1rem; top: 1rem; font-size: 0.72rem; }
+}
+@media (max-width: 760px) {
+    .work-screen-window { padding: 4.2rem 0.8rem 2rem; align-items: flex-start; }
+    /* titre et fiche, puis l'image, puis le bouton */
+    .work-window-body { grid-template-columns: 1fr; gap: 0.9rem; }
+    .ow-view { height: 56vh; }
+    .work-fiche { display: contents; }
+    body.oscar-work .work-title { order: -2; }
+    .work-fields { order: -1; }
+    .work-open { order: 1; }
+    body.oscar-work .work-title { margin-bottom: 0.8rem; }
+    .work-fields { display: flex; flex-wrap: wrap; gap: 0 1.4rem; font-size: 0.78rem; margin-bottom: 0.4rem; }
+    .work-open { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+    .work-screen-dossier { padding: 4.5rem 1rem 3rem; }
+    .dossier-open { width: calc(100% - 8px); margin-right: 8px; }
+    .dossier-open-tab { width: 62%; font-size: 0.72rem; }
+    .dossier-open.tab-a { --tab-x: 4%; }
+    .dossier-open.tab-b { --tab-x: 34%; }
+    .dossier-open-text p { font-size: 1rem; }
+    .dossier-nav { grid-template-columns: 1fr; }
+    .dossier-nav-btn:last-child { text-align: left; }
+    .dossier-nav-btn.is-empty { display: none; }
+    .dossier-nav-btn.is-home { order: 3; }
+}

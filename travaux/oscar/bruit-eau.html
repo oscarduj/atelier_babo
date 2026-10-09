@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LE BRUIT DE L'EAU — OSCAR DUJARRIER // ATELIER BABO</title>
+    <title>LE BRUIT DE L&#X27;EAU — OSCAR DUJARRIER // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../oscar.css">
+    <link rel="stylesheet" href="../../oscar.css">
     <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
     </script>
@@ -23,35 +23,85 @@
             z-index: 0;
         }
         .shader-active #water-canvas { display: block; }
-        .shader-active .oscar-project-screen-image > img { visibility: hidden; }
+        .shader-active .ow-view > img { visibility: hidden; }
     </style>
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page oscar-page oscar-project-page">
-    <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+<body class="standalone-page oscar-work">
+    <a href="../oscar-dujarrier.html#tiroir" class="back-link">← RANGER LE DOSSIER</a>
 
     <main class="artist-page-container">
-        <section class="oscar-project-screen oscar-project-screen-image" id="water-screen">
-            <img src="../../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l'eau" id="water-img" crossorigin="anonymous">
-            <canvas id="water-canvas"></canvas>
-            <span class="oscar-project-readout">Oscar Dujarrier // 02</span>
-            <span class="oscar-project-readout-right">Vidéo</span>
-            <span class="oscar-project-scroll-hint">DÉFILER</span>
-            <div class="oscar-project-overlay">
-                <h1>Le bruit de l'eau</h1>
-                <span class="specs">2026 · Dispositif cathodique · Lecteur DVD · Dimensions variables</span>
+        <!-- ÉCRAN 1 : la fenêtre qui « lit » l'œuvre — le logiciel et le
+             fichier changent selon le médium de la pièce. -->
+        <section class="work-screen work-screen-window">
+            <div class="os-window work-window">
+                <div class="os-titlebar">
+                    <span class="os-box" aria-hidden="true">–</span>
+                    <span class="os-title">LECTEUR_DVD.EXE — le_bruit_de_l_eau.vob</span>
+                    <span class="os-box" aria-hidden="true">▾</span>
+                    <span class="os-box" aria-hidden="true">▴</span>
+                </div>
+                <div class="os-menubar" aria-hidden="true">
+                    <span>FICHIER</span><span>AFFICHAGE</span><span>FENÊTRE</span><span>AIDE</span>
+                </div>
+                <div class="work-window-body">
+                    <div class="ow-view" id="water-screen">
+                        <img src="../../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l&#x27;eau" id="water-img" crossorigin="anonymous">
+                            <canvas id="water-canvas"></canvas>
+                    </div>
+                    <div class="work-fiche">
+                        <h1 class="work-title">Le bruit de l&#x27;eau</h1>
+                        <dl class="os-fields work-fields">
+                            <div><dt>ANNÉE :</dt><dd>2026</dd></div>
+                            <div><dt>MÉDIUM :</dt><dd>vidéo, dispositif cathodique, lecteur DVD</dd></div>
+                            <div><dt>DIMENSIONS :</dt><dd>variables</dd></div>
+                            <div><dt>EXPOSÉ :</dt><dd>« 5D », Frac Normandie, 2026–2027</dd></div>
+                        </dl>
+                        <a href="#dossier" class="work-open">▼ OUVRIR LE DOSSIER</a>
+                    </div>
+                </div>
+                <div class="os-statusbar">
+                    <span class="os-path">C:\babo\oscar\tiroir\112_le_bruit_de_l_eau</span>
+                    <span class="os-count">110 Matérialité de l&#x27;image</span>
+                </div>
             </div>
         </section>
 
-        <section class="oscar-project-screen oscar-project-screen-text">
-            <div class="oscar-project-text-inner">
-                <p>L'eau est le milieu dans lequel la vie s'est transformée. Elle rend possible l'émergence des formes. Dans cette vidéo, l'intelligence artificielle est envisagée selon une logique similaire : une entité de données au sein de laquelle des images naissent.</p>
-                <p>En manipulant les paramètres de cette matrice numérique par un travail de méta-prompting, le processus de génération est progressivement détourné. Alors même que l'eau est demandée à l'image, elle est poussée à se décomposer de plus en plus, jusqu'à faire émerger du bruit. L'image quitte alors la représentation pour révéler sa matière première : un flux instable, où l'eau finit par se confondre avec le signal. Un travail de texte accompagne cette dérive, entre apparition et disparition.</p>
-            </div>
+        <!-- ÉCRAN 2 : le dossier ouvert, trait noir sur papier blanc.
+             L'onglet garde la position qu'il a dans le tiroir. -->
+        <section class="work-screen work-screen-dossier" id="dossier">
+            <article class="dossier-open tab-b">
+                <span class="dossier-open-tab">112&nbsp;&nbsp;Le bruit de l&#x27;eau</span>
+                <header class="dossier-open-head">
+                    <span>DOSSIER 112</span>
+                    <span>THÈME 110 : Matérialité de l&#x27;image</span>
+                </header>
+                <div class="dossier-open-text">
+                    <p>L'eau est le milieu dans lequel la vie s'est transformée. Elle rend possible l'émergence des formes. Dans cette vidéo, l'intelligence artificielle est envisagée selon une logique similaire : une entité de données au sein de laquelle des images naissent.</p>
+                    <p>En manipulant les paramètres de cette matrice numérique par un travail de méta-prompting, le processus de génération est progressivement détourné. Alors même que l'eau est demandée à l'image, elle est poussée à se décomposer de plus en plus, jusqu'à faire émerger du bruit. L'image quitte alors la représentation pour révéler sa matière première : un flux instable, où l'eau finit par se confondre avec le signal. Un travail de texte accompagne cette dérive, entre apparition et disparition.</p>
+                </div>
+                <nav class="dossier-nav" aria-label="Dossiers voisins dans le tiroir">
+                    <a href="deconstruction.html" class="dossier-nav-btn"><span aria-hidden="true">◀</span> 111 Dé-construction</a>
+                    <a href="../oscar-dujarrier.html#tiroir" class="dossier-nav-btn is-home">RANGER DANS LE TIROIR</a>
+                    <a href="stase.html" class="dossier-nav-btn">113 Rémanence <span aria-hidden="true">▶</span></a>
+                </nav>
+            </article>
         </section>
     </main>
 
+    <script>
+    /* Les ancres internes défilent dans le body (c'est lui qui scrolle) */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            var t = document.querySelector(a.getAttribute('href'));
+            if (!t) return;
+            e.preventDefault();
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        });
+    });
+    </script>
     <script type="module">
     /* ============================================================
        LE BRUIT DE L'EAU — décomposition de l'image en signal

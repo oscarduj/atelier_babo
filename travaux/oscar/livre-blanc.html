@@ -5,35 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LIVRE BLANC — OSCAR DUJARRIER // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../oscar.css">
+    <link rel="stylesheet" href="../../oscar.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page oscar-page oscar-project-page">
-    <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+<body class="standalone-page oscar-work">
+    <a href="../oscar-dujarrier.html#tiroir" class="back-link">← RANGER LE DOSSIER</a>
 
     <main class="artist-page-container">
-        <section class="oscar-project-screen oscar-project-screen-image">
-            <img src="../../images/travaux/oscar-projets/livre-blanc.jpg" alt="Livre blanc">
-            <span class="oscar-project-readout">Oscar Dujarrier // 07</span>
-            <span class="oscar-project-readout-right">Installation d'éditions</span>
-            <span class="oscar-project-scroll-hint">DÉFILER</span>
-            <div class="oscar-project-overlay">
-                <h1>Livre blanc</h1>
-                <span class="specs">Mars 2023 · Installation d'éditions · A4</span>
+        <!-- ÉCRAN 1 : la fenêtre qui « lit » l'œuvre — le logiciel et le
+             fichier changent selon le médium de la pièce. -->
+        <section class="work-screen work-screen-window">
+            <div class="os-window work-window">
+                <div class="os-titlebar">
+                    <span class="os-box" aria-hidden="true">–</span>
+                    <span class="os-title">IMPRESSION.EXE — livre_blanc.pdf</span>
+                    <span class="os-box" aria-hidden="true">▾</span>
+                    <span class="os-box" aria-hidden="true">▴</span>
+                </div>
+                <div class="os-menubar" aria-hidden="true">
+                    <span>FICHIER</span><span>AFFICHAGE</span><span>FENÊTRE</span><span>AIDE</span>
+                </div>
+                <div class="work-window-body">
+                    <div class="ow-view">
+                        <img src="../../images/travaux/oscar-projets/livre-blanc.jpg" alt="Livre blanc">
+                    </div>
+                    <div class="work-fiche">
+                        <h1 class="work-title">Livre blanc</h1>
+                        <dl class="os-fields work-fields">
+                            <div><dt>ANNÉE :</dt><dd>mars 2023</dd></div>
+                            <div><dt>MÉDIUM :</dt><dd>installation d&#x27;éditions</dd></div>
+                            <div><dt>FORMAT :</dt><dd>A4</dd></div>
+                        </dl>
+                        <a href="#dossier" class="work-open">▼ OUVRIR LE DOSSIER</a>
+                    </div>
+                </div>
+                <div class="os-statusbar">
+                    <span class="os-path">C:\babo\oscar\tiroir\122_livre_blanc</span>
+                    <span class="os-count">120 Saturation</span>
+                </div>
             </div>
         </section>
 
-        <section class="oscar-project-screen oscar-project-screen-text">
-            <div class="oscar-project-text-inner">
-                <p>Une édition rassemble des centaines d'articles de presse consacrés à la réforme des retraites, alors omniprésente dans les médias.</p>
-                <p>Extraits de leur support d'origine, les textes sont mis sur un pied d'égalité — imprimés, superposés, jusqu'à ce que les termes récurrents se chevauchent et que le sens cède la place au non-sens.</p>
-                <p>Conçue à l'origine comme un fichier numérique reproductible à l'infini, l'édition est pourtant exposée sous une forme qui la contredit : accrochée au mur, numérotée comme un tirage limité.</p>
-                <p>Un geste ironique qui critique la manière dont les institutions imposent aux œuvres nées de la reproductibilité les codes de l'unicité et de l'aura — un débat hérité de Walter Benjamin, prolongé jusqu'à l'esthétique post-média de Lev Manovich.</p>
-                <p class="project-entry-crossref">Mène à <a href="flux.html">Flux</a> (2023).</p>
-            </div>
+        <!-- ÉCRAN 2 : le dossier ouvert, trait noir sur papier blanc.
+             L'onglet garde la position qu'il a dans le tiroir. -->
+        <section class="work-screen work-screen-dossier" id="dossier">
+            <article class="dossier-open tab-b">
+                <span class="dossier-open-tab">122&nbsp;&nbsp;Livre blanc</span>
+                <header class="dossier-open-head">
+                    <span>DOSSIER 122</span>
+                    <span>THÈME 120 : Saturation</span>
+                </header>
+                <div class="dossier-open-text">
+                    <p>Une édition rassemble des centaines d'articles de presse consacrés à la réforme des retraites, alors omniprésente dans les médias.</p>
+                    <p>Extraits de leur support d'origine, les textes sont mis sur un pied d'égalité — imprimés, superposés, jusqu'à ce que les termes récurrents se chevauchent et que le sens cède la place au non-sens.</p>
+                    <p>Conçue à l'origine comme un fichier numérique reproductible à l'infini, l'édition est pourtant exposée sous une forme qui la contredit : accrochée au mur, numérotée comme un tirage limité.</p>
+                    <p>Un geste ironique qui critique la manière dont les institutions imposent aux œuvres nées de la reproductibilité les codes de l'unicité et de l'aura — un débat hérité de Walter Benjamin, prolongé jusqu'à l'esthétique post-média de Lev Manovich.</p>
+                    <p class="dossier-crossref">Mène à <a href="flux.html">175 Zettaoctets</a> (2023).</p>
+                </div>
+                <nav class="dossier-nav" aria-label="Dossiers voisins dans le tiroir">
+                    <a href="flux.html" class="dossier-nav-btn"><span aria-hidden="true">◀</span> 121 175 Zettaoctets</a>
+                    <a href="../oscar-dujarrier.html#tiroir" class="dossier-nav-btn is-home">RANGER DANS LE TIROIR</a>
+                    <a href="vivre-flux.html" class="dossier-nav-btn">123 Vivre à travers le flux <span aria-hidden="true">▶</span></a>
+                </nav>
+            </article>
         </section>
     </main>
+
+    <script>
+    /* Les ancres internes défilent dans le body (c'est lui qui scrolle) */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            var t = document.querySelector(a.getAttribute('href'));
+            if (!t) return;
+            e.preventDefault();
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        });
+    });
+    </script>
 </body>
 </html>
 

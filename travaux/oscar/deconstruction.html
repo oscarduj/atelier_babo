@@ -5,33 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DÉ-CONSTRUCTION — OSCAR DUJARRIER // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../oscar.css">
+    <link rel="stylesheet" href="../../oscar.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page oscar-page oscar-project-page">
-    <a href="../oscar-dujarrier.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+<body class="standalone-page oscar-work">
+    <a href="../oscar-dujarrier.html#tiroir" class="back-link">← RANGER LE DOSSIER</a>
 
     <main class="artist-page-container">
-        <section class="oscar-project-screen oscar-project-screen-image">
-            <img src="../../images/travaux/oscar-projets/deconstruction.jpg" alt="Dé-construction">
-            <span class="oscar-project-readout">Oscar Dujarrier // 05</span>
-            <span class="oscar-project-readout-right">Installation vidéo</span>
-            <span class="oscar-project-scroll-hint">DÉFILER</span>
-            <div class="oscar-project-overlay">
-                <h1>Dé-construction</h1>
-                <span class="specs">2024 · Installation vidéo</span>
+        <!-- ÉCRAN 1 : la fenêtre qui « lit » l'œuvre — le logiciel et le
+             fichier changent selon le médium de la pièce. -->
+        <section class="work-screen work-screen-window">
+            <div class="os-window work-window">
+                <div class="os-titlebar">
+                    <span class="os-box" aria-hidden="true">–</span>
+                    <span class="os-title">VISIONNEUSE.EXE — de-construction.jpg</span>
+                    <span class="os-box" aria-hidden="true">▾</span>
+                    <span class="os-box" aria-hidden="true">▴</span>
+                </div>
+                <div class="os-menubar" aria-hidden="true">
+                    <span>FICHIER</span><span>AFFICHAGE</span><span>FENÊTRE</span><span>AIDE</span>
+                </div>
+                <div class="work-window-body">
+                    <div class="ow-view">
+                        <img src="../../images/travaux/oscar-projets/deconstruction.jpg" alt="Dé-construction">
+                    </div>
+                    <div class="work-fiche">
+                        <h1 class="work-title">Dé-construction</h1>
+                        <dl class="os-fields work-fields">
+                            <div><dt>ANNÉE :</dt><dd>2024</dd></div>
+                            <div><dt>MÉDIUM :</dt><dd>installation vidéo</dd></div>
+                            <div><dt>DISPOSITIF :</dt><dd>cube lumineux sur socle</dd></div>
+                        </dl>
+                        <a href="#dossier" class="work-open">▼ OUVRIR LE DOSSIER</a>
+                    </div>
+                </div>
+                <div class="os-statusbar">
+                    <span class="os-path">C:\babo\oscar\tiroir\111_de-construction</span>
+                    <span class="os-count">110 Matérialité de l&#x27;image</span>
+                </div>
             </div>
         </section>
 
-        <section class="oscar-project-screen oscar-project-screen-text">
-            <div class="oscar-project-text-inner">
-                <p>Une image fragmentée en blocs de couleurs saturées, rejouée dans un dispositif sculptural : un cube lumineux monté sur socle.</p>
-                <p>La pièce interroge la manière dont l'image numérique se décompose en unités discrètes, une matière calculée plutôt qu'une surface continue.</p>
-                <p class="project-entry-crossref">Amorce le travail sur la matérialité de l'image poursuivi dans <a href="stase.html">Stase</a> et <a href="bruit-eau.html">Le bruit de l'eau</a>.</p>
-            </div>
+        <!-- ÉCRAN 2 : le dossier ouvert, trait noir sur papier blanc.
+             L'onglet garde la position qu'il a dans le tiroir. -->
+        <section class="work-screen work-screen-dossier" id="dossier">
+            <article class="dossier-open tab-a">
+                <span class="dossier-open-tab">111&nbsp;&nbsp;Dé-construction</span>
+                <header class="dossier-open-head">
+                    <span>DOSSIER 111</span>
+                    <span>THÈME 110 : Matérialité de l&#x27;image</span>
+                </header>
+                <div class="dossier-open-text">
+                    <p>Une image fragmentée en blocs de couleurs saturées, rejouée dans un dispositif sculptural : un cube lumineux monté sur socle.</p>
+                    <p>La pièce interroge la manière dont l'image numérique se décompose en unités discrètes, une matière calculée plutôt qu'une surface continue.</p>
+                    <p class="dossier-crossref">Amorce le travail sur la matérialité de l'image poursuivi dans <a href="stase.html">Rémanence</a> et <a href="bruit-eau.html">Le bruit de l'eau</a>.</p>
+                </div>
+                <nav class="dossier-nav" aria-label="Dossiers voisins dans le tiroir">
+                    <span class="dossier-nav-btn is-empty" aria-hidden="true"></span>
+                    <a href="../oscar-dujarrier.html#tiroir" class="dossier-nav-btn is-home">RANGER DANS LE TIROIR</a>
+                    <a href="bruit-eau.html" class="dossier-nav-btn">112 Le bruit de l&#x27;eau <span aria-hidden="true">▶</span></a>
+                </nav>
+            </article>
         </section>
     </main>
+
+    <script>
+    /* Les ancres internes défilent dans le body (c'est lui qui scrolle) */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            var t = document.querySelector(a.getAttribute('href'));
+            if (!t) return;
+            e.preventDefault();
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        });
+    });
+    </script>
 </body>
 </html>
 
