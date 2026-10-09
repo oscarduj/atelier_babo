@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
+           en revenant d'une autre page du site, on arrive directement sur
+           l'accueil. Posé dans <head> pour éviter tout flash. */
+        try { if (sessionStorage.getItem('babo_entered')) document.documentElement.classList.add('booted'); } catch (e) {}
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
@@ -1002,6 +1008,7 @@
         }
 
         function dismissBootOverlay() {
+            try { sessionStorage.setItem('babo_entered', '1'); } catch (e) {}
             const overlay = document.getElementById('boot-overlay');
             overlay.classList.add('dismissed');
             setTimeout(() => { overlay.style.display = 'none'; }, 900);
@@ -1066,7 +1073,25 @@
             })
             .to(inviteEl, { opacity: 1, duration: 1.2, ease: 'power2.out' }, '+=1.1');
         }
-        runGateSequence();
+        const ALREADY_ENTERED = document.documentElement.classList.contains('booted');
+        if (ALREADY_ENTERED) {
+            const ov = document.getElementById('boot-overlay');
+            if (ov) ov.style.display = 'none';
+            // Le son ne peut démarrer qu'après un geste du visiteur.
+            const resume = () => {
+                if (soundEnabled) {
+                    startAmbient();
+                    const lbl = document.getElementById('ambient-text');
+                    if (lbl) lbl.textContent = 'ON';
+                }
+                document.removeEventListener('pointerdown', resume);
+                document.removeEventListener('keydown', resume);
+            };
+            document.addEventListener('pointerdown', resume);
+            document.addEventListener('keydown', resume);
+        } else {
+            runGateSequence();
+        }
 
         /* ============ FIN SYSTÈME DE BOOT ============ */
 
@@ -1589,7 +1614,7 @@
         const container = document.getElementById('boot-gate-square');
         const gate = document.getElementById('boot-gate');
 
-        if (container && gate) {
+        if (container && gate && !document.documentElement.classList.contains('booted')) {
             let scene, camera, renderer, cubeMesh, keyLight, particles, particleMaterial;
             let rotY = 0;
             let proximity = 0;

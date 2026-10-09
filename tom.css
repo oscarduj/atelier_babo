@@ -401,3 +401,146 @@ body.tom-hub .tn-name {
     .tw-keys a, .tw-keys span { flex: 1; justify-content: center; }
 }
 
+/* ============================================================
+   CONSOLE RÉTROFUTURISTE (réf. terminaux de Fallout, panneaux du
+   Nostromo) : boîtier en plastique beige avec vis, voyants, plaque
+   et grille d'aération ; plusieurs phosphores selon les écrans
+   (vert pour l'objet, ambre pour les panneaux, cyan pour l'index,
+   rouge pour les alertes). Tout en CSS : aucune page à modifier.
+   ============================================================ */
+body.tom-hub {
+    --amber: #ffb341;
+    --cyan: #5fe1ff;
+    --red: #ff4b3e;
+    --orange: #ff8a2a;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 179, 65, 0.06), transparent 60%),
+        #15140f;
+}
+
+/* --- Le boîtier --- */
+.tn-bezel {
+    position: relative;
+    padding: 1.2rem 1.2rem 3.4rem;
+    background: linear-gradient(180deg, #e6dcc5 0%, #d6cbb1 55%, #c4b89c 100%);
+    border-radius: 18px;
+    box-shadow:
+        0 0 0 2px #8f8670,
+        0 22px 50px rgba(0, 0, 0, 0.65),
+        inset 0 2px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -4px 0 rgba(0, 0, 0, 0.16);
+}
+/* quatre vis, une dans chaque coin */
+.tn-bezel::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    pointer-events: none;
+    --screw: radial-gradient(circle, #5f584b 0 2px, #8a8170 2.5px 4px, #b8ad94 4.5px, transparent 6px);
+    background:
+        var(--screw) left top / 14px 14px no-repeat,
+        var(--screw) right top / 14px 14px no-repeat,
+        var(--screw) left bottom / 14px 14px no-repeat,
+        var(--screw) right bottom / 14px 14px no-repeat;
+}
+/* bandeau du bas : voyants, plaque d'identification, grille d'aération */
+.tn-bezel::after {
+    content: "TL-SYS · TERMINAL DE CONSULTATION · MOD. 2026";
+    position: absolute;
+    left: 1.6rem;
+    right: 1.6rem;
+    bottom: 0.85rem;
+    height: 1.7rem;
+    display: flex;
+    align-items: center;
+    padding-left: 6.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    color: #5b5446;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background:
+        radial-gradient(circle at 10px 50%, #ff4b3e 0 5px, #7a2a22 5.5px 6.5px, transparent 7px),
+        radial-gradient(circle at 30px 50%, #ffb341 0 5px, #7a5a20 5.5px 6.5px, transparent 7px),
+        radial-gradient(circle at 50px 50%, #3dff6e 0 5px, #1f6a33 5.5px 6.5px, transparent 7px),
+        radial-gradient(circle at 70px 50%, #5fe1ff 0 5px, #24616e 5.5px 6.5px, transparent 7px),
+        repeating-linear-gradient(90deg, #8f8670 0 2px, transparent 2px 6px) right center / 7rem 70% no-repeat;
+}
+.tn-crt {
+    border-radius: 14px;
+    border: 3px solid #23221d;
+    box-shadow:
+        0 0 0 2px #8f8670,
+        inset 0 0 70px rgba(57, 255, 110, 0.07),
+        inset 0 0 18px rgba(0, 0, 0, 0.9);
+    background: radial-gradient(ellipse at 50% 45%, #07100a 0%, #020503 80%);
+}
+
+/* --- Phosphores : chaque zone a sa couleur --- */
+.tn-side,
+.tom-work .tn-side {
+    --g: var(--amber);
+    --g-mid: rgba(255, 179, 65, 0.62);
+    --g-dim: rgba(255, 179, 65, 0.3);
+    --g-glow: 0 0 6px rgba(255, 179, 65, 0.5);
+    color: var(--g);
+    border-color: rgba(255, 179, 65, 0.3);
+}
+#tn-index .tn-crt {
+    --g: var(--cyan);
+    --g-mid: rgba(95, 225, 255, 0.62);
+    --g-dim: rgba(95, 225, 255, 0.3);
+    --g-glow: 0 0 6px rgba(95, 225, 255, 0.5);
+    color: var(--g);
+    box-shadow: 0 0 0 2px #8f8670, inset 0 0 70px rgba(95, 225, 255, 0.07), inset 0 0 18px rgba(0, 0, 0, 0.9);
+    background: radial-gradient(ellipse at 50% 45%, #061015 0%, #020405 80%);
+}
+.tn-foot {
+    --g: var(--orange);
+    color: var(--orange);
+    text-shadow: 0 0 6px rgba(255, 138, 42, 0.5);
+}
+.tn-transmission .tn-tag { color: var(--amber); text-shadow: 0 0 6px rgba(255, 179, 65, 0.5); }
+
+/* Alertes en rouge */
+.tn-blink,
+.td-state.is-live,
+.tom-work .tn-profile dd.tn-blink {
+    color: var(--red);
+    text-shadow: 0 0 6px rgba(255, 75, 62, 0.6);
+}
+.tn-table tr.is-active .td-state.is-live { color: #000000; text-shadow: none; }
+
+/* Touches à capuchons de couleur */
+.tn-axes li:nth-child(1) b,
+.tw-keys > :nth-child(1) b { color: var(--red); border-color: var(--red); }
+.tn-axes li:nth-child(2) b,
+.tw-keys > :nth-child(2) b { color: var(--amber); border-color: var(--amber); }
+.tn-axes li:nth-child(3) b,
+.tw-keys > :nth-child(3) b { color: var(--cyan); border-color: var(--cyan); }
+.tn-axes li:nth-child(4) b { color: #3dff6e; border-color: #3dff6e; }
+.tn-keys button[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); }
+
+/* Bandeau de titre : vert sur l'écran principal, cyan sur l'index */
+#tn-index .tn-band { background: var(--cyan); }
+.tom-work .tn-band { background: var(--amber); }
+
+/* Bouton retour : plaque beige du boîtier */
+body.tom-hub .back-link {
+    background: #d6cbb1;
+    color: #3c372d;
+    border: 1px solid #8f8670;
+    text-shadow: none;
+}
+
+@media (max-width: 900px) {
+    .tn-bezel { padding: 0.7rem 0.7rem 3rem; border-radius: 14px; }
+    .tn-bezel::after {
+        content: "TL-SYS · MOD. 2026";
+        left: 1rem;
+        right: 1rem;
+        padding-left: 5.6rem;
+        font-size: 0.56rem;
+    }
+}
+
