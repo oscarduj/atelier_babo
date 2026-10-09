@@ -211,6 +211,15 @@
         ['COSSERAT', 'travaux/tom/cosserat.html'],
     ];
 
+    var COLLAB = [
+        ['g0she', 'artistes/goshe.html', null],
+        ['Nino', 'artistes/nino.html', null],
+        ['quideNovie', 'artistes/quidenovie.html', null],
+        ['collectif naïf', 'artistes/collectif-naif.html', null],
+        ['Hugo Denise', 'artistes/hugo-denise.html', null],
+        ['Léon Chotard', 'artistes/leon-chotard.html', null],
+    ];
+
     var TREE = [
         ['01. ACCUEIL', 'index.html#accueil', null],
         ['02. TRAVAUX', 'index.html#travaux', [
@@ -221,7 +230,7 @@
             ['Wenjie Tong', 'travaux/wenjie-tong.html', null],
         ]],
         ['03. CURATION', 'index.html#curation', null],
-        ['04. COLLABORATEURS', 'index.html#collaborateurs', null],
+        ['04. COLLABORATEURS', 'index.html#collaborateurs', COLLAB],
         ['05. EXPOS', 'index.html#expos', null],
         ['06. SOUTIEN', 'index.html#soutien', null],
         ['07. CONTACT', 'index.html#contact', null],
