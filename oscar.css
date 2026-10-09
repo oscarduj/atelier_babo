@@ -102,10 +102,13 @@ body.oscar-page {
 }
 
 /* ============================================================
-   PAGE HUB — défilement en plein écran (même mécanique que la page
-   d'accueil du site : chaque écran se cale en place). Écran 1 bleu
-   électrique avec la démarche centrée en grand ; écran 2 blanc pour
-   la galerie des travaux.
+   PAGE HUB — trois écrans.
+   1. Accueil : une fenêtre de système ancien sur l'écran bleu,
+      mélange de trois références (fenêtre Notepad, menu de
+      magnétoscope, texte surligné). Une seule image tramée bleu/crème.
+   2. Le tiroir de classement : trait noir sur papier blanc, les
+      dossiers montent au survol, le clic ouvre la page du projet.
+   3. Généalogie, collectif, contact.
    ============================================================ */
 body.oscar-hub {
     display: block;
@@ -113,21 +116,30 @@ body.oscar-hub {
     height: 100dvh;
     overflow-y: scroll;
     overflow-x: hidden;
-    scroll-snap-type: y mandatory;
-    --bg-color: #1414e2;
-    --text-color: #ffffff;
-    --accent-color: #f5e83c;
-    --secondary-color: #f5e83c;
-    --border-color: rgba(255, 255, 255, 0.3);
-    --box-bg: rgba(255, 255, 255, 0.04);
-    --desc-color: rgba(255, 255, 255, 0.75);
+    scroll-snap-type: y proximity;
+    --o-blue: #1414e2;
+    --o-cream: #eae8d6;
+    --o-ink: #000000;
+    --o-paper: #ffffff;
+    --bg-color: var(--o-blue);
+    --text-color: var(--o-cream);
+    --accent-color: var(--o-cream);
+    --secondary-color: var(--o-cream);
+    --border-color: rgba(234, 232, 214, 0.35);
+    --box-bg: rgba(234, 232, 214, 0.04);
+    --desc-color: rgba(234, 232, 214, 0.75);
 }
+/* Pastille bleue : reste lisible aussi bien sur le bleu que sur le blanc */
 body.oscar-hub .back-link {
-    color: rgba(255, 255, 255, 0.8);
     position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 20;
+    top: 1.2rem;
+    left: 1.2rem;
+    z-index: 60;
+    margin: 0;
+    padding: 0.35rem 0.6rem;
+    background: var(--o-blue);
+    color: var(--o-cream);
+    border: 1px solid var(--o-cream);
 }
 body.oscar-hub .artist-page-container {
     max-width: none;
@@ -136,113 +148,435 @@ body.oscar-hub .artist-page-container {
     width: 100%;
 }
 
-/* --- Écran 1 : bleu électrique, démarche centrée en grand --- */
+/* ---------- ÉCRAN 1 : la fenêtre ---------- */
 .oscar-screen-hero {
-    position: relative;
     min-height: 100vh;
     min-height: 100dvh;
     scroll-snap-align: start;
+    background: var(--o-blue);
+    color: var(--o-cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4.5rem 5vw 3rem;
+}
+.os-window {
+    width: min(100%, 980px);
+    border: 1.5px solid var(--o-cream);
+    outline: 1.5px solid var(--o-cream);
+    outline-offset: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--o-cream);
+}
+.os-titlebar {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: stretch;
+    border-bottom: 1.5px solid var(--o-cream);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+.os-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    border-right: 1.5px solid var(--o-cream);
+}
+.os-box + .os-box,
+.os-title + .os-box { border-right: none; border-left: 1.5px solid var(--o-cream); }
+.os-title {
+    text-align: center;
+    padding: 0.45rem 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.os-menubar {
+    display: flex;
+    gap: 2.4rem;
+    padding: 0.35rem 1rem;
+    border-bottom: 1.5px solid var(--o-cream);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    opacity: 0.5;
+}
+.os-body {
+    padding: clamp(1.1rem, 2.4vw, 1.8rem);
+}
+/* Le nom en grand, en bas de casse, comme le titre « about me » de la référence */
+body.oscar-hub .os-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    text-transform: none;
+    font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    color: var(--o-cream);
+    margin: 0 0 1.2rem;
+}
+.os-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
+    gap: clamp(1.2rem, 3vw, 2.4rem);
+    align-items: start;
+}
+.os-trame { margin: 0; }
+.os-trame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    border: 1.5px solid var(--o-cream);
+}
+.os-fields {
+    margin: 0 0 1.4rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+.os-fields div { display: flex; gap: 0.6em; }
+.os-fields dt { flex-shrink: 0; opacity: 0.7; }
+.os-fields dd { margin: 0; }
+/* Surlignage plein, ligne par ligne */
+.os-demarche {
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    line-height: 1.7;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 0;
+}
+.os-demarche span {
+    background: var(--o-cream);
+    color: var(--o-blue);
+    padding: 0.08em 0.3em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+/* Séparateur en caractères, coupé à la largeur de la fenêtre */
+.os-rule {
+    margin: 1.3rem 0 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1;
+    letter-spacing: 2px;
+}
+.os-rule::before {
+    content: "****************************************************************************************************************************************";
+}
+
+/* Menu façon magnétoscope */
+.vcr-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 0.6rem;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    letter-spacing: 2px;
+}
+.vcr-head::before,
+.vcr-head::after {
+    content: "";
+    flex: 1;
+    border-top: 2px dashed var(--o-cream);
+}
+.vcr-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 clamp(1rem, 6vw, 4rem);
+}
+.vcr-item {
+    display: inline-block;
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+    line-height: 1.45;
+    letter-spacing: 1px;
+    color: var(--o-cream);
+    text-decoration: none;
+    padding: 0 0.25em;
+}
+.vcr-item.is-selected {
+    background: var(--o-cream);
+    color: var(--o-blue);
+}
+.vcr-item:focus-visible {
+    outline: 1.5px dashed var(--o-cream);
+    outline-offset: 3px;
+}
+.vcr-keys {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 2.2rem;
+    margin: 0.9rem 0 0;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    opacity: 0.65;
+}
+.os-statusbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1.5px solid var(--o-cream);
+    padding: 0.35rem 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+}
+.os-path {
+    flex: 1;
+    border: 1px solid rgba(234, 232, 214, 0.45);
+    padding: 0.1rem 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.os-count {
+    border: 1px solid rgba(234, 232, 214, 0.45);
+    padding: 0.1rem 0.5rem;
+    white-space: nowrap;
+}
+
+/* ---------- ÉCRAN 2 : le tiroir ----------
+   Haut de l'écran = fond du tiroir. Chaque dossier est posé à
+   --i × --step du haut ; ceux de devant passent par-dessus. Les
+   dossiers du fond sont un peu plus étroits, comme dans la référence. */
+.oscar-screen-tiroir {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    background: var(--o-paper);
+    color: var(--o-ink);
+    padding: 4.5rem 6vw 4rem;
+    --step: 32px;
+    --tab-h: 30px;
+    --body-h: 220px;
+    --rise: 140px;
+}
+.tiroir-legend {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: #555555;
+    text-align: center;
+    margin: 0 0 -2.5rem;
+    position: relative;
+    z-index: 0;
+}
+.legend-touch { display: none; }
+@media (hover: none) {
+    .legend-pointer { display: none; }
+    .legend-touch { display: inline; }
+}
+.tab-code { margin-right: 0.9em; }
+.tiroir {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding-top: calc(var(--rise) - var(--step));
+}
+.tiroir-stack {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: calc((var(--n) - 1) * var(--step) + var(--tab-h) + var(--body-h));
+}
+/* Parois du tiroir */
+.tiroir-stack::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--tab-h) + 12px);
+    bottom: 0;
+    left: 0.5%;
+    right: 0.5%;
+    border-left: 1.5px solid var(--o-ink);
+    border-right: 1.5px solid var(--o-ink);
+}
+.dossier {
+    --inset: calc((var(--n) - 1 - var(--i)) * 0.45% + 2%);
+    position: absolute;
+    top: calc(var(--i) * var(--step) + var(--tab-h));
+    left: var(--inset);
+    right: var(--inset);
+    height: var(--body-h);
+    background: var(--o-paper);
+    border: 1.5px solid var(--o-ink);
+    border-radius: 4px 4px 0 0;
+    z-index: calc(var(--i) + 1);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dossier-link {
+    position: absolute;
+    inset: 0;
+    color: var(--o-ink);
+    text-decoration: none;
+}
+.dossier-link:focus-visible { outline: none; }
+
+/* Onglet : trapèze obtenu en inclinant le pseudo-élément en perspective,
+   ce qui garde des bords nets. Il déborde de 2px vers le bas pour
+   masquer le bord du dossier : l'onglet s'ouvre dans le dossier. */
+.dossier-tab {
+    position: absolute;
+    bottom: calc(100% - 1px);
+    left: var(--tab-x, 30%);
+    width: var(--tab-w, 33%);
+    height: var(--tab-h);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dossier-tab::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -3px 0;
+    z-index: -1;
+    background: var(--o-paper);
+    border: 1.5px solid var(--o-ink);
+    border-bottom: none;
+    border-radius: 7px 7px 0 0;
+    transform: perspective(70px) rotateX(16deg);
+    transform-origin: bottom;
+    transition: background-color 0.25s ease;
+}
+.tab-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 0 0.9rem;
+    transition: color 0.25s ease;
+}
+.dossier.tab-a { --tab-x: 30%; }
+.dossier.tab-b { --tab-x: 64%; }
+
+/* Intercalaires : catégorie = porte-étiquette noir ; thème = texte en capitales */
+.dossier.is-cat,
+.dossier.is-theme { --tab-x: 2%; --tab-w: 30%; }
+.dossier.is-theme { --tab-w: 38%; }
+.is-cat .tab-label {
+    background: var(--o-ink);
+    color: var(--o-paper);
+    border-radius: 4px;
+    padding: 0.15rem 0.7rem;
+    margin: 0 0.6rem;
+    box-shadow: 0 0 0 2px var(--o-paper), 0 0 0 3.5px var(--o-ink);
+}
+.is-theme .tab-label { font-weight: 700; letter-spacing: 1px; }
+.is-soon .tab-label {
+    background: transparent;
+    color: #8a8a8a;
+    box-shadow: 0 0 0 1.5px #b5b5b5;
+}
+.tab-soon {
+    position: absolute;
+    left: calc(100% + 0.6rem);
+    bottom: 0.45rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: #8a8a8a;
+    white-space: nowrap;
+}
+
+/* Le dossier sort du tiroir */
+.dossier-fiche {
+    position: absolute;
+    top: 14px;
+    left: 4%;
+    right: 4%;
+    height: calc(var(--rise) - 24px);
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.fiche-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+}
+.fiche-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.25rem, 3vw, 1.9rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+.fiche-specs {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: #333333;
+}
+.fiche-thumb {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 1.5px solid var(--o-ink);
+    flex-shrink: 0;
+}
+@media (hover: hover) {
+    .dossier.is-work:hover { transform: translateY(calc(-1 * var(--rise))); }
+    .dossier.is-work:hover .dossier-fiche { opacity: 1; }
+    .dossier.is-work:hover .dossier-tab::before { background: var(--o-ink); }
+    .dossier.is-work:hover .tab-label { color: var(--o-paper); }
+}
+.dossier.is-work.is-up,
+.dossier.is-work:focus-within { transform: translateY(calc(-1 * var(--rise))); }
+.dossier.is-work.is-up .dossier-fiche,
+.dossier.is-work:focus-within .dossier-fiche { opacity: 1; }
+.dossier.is-work.is-up .dossier-tab::before,
+.dossier.is-work:focus-within .dossier-tab::before { background: var(--o-ink); }
+.dossier.is-work.is-up .tab-label,
+.dossier.is-work:focus-within .tab-label { color: var(--o-paper); }
+.dossier.is-work:focus-within .dossier-tab::before {
+    outline: 1.5px dashed var(--o-ink);
+    outline-offset: 3px;
+}
+
+/* Façade du tiroir, par-dessus le bas des dossiers */
+.tiroir-facade {
+    position: relative;
+    z-index: 100;
+    /* doit couvrir tout le bas des dossiers : hauteur ≥ recouvrement */
+    height: calc(var(--body-h) - 36px);
+    margin-top: calc(-1 * (var(--body-h) - 44px));
+    background: var(--o-paper);
+    border: 1.5px solid var(--o-ink);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 6rem 6vw;
-    background: #1414e2;
-    overflow: hidden;
+    gap: 1.4rem;
 }
-.oscar-hero-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 2px;
-    opacity: 0.75;
-    display: block;
-    margin-bottom: 1rem;
-}
-.oscar-hero-name {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(2.6rem, 6.5vw, 4.8rem);
-    line-height: 1;
-    margin: 0 0 2.5rem;
-}
-
-/* Callouts dans les 4 coins — fragments authentiques de la démarche
-   d'Oscar, pas des chiffres inventés. Masqués sur petit écran (voir
-   media query plus bas) pour ne pas surcharger le mobile. */
-.oscar-hero-callout {
-    position: absolute;
+.facade-etiquette {
     font-family: 'Share Tech Mono', monospace;
     font-size: 0.72rem;
-    line-height: 1.6;
-    max-width: 230px;
-    opacity: 0.6;
-    text-align: left;
+    line-height: 1.35;
+    text-align: center;
+    border: 1.5px solid var(--o-ink);
+    border-radius: 3px;
+    padding: 0.3rem 0.9rem;
 }
-.oscar-hero-callout .callout-num {
-    color: #f5e83c;
-    opacity: 1;
-    margin-right: 0.3em;
+.facade-poignee {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.oscar-hero-callout .callout-title {
+.facade-poignee i {
     display: block;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.2rem;
+    width: 120px;
+    height: 18px;
+    border: 1.5px solid var(--o-ink);
+    border-radius: 9px;
+    background: var(--o-paper);
+    margin-top: -6px;
 }
-.oscar-hero-callout-tl { top: 2.5rem; left: 2.5rem; }
-.oscar-hero-callout-tr { top: 2.5rem; right: 2.5rem; text-align: right; }
-.oscar-hero-callout-bl { bottom: 2.5rem; left: 2.5rem; }
-.oscar-hero-callout-br { bottom: 2.5rem; right: 2.5rem; text-align: right; }
+.facade-poignee i:first-child { margin-top: 0; width: 104px; }
 
-/* Deux images (issues de ses propres travaux) teintées en bleu-duotone,
-   encadrant la citation en haut et en bas — rotation lente et continue
-   pour un aspect fini, comme un objet qu'on regarde tourner sur un socle. */
-.oscar-hero-accent-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto 1.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    animation: oscar-accent-spin 26s linear infinite;
-}
-.oscar-hero-accent-img.is-bottom {
-    margin: 2rem auto 0;
-    animation-duration: 32s;
-    animation-direction: reverse;
-}
-.oscar-hero-accent-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(1) sepia(1) hue-rotate(182deg) saturate(4.5) brightness(0.95);
-}
-@keyframes oscar-accent-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Démarche : dominante, centrée, chaque ligne surlignée grâce à
-   box-decoration-break, comme un texte passé au marqueur — mise en
-   page élargie pour mieux occuper l'écran. */
-.oscar-demarche-quote {
-    max-width: 1180px;
-}
-.oscar-demarche-quote p {
-    display: inline;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(1.05rem, 2.4vw, 1.55rem);
-    line-height: 2.3;
-    background: #f5e83c;
-    color: #14149c;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    padding: 0.12em 0.35em;
-}
-
-/* --- Écran 2 : fond blanc, la galerie des travaux --- */
+/* ---------- ÉCRAN 3 : généalogie, collectif, contact ---------- */
 .oscar-screen-gallery {
     min-height: 100vh;
     min-height: 100dvh;
@@ -269,17 +603,8 @@ body.oscar-hub .artist-page-container {
     margin-bottom: 2rem;
     text-transform: uppercase;
 }
-
-/* --- Mind map : généalogie des projets --- */
 .oscar-mindmap-section { padding: 0 0 4rem; }
-.oscar-mindmap-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    opacity: 0.7;
-    margin-bottom: 2.5rem;
-    text-transform: uppercase;
-}
+.oscar-mindmap-section h3 { opacity: 0.7; margin-bottom: 2.5rem; }
 .mindmap-branch {
     display: flex;
     align-items: center;
@@ -298,90 +623,197 @@ body.oscar-hub .artist-page-container {
     gap: 0.25rem;
     line-height: 1.3;
 }
-.mindmap-node span {
-    font-size: 0.68rem;
-    color: #666666;
-}
-.mindmap-node-end {
-    border-color: #14149c;
-    color: #14149c;
-}
-.mindmap-arrow {
-    font-size: 1.1rem;
-    color: #14149c;
-    opacity: 0.5;
-    flex-shrink: 0;
-}
-.mindmap-node-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
+.mindmap-node span { font-size: 0.68rem; color: #666666; }
+.mindmap-node-end { border-color: #14149c; color: #14149c; }
+.mindmap-arrow { font-size: 1.1rem; color: #14149c; opacity: 0.5; flex-shrink: 0; }
+.mindmap-node-group { display: flex; flex-direction: column; gap: 0.7rem; }
+
+/* Laisser la place à la barre latérale sur grand écran */
+@media (min-width: 901px) {
+    .oscar-screen-hero { padding-left: max(5vw, 4.5rem); }
+    .oscar-screen-tiroir,
+    .oscar-screen-gallery { padding-left: max(6vw, 5rem); }
 }
 
-/* --- Galerie : défilement horizontal, une image par travail, clic vers sa page —
-   même mécanique que le carrousel des Collaborateurs sur l'accueil du site. */
-.oscar-gallery-section { padding: 1rem 0 3rem; }
-.oscar-gallery-grid {
-    display: flex;
-    gap: 1.6rem;
-    overflow-x: auto;
-    padding: 0.5rem 0 1.5rem;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    scrollbar-color: #14149c rgba(20, 20, 156, 0.15);
+/* Sous 900px, le menu hamburger occupe le coin gauche : retour à droite */
+@media (max-width: 900px) {
+    body.oscar-hub .back-link { left: auto; right: 1rem; top: 1rem; font-size: 0.72rem; }
 }
-.oscar-gallery-grid::-webkit-scrollbar { height: 4px; }
-.oscar-gallery-grid::-webkit-scrollbar-thumb { background-color: #14149c; }
-.oscar-gallery-item {
-    min-width: 240px;
-    max-width: 240px;
-    flex-shrink: 0;
-    scroll-snap-align: start;
-    text-decoration: none;
-    color: #0a0a0a;
-    display: block;
-    transition: transform 0.3s ease;
-}
-.oscar-gallery-item:hover { transform: translateY(-4px); }
-.oscar-gallery-thumb {
-    height: 280px;
-    overflow: hidden;
-    margin-bottom: 0.7rem;
-    background: rgba(20, 20, 156, 0.04);
-}
-.oscar-gallery-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(0.35) contrast(1.05);
-    transition: transform 0.45s ease, filter 0.45s ease;
-    display: block;
-}
-.oscar-gallery-item:hover .oscar-gallery-thumb img {
-    transform: scale(1.06);
-    filter: grayscale(0) contrast(1);
-}
-.oscar-gallery-title {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1.25rem;
-    display: block;
-    color: #0a0a0a;
-}
-.oscar-gallery-date {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: #666666;
-    letter-spacing: 0.5px;
+@media (min-width: 901px) {
+    body.oscar-hub .back-link { left: 3.2rem; }
 }
 
 @media (max-width: 760px) {
-    .oscar-hero-callout { display: none; }
-    .oscar-screen-hero, .oscar-screen-gallery {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+    .oscar-screen-hero { padding: 4.2rem 1rem 2rem; align-items: flex-start; }
+    .os-window { outline-offset: 3px; }
+    .os-titlebar { font-size: 0.68rem; }
+    .os-menubar { gap: 1.2rem; font-size: 0.68rem; }
+    .os-intro { grid-template-columns: 1fr; }
+    .os-trame { max-width: 360px; }
+    .os-fields { font-size: 0.8rem; }
+    .os-fields div { flex-direction: column; gap: 0; margin-bottom: 0.35rem; }
+    .os-statusbar { font-size: 0.68rem; }
+
+    .oscar-screen-tiroir {
+        padding: 4.2rem 0.8rem 3rem;
+        --step: 31px;
+        --tab-h: 28px;
+        --body-h: 220px;
+        --rise: 140px;
     }
+    .tab-label { font-size: 0.66rem; padding: 0 0.35rem; }
+    .is-work .tab-code { display: none; }
+    .dossier.tab-a { --tab-x: 4%; --tab-w: 50%; }
+    .dossier.tab-b { --tab-x: 47%; --tab-w: 50%; }
+    .dossier.is-cat { --tab-w: 40%; }
+    .dossier.is-theme { --tab-w: 62%; }
+    .is-cat .tab-label { padding: 0.1rem 0.5rem; margin: 0 0.4rem; }
+    .fiche-thumb { width: 92px; height: 92px; align-self: flex-end; }
+    .fiche-specs { font-size: 0.68rem; }
+
+    .oscar-screen-gallery { padding-left: 1.5rem; padding-right: 1.5rem; }
     .mindmap-branch { flex-direction: column; align-items: flex-start; }
     .mindmap-arrow { transform: rotate(90deg); margin-left: 1.5rem; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .dossier,
+    .dossier-fiche,
+    .dossier-tab::before,
+    .tab-label { transition: none; }
+}
+
+/* ============================================================
+   PAGES DE PROJET — défilement plein écran façon TikTok : l'image
+   occupe tout l'écran, le texte suit sur l'écran d'après. Informations
+   techniques en surimpression (repère, medium) pour un rendu pro.
+   ============================================================ */
+body.oscar-project-page {
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+}
+body.oscar-project-page .back-link {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 30;
+    mix-blend-mode: difference;
+}
+body.oscar-project-page .artist-page-container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.oscar-project-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+/* Écran image : plein cadre, repères techniques en coin façon viseur */
+.oscar-project-screen-image {
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: #000000;
+}
+.oscar-project-screen-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.oscar-project-screen-image::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.25) 42%, transparent 68%);
+    z-index: 1;
+}
+.oscar-project-readout {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+}
+.oscar-project-readout-right {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    z-index: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: right;
+    text-transform: uppercase;
+}
+.oscar-project-scroll-hint {
+    position: absolute;
+    bottom: 1.6rem;
+    right: 2rem;
+    z-index: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.55);
+    writing-mode: vertical-rl;
+    animation: oscar-scroll-hint-blink 2s ease-in-out infinite;
+}
+@keyframes oscar-scroll-hint-blink {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+.oscar-project-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 3rem 3rem 4rem;
+    width: 100%;
+}
+.oscar-project-overlay h1 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6.5vw, 4.4rem);
+    color: #ffffff;
+    margin: 0 0 0.6rem;
+    text-transform: none;
+    line-height: 1.05;
+}
+.oscar-project-overlay .specs {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.5px;
+}
+
+/* Écran texte */
+.oscar-project-screen-text {
+    display: flex;
+    align-items: center;
+    background: #050505;
+    padding: 6rem 6vw;
+}
+.oscar-project-text-inner { max-width: 740px; margin: 0 auto; width: 100%; }
+.oscar-project-text-inner p {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: #9a9a9a;
+    margin-bottom: 1.4rem;
+}
+.oscar-project-text-inner p:last-child { margin-bottom: 0; }
+.oscar-project-text-inner .project-entry-crossref { margin-top: 1.4rem; }
 

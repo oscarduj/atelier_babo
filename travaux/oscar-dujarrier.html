@@ -14,112 +14,217 @@
 
     <main class="artist-page-container">
 
-        <!-- ÉCRAN 1 : bleu électrique, démarche centrée en grand.
-             Espace prévu pour des objets blancs en rotation (à venir). -->
-        <section class="oscar-screen-hero">
-            <div class="oscar-hero-callout oscar-hero-callout-tl">
-                <span class="callout-title"><span class="callout-num">{1}</span>Formes hybrides</span>
-                Installation vidéo, sculpture et dispositifs numériques qui se répondent et se contaminent
-            </div>
-            <div class="oscar-hero-callout oscar-hero-callout-tr">
-                <span class="callout-title"><span class="callout-num">{2}</span>Matérialité</span>
-                Traduire l'image numérique sous d'autres formes, la rendre de nouveau tangible
-            </div>
-            <div class="oscar-hero-callout oscar-hero-callout-bl">
-                <span class="callout-title"><span class="callout-num">{3}</span>Saturation</span>
-                Comment vivre la saturation médiatique et informationnelle qui structure nos images
-            </div>
-            <div class="oscar-hero-callout oscar-hero-callout-br">
-                <span class="callout-title"><span class="callout-num">{4}</span>Environnements techniques</span>
-                Interroger leurs impacts socio-politiques et environnementaux
-            </div>
+        <!-- ÉCRAN 1 : une fenêtre de système ancien posée sur l'écran bleu.
+             Mélange des trois références : cadre de fenêtre (Notepad),
+             menu à sélection (magnétoscope), texte surligné (S4AD). -->
+        <section class="oscar-screen-hero" id="accueil-oscar">
+            <div class="os-window">
+                <div class="os-titlebar">
+                    <span class="os-box" aria-hidden="true">–</span>
+                    <span class="os-title">OSCAR_DUJARRIER.EXE — demarche.txt</span>
+                    <span class="os-box" aria-hidden="true">▾</span>
+                    <span class="os-box" aria-hidden="true">▴</span>
+                </div>
+                <div class="os-menubar" aria-hidden="true">
+                    <span>FICHIER</span><span>OPTIONS</span><span>FENÊTRE</span><span>AIDE</span>
+                </div>
 
-            <span class="oscar-hero-tag">PORTFOLIO — 2026</span>
-            <h1 class="oscar-hero-name">Oscar Dujarrier</h1>
+                <div class="os-body">
+                    <h1 class="os-name">oscar dujarrier</h1>
 
-            <div class="oscar-hero-accent-img">
-                <img src="../images/travaux/oscar-projets/stase.jpg" alt="">
-            </div>
-            <div class="oscar-demarche-quote">
-                <p>Entre installation vidéo, sculpture et dispositifs numériques, cette pratique déploie des formes hybrides où ces médiums se répondent et se contaminent — une interrogation constante de la matérialité de l'image numérique et de la saturation qui structure l'expérience contemporaine des images.</p>
-            </div>
-            <div class="oscar-hero-accent-img is-bottom">
-                <img src="../images/travaux/oscar-projets/transmutation.jpg" alt="">
+                    <div class="os-intro">
+                        <figure class="os-trame">
+                            <img src="../images/travaux/oscar-projets/oscar-accueil-trame.png"
+                                 alt="Montage tramé en bleu et crème de quatre œuvres : Le bruit de l'eau, Transmutation, Dé-construction et Livre blanc"
+                                 width="320" height="260">
+                        </figure>
+
+                        <div class="os-fiche">
+                            <dl class="os-fields">
+                                <div><dt>NOM :</dt><dd>Oscar Dujarrier</dd></div>
+                                <div><dt>PRATIQUE :</dt><dd>installation, vidéo, sculpture, dispositifs numériques</dd></div>
+                                <div><dt>COLLECTIF :</dt><dd>Atelier Babo, membre fondateur</dd></div>
+                                <div><dt>EXPOSÉ :</dt><dd>Le bruit de l'eau, « 5D », Frac Normandie, 2026–2027</dd></div>
+                            </dl>
+                            <p class="os-demarche"><span>Entre installation vidéo, sculpture et dispositifs numériques, cette pratique déploie des formes hybrides où les médiums se répondent et se contaminent. Elle interroge la matérialité de l'image numérique et la saturation qui structure notre expérience des images.</span></p>
+                        </div>
+                    </div>
+
+                    <div class="os-rule" aria-hidden="true"></div>
+
+                    <nav class="vcr-menu" aria-label="Sommaire de la page">
+                        <p class="vcr-head" aria-hidden="true"><span>MENU</span></p>
+                        <ul class="vcr-list">
+                            <li><a href="#tiroir" class="vcr-item is-selected">OUVRIR LE TIROIR</a></li>
+                            <li><a href="#genealogie" class="vcr-item">GÉNÉALOGIE DES PROJETS</a></li>
+                            <li><a href="#babo" class="vcr-item">AU SEIN DE BABO</a></li>
+                            <li><a href="#contact-oscar" class="vcr-item">CONTACT</a></li>
+                        </ul>
+                        <p class="vcr-keys" aria-hidden="true">
+                            <span>SÉLECTION : ▲ ▼</span>
+                            <span>VALIDER : ENTRÉE</span>
+                        </p>
+                    </nav>
+                </div>
+
+                <div class="os-statusbar">
+                    <span class="os-path">C:\babo\oscar\demarche.txt</span>
+                    <span class="os-count">7 travaux</span>
+                </div>
             </div>
         </section>
 
-        <!-- ÉCRAN 2 : fond blanc, mind map puis galerie des travaux -->
-        <section class="oscar-screen-gallery">
-            <section class="oscar-mindmap-section">
-                <h3>Généalogie des projets</h3>
+        <!-- ÉCRAN 2 : le tiroir de classement. Haut de l'écran = fond du
+             tiroir. Intercalaires par catégorie puis par thème, travaux
+             classés par ordre alphabétique dans chaque thème. -->
+        <section class="oscar-screen-tiroir" id="tiroir">
+            <p class="tiroir-legend"><span class="legend-pointer">Survolez un dossier pour le sortir du tiroir, cliquez pour l'ouvrir.</span><span class="legend-touch">Touchez un dossier pour le sortir du tiroir, touchez-le encore pour l'ouvrir.</span></p>
 
+            <div class="tiroir" style="--n: 13;">
+                <ol class="tiroir-stack">
+                    <li class="dossier is-cat" style="--i: 0;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">100</span>TRAVAUX</span></span>
+                    </li>
+                    <li class="dossier is-theme" style="--i: 1;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">110</span>MATÉRIALITÉ DE L'IMAGE</span></span>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 2;">
+                        <a href="oscar/deconstruction.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">111</span>Dé-construction</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Dé-construction</span>
+                                    <span class="fiche-specs">2024<br>Installation vidéo</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/deconstruction.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-b" style="--i: 3;">
+                        <a href="oscar/bruit-eau.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">112</span>Le bruit de l'eau</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Le bruit de l'eau</span>
+                                    <span class="fiche-specs">2026<br>Dispositif cathodique, lecteur DVD</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/bruit-eau.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 4;">
+                        <a href="oscar/stase.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">113</span>Rémanence</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Rémanence</span>
+                                    <span class="fiche-specs">2025–2026<br>Tissus lestés, vidéoprojecteurs, son</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/stase.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-b" style="--i: 5;">
+                        <a href="oscar/transmutation.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">114</span>Transmutation</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Transmutation</span>
+                                    <span class="fiche-specs">2024<br>Vidéo générative par codage</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/transmutation.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-theme" style="--i: 6;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">120</span>SATURATION</span></span>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 7;">
+                        <a href="oscar/flux.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">121</span>175 Zettaoctets</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">175 Zettaoctets</span>
+                                    <span class="fiche-specs">2023<br>Installation vidéo et sonore</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/flux.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-b" style="--i: 8;">
+                        <a href="oscar/livre-blanc.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">122</span>Livre blanc</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Livre blanc</span>
+                                    <span class="fiche-specs">2023<br>Installation d'éditions, A4</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/livre-blanc.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 9;">
+                        <a href="oscar/vivre-flux.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">123</span>Vivre à travers le flux</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Vivre à travers le flux</span>
+                                    <span class="fiche-specs">2025–2026<br>Vidéo, 1h07</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/vivre-flux.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <!-- Catégories à venir : pour en activer une, remplacer le
+                         <span class="dossier-tab"> par un lien comme ci-dessus
+                         et retirer la classe is-soon. -->
+                    <li class="dossier is-cat is-soon" style="--i: 10;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">200</span>RECHERCHE</span><span class="tab-soon">à venir</span></span>
+                    </li>
+                    <li class="dossier is-cat is-soon" style="--i: 11;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">300</span>PORTFOLIO</span><span class="tab-soon">à venir</span></span>
+                    </li>
+                    <li class="dossier is-cat is-soon" style="--i: 12;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">400</span>CV</span><span class="tab-soon">à venir</span></span>
+                    </li>
+                </ol>
+
+                <div class="tiroir-facade" aria-hidden="true">
+                    <span class="facade-etiquette">O. DUJARRIER<br>100 — 400</span>
+                    <span class="facade-poignee"><i></i><i></i><i></i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ÉCRAN 3 : généalogie, collectif, contact -->
+        <section class="oscar-screen-gallery">
+            <section class="oscar-mindmap-section" id="genealogie">
+                <h3>Généalogie des projets</h3>
                 <div class="mindmap-branch">
                     <div class="mindmap-node">Livre blanc<span>2023 — accumulation de texte</span></div>
                     <span class="mindmap-arrow">→</span>
-                    <div class="mindmap-node">Flux<span>2023 — saturation de l'image</span></div>
+                    <div class="mindmap-node">175 Zettaoctets<span>2023 — saturation de l'image</span></div>
                     <span class="mindmap-arrow">→</span>
                     <div class="mindmap-node mindmap-node-end">Vivre à travers le flux<span>2025 – 2026 — immersion jusqu'à l'épuisement</span></div>
                 </div>
-
                 <div class="mindmap-branch">
-                    <div class="mindmap-node">Matérialité de l'image<span>De-construction / Transmutation, 2024</span></div>
+                    <div class="mindmap-node">Matérialité de l'image<span>Dé-construction / Transmutation, 2024</span></div>
                     <span class="mindmap-arrow">→</span>
                     <div class="mindmap-node-group">
                         <div class="mindmap-node mindmap-node-end">Le bruit de l'eau<span>2026 — l'image se confond avec le signal</span></div>
-                        <div class="mindmap-node mindmap-node-end">Stase<span>2025 – 2026 — l'image qui ne se stabilise jamais</span></div>
+                        <div class="mindmap-node mindmap-node-end">Rémanence<span>2025 – 2026 — l'image qui ne se stabilise jamais</span></div>
                     </div>
                 </div>
             </section>
 
-            <section class="oscar-gallery-section">
-                <h3>Travaux</h3>
-                <div class="oscar-gallery-grid">
-                    <a href="oscar/stase.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/stase.jpg" alt="Stase"></div>
-                        <span class="oscar-gallery-title">Stase</span>
-                        <span class="oscar-gallery-date">2025 – 2026</span>
-                    </a>
-                    <a href="oscar/bruit-eau.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l'eau"></div>
-                        <span class="oscar-gallery-title">Le bruit de l'eau</span>
-                        <span class="oscar-gallery-date">2026</span>
-                    </a>
-                    <a href="oscar/vivre-flux.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/vivre-flux.jpg" alt="Vivre à travers le flux"></div>
-                        <span class="oscar-gallery-title">Vivre à travers le flux</span>
-                        <span class="oscar-gallery-date">2025 – 2026</span>
-                    </a>
-                    <a href="oscar/transmutation.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/transmutation.jpg" alt="Transmutation"></div>
-                        <span class="oscar-gallery-title">Transmutation</span>
-                        <span class="oscar-gallery-date">2024</span>
-                    </a>
-                    <a href="oscar/deconstruction.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/deconstruction.jpg" alt="Dé-construction"></div>
-                        <span class="oscar-gallery-title">Dé-construction</span>
-                        <span class="oscar-gallery-date">2024</span>
-                    </a>
-                    <a href="oscar/flux.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/flux.jpg" alt="Flux"></div>
-                        <span class="oscar-gallery-title">Flux</span>
-                        <span class="oscar-gallery-date">2023</span>
-                    </a>
-                    <a href="oscar/livre-blanc.html" class="oscar-gallery-item">
-                        <div class="oscar-gallery-thumb"><img src="../images/travaux/oscar-projets/livre-blanc.jpg" alt="Livre blanc"></div>
-                        <span class="oscar-gallery-title">Livre blanc</span>
-                        <span class="oscar-gallery-date">Mars 2023</span>
-                    </a>
-                </div>
-            </section>
-
-            <section class="artist-bio-section">
+            <section class="artist-bio-section" id="babo">
                 <h3>AU SEIN DU COLLECTIF — BABO</h3>
                 <p>BABO, mot coréen signifiant « idiot », désigne une façon d'être à côté des cadres habituels. Le collectif s'est formé en 2023 à l'ésadhar, puis constitué en association en 2025.</p>
                 <p>L'essentiel de cette pratique se construit aujourd'hui à travers Babo : des projets menés à plusieurs, où la vidéo, la sculpture, l'installation et l'art numérique se répondent selon la même exigence que le travail personnel présenté ici.</p>
                 <p class="project-entry-crossref">Voir <a href="collectif.html">Babosphere, Signal faible, Trois dimensions et Portrait immatériel</a> sur la page du Collectif.</p>
             </section>
 
-            <section class="artist-contact-section">
+            <section class="artist-contact-section" id="contact-oscar">
                 <h3>CONTACT</h3>
                 <div class="contact-links-grid">
                     <a href="mailto:oscar.dujarrier001@gmail.com" class="contact-btn">EMAIL</a>
@@ -129,8 +234,77 @@
         </section>
 
     </main>
+
+    <script>
+    (function () {
+        'use strict';
+
+        /* ---- Menu façon magnétoscope : ▲ ▼ déplacent la sélection,
+           Entrée valide. Le survol déplace aussi la sélection. ---- */
+        var items = Array.prototype.slice.call(document.querySelectorAll('.vcr-item'));
+        var sel = 0;
+        function select(i) {
+            sel = (i + items.length) % items.length;
+            items.forEach(function (a, k) { a.classList.toggle('is-selected', k === sel); });
+        }
+        items.forEach(function (a, k) {
+            a.addEventListener('mouseenter', function () { select(k); });
+            a.addEventListener('focus', function () { select(k); });
+        });
+        var hero = document.getElementById('accueil-oscar');
+        document.addEventListener('keydown', function (e) {
+            if (!items.length) return;
+            var r = hero.getBoundingClientRect();
+            var heroVisible = r.top < window.innerHeight * 0.5 && r.bottom > window.innerHeight * 0.5;
+            if (!heroVisible) return;
+            var t = e.target.tagName;
+            if (t === 'INPUT' || t === 'TEXTAREA') return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); select(sel + 1); items[sel].focus({ preventScroll: true }); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); select(sel - 1); items[sel].focus({ preventScroll: true }); }
+        });
+
+        /* Les ancres internes défilent dans le body (c'est lui qui scrolle
+           sur cette page), pas dans la fenêtre. */
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.querySelector(a.getAttribute('href'));
+                if (!target) return;
+                e.preventDefault();
+                var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+            });
+        });
+
+        /* ---- Tiroir : au doigt (pas de survol), un premier toucher sort
+           le dossier, un second l'ouvre. Souris et clavier : le survol ou
+           le focus le sortent, le clic l'ouvre directement. ---- */
+        var noHover = window.matchMedia('(hover: none)');
+        var dossiers = Array.prototype.slice.call(document.querySelectorAll('.dossier.is-work'));
+        function lowerAll(except) {
+            dossiers.forEach(function (d) { if (d !== except) d.classList.remove('is-up'); });
+        }
+        dossiers.forEach(function (d) {
+            var link = d.querySelector('.dossier-link');
+            link.addEventListener('click', function (e) {
+                if (!noHover.matches) return;
+                if (!d.classList.contains('is-up')) {
+                    // stopPropagation : sinon page-transition.js lance quand
+                    // même la transition vers la page du projet.
+                    e.preventDefault();
+                    e.stopPropagation();
+                    lowerAll(d);
+                    d.classList.add('is-up');
+                }
+            });
+        });
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dossier.is-work')) lowerAll(null);
+        });
+    })();
+    </script>
 </body>
 </html>
+
 
 
 
