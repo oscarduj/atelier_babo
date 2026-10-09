@@ -426,4 +426,3 @@
     if (document.readyState === 'complete') restore();
     else window.addEventListener('load', restore);
 })();
-
