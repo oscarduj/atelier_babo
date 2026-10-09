@@ -24,9 +24,9 @@
     var OFF_LEFT  = 'polygon(-40% 0, -24% 0, -40% 100%, -40% 100%)';
 
     var EASE = 'cubic-bezier(0.72, 0, 0.18, 1)';
-    var COVER_MS = 980;    // course de couverture
-    var REVEAL_MS = 1080;  // course de découverte
-    var STAGGER = 110;     // décalage entre les trois panneaux
+    var COVER_MS = 1500;   // course de couverture
+    var REVEAL_MS = 1600;  // course de découverte
+    var STAGGER = 180;     // décalage entre les trois panneaux
     var LAYERS = 3;
 
     var root = document.createElement('div');
@@ -44,6 +44,16 @@
     mark.className = 'page-veil-mark';
     mark.textContent = 'ATELIER_BABO';
     root.appendChild(mark);
+
+    // Porte d'entrée : une fois l'écran couvert, la navigation attend un clic,
+    // dans le même esprit que le cube du portail d'accueil — on ne tombe pas
+    // sur la page suivante, on choisit d'y entrer.
+    var gate = document.createElement('button');
+    gate.type = 'button';
+    gate.className = 'page-veil-gate';
+    gate.innerHTML = '<span class="page-veil-gate-square"></span>' +
+                     '<span class="page-veil-gate-label">ENTRER</span>';
+    root.appendChild(gate);
 
     function mount() {
         if (!document.body) return false;
@@ -127,15 +137,25 @@
         requestAnimationFrame(function () {
             requestAnimationFrame(function () {
                 run(COVER, COVER_MS, false);
-                // Le mot-repère n'apparaît qu'une fois l'écran réellement couvert.
                 setTimeout(function () { root.classList.add('is-covered'); },
                            COVER_MS * 0.55);
+                // La porte n'apparaît qu'une fois les panneaux arrêtés.
+                setTimeout(function () {
+                    root.classList.add('is-gated');
+                    gate.focus();
+                }, COVER_MS + (LAYERS - 1) * STAGGER - 120);
             });
         });
 
-        // On part quand le dernier panneau a fini sa course.
-        setTimeout(function () { location.href = dest; },
-                   COVER_MS + (LAYERS - 1) * STAGGER - 60);
+        function go() { location.href = dest; }
+        gate.addEventListener('click', go, { once: true });
+        // Entrée au clavier aussi, pour ne pas enfermer la navigation.
+        document.addEventListener('keydown', function onKey(ev) {
+            if (ev.key === 'Enter' || ev.key === ' ') {
+                document.removeEventListener('keydown', onKey);
+                go();
+            }
+        });
     });
 })();
 
@@ -226,7 +246,15 @@
 
             var a = document.createElement('a');
             a.className = depth === 0 ? 'nav-item' : 'nav-sub-item';
-            a.href = B + href;
+            // Si la cible est la page où l'on se trouve déjà, on ne garde que
+            // l'ancre : le navigateur fait défiler au lieu de tout recharger.
+            var parts = href.split('#');
+            if (parts[1] && isCurrent(parts[0])) {
+                a.href = '#' + parts[1];
+                a.setAttribute('data-anchor', '1');
+            } else {
+                a.href = B + href;
+            }
             a.textContent = label;
             li.appendChild(a);
 
@@ -236,6 +264,23 @@
             if (kids) {
                 var sub = buildList(kids, depth + 1);
                 if (sub.open) { open = true; anyOpen = true; }
+
+                // Bouton de dépliage distinct du lien : au doigt comme à la
+                // souris, on peut ouvrir la branche sans quitter la page.
+                var caret = document.createElement('button');
+                caret.type = 'button';
+                caret.className = 'nav-caret';
+                caret.setAttribute('aria-label', 'Déplier ' + label);
+                caret.innerHTML = '<svg viewBox="0 0 10 10" aria-hidden="true">' +
+                                  '<path d="M3 1.5 L6.5 5 L3 8.5" fill="none" ' +
+                                  'stroke="currentColor" stroke-width="1.3"/></svg>';
+                caret.addEventListener('click', function (ev) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    li.classList.toggle('is-open');
+                });
+                li.insertBefore(caret, li.firstChild);
+
                 li.appendChild(sub.el);
                 li.classList.add('has-children');
                 if (open) li.classList.add('is-open');
@@ -282,7 +327,7 @@
 
         document.body.appendChild(nav);
 
-        // Bouton hamburger pour le mobile, comme sur l'accueil.
+        // Bouton hamburger, utile aussi sur tablette tactile.
         var burger = document.createElement('button');
         burger.className = 'hamburger-btn';
         burger.id = 'hamburger-btn';
@@ -295,10 +340,90 @@
         document.body.appendChild(burger);
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', buildNav);
-    } else {
-        buildNav();
+    // Sans survol possible (tablette, mobile), la barre doit s'ouvrir au doigt :
+    // on marque le document pour que le CSS bascule en mode hamburger, quelle
+    // que soit la largeur de l'écran.
+    if (!window.matchMedia('(hover: hover)').matches) {
+        document.documentElement.classList.add('touch-device');
     }
+
+    // Sur l'accueil, surligner l'entrée correspondant à la section visible.
+    // L'observateur d'origine visait l'ancienne liste, que l'on vient de
+    // remplacer : il faut donc le reposer sur les nouveaux liens.
+    var obsRef = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            var all = document.querySelectorAll('.side-nav a[data-anchor]');
+            all.forEach(function (a) { a.classList.remove('is-current'); });
+            var cur = document.querySelector('.side-nav a[data-anchor][href="#' + en.target.id + '"]');
+            if (cur) cur.classList.add('is-current');
+        });
+    }, { threshold: 0.5 });
+
+    function initNav() {
+        buildNav();
+        document.querySelectorAll('.feed-section').forEach(function (s) { obsRef.observe(s); });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNav);
+    } else {
+        initNav();
+    }
+})();
+
+/* ============================================================
+   MÉMOIRE DE LA POSITION DE DÉFILEMENT
+   ------------------------------------------------------------
+   Le site fait défiler .main-feed (accueil) ou body (pages projet),
+   pas la fenêtre : le navigateur ne sait donc pas restaurer la
+   position, et un retour arrière renvoyait tout en haut du site.
+   On la mémorise par page avant de partir, et on la rétablit au retour.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+    function scroller() {
+        return document.querySelector('.main-feed') ||
+               (document.body.scrollHeight > window.innerHeight ? document.body : null);
+    }
+    function key() { return 'babo_scroll:' + location.pathname; }
+
+    function save() {
+        var el = scroller();
+        if (!el) return;
+        try { sessionStorage.setItem(key(), String(el.scrollTop)); } catch (e) {}
+    }
+
+    function restore() {
+        var el = scroller();
+        if (!el) return;
+        var v;
+        try { v = sessionStorage.getItem(key()); } catch (e) { return; }
+        if (v === null) return;
+        var y = parseInt(v, 10);
+        if (!y) return;
+        // Le scroll-snap et les images en cours de chargement peuvent repousser
+        // la position : on la repose sur plusieurs trames avant d'abandonner.
+        var tries = 0;
+        (function settle() {
+            el.scrollTop = y;
+            if (++tries < 12 && Math.abs(el.scrollTop - y) > 2) {
+                setTimeout(settle, 60);
+            }
+        })();
+    }
+
+    window.addEventListener('pagehide', save);
+    window.addEventListener('beforeunload', save);
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest ? e.target.closest('a') : null;
+        if (a) save();
+    }, true);
+
+    if (document.readyState === 'complete') restore();
+    else window.addEventListener('load', restore);
 })();
 

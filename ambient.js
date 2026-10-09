@@ -46,11 +46,25 @@
         [293.7, 329.6, 392.0, 440.0, 493.9, 587.3, 659.3],
     ];
 
-    var pad = CHORDS[Math.floor(rand(1) * CHORDS.length)];
-    var scale = SCALES[Math.floor(rand(2) * SCALES.length)];
-    var noteGap = 2400 + rand(3) * 5200;      // densité des notes éparses
-    var filterBase = 420 + rand(4) * 320;     // couleur de la texture de bruit
-    var delayTime = 0.34 + rand(5) * 0.26;    // taille de la réverbération
+    // Variation nettement audible d'une page à l'autre : transposition
+    // continue (pas seulement un choix parmi N), forme d'onde, couleur du
+    // filtre, taille de la réverbération et densité des notes — tout est
+    // dérivé de la graine, donc stable pour une page et différent des autres.
+    var transpose = Math.pow(2, (Math.floor(rand(1) * 12) - 5) / 12); // ±5 demi-tons
+    var pad = CHORDS[Math.floor(rand(2) * CHORDS.length)].map(function (f) {
+        return f * transpose;
+    });
+    var scale = SCALES[Math.floor(rand(3) * SCALES.length)].map(function (f) {
+        return f * transpose;
+    });
+    var padWave = ['sine', 'triangle'][Math.floor(rand(4) * 2)];
+    var noteWave = ['sine', 'triangle'][Math.floor(rand(5) * 2)];
+    var noteGap = 1900 + rand(6) * 6000;      // densité des notes éparses
+    var filterBase = 320 + rand(7) * 700;     // couleur de la texture de bruit
+    var filterSwing = 180 + rand(8) * 420;    // amplitude de la dérive
+    var delayTime = 0.22 + rand(9) * 0.48;    // taille de la réverbération
+    var noiseLevel = 0.008 + rand(11) * 0.016;
+    var padLevel = 0.026 + rand(12) * 0.018;
 
     var ctx = null, playing = false, nodes = null, noteTimer = null, raf = null;
 
@@ -92,9 +106,9 @@
             // Nappe : 4 voix légèrement désaccordées
             var oscs = pad.map(function (f, i) {
                 var o = c.createOscillator();
-                o.type = 'sine';
-                o.frequency.value = f * (1 + (rand(10 + i) - 0.5) * 0.006);
-                var g = c.createGain(); g.gain.value = 0.034;
+                o.type = padWave;
+                o.frequency.value = f * (1 + (rand(20 + i) - 0.5) * 0.006);
+                var g = c.createGain(); g.gain.value = padLevel;
                 o.connect(g); g.connect(master); g.connect(delay);
                 o.start();
                 return { o: o, g: g };
@@ -108,7 +122,7 @@
             src.buffer = buf; src.loop = true;
             var nf = c.createBiquadFilter();
             nf.type = 'bandpass'; nf.frequency.value = filterBase; nf.Q.value = 0.7;
-            var ng = c.createGain(); ng.gain.value = 0.014;
+            var ng = c.createGain(); ng.gain.value = noiseLevel;
             src.connect(nf); nf.connect(ng); ng.connect(master);
             src.start();
 
@@ -116,7 +130,7 @@
             (function drift() {
                 if (!playing) return;
                 phase += 0.0025;
-                nf.frequency.value = filterBase + Math.sin(phase) * 300 + Math.sin(phase * 0.37) * 150;
+                nf.frequency.value = filterBase + Math.sin(phase) * filterSwing + Math.sin(phase * 0.37) * filterSwing * 0.5;
                 raf = requestAnimationFrame(drift);
             })();
 
@@ -126,7 +140,7 @@
                 noteTimer = setTimeout(function () {
                     if (!playing) return;
                     var f = scale[Math.floor(Math.random() * scale.length)] * (Math.random() < 0.3 ? 0.5 : 1);
-                    var o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+                    var o = c.createOscillator(); o.type = noteWave; o.frequency.value = f;
                     var g = c.createGain();
                     g.gain.setValueAtTime(0, c.currentTime);
                     g.gain.linearRampToValueAtTime(0.042, c.currentTime + 0.6);

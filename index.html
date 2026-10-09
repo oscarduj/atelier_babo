@@ -2059,10 +2059,20 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
   fitToContainer();
   window.addEventListener('resize', fitToContainer);
 
-  // Pas de rotation automatique : le logo reste fixe, légèrement de biais.
-  // Il reste orientable à la main si le visiteur le saisit.
+  // Le logo suit le curseur : il pivote pour lui faire face, comme s'il
+  // regardait le visiteur. Reste saisissable à la main.
   var targetRotY = 0, targetRotX = 0, curRotY = 0, curRotX = 0;
   var dragging = false, lastX = 0, lastY = 0;
+
+  window.addEventListener('mousemove', function (e) {
+    if (dragging) return;
+    var r = wrap.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    var dx = (e.clientX - cx) / (window.innerWidth / 2);
+    var dy = (e.clientY - cy) / (window.innerHeight / 2);
+    targetRotY = Math.max(-0.7, Math.min(0.7, dx * 0.65));
+    targetRotX = Math.max(-0.4, Math.min(0.4, dy * 0.35));
+  });
 
   function onDown(e) {
     dragging = true; lastX = e.clientX; lastY = e.clientY;
