@@ -14,69 +14,175 @@
 
     <main class="artist-page-container">
 
-        <!-- ÉCRAN 1 : rouge électrique, démarche centrée en grand.
-             Espace prévu pour des objets blancs en rotation (à venir). -->
+        <!-- ÉCRAN 1 : le viseur. Indications de caméra tout autour
+             (réf. Harrison Boyce), nom en très grand et thèmes en
+             pastilles (réf. Bareis + Nicolaus), moniteur qui fait défiler
+             les travaux. -->
         <section class="yoon-screen-hero">
-            <span class="yoon-hero-tag">PORTFOLIO PERSONNEL</span>
-            <h1 class="yoon-hero-name">Hyunseok Yoon</h1>
-            <div class="yoon-demarche-quote">
-                <p>Je m'intéresse à des sujets liés à la vie et à la mort, aux frontières entre réalité et fiction, ainsi qu'à la fragilité de l'être intérieur — un regard critique sur certaines normes sociales et humaines de notre époque, et la coexistence entre le naturel et l'artificiel.</p>
+            <div class="vf">
+                <span class="vf-corner vf-tl" aria-hidden="true"></span>
+                <span class="vf-corner vf-tr" aria-hidden="true"></span>
+                <span class="vf-corner vf-bl" aria-hidden="true"></span>
+                <span class="vf-corner vf-br" aria-hidden="true"></span>
+
+                <div class="vf-top" aria-hidden="true">
+                    <span>RAW <i>HD</i> <i class="on">4K</i> <i>8K</i> 24FPS</span>
+                    <span class="vf-rec"><span class="vf-dot"></span>REC <b id="vf-tc">00:00:00:00</b></span>
+                    <span>HYUNSEOK YOON</span>
+                </div>
+
+                <div class="vf-body">
+                    <div class="vf-main">
+                        <span class="vf-tag">[ PORTFOLIO PERSONNEL ]</span>
+                        <h1 class="vf-name">Hyunseok<br>Yoon</h1>
+                        <ul class="vf-pills" aria-label="Thèmes">
+                            <li>vie &amp; mort</li>
+                            <li>réalité / fiction</li>
+                            <li>fragilité de l'être</li>
+                            <li>normes sociales</li>
+                            <li>naturel / artificiel</li>
+                        </ul>
+                        <p class="vf-demarche">Je m'intéresse à des sujets liés à la vie et à la mort, aux frontières entre réalité et fiction, ainsi qu'à la fragilité de l'être intérieur : un regard critique sur certaines normes sociales et humaines de notre époque, et la coexistence entre le naturel et l'artificiel.</p>
+                    </div>
+
+                    <figure class="vf-monitor">
+                        <span class="vf-monitor-screen">
+                            <img id="vf-monitor-img" src="../images/travaux/yoon-projets/pierre-jetee.jpg" alt="">
+                        </span>
+                        <figcaption id="vf-monitor-label">[01] Une pierre jetée pour plaisanter peut tuer quelqu'un</figcaption>
+                    </figure>
+                </div>
+
+                <div class="vf-bottom" aria-hidden="true">
+                    <span>ISO 200 &nbsp; WB 5600K</span>
+                    <span>1/50 &nbsp; F2.8</span>
+                    <span>7 TRAVAUX &nbsp; 2022 — 2026</span>
+                    <a href="#yoon-travaux" class="vf-cta">VOIR LES PLANS ↓</a>
+                </div>
             </div>
         </section>
 
-        <!-- ÉCRAN 2 : fond blanc, galerie des travaux -->
-        <section class="yoon-screen-gallery">
-            <section class="yoon-gallery-section">
-                <h3>Travaux</h3>
-                <div class="yoon-gallery-grid">
-                    <a href="yoon/pierre-jetee.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/pierre-jetee.jpg" alt="Une pierre jetée pour plaisanter peut tuer quelqu'un"></div>
-                        <span class="yoon-gallery-title">Une pierre jetée pour plaisanter peut tuer quelqu'un</span>
-                        <span class="yoon-gallery-date">2026</span>
-                    </a>
-                    <a href="yoon/est-ce-travail.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/est-ce-travail.jpg" alt="Est-ce un travail ?"></div>
-                        <span class="yoon-gallery-title">Est-ce un travail ?</span>
-                        <span class="yoon-gallery-date">2026</span>
-                    </a>
-                    <a href="yoon/santa-off-season.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/santa-off-season.jpg" alt="Santa's OFF-Season"></div>
-                        <span class="yoon-gallery-title">Santa's OFF-Season</span>
-                        <span class="yoon-gallery-date">2026</span>
-                    </a>
-                    <a href="yoon/cauchemar.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/cauchemar.jpg" alt="Un cauchemar dans un cauchemar"></div>
-                        <span class="yoon-gallery-title">Un cauchemar dans un cauchemar</span>
-                        <span class="yoon-gallery-date">2024</span>
-                    </a>
-                    <a href="yoon/porte-e3e.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/porte-e3e.jpg" alt="Porte E3Ɛ"></div>
-                        <span class="yoon-gallery-title">Porte E3Ɛ</span>
-                        <span class="yoon-gallery-date">2024</span>
-                    </a>
-                    <a href="yoon/parfums-utopie.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/parfums-utopie.jpg" alt="Parfums de l'Utopie"></div>
-                        <span class="yoon-gallery-title">Parfums de l'Utopie</span>
-                        <span class="yoon-gallery-date">2024</span>
-                    </a>
-                    <a href="yoon/elephant-man.html" class="yoon-gallery-item">
-                        <div class="yoon-gallery-thumb"><img src="../images/travaux/yoon-projets/elephant-man.jpg" alt="Elephant Man : la vie à l'étranger"></div>
-                        <span class="yoon-gallery-title">Elephant Man : la vie à l'étranger</span>
-                        <span class="yoon-gallery-date">2022</span>
-                    </a>
+        <!-- ÉCRAN 2 : la mosaïque de plans numérotés (réf. chef opérateur),
+             filtrable par médium avec des pastilles. -->
+        <section class="yoon-screen-mosaic" id="yoon-travaux">
+            <header class="ym-head">
+                <h2 class="ym-title">Travaux</h2>
+                <div class="ym-filters" role="group" aria-label="Filtrer par médium">
+                    <button type="button" class="ym-pill is-active" data-filter="all">Tout<sup>7</sup></button>
+                    <button type="button" class="ym-pill" data-filter="video">Vidéo<sup>2</sup></button>
+                    <button type="button" class="ym-pill" data-filter="installation">Installation<sup>3</sup></button>
+                    <button type="button" class="ym-pill" data-filter="photo">Photographie<sup>2</sup></button>
                 </div>
-            </section>
+            </header>
 
-            <section class="artist-contact-section">
-                <h3>CONTACT</h3>
-                <div class="contact-links-grid">
-                    <a href="mailto:contact@atelier-babo.com" class="contact-btn">EMAIL</a>
-                    <a href="https://instagram.com/atelier_babo_" target="_blank" class="contact-btn">INSTAGRAM</a>
-                </div>
-            </section>
+            <div class="ym-grid">
+                    <a href="yoon/pierre-jetee.html" class="ym-tile ym-tile-1" data-medium="video">
+                        <span class="ym-label"><b>01</b><span class="ym-name">Une pierre jetée pour plaisanter peut tuer quelqu&#x27;un</span><span class="ym-meta">Vidéo · 2026</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/pierre-jetee.jpg" alt="Une pierre jetée pour plaisanter peut tuer quelqu&#x27;un" loading="lazy"></span>
+                    </a>
+                    <a href="yoon/est-ce-travail.html" class="ym-tile ym-tile-2" data-medium="installation">
+                        <span class="ym-label"><b>02</b><span class="ym-name">Est-ce un travail ?</span><span class="ym-meta">Installation · 2026</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/est-ce-travail.jpg" alt="Est-ce un travail ?" loading="lazy"></span>
+                    </a>
+                    <a href="yoon/santa-off-season.html" class="ym-tile ym-tile-3" data-medium="photo">
+                        <span class="ym-label"><b>03</b><span class="ym-name">Santa&#x27;s OFF-Season</span><span class="ym-meta">Photographie · 2026</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/santa-off-season.jpg" alt="Santa&#x27;s OFF-Season" loading="lazy"></span>
+                    </a>
+                    <a href="yoon/cauchemar.html" class="ym-tile ym-tile-4" data-medium="video">
+                        <span class="ym-label"><b>04</b><span class="ym-name">Un cauchemar dans un cauchemar</span><span class="ym-meta">Vidéo · 2024</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/cauchemar.jpg" alt="Un cauchemar dans un cauchemar" loading="lazy"></span>
+                    </a>
+                    <a href="yoon/porte-e3e.html" class="ym-tile ym-tile-5" data-medium="installation">
+                        <span class="ym-label"><b>05</b><span class="ym-name">Porte E3Ɛ</span><span class="ym-meta">Installation · 2024</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/porte-e3e.jpg" alt="Porte E3Ɛ" loading="lazy"></span>
+                    </a>
+                    <a href="yoon/parfums-utopie.html" class="ym-tile ym-tile-6" data-medium="installation">
+                        <span class="ym-label"><b>06</b><span class="ym-name">Parfums de l&#x27;Utopie</span><span class="ym-meta">Installation · 2024</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/parfums-utopie.jpg" alt="Parfums de l&#x27;Utopie" loading="lazy"></span>
+                    </a>
+                    <a href="yoon/elephant-man.html" class="ym-tile ym-tile-7" data-medium="photo">
+                        <span class="ym-label"><b>07</b><span class="ym-name">Elephant Man : la vie à l&#x27;étranger</span><span class="ym-meta">Photographie · 2022</span></span>
+                        <span class="ym-frame"><img src="../images/travaux/yoon-projets/elephant-man.jpg" alt="Elephant Man : la vie à l&#x27;étranger" loading="lazy"></span>
+                    </a>
+            </div>
+
+            <footer class="ym-foot">
+                <span>HYUNSEOK YOON — ATELIER BABO</span>
+                <span class="ym-contact">
+                    <a href="mailto:contact@atelier-babo.com">EMAIL</a>
+                    <a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener">INSTAGRAM</a>
+                </span>
+            </footer>
         </section>
-
     </main>
+
+    <script>
+    (function () {
+        'use strict';
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---- Compteur REC : heures:minutes:secondes:images (24 i/s) ---- */
+        var tc = document.getElementById('vf-tc');
+        var t0 = Date.now();
+        function pad(n) { return String(n).padStart(2, '0'); }
+        setInterval(function () {
+            var ms = Date.now() - t0;
+            var s = Math.floor(ms / 1000);
+            tc.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60) + ':' + pad(Math.floor((ms % 1000) / 1000 * 24));
+        }, reduce ? 1000 : 42);
+
+        /* ---- Moniteur : fait défiler les travaux ---- */
+        var PLANS = [
+            { src: "../images/travaux/yoon-projets/pierre-jetee.jpg", label: "[01] Une pierre jetée pour plaisanter peut tuer quelqu&#x27;un" },
+            { src: "../images/travaux/yoon-projets/est-ce-travail.jpg", label: "[02] Est-ce un travail ?" },
+            { src: "../images/travaux/yoon-projets/santa-off-season.jpg", label: "[03] Santa&#x27;s OFF-Season" },
+            { src: "../images/travaux/yoon-projets/cauchemar.jpg", label: "[04] Un cauchemar dans un cauchemar" },
+            { src: "../images/travaux/yoon-projets/porte-e3e.jpg", label: "[05] Porte E3Ɛ" },
+            { src: "../images/travaux/yoon-projets/parfums-utopie.jpg", label: "[06] Parfums de l&#x27;Utopie" },
+            { src: "../images/travaux/yoon-projets/elephant-man.jpg", label: "[07] Elephant Man : la vie à l&#x27;étranger" }
+        ];
+        var img = document.getElementById('vf-monitor-img');
+        var label = document.getElementById('vf-monitor-label');
+        var k = 0;
+        if (!reduce) {
+            setInterval(function () {
+                k = (k + 1) % PLANS.length;
+                img.classList.add('is-cut');
+                setTimeout(function () {
+                    img.src = PLANS[k].src;
+                    label.textContent = PLANS[k].label;
+                    img.classList.remove('is-cut');
+                }, 180);
+            }, 3600);
+        }
+
+        /* ---- Filtres par médium : les plans hors filtre s'éteignent,
+           la mosaïque garde sa forme ---- */
+        var pills = Array.prototype.slice.call(document.querySelectorAll('.ym-pill'));
+        var tiles = Array.prototype.slice.call(document.querySelectorAll('.ym-tile'));
+        pills.forEach(function (p) {
+            p.addEventListener('click', function () {
+                var f = p.getAttribute('data-filter');
+                pills.forEach(function (o) { o.classList.toggle('is-active', o === p); });
+                tiles.forEach(function (t) {
+                    var off = f !== 'all' && t.getAttribute('data-medium') !== f;
+                    t.classList.toggle('is-off', off);
+                    if (off) t.setAttribute('tabindex', '-1'); else t.removeAttribute('tabindex');
+                });
+            });
+        });
+
+        /* Ancres internes : c'est le body qui défile */
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                var t = document.querySelector(a.getAttribute('href'));
+                if (!t) return;
+                e.preventDefault();
+                t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
 
