@@ -70,14 +70,11 @@ body.tom-page::before {
 }
 
 /* ============================================================
-   PAGE HUB — TOM
-   Écran 1 (jaune) : une roche en 3D au centre, son nom en très
-   grand autour (réf. .raw), ses quatre axes de recherche reliés à la
-   roche par des traits fins (réf. Sutéra), petits textes en
-   capitales espacées (réf. météore).
-   Écran 2 (papier) : la file des travaux en perspective, classée par
-   année ; les images s'écartent autour de celle survolée
-   (réf. every : second).
+   PAGE HUB — TOM : poste de bord (réf. écrans du Nostromo,
+   Alien 1979). Tracés vert phosphore sur fond noir, cadres et
+   étiquettes en boîte, touches F1-F4, repères de visée.
+   Écran 1 : l'objet en rotation, en fil de fer, qui se remplit de
+   matière au survol. Écran 2 : les travaux en tableau de données.
    ============================================================ */
 body.tom-hub {
     display: block;
@@ -86,15 +83,20 @@ body.tom-hub {
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-snap-type: y proximity;
-    --t-yellow: #e8c31a;
-    --t-ink: #14120a;
-    --t-paper: #efeee9;
-    --bg-color: var(--t-yellow);
-    --text-color: var(--t-ink);
-    --secondary-color: var(--t-ink);
-    --border-color: rgba(20, 18, 10, 0.3);
-    --desc-color: rgba(20, 18, 10, 0.75);
-    background: var(--t-yellow);
+    --g: #39ff6e;
+    --g-mid: rgba(57, 255, 110, 0.55);
+    --g-dim: rgba(57, 255, 110, 0.28);
+    --g-glow: 0 0 6px rgba(57, 255, 110, 0.55);
+    --crt: #030805;
+    --bezel: #141614;
+    --bg-color: #000000;
+    --text-color: var(--g);
+    --secondary-color: var(--g);
+    --border-color: var(--g-dim);
+    --desc-color: var(--g-mid);
+    background: #000000;
+    color: var(--g);
+    font-family: 'Share Tech Mono', monospace;
 }
 body.tom-hub .back-link {
     position: fixed;
@@ -102,348 +104,259 @@ body.tom-hub .back-link {
     left: 1.2rem;
     z-index: 60;
     margin: 0;
-    padding: 0.35rem 0.6rem;
-    background: var(--t-yellow);
-    color: var(--t-ink);
-    border: 1px solid var(--t-ink);
+    padding: 0.3rem 0.6rem;
+    background: #000000;
+    color: var(--g);
+    border: 1px solid var(--g);
+    text-shadow: var(--g-glow);
 }
-body.tom-hub .artist-page-container {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
+body.tom-hub .artist-page-container { max-width: none; padding: 0; margin: 0; width: 100%; }
 
-/* ---------- Écran 1 : la roche ---------- */
-.tom-screen-hero {
-    position: relative;
+/* ---------- Écran encastré ---------- */
+.tn-screen {
     min-height: 100vh;
     min-height: 100dvh;
     scroll-snap-align: start;
-    background: var(--t-yellow);
-    color: var(--t-ink);
-    overflow: hidden;
+    display: flex;
+    padding: 4rem 2.4rem 2rem;
 }
-.tom-corner {
-    position: absolute;
-    z-index: 4;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    line-height: 1.4;
+.tn-bezel {
+    flex: 1;
+    display: flex;
+    padding: 0.9rem;
+    background: var(--bezel);
+    border-radius: 14px;
+    box-shadow: inset 0 0 0 1px #2a2d2a, inset 0 2px 0 #222522;
 }
-.tom-corner-tl { top: 4.4rem; left: 6vw; }
-.tom-corner-tc {
-    top: 1.3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 1px solid var(--t-ink);
-    padding: 0.15rem 0.6rem;
-    white-space: nowrap;
+.tn-crt {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--crt);
+    border-radius: 8px;
+    border: 1px solid var(--g-dim);
+    box-shadow: inset 0 0 60px rgba(57, 255, 110, 0.06);
+    padding: 0.9rem;
+    gap: 0.9rem;
+    text-shadow: var(--g-glow);
 }
-.tom-corner-tr { top: 1.3rem; right: 2rem; text-align: right; }
-.tom-corner-tr b { font-weight: 400; font-size: 0.9rem; }
 
-body.tom-hub .tom-giant {
-    position: absolute;
-    inset: 0;
+/* Bandeau de titre plein vert, menu numéroté à droite */
+.tn-band {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background: var(--g);
+    color: #000000;
+    padding: 0.35rem 0.8rem;
+    text-shadow: none;
+}
+body.tom-hub .tn-name {
     margin: 0;
-    z-index: 1;
-    pointer-events: none;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    text-transform: none;
-    font-size: clamp(4.2rem, 14.5vw, 15rem);
-    line-height: 0.8;
-    letter-spacing: -0.065em;
-    color: var(--t-ink);
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: clamp(1.4rem, 3.6vw, 2.6rem);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: #000000;
 }
-.tom-giant-a { position: absolute; left: 5vw; top: 17%; }
-.tom-giant-b { position: absolute; right: 4vw; bottom: 15%; }
+.tn-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.4rem;
+    font-size: 0.78rem;
+}
+.tn-menu a, .tn-band-info { color: #000000; text-decoration: none; }
+.tn-menu a:hover { text-decoration: underline; }
+.tn-menu a:focus-visible { outline: 1px dashed #000000; outline-offset: 2px; }
+.tn-band-info { margin: 0; font-size: 0.78rem; text-align: right; line-height: 1.3; text-transform: uppercase; }
 
-.tom-rock {
+/* Zone principale : vue de l'objet + panneau latéral */
+.tn-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: 0.9rem;
+    min-height: 0;
+}
+.tn-view {
+    position: relative;
+    border: 1px solid var(--g-dim);
+    min-height: 22rem;
+    background-image:
+        linear-gradient(var(--g-dim) 1px, transparent 1px),
+        linear-gradient(90deg, var(--g-dim) 1px, transparent 1px);
+    background-size: 100% 25%, 12.5% 100%;
+    background-position: 0 -1px, -1px 0;
+    background-color: transparent;
+    overflow: hidden;
+}
+.tn-view::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(3, 8, 5, 0.2), rgba(3, 8, 5, 0.85) 75%);
+    pointer-events: none;
+}
+.tn-object {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: min(66vw, 86vh);
-    aspect-ratio: 1 / 1;
+    width: min(90%, 34rem);
+    height: 92%;
     transform: translate(-50%, -50%);
+    z-index: 1;
+}
+.tn-object canvas, .tn-object-still {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.tn-object-still { object-fit: contain; filter: grayscale(1) contrast(1.2); mix-blend-mode: screen; opacity: 0.9; }
+.tn-object canvas { display: none; cursor: crosshair; }
+.object-active .tn-object canvas { display: block; }
+.object-active .tn-object-still { display: none; }
+.tn-view-label, .tn-view-hint {
+    position: absolute;
     z-index: 2;
-    pointer-events: none;
-}
-.tom-rock canvas,
-.tom-rock-still {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-.tom-rock canvas { display: none; }
-.rock-active .tom-rock canvas { display: block; }
-.rock-active .tom-rock-still { display: none; }
-
-/* Traits d'annotation, au-dessus de la roche */
-.tom-wires {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3;
-    pointer-events: none;
-    fill: none;
-    stroke: var(--t-ink);
-    stroke-width: 1;
-}
-.tom-wires rect { fill: var(--t-yellow); stroke: var(--t-ink); }
-.tom-wires rect.end { fill: var(--t-ink); }
-
-.tom-note {
-    position: absolute;
-    top: var(--top);
-    z-index: 4;
-    width: 15rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    line-height: 1.45;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-.tom-note.is-right { right: 4vw; }
-.tom-note.is-left { left: 5vw; }
-.tom-note-title {
-    display: block;
-    font-size: 0.74rem;
-    letter-spacing: 0.16em;
-    margin-bottom: 0.3rem;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid var(--t-ink);
-}
-.tom-scroll-hint {
-    position: absolute;
-    left: 5vw;
-    bottom: 1.6rem;
-    z-index: 4;
-    font-family: 'Share Tech Mono', monospace;
     font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    line-height: 1.5;
+    letter-spacing: 0.1em;
 }
+.tn-view-label { top: 0.6rem; left: 2.2rem; }
+.tn-view-hint { bottom: 0.6rem; right: 2.2rem; color: var(--g-mid); }
 
-/* ---------- Écran 2 : la file des travaux ---------- */
-.tom-screen-file {
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
-    background: var(--t-paper);
-    color: var(--t-ink);
+/* Repères de visée en croix */
+.tn-cross { position: absolute; z-index: 2; width: 22px; height: 22px; }
+.tn-cross::before, .tn-cross::after { content: ""; position: absolute; background: var(--g); box-shadow: var(--g-glow); }
+.tn-cross::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+.tn-cross::after { top: 50%; left: 0; right: 0; height: 1px; }
+.tn-cross-tl { top: 0.5rem; left: 0.5rem; }
+.tn-cross-tr { top: 0.5rem; right: 0.5rem; }
+.tn-cross-bl { bottom: 0.5rem; left: 0.5rem; }
+.tn-cross-br { bottom: 0.5rem; right: 0.5rem; }
+
+/* Panneau latéral */
+.tn-side {
     display: flex;
     flex-direction: column;
-    padding: 4.4rem 4vw 1.6rem;
-    --card-w: 21rem;
-    --card-h: 14rem;
-    --gap: 4.4rem;
-    --spread: 7rem;
-}
-.tf-head {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: start;
     gap: 1rem;
+    border-left: 1px solid var(--g-dim);
+    padding-left: 0.9rem;
+    font-size: 0.82rem;
 }
-.tf-readout { display: flex; flex-direction: column; gap: 0.15rem; min-height: 2.8rem; }
-.tf-readout b {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-}
-.tf-readout span {
+.tn-profile { margin: 0; line-height: 1.45; }
+.tn-profile dt { color: var(--g-mid); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.12em; }
+.tn-profile dd { margin: 0 0 0.8rem; }
+.tn-blink { animation: tn-blink 1.2s steps(1) infinite; }
+@keyframes tn-blink { 50% { opacity: 0.25; } }
+.tn-keys { display: flex; flex-direction: column; gap: 0.45rem; }
+.tn-keys button {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-}
-.tf-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-}
-.tf-demarche {
-    justify-self: end;
-    max-width: 30ch;
-    margin: 0;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    line-height: 1.6;
-    letter-spacing: 0.14em;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    text-align: right;
+    color: var(--g);
+    background: transparent;
+    border: 1px solid var(--g);
+    padding: 0.35rem;
+    cursor: pointer;
+    text-shadow: var(--g-glow);
 }
-.tf-body {
-    flex: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 1rem;
-    min-height: 26rem;
+.tn-keys button[aria-pressed="true"] { background: var(--g); color: #000000; text-shadow: none; }
+.tn-keys button:focus-visible { outline: 1px dashed var(--g); outline-offset: 3px; }
+.tn-axes { list-style: none; margin: auto 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.tn-axes li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.5rem; font-size: 0.75rem; }
+.tn-axes b { font-weight: 400; border: 1px solid var(--g); padding: 0 0.3rem; }
+.tn-axes i { font-style: normal; color: var(--g-mid); }
+
+/* Transmission (démarche) et pied d'écran */
+.tn-transmission { display: grid; grid-template-columns: auto 1fr; gap: 1rem; border-top: 1px solid var(--g-dim); padding-top: 0.8rem; }
+.tn-tag { font-size: 0.75rem; letter-spacing: 0.12em; color: var(--g-mid); white-space: nowrap; }
+.tn-transmission p { margin: 0; font-size: 0.85rem; line-height: 1.55; max-width: 90ch; }
+.tn-foot { display: grid; grid-template-columns: 1fr auto auto; gap: 1.2rem; align-items: center; font-size: 0.72rem; }
+.tn-ticks {
+    height: 10px;
+    background: repeating-linear-gradient(90deg, var(--g) 0 2px, transparent 2px 9px);
+    opacity: 0.6;
 }
-.tf-stage {
-    perspective: 1700px;
-    perspective-origin: 50% 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    min-height: 26rem;
+
+/* ---------- Écran 2 : tableau de données ---------- */
+.tn-data { flex: 1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 0.9rem; min-height: 0; }
+.tn-table-wrap { overflow-x: auto; border: 1px solid var(--g-dim); }
+.tn-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.tn-table th {
+    text-align: left;
+    font-weight: 400;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--g-mid);
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid var(--g);
 }
-.tf-file {
-    position: relative;
-    list-style: none;
+.tn-table td { padding: 0.7rem; border-bottom: 1px solid var(--g-dim); vertical-align: top; }
+.tn-table tbody tr { cursor: pointer; }
+.tn-table a { color: inherit; text-decoration: none; }
+.tn-table a:focus-visible { outline: 1px dashed currentColor; outline-offset: 2px; }
+.tn-table tr.is-active td { background: var(--g); color: #000000; text-shadow: none; }
+.td-state { white-space: nowrap; }
+.td-state.is-live { animation: tn-blink 1.6s steps(1) infinite; }
+.tn-table tr.is-active .td-state.is-live { animation: none; }
+
+.tn-preview {
     margin: 0;
-    padding: 0;
-    width: var(--card-w);
-    height: var(--card-h);
-    transform-style: preserve-3d;
-    transform: rotateX(-14deg) rotateY(-60deg);
+    display: grid;
+    grid-template-columns: 1.4rem 1fr;
+    grid-template-rows: 1.2rem 1fr auto;
+    gap: 0.3rem;
+    min-height: 18rem;
 }
-.tf-card {
+.tn-ruler-x { grid-column: 2; display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--g-mid); }
+.tn-ruler-y { grid-row: 2; display: flex; flex-direction: column; justify-content: space-between; font-size: 0.65rem; color: var(--g-mid); text-align: right; }
+.tn-preview-screen { grid-column: 2; grid-row: 2; position: relative; border: 1px solid var(--g); overflow: hidden; background: #000000; }
+.tn-preview-screen img {
     position: absolute;
     inset: 0;
-    transform-style: preserve-3d;
-    transform:
-        translateZ(calc((3 - var(--i)) * var(--gap) - var(--shift, 0) * var(--spread)))
-        translateY(0);
-    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-}
-.tf-card.is-active {
-    transform:
-        translateZ(calc((3 - var(--i)) * var(--gap)))
-        translateY(-1.8rem);
-}
-.tf-card.is-dim { opacity: 0.18; }
-.tf-card a {
-    position: absolute;
-    inset: 0;
-    display: block;
-    color: var(--t-ink);
-    text-decoration: none;
-}
-.tf-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    background: #ffffff;
-    box-shadow: 0 0 0 1px rgba(20, 18, 10, 0.15);
+    filter: grayscale(1) contrast(1.3) brightness(0.62);
 }
-.tf-card.is-active img { box-shadow: 0 0 0 2px var(--t-yellow), 0 0 0 3px var(--t-ink); }
-.tf-card a:focus-visible { outline: none; }
-.tf-label {
-    position: absolute;
-    left: 0;
-    top: calc(100% + 0.6rem);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    padding: 0.05rem 0.35rem;
-}
-.tf-card.is-active .tf-label { opacity: 1; background: var(--t-yellow); }
-
-/* Liste des années, façon index avec compteur en exposant */
-.tf-years {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    text-align: right;
-}
-.tf-years button {
-    background: none;
-    border: none;
-    padding: 0.1rem 0;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    color: #8c8a82;
-    cursor: pointer;
-}
-.tf-years button sup { font-size: 0.6em; margin-left: 0.1em; }
-.tf-years button:hover { color: var(--t-ink); }
-.tf-years button.is-active { color: var(--t-ink); font-weight: 700; }
-.tf-years button:focus-visible { outline: 1px dashed var(--t-ink); outline-offset: 3px; }
-
-.tf-foot {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-}
-.tf-contact { display: flex; gap: 1.4rem; }
-.tf-contact a { color: var(--t-ink); text-decoration: none; border-bottom: 1px solid var(--t-ink); }
-.tf-contact a:hover { background: var(--t-yellow); }
-.hint-touch { display: none; }
-@media (hover: none) {
-    .hint-pointer { display: none; }
-    .hint-touch { display: inline; }
-}
+/* Monochrome vert : le blanc devient phosphore, le noir reste noir */
+.tn-preview-screen::after { content: ""; position: absolute; inset: 0; background: var(--g); mix-blend-mode: multiply; }
+.tn-preview figcaption { grid-column: 2; display: flex; justify-content: space-between; gap: 1rem; font-size: 0.78rem; text-transform: uppercase; }
+.tn-contact { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; border-top: 1px solid var(--g-dim); padding-top: 0.8rem; }
+.tn-boxed { color: var(--g); text-decoration: none; border: 1px solid var(--g); padding: 0.2rem 0.7rem; text-transform: uppercase; font-size: 0.8rem; }
+.tn-boxed:hover { background: var(--g); color: #000000; text-shadow: none; }
 
 @media (min-width: 901px) {
     body.tom-hub .back-link { left: 3.2rem; }
-    .tom-screen-file { padding-left: max(4vw, 4.5rem); }
+    .tn-screen { padding-left: max(2.4rem, 4.5rem); }
 }
 @media (max-width: 900px) {
     body.tom-hub .back-link { left: auto; right: 1rem; top: 1rem; font-size: 0.72rem; }
-    .tom-corner-tr { display: none; }
-    .tom-corner-tc { top: 4.3rem; left: auto; right: 1rem; transform: none; }
+    .tn-screen { padding: 4rem 0.6rem 1rem; }
+    .tn-bezel { padding: 0.5rem; }
+    .tn-crt { padding: 0.6rem; }
+    .tn-main { grid-template-columns: 1fr; }
+    .tn-view { min-height: 62vw; }
+    .tn-side { border-left: none; padding-left: 0; border-top: 1px solid var(--g-dim); padding-top: 0.8rem; }
+    .tn-keys { flex-direction: row; }
+    .tn-keys button { flex: 1; }
+    .tn-transmission { grid-template-columns: 1fr; gap: 0.4rem; }
+    .tn-data { grid-template-columns: 1fr; }
+    .tn-preview { order: -1; min-height: 14rem; }
+    .td-medium { display: none; }
+    .tn-menu { grid-template-columns: 1fr; font-size: 0.7rem; }
 }
-
-/* Petit écran : la composition se range en colonne, sans traits */
-@media (max-width: 760px) {
-    .tom-screen-hero {
-        display: flex;
-        flex-direction: column;
-        padding: 6.6rem 1.2rem 2rem;
-        gap: 1rem;
-    }
-    .tom-corner-tl { position: static; order: 0; }
-    .tom-corner-tc { top: 4.3rem; }
-    body.tom-hub .tom-giant { position: static; order: 1; font-size: 22vw; }
-    .tom-giant-a, .tom-giant-b { position: static; display: block; }
-    .tom-giant-b { text-align: right; }
-    .tom-rock {
-        position: relative;
-        left: auto; top: auto;
-        transform: none;
-        order: 1;
-        width: 92%;
-        align-self: center;
-        margin: -18vw 0 -14vw;
-    }
-    body.tom-hub .tom-giant { display: contents; }
-    .tom-giant-a { order: 1; }
-    .tom-rock { order: 2; }
-    .tom-giant-b { order: 3; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18vw; letter-spacing: -0.065em; line-height: 0.8; }
-    .tom-giant-a { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26vw; letter-spacing: -0.065em; line-height: 0.8; position: relative; z-index: 1; }
-    .tom-wires { display: none; }
-    .tom-note { position: static; order: 4; width: auto; }
-    .tom-scroll-hint { position: static; order: 5; }
-
-    .tom-screen-file {
-        padding: 4.2rem 1rem 1.4rem;
-        --card-w: 11rem;
-        --card-h: 7.6rem;
-        --gap: 1.7rem;
-        --spread: 3rem;
-    }
-    .tf-head { grid-template-columns: 1fr auto; }
-    .tf-demarche { grid-column: 1 / -1; justify-self: start; text-align: left; }
-    .tf-body { grid-template-columns: 1fr; min-height: 0; }
-    .tf-stage { min-height: 20rem; perspective: 1100px; overflow: hidden; }
-    .tf-years { display: flex; flex-wrap: wrap; gap: 0 1rem; justify-content: center; order: -1; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-    .tf-card, .tf-label { transition: none; }
+    .tn-blink, .td-state.is-live { animation: none; }
 }

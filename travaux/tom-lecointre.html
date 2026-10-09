@@ -14,88 +14,158 @@
 
     <main class="artist-page-container">
 
-        <!-- ÉCRAN 1 : la roche. Grande typo autour de l'objet (.raw),
-             axes de recherche reliés à la roche par des traits (Sutéra),
-             petits textes espacés en capitales (météore). -->
-        <section class="tom-screen-hero" id="tom-hero">
-            <span class="tom-corner tom-corner-tl">ATELIER BABO // TOM LECOINTRE</span>
-            <span class="tom-corner tom-corner-tc">[ PORTFOLIO PERSONNEL ]</span>
-            <span class="tom-corner tom-corner-tr">HEURE LOCALE<br><b id="tom-clock">--:--</b></span>
+        <!-- ÉCRAN 1 : poste de bord (réf. écrans du Nostromo, Alien 1979).
+             L'objet tourne au centre en fil de fer phosphore et se remplit
+             de matière au survol ou avec la touche « MATIÈRE ». -->
+        <section class="tn-screen" id="tn-poste">
+            <div class="tn-bezel">
+                <div class="tn-crt">
+                    <header class="tn-band">
+                        <h1 class="tn-name">Tom Lecointre</h1>
+                        <ol class="tn-menu">
+                            <li><a href="#tn-transmission">1. Démarche</a></li>
+                            <li><a href="#tn-index">2. Travaux</a></li>
+                            <li><a href="#tn-contact">3. Contact</a></li>
+                            <li><a href="../index.html#travaux">4. Retour</a></li>
+                        </ol>
+                    </header>
 
-            <h1 class="tom-giant"><span class="tom-giant-a">Tom</span><span class="tom-giant-b">Lecointre</span></h1>
+                    <div class="tn-main">
+                        <div class="tn-view">
+                            <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-tr" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-bl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
+                            <span class="tn-view-label">OBJET // ROTATION 360°</span>
+                            <div class="tn-object" id="tn-object">
+                                <img class="tn-object-still" src="../images/travaux/tom-projets/objet.jpg" alt="Sculpture organique en boucles superposées, patine vert-de-gris">
+                                <canvas id="tn-object-canvas" aria-label="Objet en rotation" role="img"></canvas>
+                            </div>
+                            <span class="tn-view-hint">SURVOL : MATIÈRE</span>
+                        </div>
 
-            <!-- La roche : canvas WebGL. L'image fixe reste affichée tant que
-                 le rendu 3D n'a pas démarré (pas de WebGL, CDN en échec ou
-                 mouvement réduit). -->
-            <div class="tom-rock" id="tom-rock">
-                <img class="tom-rock-still" src="../images/travaux/tom-projets/roche.png" alt="">
-                <canvas id="tom-rock-canvas" aria-hidden="true"></canvas>
-            </div>
+                        <aside class="tn-side">
+                            <dl class="tn-profile">
+                                <dt>Profil</dt>
+                                <dd>Plasticien<br>Atelier Babo<br>Protocole : recherche</dd>
+                                <dt>Statut</dt>
+                                <dd>Actif<br><span class="tn-blink">● EN TRANSMISSION</span></dd>
+                            </dl>
+                            <div class="tn-keys" role="group" aria-label="Rendu de l'objet">
+                                <button type="button" data-render="wire" aria-pressed="true">Fil de fer</button>
+                                <button type="button" data-render="matiere" aria-pressed="false">Matière</button>
+                            </div>
+                            <ul class="tn-axes" aria-label="Axes de recherche">
+                                <li><b>F1</b><span>Naturel / artificiel</span><i>Actif</i></li>
+                                <li><b>F2</b><span>Temporalités</span><i>Actif</i></li>
+                                <li><b>F3</b><span>Imaginaires spatiaux</span><i>Actif</i></li>
+                                <li><b>F4</b><span>Infrastructures</span><i>Actif</i></li>
+                            </ul>
+                        </aside>
+                    </div>
 
-            <svg class="tom-wires" id="tom-wires" aria-hidden="true"></svg>
+                    <div class="tn-transmission" id="tn-transmission">
+                        <span class="tn-tag">TRANSMISSION :</span>
+                        <p>Ma démarche interroge les relations que l'humain entretient avec son environnement, qu'il soit naturel, construit ou médiatisé par des systèmes techniques. Je m'intéresse aux zones de tension entre le naturel et l'artificiel, aux traces du passé, aux dynamiques présentes et aux projections futures qui se superposent dans nos paysages.</p>
+                    </div>
 
-            <div class="tom-note is-right" data-target="0.58,0.40" style="--top: 15%;">
-                <span class="tom-note-title">{1} NATUREL / ARTIFICIEL</span>
-                Zones de tension entre les deux, formes d'altération souvent invisibles
+                    <footer class="tn-foot" aria-hidden="true">
+                        <span class="tn-ticks"></span>
+                        <span>TL-SYS 2022—2026</span>
+                        <span id="tn-clock">00:00:00</span>
+                    </footer>
+                </div>
             </div>
-            <div class="tom-note is-right" data-target="0.60,0.57" style="--top: 44%;">
-                <span class="tom-note-title">{2} TEMPORALITÉS</span>
-                Traces du passé, dynamiques présentes et projections futures superposées
-            </div>
-            <div class="tom-note is-left" data-target="0.42,0.47" style="--top: 44%;">
-                <span class="tom-note-title">{3} IMAGINAIRES SPATIAUX</span>
-                Technologies contemporaines comme prolongements des logiques terrestres
-            </div>
-            <div class="tom-note is-left" data-target="0.45,0.63" style="--top: 66%;">
-                <span class="tom-note-title">{4} INFRASTRUCTURES</span>
-                Régimes de visibilité et de transmission qui organisent notre rapport au monde
-            </div>
-
-            <span class="tom-scroll-hint">2022 — 2026<br>7 TRAVAUX ↓</span>
         </section>
 
-        <!-- ÉCRAN 2 : la file des travaux, classée par année.
-             Survol : les images s'écartent autour de celle visée ;
-             clic : page du projet. Au doigt : 1er toucher écarte, 2e ouvre. -->
-        <section class="tom-screen-file" id="tom-travaux">
-            <header class="tf-head">
-                <div class="tf-readout" aria-live="polite">
-                    <b id="tf-readout-year">2022 — 2026</b>
-                    <span id="tf-readout-title">7 travaux</span>
-                </div>
-                <span class="tf-title">tom : travaux</span>
-                <p class="tf-demarche">Ma démarche interroge les relations que l'humain entretient avec son environnement, qu'il soit naturel, construit ou médiatisé par des systèmes techniques.</p>
-            </header>
+        <!-- ÉCRAN 2 : index des travaux en tableau de données.
+             Survol d'une ligne : aperçu à droite ; clic : page du projet.
+             Au doigt : 1er toucher = aperçu, 2e = ouverture. -->
+        <section class="tn-screen" id="tn-index">
+            <div class="tn-bezel">
+                <div class="tn-crt">
+                    <header class="tn-band">
+                        <h2 class="tn-name">Index // Travaux</h2>
+                        <p class="tn-band-info">7 entrées<br>Tri : année</p>
+                    </header>
 
-            <div class="tf-body">
-                <div class="tf-stage">
-                    <ol class="tf-file" id="tf-file">
-                        <li class="tf-card" data-year="2022"><a href="tom/altertopie.html"><img src="../images/travaux/tom-projets/altertopie.jpg" alt="ALTERTOPIE" loading="lazy"><span class="tf-label">2022 · ALTERTOPIE</span></a></li>
-                        <li class="tf-card" data-year="2022"><a href="tom/cosserat.html"><img src="../images/travaux/tom-projets/cosserat.jpg" alt="COSSERAT, manufacture du vide" loading="lazy"><span class="tf-label">2022 · COSSERAT, manufacture du vide</span></a></li>
-                        <li class="tf-card" data-year="2023"><a href="tom/nature-404.html"><img src="../images/travaux/tom-projets/nature-404.jpg" alt="Nature 404" loading="lazy"><span class="tf-label">2023 · Nature 404</span></a></li>
-                        <li class="tf-card" data-year="2024"><a href="tom/parasite.html"><img src="../images/travaux/tom-projets/parasite.jpg" alt="PARASITE #1" loading="lazy"><span class="tf-label">2024 · PARASITE #1</span></a></li>
-                        <li class="tf-card" data-year="2024"><a href="tom/u.html"><img src="../images/travaux/tom-projets/u.jpg" alt="U" loading="lazy"><span class="tf-label">2024 · U</span></a></li>
-                        <li class="tf-card" data-year="2026"><a href="tom/compagnon-1.html"><img src="../images/travaux/tom-projets/compagnon-1.jpg" alt="Compagnon 1" loading="lazy"><span class="tf-label">2026 · Compagnon 1</span></a></li>
-                        <li class="tf-card" data-year="2026"><a href="tom/oma.html"><img src="../images/travaux/tom-projets/oma.jpg" alt="O.M.A (One Meter Array)" loading="lazy"><span class="tf-label">2026 · O.M.A (One Meter Array)</span></a></li>
-                    </ol>
-                </div>
+                    <div class="tn-data">
+                        <div class="tn-table-wrap">
+                            <table class="tn-table">
+                                <thead><tr><th>N°</th><th>Désignation</th><th>Année</th><th class="td-medium">Médium</th><th class="td-state">État</th></tr></thead>
+                                <tbody>
+                        <tr data-img="../images/travaux/tom-projets/altertopie.jpg" data-code="TL-01" data-href="tom/altertopie.html">
+                            <td>01</td>
+                            <td><a href="tom/altertopie.html">ALTERTOPIE</a></td>
+                            <td>2022</td>
+                            <td class="td-medium">Vidéo, performance filmée · 3 min 12</td>
+                            <td class="td-state">SÉLECTIONNÉ</td>
+                        </tr>
+                        <tr data-img="../images/travaux/tom-projets/cosserat.jpg" data-code="TL-02" data-href="tom/cosserat.html">
+                            <td>02</td>
+                            <td><a href="tom/cosserat.html">COSSERAT, manufacture du vide</a></td>
+                            <td>2022</td>
+                            <td class="td-medium">Vidéo 360°</td>
+                            <td class="td-state">ARCHIVÉ</td>
+                        </tr>
+                        <tr data-img="../images/travaux/tom-projets/nature-404.jpg" data-code="TL-03" data-href="tom/nature-404.html">
+                            <td>03</td>
+                            <td><a href="tom/nature-404.html">Nature 404</a></td>
+                            <td>2023</td>
+                            <td class="td-medium">Installation immersive</td>
+                            <td class="td-state">ARCHIVÉ</td>
+                        </tr>
+                        <tr data-img="../images/travaux/tom-projets/parasite.jpg" data-code="TL-04" data-href="tom/parasite.html">
+                            <td>04</td>
+                            <td><a href="tom/parasite.html">PARASITE #1</a></td>
+                            <td>2024</td>
+                            <td class="td-medium">Sculpture · tronc, argile crue</td>
+                            <td class="td-state">ARCHIVÉ</td>
+                        </tr>
+                        <tr data-img="../images/travaux/tom-projets/u.jpg" data-code="TL-05" data-href="tom/u.html">
+                            <td>05</td>
+                            <td><a href="tom/u.html">U</a></td>
+                            <td>2024</td>
+                            <td class="td-medium">Sculpture · verre à l&#x27;uranium, lampe UV</td>
+                            <td class="td-state">ARCHIVÉ</td>
+                        </tr>
+                        <tr data-img="../images/travaux/tom-projets/compagnon-1.jpg" data-code="TL-06" data-href="tom/compagnon-1.html">
+                            <td>06</td>
+                            <td><a href="tom/compagnon-1.html">Compagnon 1</a></td>
+                            <td>2026</td>
+                            <td class="td-medium">Installation sculpturale, vidéo</td>
+                            <td class="td-state is-live">EN COURS</td>
+                        </tr>
+                        <tr data-img="../images/travaux/tom-projets/oma.jpg" data-code="TL-07" data-href="tom/oma.html">
+                            <td>07</td>
+                            <td><a href="tom/oma.html">O.M.A (One Meter Array)</a></td>
+                            <td>2026</td>
+                            <td class="td-medium">Installation sculpturale</td>
+                            <td class="td-state is-live">EN COURS</td>
+                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                <ul class="tf-years" id="tf-years" aria-label="Années">
-                    <li><button type="button" data-year="all" class="is-active">tout<sup>7</sup></button></li>
-                    <li><button type="button" data-year="2026">2026<sup>2</sup></button></li>
-                    <li><button type="button" data-year="2024">2024<sup>2</sup></button></li>
-                    <li><button type="button" data-year="2023">2023<sup>1</sup></button></li>
-                    <li><button type="button" data-year="2022">2022<sup>2</sup></button></li>
-                </ul>
+                        <figure class="tn-preview" aria-live="polite">
+                            <div class="tn-ruler-x" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div>
+                            <div class="tn-ruler-y" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+                            <div class="tn-preview-screen">
+                                <img id="tn-preview-img" src="../images/travaux/tom-projets/altertopie.jpg" alt="">
+                                <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
+                                <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
+                            </div>
+                            <figcaption><span id="tn-preview-code">TL-01</span><span id="tn-preview-title">ALTERTOPIE</span></figcaption>
+                        </figure>
+                    </div>
+
+                    <footer class="tn-contact" id="tn-contact">
+                        <span class="tn-tag">CONTACT :</span>
+                        <a href="mailto:contact@atelier-babo.com" class="tn-boxed">Email</a>
+                        <a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener" class="tn-boxed">Instagram ↗</a>
+                    </footer>
+                </div>
             </div>
-
-            <footer class="tf-foot">
-                <span class="tf-hint"><span class="hint-pointer">Survolez la file, cliquez pour ouvrir.</span><span class="hint-touch">Touchez une image pour l'écarter, touchez-la encore pour l'ouvrir.</span></span>
-                <span class="tf-contact">
-                    <a href="mailto:contact@atelier-babo.com">EMAIL</a>
-                    <a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener">INSTAGRAM</a>
-                </span>
-            </footer>
         </section>
     </main>
 
@@ -104,280 +174,254 @@
         'use strict';
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        /* ---- Heure locale du visiteur (coin haut droit) ---- */
-        var clock = document.getElementById('tom-clock');
-        function tick() {
-            var d = new Date();
-            clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-        }
-        tick(); setInterval(tick, 15000);
+        /* Horloge du pied d'écran */
+        var clock = document.getElementById('tn-clock');
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() { var d = new Date(); clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); }
+        tick(); setInterval(tick, 1000);
 
-        /* ---- Traits reliant les annotations à la roche ----
-           Recalculés au redimensionnement ; masqués sur petit écran. */
-        var hero = document.getElementById('tom-hero');
-        var svg = document.getElementById('tom-wires');
-        var notes = Array.prototype.slice.call(document.querySelectorAll('.tom-note'));
-        function drawWires() {
-            var hr = hero.getBoundingClientRect();
-            svg.setAttribute('viewBox', '0 0 ' + hr.width + ' ' + hr.height);
-            var out = '';
-            notes.forEach(function (n) {
-                var r = n.getBoundingClientRect();
-                var t = n.getAttribute('data-target').split(',');
-                var tx = parseFloat(t[0]) * hr.width, ty = parseFloat(t[1]) * hr.height;
-                var right = n.classList.contains('is-right');
-                var ax = (right ? r.left : r.right) - hr.left + (right ? -8 : 8);
-                var ay = r.top - hr.top + 7;
-                var ex = ax + (right ? -40 : 40);   // coude horizontal, puis diagonale
-                out += '<polyline points="' + ax + ',' + ay + ' ' + ex + ',' + ay + ' ' + tx + ',' + ty + '"/>';
-                out += '<rect x="' + (ax - 3) + '" y="' + (ay - 3) + '" width="6" height="6"/>';
-                out += '<rect class="end" x="' + (tx - 4) + '" y="' + (ty - 4) + '" width="8" height="8"/>';
-            });
-            svg.innerHTML = out;
-        }
-        drawWires();
-        window.addEventListener('resize', drawWires);
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawWires);
-
-        /* ---- File des travaux ---- */
-        var cards = Array.prototype.slice.call(document.querySelectorAll('.tf-card'));
-        var yearEl = document.getElementById('tf-readout-year');
-        var titleEl = document.getElementById('tf-readout-title');
+        /* Tableau : survol = aperçu ; au doigt, 1er toucher = aperçu, 2e = ouverture */
+        var rows = Array.prototype.slice.call(document.querySelectorAll('.tn-table tbody tr'));
+        var img = document.getElementById('tn-preview-img');
+        var code = document.getElementById('tn-preview-code');
+        var title = document.getElementById('tn-preview-title');
         var noHover = window.matchMedia('(hover: none)');
-        var current = -1;
-
-        function layout(active) {
-            current = active;
-            cards.forEach(function (c, i) {
-                var shift = 0;
-                if (active >= 0) shift = i < active ? -1 : (i > active ? 1 : 0);
-                c.style.setProperty('--shift', shift);
-                c.classList.toggle('is-active', i === active);
-            });
-            if (active >= 0) {
-                yearEl.textContent = cards[active].getAttribute('data-year');
-                titleEl.textContent = cards[active].querySelector('img').alt;
-            } else {
-                yearEl.textContent = '2022 — 2026';
-                titleEl.textContent = '7 travaux';
-            }
+        var current = null;
+        function preview(r) {
+            if (current === r) return;
+            rows.forEach(function (o) { o.classList.toggle('is-active', o === r); });
+            current = r;
+            img.src = r.getAttribute('data-img');
+            code.textContent = r.getAttribute('data-code');
+            title.textContent = r.querySelector('a').textContent;
         }
-        cards.forEach(function (c, i) {
-            c.style.setProperty('--i', i);
-            var a = c.querySelector('a');
-            a.addEventListener('mouseenter', function () { if (!noHover.matches) layout(i); });
-            a.addEventListener('focus', function () { layout(i); });
-            a.addEventListener('click', function (e) {
-                if (noHover.matches && current !== i) {
-                    // stopPropagation : sinon page-transition.js lance la transition
-                    e.preventDefault();
-                    e.stopPropagation();
-                    layout(i);
+        rows.forEach(function (r) {
+            var a = r.querySelector('a');
+            r.addEventListener('mouseenter', function () { if (!noHover.matches) preview(r); });
+            a.addEventListener('focus', function () { preview(r); });
+            r.addEventListener('click', function (e) {
+                if (noHover.matches && current !== r) {
+                    e.preventDefault(); e.stopPropagation(); preview(r); return;
                 }
+                if (e.target.closest('a')) return;
+                a.click();
             });
         });
-        document.getElementById('tf-file').addEventListener('mouseleave', function () {
-            if (!noHover.matches) layout(-1);
-        });
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.tf-card') && !e.target.closest('.tf-years')) layout(-1);
-        });
-        layout(-1);
+        preview(rows[0]);
 
-        /* Années : fait ressortir les travaux de l'année choisie */
-        var yearBtns = Array.prototype.slice.call(document.querySelectorAll('.tf-years button'));
-        yearBtns.forEach(function (b) {
-            b.addEventListener('click', function () {
-                var y = b.getAttribute('data-year');
-                yearBtns.forEach(function (o) { o.classList.toggle('is-active', o === b); });
-                cards.forEach(function (c) {
-                    c.classList.toggle('is-dim', y !== 'all' && c.getAttribute('data-year') !== y);
-                });
+        /* Ancres internes : c'est le body qui défile */
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                var t = document.querySelector(a.getAttribute('href'));
+                if (!t) return;
+                e.preventDefault();
+                t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
             });
         });
     })();
     </script>
-
     <script>
     /* ============================================================
-       LA ROCHE — WebGL natif, sans bibliothèque ni CDN.
-       Sphère subdivisée (icosphère) déformée par un bruit fractal en
-       paliers (relief taillé), éclairage latéral, rotation lente qui
-       suit un peu le curseur. Rendu suspendu hors écran.
-       Replis : image fixe (roche.png) si WebGL est absent ; une seule
-       image dessinée, sans animation, en mouvement réduit.
+       L'OBJET — WebGL natif, sans bibliothèque ni CDN.
+       Recréation par le code de la sculpture de Tom : huit rubans en
+       boucles pincées à mi-hauteur, disposés en couronne autour d'un
+       axe, sur trois couches imbriquées, avec un cœur d'anneaux ondulés
+       et une base. Deux rendus du même maillage :
+       - fil de fer vert phosphore (lignes additives, façon écran) ;
+       - matière vert-de-gris granuleuse, qui apparaît au survol ou
+         quand on choisit « MATIÈRE ».
+       Replis : photo de l'objet si WebGL est absent ; pas de rotation
+       en mouvement réduit.
        ============================================================ */
     (function () {
         'use strict';
-        var wrap = document.getElementById('tom-rock');
-        var canvas = document.getElementById('tom-rock-canvas');
+        var wrap = document.getElementById('tn-object');
+        var canvas = document.getElementById('tn-object-canvas');
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var gl = null;
-        try { gl = canvas.getContext('webgl', { antialias: true, alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: true }); } catch (e) {}
+        try { gl = canvas.getContext('webgl', { antialias: true, alpha: true, premultipliedAlpha: false }); } catch (e) {}
         if (!gl) return;
 
-        /* --- bruit de valeur 3D déterministe : même roche à chaque visite --- */
-        function hash(x, y, z) {
-            var h = (x * 374761393 + y * 668265263 + z * 1274126177) | 0;
-            h = Math.imul(h ^ (h >>> 13), 1274126177);
-            return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
-        }
-        function fade(t) { return t * t * (3 - 2 * t); }
-        function noise(x, y, z) {
-            var xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z);
-            var xf = fade(x - xi), yf = fade(y - yi), zf = fade(z - zi), v = 0;
-            for (var dx = 0; dx < 2; dx++) for (var dy = 0; dy < 2; dy++) for (var dz = 0; dz < 2; dz++) {
-                v += (dx ? xf : 1 - xf) * (dy ? yf : 1 - yf) * (dz ? zf : 1 - zf) * hash(xi + dx, yi + dy, zi + dz);
+        /* --- courbes --- */
+        var H = 1.0, R0 = 0.78, K = 8, N = 140;
+        var curves = [];
+        var layers = [
+            { sc: 1.00, rad: 1.00, sy: 1.00, off: 0 },
+            { sc: 0.80, rad: 0.84, sy: 0.93, off: 0.5 },
+            { sc: 0.60, rad: 0.68, sy: 0.86, off: 0 }
+        ];
+        function radiusAt(y, lay) { return R0 * lay.rad * (1 + 0.22 * (1 - (y / H) * (y / H)) - 0.12 * Math.max(0, -y / H)); }
+        layers.forEach(function (lay) {
+            for (var k = 0; k < K; k++) {
+                var phi = (k + lay.off) / K * Math.PI * 2;
+                var A = 0.95 * Math.PI * R0 * lay.rad / K * lay.sc * 1.9;
+                var pts = [];
+                for (var i = 0; i < N; i++) {
+                    var s = i / N;
+                    var y = H * lay.sy * Math.cos(2 * Math.PI * s);
+                    var u = A * Math.sin(2 * Math.PI * s) * (0.55 + 0.45 * Math.cos(4 * Math.PI * s));
+                    var R = radiusAt(y, lay);
+                    var a = phi + u / R;
+                    pts.push([R * Math.cos(a), y, R * Math.sin(a)]);
+                }
+                curves.push({ pts: pts, w: 0.085 * lay.sc + 0.02, h: 0.03 });
             }
-            return v * 2 - 1;
-        }
-        function fbm(x, y, z, oct) {
-            var a = 0.5, f = 1, s = 0;
-            for (var o = 0; o < oct; o++) { s += a * noise(x * f, y * f, z * f); a *= 0.5; f *= 2.07; }
-            return s;
-        }
-
-        /* --- icosphère --- */
-        var t = (1 + Math.sqrt(5)) / 2;
-        var verts = [[-1,t,0],[1,t,0],[-1,-t,0],[1,-t,0],[0,-1,t],[0,1,t],[0,-1,-t],[0,1,-t],[t,0,-1],[t,0,1],[-t,0,-1],[-t,0,1]];
-        var faces = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],
-                     [3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
-        verts = verts.map(function (p) { var l = Math.hypot(p[0], p[1], p[2]); return [p[0] / l, p[1] / l, p[2] / l]; });
-        for (var s = 0; s < 5; s++) {
-            var cache = {}, next = [];
-            var mid = function (a, b) {
-                var k = a < b ? a + '_' + b : b + '_' + a;
-                if (cache[k] !== undefined) return cache[k];
-                var p = verts[a], q = verts[b];
-                var m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2, (p[2] + q[2]) / 2];
-                var l = Math.hypot(m[0], m[1], m[2]);
-                verts.push([m[0] / l, m[1] / l, m[2] / l]);
-                return (cache[k] = verts.length - 1);
-            };
-            faces.forEach(function (f) {
-                var a = mid(f[0], f[1]), b = mid(f[1], f[2]), c = mid(f[2], f[0]);
-                next.push([f[0], a, c], [f[1], b, a], [f[2], c, b], [a, b, c]);
-            });
-            faces = next;
-        }
-
-        /* --- taille de la pierre : une sphère tranchée par des plans de
-           coupe tirés au hasard (graine fixe), comme une roche éclatée,
-           puis un relief fin pour le grain de surface --- */
-        var seed = 7;
-        function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
-        var cuts = [];
-        for (var k = 0; k < 26; k++) {
-            var u = rnd() * 2 - 1, th = rnd() * Math.PI * 2, q = Math.sqrt(1 - u * u);
-            cuts.push([q * Math.cos(th), u, q * Math.sin(th), 0.62 + rnd() * 0.3]);
-        }
-        var n = verts.length, P = new Float32Array(n * 3), N = new Float32Array(n * 3);
-        for (var i = 0; i < n; i++) {
-            var v = verts[i], r = 1.0;
-            for (var c = 0; c < cuts.length; c++) {
-                var dd = v[0] * cuts[c][0] + v[1] * cuts[c][1] + v[2] * cuts[c][2];
-                if (dd > 0.0001) r = Math.min(r, cuts[c][3] / dd);
-            }
-            var bump = fbm(v[0] * 2.2 + 3.1, v[1] * 2.2, v[2] * 2.2 - 1.7, 3) * 0.06;
-            var grain = fbm(v[0] * 11 + 9, v[1] * 11, v[2] * 11, 2) * 0.018;
-            r = r * (1 + bump) + grain;
-            P[i * 3] = v[0] * r * 1.18;
-            P[i * 3 + 1] = v[1] * r * 0.8;
-            P[i * 3 + 2] = v[2] * r * 0.95;
-        }
-        var idx = new Uint16Array(faces.length * 3);
-        faces.forEach(function (f, k) {
-            idx[k * 3] = f[0]; idx[k * 3 + 1] = f[1]; idx[k * 3 + 2] = f[2];
-            var a = f[0] * 3, b = f[1] * 3, c = f[2] * 3;
-            var ux = P[b] - P[a], uy = P[b + 1] - P[a + 1], uz = P[b + 2] - P[a + 2];
-            var vx = P[c] - P[a], vy = P[c + 1] - P[a + 1], vz = P[c + 2] - P[a + 2];
-            var nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
-            [a, b, c].forEach(function (o) { N[o] += nx; N[o + 1] += ny; N[o + 2] += nz; });
         });
-        for (i = 0; i < n; i++) {
-            var l = Math.hypot(N[i * 3], N[i * 3 + 1], N[i * 3 + 2]) || 1;
-            N[i * 3] /= l; N[i * 3 + 1] /= l; N[i * 3 + 2] /= l;
-        }
+        // cœur : anneaux ondulés empilés, comme les « pétales » du sommet et de la base
+        [-0.78, -0.4, 0, 0.4, 0.78].forEach(function (y, j) {
+            var pts = [];
+            var r0 = 0.3 + 0.06 * Math.cos(j);
+            for (var i = 0; i < N; i++) {
+                var t = i / N * Math.PI * 2;
+                var r = r0 * (1 + 0.18 * Math.cos(8 * t + j));
+                pts.push([r * Math.cos(t), y + 0.05 * Math.sin(8 * t), r * Math.sin(t)]);
+            }
+            curves.push({ pts: pts, w: 0.035, h: 0.03 });
+        });
+        // base : trois anneaux qui se resserrent
+        [[-1.08, 0.42], [-1.16, 0.34], [-1.22, 0.24]].forEach(function (b) {
+            var pts = [];
+            for (var i = 0; i < N; i++) {
+                var t = i / N * Math.PI * 2;
+                var r = b[1] * (1 + 0.06 * Math.cos(16 * t));
+                pts.push([r * Math.cos(t), b[0], r * Math.sin(t)]);
+            }
+            curves.push({ pts: pts, w: 0.04, h: 0.03 });
+        });
+
+        /* --- tubes aplatis (rubans) autour de chaque courbe --- */
+        var M = 8;
+        var P = [], NR = [], TRI = [], EDG = [];
+        function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+        function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+        function norm(a) { var l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
+        curves.forEach(function (c) {
+            var base = P.length / 3, n = c.pts.length;
+            for (var i = 0; i < n; i++) {
+                var p = c.pts[i];
+                var T = norm(sub(c.pts[(i + 1) % n], c.pts[(i - 1 + n) % n]));
+                var radial = norm([p[0], 0, p[2]]);
+                var B = norm(cross(T, radial));          // dans la surface : largeur du ruban
+                var Nn = norm(cross(B, T));               // vers l'extérieur : épaisseur
+                for (var m = 0; m < M; m++) {
+                    var ang = m / M * Math.PI * 2, ca = Math.cos(ang), sa = Math.sin(ang);
+                    P.push(p[0] + ca * c.w * B[0] + sa * c.h * Nn[0],
+                           p[1] + ca * c.w * B[1] + sa * c.h * Nn[1],
+                           p[2] + ca * c.w * B[2] + sa * c.h * Nn[2]);
+                    var nn = norm([ca / c.w * B[0] + sa / c.h * Nn[0], ca / c.w * B[1] + sa / c.h * Nn[1], ca / c.w * B[2] + sa / c.h * Nn[2]]);
+                    NR.push(nn[0], nn[1], nn[2]);
+                }
+            }
+            for (i = 0; i < n; i++) {
+                for (var m2 = 0; m2 < M; m2++) {
+                    var a0 = base + i * M + m2, a1 = base + i * M + (m2 + 1) % M;
+                    var b0 = base + ((i + 1) % n) * M + m2, b1 = base + ((i + 1) % n) * M + (m2 + 1) % M;
+                    TRI.push(a0, b0, a1, a1, b0, b1);
+                    if (m2 === 0 || m2 === M / 2) EDG.push(a0, b0);  // les deux bords du ruban
+                    if (i % 14 === 0) EDG.push(a0, a1);            // sections, de loin en loin
+                }
+            }
+        });
 
         /* --- shaders --- */
         var vs = 'attribute vec3 aPos; attribute vec3 aNor; uniform mat4 uProj; uniform mat4 uModel;' +
-            'varying vec3 vN; varying vec3 vP;' +
-            'void main(){ vec4 p = uModel * vec4(aPos,1.0); vP = p.xyz; vN = mat3(uModel) * aNor; gl_Position = uProj * p; }';
-        var fs = 'precision mediump float; varying vec3 vN; varying vec3 vP;' +
-            'void main(){ vec3 n = normalize(vN);' +
-            ' vec3 key = normalize(vec3(0.7,0.55,0.6)); vec3 rim = normalize(vec3(-0.8,-0.2,-0.4));' +
-            ' float d = max(dot(n,key),0.0); float r = max(dot(n,rim),0.0);' +
-            ' vec3 base = vec3(0.16,0.155,0.14);' +
-            ' vec3 col = base*0.25 + base*4.2*pow(d,1.2) + vec3(0.95,0.85,0.45)*0.18*r;' +
-            ' float fres = pow(1.0 - max(dot(n, normalize(-vP)),0.0), 3.0);' +
-            ' col += vec3(0.2,0.18,0.12)*fres;' +
-            ' gl_FragColor = vec4(col,1.0); }';
+            'varying vec3 vN; varying vec3 vP; varying vec3 vO;' +
+            'void main(){ vec4 p = uModel * vec4(aPos,1.0); vP = p.xyz; vO = aPos; vN = mat3(uModel) * aNor; gl_Position = uProj * p; }';
+        var fsFill = 'precision mediump float; varying vec3 vN; varying vec3 vP; varying vec3 vO; uniform float uFill;' +
+            'float h(vec3 p){ return fract(sin(dot(p, vec3(12.9898,78.233,37.719))) * 43758.5453); }' +
+            'void main(){ vec3 n = normalize(vN); vec3 L = normalize(vec3(0.5,0.7,0.6));' +
+            ' float d = max(dot(n,L),0.0); float g = h(floor(vO*90.0));' +
+            ' vec3 a = vec3(0.40,0.60,0.54); vec3 b = vec3(0.74,0.88,0.82); vec3 dk = vec3(0.16,0.22,0.19);' +
+            ' vec3 base = mix(a, b, smoothstep(0.35,1.0,g) * 0.7);' +
+            ' base = mix(dk, base, 0.55 + 0.45 * smoothstep(-1.2, 0.6, vO.y));' +
+            ' vec3 col = base * (0.5 + 0.8 * d);' +
+            ' gl_FragColor = vec4(col, uFill); }';
+        var fsWire = 'precision mediump float; uniform float uWire;' +
+            'void main(){ gl_FragColor = vec4(vec3(0.22,1.0,0.43) * uWire, 1.0); }';
         function sh(type, src) { var o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; }
-        var prog = gl.createProgram();
-        gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs));
-        gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs));
-        gl.linkProgram(prog);
-        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-        gl.useProgram(prog);
-
-        function buf(data, loc, size) {
-            var b = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, b);
-            gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
-            var a = gl.getAttribLocation(prog, loc);
-            gl.enableVertexAttribArray(a);
-            gl.vertexAttribPointer(a, size, gl.FLOAT, false, 0, 0);
+        function prog(f) {
+            var p = gl.createProgram();
+            gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, f));
+            gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
         }
-        buf(P, 'aPos', 3); buf(N, 'aNor', 3);
-        var ib = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
-        var uProj = gl.getUniformLocation(prog, 'uProj'), uModel = gl.getUniformLocation(prog, 'uModel');
-        gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.CULL_FACE);
-        gl.clearColor(0, 0, 0, 0);
+        var pFill = prog(fsFill), pWire = prog(fsWire);
+        if (!pFill || !pWire) return;
+
+        var bPos = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(P), gl.STATIC_DRAW);
+        var bNor = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bNor); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(NR), gl.STATIC_DRAW);
+        var bTri = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bTri); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(TRI), gl.STATIC_DRAW);
+        var bEdg = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bEdg); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(EDG), gl.STATIC_DRAW);
+        function bind(p) {
+            gl.useProgram(p);
+            var a = gl.getAttribLocation(p, 'aPos'); gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 3, gl.FLOAT, false, 0, 0);
+            var n = gl.getAttribLocation(p, 'aNor');
+            if (n >= 0) { gl.bindBuffer(gl.ARRAY_BUFFER, bNor); gl.enableVertexAttribArray(n); gl.vertexAttribPointer(n, 3, gl.FLOAT, false, 0, 0); }
+        }
 
         function persp(fovy, asp, near, far) {
             var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
             return new Float32Array([f / asp,0,0,0, 0,f,0,0, 0,0,(far + near) * nf,-1, 0,0,2 * far * near * nf,0]);
         }
-        function model(rx, ry, rz) {
-            var cx = Math.cos(rx), sx = Math.sin(rx), cy = Math.cos(ry), sy = Math.sin(ry), cz = Math.cos(rz), sz = Math.sin(rz);
-            // R = Rz * Ry * Rx, puis recul de la caméra
-            var m = [
-                cz * cy, sz * cy, -sy, 0,
-                cz * sy * sx - sz * cx, sz * sy * sx + cz * cx, cy * sx, 0,
-                cz * sy * cx + sz * sx, sz * sy * cx - cz * sx, cy * cx, 0,
-                0, 0, -4.4, 1
-            ];
-            return new Float32Array(m);
+        function model(rx, ry) {
+            var cx = Math.cos(rx), sx = Math.sin(rx), cy = Math.cos(ry), sy = Math.sin(ry);
+            // R = Rx * Ry, puis recul de la caméra
+            return new Float32Array([
+                cy, sx * sy, -cx * sy, 0,
+                0, cx, sx, 0,
+                sy, -sx * cy, cx * cy, 0,
+                0, 0.05, -4.6, 1
+            ]);
         }
-
-        var asp = 1;
+        var proj;
         function resize() {
             var dpr = Math.min(window.devicePixelRatio || 1, 2);
             var w = wrap.clientWidth, h = wrap.clientHeight;
             if (!w || !h) return;
             canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
             gl.viewport(0, 0, canvas.width, canvas.height);
-            asp = w / h;
-            gl.uniformMatrix4fv(uProj, false, persp(0.62, asp, 0.1, 20));
+            proj = persp(0.7, w / h, 0.1, 20);
         }
-        var ry = 0.6, tx = 0, ty = 0, mx = 0, my = 0;
+
+        var ry = 0.4, fill = 0, fillTarget = 0, hovering = false, mode = 'wire';
         function draw() {
+            var M4 = model(0.12, ry);
+            gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            gl.uniformMatrix4fv(uModel, false, model(0.32 + tx, ry, 0.1 + ty * 0.3));
-            gl.drawElements(gl.TRIANGLES, idx.length, gl.UNSIGNED_SHORT, 0);
+            if (fill > 0.01) {
+                bind(pFill);
+                gl.uniformMatrix4fv(gl.getUniformLocation(pFill, 'uProj'), false, proj);
+                gl.uniformMatrix4fv(gl.getUniformLocation(pFill, 'uModel'), false, M4);
+                gl.uniform1f(gl.getUniformLocation(pFill, 'uFill'), fill);
+                gl.enable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bTri);
+                gl.drawElements(gl.TRIANGLES, TRI.length, gl.UNSIGNED_SHORT, 0);
+            }
+            bind(pWire);
+            gl.uniformMatrix4fv(gl.getUniformLocation(pWire, 'uProj'), false, proj);
+            gl.uniformMatrix4fv(gl.getUniformLocation(pWire, 'uModel'), false, M4);
+            gl.uniform1f(gl.getUniformLocation(pWire, 'uWire'), 0.85 * (1 - 0.88 * fill));
+            gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bEdg);
+            gl.drawElements(gl.LINES, EDG.length, gl.UNSIGNED_SHORT, 0);
         }
         resize(); draw();
+        document.body.classList.add('object-active');
         window.addEventListener('resize', function () { resize(); draw(); });
-        document.body.classList.add('rock-active');
+
+        /* --- survol et boutons FIL DE FER / MATIÈRE --- */
+        var btns = Array.prototype.slice.call(document.querySelectorAll('[data-render]'));
+        function updateTarget() { fillTarget = (mode === 'matiere' || hovering) ? 1 : 0; if (reduce) { fill = fillTarget; draw(); } }
+        btns.forEach(function (b) {
+            b.addEventListener('click', function () {
+                mode = b.getAttribute('data-render');
+                btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+                updateTarget();
+            });
+        });
+        wrap.addEventListener('mouseenter', function () { hovering = true; updateTarget(); });
+        wrap.addEventListener('mouseleave', function () { hovering = false; updateTarget(); });
         if (reduce) return;
 
-        window.addEventListener('pointermove', function (e) {
-            mx = e.clientX / window.innerWidth - 0.5;
-            my = e.clientY / window.innerHeight - 0.5;
-        }, { passive: true });
         var visible = true;
         if ('IntersectionObserver' in window) {
             new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }, { threshold: 0.01 }).observe(wrap);
@@ -385,13 +429,13 @@
         (function loop() {
             requestAnimationFrame(loop);
             if (!visible || document.hidden) return;
-            tx += (my * 0.5 - tx) * 0.04;
-            ty += (mx * 0.6 - ty) * 0.04;
-            ry += 0.0025;
+            ry += 0.004;
+            fill += (fillTarget - fill) * 0.06;
             draw();
         })();
     })();
     </script>
 </body>
 </html>
+
 
