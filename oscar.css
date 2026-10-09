@@ -148,8 +148,9 @@ body.oscar-hub .artist-page-container {
     width: 100%;
 }
 
-/* ---------- ÉCRAN 1 : la fenêtre ---------- */
+/* ---------- ÉCRAN 1 : deux fenêtres superposées ---------- */
 .oscar-screen-hero {
+    position: relative;
     min-height: 100vh;
     min-height: 100dvh;
     scroll-snap-align: start;
@@ -158,13 +159,14 @@ body.oscar-hub .artist-page-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4.5rem 5vw 3rem;
+    padding: 4.2rem 4vw 2.5rem;
 }
+.os-desk { width: min(100%, 1120px); }
 .os-window {
-    width: min(100%, 980px);
     border: 1.5px solid var(--o-cream);
     outline: 1.5px solid var(--o-cream);
-    outline-offset: 4px;
+    outline-offset: 3px;
+    background: var(--o-blue);
     font-family: 'Share Tech Mono', monospace;
     color: var(--o-cream);
 }
@@ -173,21 +175,21 @@ body.oscar-hub .artist-page-container {
     grid-template-columns: auto 1fr auto auto;
     align-items: stretch;
     border-bottom: 1.5px solid var(--o-cream);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     letter-spacing: 1px;
 }
 .os-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.1rem;
+    width: 2rem;
     border-right: 1.5px solid var(--o-cream);
 }
-.os-box + .os-box,
-.os-title + .os-box { border-right: none; border-left: 1.5px solid var(--o-cream); }
+.os-title + .os-box,
+.os-box + .os-box { border-right: none; border-left: 1.5px solid var(--o-cream); }
 .os-title {
     text-align: center;
-    padding: 0.45rem 0.5rem;
+    padding: 0.4rem 0.5rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -195,21 +197,61 @@ body.oscar-hub .artist-page-container {
 .os-menubar {
     display: flex;
     gap: 2.4rem;
-    padding: 0.35rem 1rem;
+    padding: 0.3rem 1rem;
     border-bottom: 1.5px solid var(--o-cream);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     letter-spacing: 1px;
     opacity: 0.5;
 }
-.os-body {
-    padding: clamp(1.1rem, 2.4vw, 1.8rem);
+
+/* Onglets de l'explorateur = sommaire de la page */
+.os-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 2rem;
+    padding: 0.35rem 1rem 2.6rem;
+    border-bottom: 1.5px solid var(--o-cream);
 }
-/* Le nom en grand, en bas de casse, comme le titre « about me » de la référence */
+.os-tabs a {
+    color: var(--o-cream);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    opacity: 0.55;
+    padding: 0 0.2em;
+}
+.os-tabs a.is-current { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+.os-tabs a:hover,
+.os-tabs a:focus-visible { opacity: 1; background: var(--o-cream); color: var(--o-blue); outline: none; }
+
+/* Corps de l'explorateur : le bloc-notes déborde sur les onglets */
+.os-back-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    gap: 1.4rem;
+    padding: 0 1rem 0 1.6rem;
+}
+.os-front {
+    margin-top: -2.1rem;
+    position: relative;
+    z-index: 2;
+}
+.os-front-body {
+    padding: clamp(1rem, 2.2vw, 1.6rem);
+    max-height: min(58vh, 560px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--o-cream) transparent;
+}
+.os-front-body::-webkit-scrollbar { width: 10px; }
+.os-front-body::-webkit-scrollbar-thumb { background: var(--o-cream); border: 3px solid var(--o-blue); }
+
+/* Le titre en grand, en bas de casse, comme « about me » */
 body.oscar-hub .os-name {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 400;
     text-transform: none;
-    font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    font-size: clamp(2.4rem, 6.5vw, 4.8rem);
     line-height: 0.9;
     letter-spacing: -0.045em;
     color: var(--o-cream);
@@ -217,29 +259,52 @@ body.oscar-hub .os-name {
 }
 .os-intro {
     display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
-    gap: clamp(1.2rem, 3vw, 2.4rem);
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: clamp(1rem, 2.6vw, 2rem);
     align-items: start;
 }
-.os-trame { margin: 0; }
-.os-trame img {
+
+/* Portrait pixelisé : c'est aussi le bouton qui lance le dialogue */
+.os-portrait {
+    display: block;
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--o-cream);
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+.os-portrait img {
     display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: 1 / 1;
     image-rendering: pixelated;
     border: 1.5px solid var(--o-cream);
 }
+.os-portrait-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+    animation: rpg-blink 1.1s steps(1) infinite;
+}
+.os-portrait:hover img,
+.os-portrait:focus-visible img { outline: 1.5px dashed var(--o-cream); outline-offset: 4px; }
+.os-portrait:focus-visible { outline: none; }
+
 .os-fields {
-    margin: 0 0 1.4rem;
+    margin: 0 0 1.1rem;
     font-size: 0.9rem;
     line-height: 1.55;
 }
 .os-fields div { display: flex; gap: 0.6em; }
 .os-fields dt { flex-shrink: 0; opacity: 0.7; }
 .os-fields dd { margin: 0; }
-/* Surlignage plein, ligne par ligne */
 .os-demarche {
-    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    font-size: clamp(0.84rem, 1.4vw, 0.95rem);
     line-height: 1.7;
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -252,63 +317,61 @@ body.oscar-hub .os-name {
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
 }
-/* Séparateur en caractères, coupé à la largeur de la fenêtre */
-.os-rule {
-    margin: 1.3rem 0 1rem;
-    overflow: hidden;
-    white-space: nowrap;
-    line-height: 1;
-    letter-spacing: 2px;
-}
-.os-rule::before {
-    content: "****************************************************************************************************************************************";
-}
 
-/* Menu façon magnétoscope */
-.vcr-head {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 0 0 0.6rem;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    letter-spacing: 2px;
+.os-cols {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.6rem;
+    margin-top: 1.6rem;
 }
-.vcr-head::before,
-.vcr-head::after {
-    content: "";
-    flex: 1;
-    border-top: 2px dashed var(--o-cream);
+body.oscar-hub .os-h {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: inherit;
+    opacity: 0.75;
+    margin: 0 0 0.4rem;
 }
-.vcr-list {
+.os-list {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 clamp(1rem, 6vw, 4rem);
+    padding: 0 0 0 1.4rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
 }
-.vcr-item {
-    display: inline-block;
-    font-size: clamp(1.05rem, 2.2vw, 1.4rem);
-    line-height: 1.45;
-    letter-spacing: 1px;
-    color: var(--o-cream);
-    text-decoration: none;
-    padding: 0 0.25em;
-}
-.vcr-item.is-selected {
-    background: var(--o-cream);
-    color: var(--o-blue);
-}
-.vcr-item:focus-visible {
-    outline: 1.5px dashed var(--o-cream);
-    outline-offset: 3px;
-}
-.vcr-keys {
+.os-list-dated li {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 2.2rem;
-    margin: 0.9rem 0 0;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.os-list-dated li span:last-child { flex-shrink: 0; opacity: 0.75; }
+
+.os-contact {
+    padding-top: 0.6rem;
     font-size: 0.8rem;
-    letter-spacing: 1px;
-    opacity: 0.65;
+    line-height: 1.45;
+}
+.os-contact p { margin: 0 0 0.8rem; opacity: 0.85; }
+.os-contact a { color: var(--o-cream); text-decoration: none; }
+.os-contact a:hover,
+.os-contact a:focus-visible { background: var(--o-cream); color: var(--o-blue); outline: none; }
+
+.os-back-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 11rem;
+    gap: 1.6rem;
+    align-items: start;
+    padding: 1.4rem 1rem 1rem 1.6rem;
+}
+.os-trame { margin: 0; }
+.os-trame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated;
 }
 .os-statusbar {
     display: flex;
@@ -316,22 +379,96 @@ body.oscar-hub .os-name {
     gap: 1rem;
     border-top: 1.5px solid var(--o-cream);
     padding: 0.35rem 1rem;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     letter-spacing: 0.5px;
 }
-.os-path {
-    flex: 1;
-    border: 1px solid rgba(234, 232, 214, 0.45);
-    padding: 0.1rem 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+.os-path,
 .os-count {
     border: 1px solid rgba(234, 232, 214, 0.45);
     padding: 0.1rem 0.5rem;
     white-space: nowrap;
 }
+.os-path { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- Boîte de dialogue façon RPG Maker ---------- */
+.rpg-box {
+    position: fixed;
+    left: 50%;
+    bottom: max(1.2rem, env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    width: min(92vw, 820px);
+    z-index: 80;
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+    background: var(--o-blue);
+    color: var(--o-cream);
+    border: 2px solid var(--o-cream);
+    outline: 2px solid var(--o-blue);
+    box-shadow: 0 0 0 5px var(--o-cream);
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+}
+.rpg-box[hidden] { display: none; }
+.rpg-box:focus { outline: 2px solid var(--o-blue); }
+.rpg-face {
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+    border: 1.5px solid var(--o-cream);
+}
+.rpg-content {
+    position: relative;
+    flex: 1;
+    min-height: 96px;
+}
+.rpg-name {
+    display: inline-block;
+    background: var(--o-cream);
+    color: var(--o-blue);
+    padding: 0 0.4em;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+}
+.rpg-text {
+    margin: 0;
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    line-height: 1.5;
+    min-height: 3em;
+    padding-right: 1.4rem;
+}
+.rpg-next {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    animation: rpg-blink 0.9s steps(1) infinite;
+}
+.rpg-next[hidden] { display: none; }
+.rpg-choices {
+    list-style: none;
+    margin: 0.6rem 0 0;
+    padding: 0 0 0 1.2rem;
+}
+.rpg-choices[hidden] { display: none; }
+.rpg-choice {
+    display: inline-block;
+    background: none;
+    border: none;
+    font: inherit;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--o-cream);
+    text-decoration: none;
+    padding: 0 0.25em;
+    cursor: pointer;
+    line-height: 1.6;
+}
+.rpg-choice.is-selected { background: var(--o-cream); color: var(--o-blue); }
+.rpg-choice:focus-visible { outline: 1.5px dashed var(--o-cream); outline-offset: 3px; }
+@keyframes rpg-blink { 50% { opacity: 0; } }
 
 /* ---------- ÉCRAN 2 : le tiroir ----------
    Haut de l'écran = fond du tiroir. Chaque dossier est posé à
@@ -644,15 +781,30 @@ body.oscar-hub .os-name {
 }
 
 @media (max-width: 760px) {
-    .oscar-screen-hero { padding: 4.2rem 1rem 2rem; align-items: flex-start; }
-    .os-window { outline-offset: 3px; }
-    .os-titlebar { font-size: 0.68rem; }
-    .os-menubar { gap: 1.2rem; font-size: 0.68rem; }
-    .os-intro { grid-template-columns: 1fr; }
-    .os-trame { max-width: 360px; }
+    .oscar-screen-hero { padding: 4.2rem 0.8rem 2rem; align-items: flex-start; }
+    .os-titlebar { font-size: 0.66rem; }
+    .os-menubar { gap: 1.2rem; font-size: 0.66rem; }
+    .os-tabs { gap: 0.2rem 1.1rem; padding-bottom: 2.2rem; }
+    .os-tabs a { font-size: 0.74rem; }
+    .os-back-body { grid-template-columns: 1fr; padding: 0 0.6rem; }
+    .os-front { margin-top: -1.8rem; }
+    .os-front-body { max-height: none; overflow: visible; }
+    /* portrait à gauche des champs, démarche sur toute la largeur */
+    .os-intro { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.9rem; }
+    .os-fiche { display: contents; }
+    .os-demarche { grid-column: 1 / -1; }
+    .os-portrait-hint { font-size: 0.62rem; }
     .os-fields { font-size: 0.8rem; }
-    .os-fields div { flex-direction: column; gap: 0; margin-bottom: 0.35rem; }
-    .os-statusbar { font-size: 0.68rem; }
+    .os-fields div { flex-direction: column; gap: 0; margin-bottom: 0.3rem; }
+    .os-cols { grid-template-columns: 1fr; gap: 1.1rem; }
+    .os-list { font-size: 0.78rem; padding-left: 0.8rem; }
+    .os-contact { padding: 0.4rem 0.4rem 0; }
+    .os-back-foot { grid-template-columns: 1fr; padding: 1rem 0.8rem; }
+    .os-trame { max-width: 18rem; }
+    .os-statusbar { font-size: 0.66rem; }
+    .rpg-box { gap: 0.7rem; padding: 0.8rem; }
+    .rpg-face { width: 64px; height: 64px; }
+    .rpg-content { min-height: 64px; }
 
     .oscar-screen-tiroir {
         padding: 4.2rem 0.8rem 3rem;
@@ -677,6 +829,8 @@ body.oscar-hub .os-name {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .os-portrait-hint,
+    .rpg-next { animation: none; }
     .dossier,
     .dossier-fiche,
     .dossier-tab::before,
