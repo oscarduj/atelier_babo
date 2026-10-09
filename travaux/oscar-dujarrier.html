@@ -1,976 +1,441 @@
-/* ============================================================
-   DA — OSCAR DUJARRIER
-   Reprend le langage visuel de son propre portfolio (serif italique
-   pour les titres, monospace pour le technique, accent rouille sur
-   fond noir) plutôt que d'inventer un système à part. Le grain et le
-   balayage font écho à ses pièces autour du signal, du bruit et de
-   l'image qui ne se stabilise jamais tout à fait (Stase, Le bruit de
-   l'eau, Transmutation).
+<!DOCTYPE html>
+<html lang="fr" class="dark-mode">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSCAR DUJARRIER // ATELIER BABO</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../oscar.css">
+    <script src="../ambient.js" defer></script>
+    <script src="../page-transition.js" defer></script>
+</head>
+<body class="standalone-page oscar-hub">
+    <a href="../index.html#travaux" class="back-link">← RETOUR AUX TRAVAUX</a>
 
-   Ce fichier vient PAR-DESSUS style.css : il ne touche pas à la nav
-   commune ni aux autres pages, seulement à cette page-ci.
-   ============================================================ */
+    <main class="artist-page-container">
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500&family=Share+Tech+Mono&display=swap');
+        <!-- ÉCRAN 1 : deux fenêtres superposées, sur le modèle de la
+             référence « about me ». Au fond l'explorateur (onglets, contact,
+             expositions) ; devant le bloc-notes « à propos ». Un clic sur le
+             portrait ouvre une boîte de dialogue façon RPG Maker. -->
+        <section class="oscar-screen-hero" id="accueil-oscar">
+            <div class="os-desk">
+                <div class="os-window os-back">
+                    <div class="os-titlebar">
+                        <span class="os-box" aria-hidden="true">–</span>
+                        <span class="os-title">EXPLORATEUR — TRAVAUX</span>
+                        <span class="os-box" aria-hidden="true">▾</span>
+                        <span class="os-box" aria-hidden="true">▴</span>
+                    </div>
+                    <nav class="os-tabs" aria-label="Sommaire de la page">
+                        <a href="#accueil-oscar" class="is-current">ACCUEIL</a>
+                        <a href="#tiroir">TIROIR</a>
+                        <a href="#genealogie">GÉNÉALOGIE</a>
+                        <a href="#babo">BABO</a>
+                        <a href="#contact-oscar">CONTACT</a>
+                    </nav>
 
-body.oscar-page {
-    --bg-color: #050505;
-    --text-color: #EAE8E4;
-    --accent-color: #c9491f;
-    --secondary-color: #c9491f;
-    --border-color: #262626;
-    --box-bg: rgba(201, 73, 31, 0.03);
-    --desc-color: #9a9a9a;
-}
+                    <div class="os-back-body">
+                        <!-- Fenêtre de devant : le bloc-notes -->
+                        <div class="os-window os-front">
+                            <div class="os-titlebar">
+                                <span class="os-box" aria-hidden="true">–</span>
+                                <span class="os-title">NOTEPAD.EXE — a_propos.txt</span>
+                                <span class="os-box" aria-hidden="true">▾</span>
+                                <span class="os-box" aria-hidden="true">▴</span>
+                            </div>
+                            <div class="os-menubar" aria-hidden="true">
+                                <span>FICHIER</span><span>OPTIONS</span><span>FENÊTRE</span><span>AIDE</span>
+                            </div>
+                            <div class="os-front-body">
+                                <h1 class="os-name">à propos</h1>
 
-/* Grain persistant + lignes de balayage très discrètes, en fond fixe —
-   jamais assez présents pour gêner la lecture, juste assez pour ne
-   jamais laisser l'image du fond se stabiliser complètement. */
-.oscar-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-        repeating-linear-gradient(rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 3px),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-}
+                                <div class="os-intro">
+                                    <button type="button" class="os-portrait" id="rpg-open" aria-label="Parler à Oscar">
+                                        <img src="../images/travaux/oscar-projets/oscar-portrait.png" alt="" width="32" height="32">
+                                        <span class="os-portrait-hint">▶ CLIQUEZ POUR PARLER</span>
+                                    </button>
+                                    <div class="os-fiche">
+                                        <dl class="os-fields">
+                                            <div><dt>NOM :</dt><dd>Oscar Dujarrier</dd></div>
+                                            <div><dt>LIEU :</dt><dd>Rouen</dd></div>
+                                            <div><dt>OCCUPATION :</dt><dd>artiste plasticien, Atelier Babo</dd></div>
+                                        </dl>
+                                        <p class="os-demarche"><span>Ma pratique explore les formes hybrides entre vidéo, sculpture et dispositifs numériques. Je m'intéresse aux altérations provoquées par les nouveaux systèmes techniques et à la matérialité de l'image numérique : comment la traduire, la fragmenter, lui redonner un corps.</span></p>
+                                    </div>
+                                </div>
 
-/* Ligne qui pulse doucement, écho du son d'électrocardiogramme de Stase —
-   une signature discrète plutôt qu'un motif décoratif appuyé. */
-.oscar-pulse-line {
-    position: relative;
-    height: 1px;
-    background: var(--accent-color);
-    opacity: 0.4;
-    margin: 2.5rem 0;
-    animation: oscar-pulse 3.4s ease-in-out infinite;
-}
-@keyframes oscar-pulse {
-    0%, 100% { opacity: 0.15; }
-    50% { opacity: 0.55; }
-}
+                                <div class="os-cols">
+                                    <div>
+                                        <h2 class="os-h">COMPÉTENCES :</h2>
+                                        <ul class="os-list">
+                                            <li>installation multimédia</li>
+                                            <li>TouchDesigner</li>
+                                            <li>maquettage et modélisation 3D</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h2 class="os-h">FORMATION :</h2>
+                                        <ul class="os-list os-list-dated">
+                                            <li><span>Master Direction de projets culturels, Université de Rouen</span><span>en cours</span></li>
+                                            <li><span>DNSEP, ésadhar, félicitations du jury</span><span>2026</span></li>
+                                            <li><span>DNA, ésadhar</span><span>2024</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-.oscar-page .tag {
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent-color);
-}
+                        <aside class="os-contact">
+                            <h2 class="os-h">CONTACT :</h2>
+                            <p>email :<br><a href="mailto:oscar.dujarrier001@gmail.com">oscar.dujarrier001@<br>gmail.com</a></p>
+                            <p>ig :<br><a href="https://instagram.com/oscar_duja" target="_blank" rel="noopener">@oscar_duja</a></p>
+                            <p>collectif :<br><a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener">@atelier_babo_</a></p>
+                            <p>tél. :<br><a href="tel:+33788890201">07 88 89 02 01</a></p>
+                        </aside>
+                    </div>
 
-.oscar-page .artist-header h1 {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 3.4rem;
-    letter-spacing: 0.5px;
-    text-transform: none;
-    color: var(--text-color);
-}
+                    <div class="os-back-foot">
+                        <div>
+                            <h2 class="os-h">EXPOSITIONS :</h2>
+                            <ul class="os-list os-list-dated">
+                                <li><span>« 5D », Frac Normandie, SHED</span><span>oct. 2026</span></li>
+                                <li><span>Un possible d'images, Paris</span><span>2024, 2026</span></li>
+                                <li><span>Vidéoformes, Clermont-Ferrand</span><span>2023–2025</span></li>
+                                <li><span>Fenêtre sur rue, Rouen</span><span>2023</span></li>
+                            </ul>
+                        </div>
+                        <figure class="os-trame">
+                            <img src="../images/travaux/oscar-projets/oscar-accueil-trame.png"
+                                 alt="Montage tramé en bleu et crème de quatre œuvres : Le bruit de l'eau, Transmutation, Dé-construction et Livre blanc"
+                                 width="320" height="260">
+                        </figure>
+                    </div>
 
-.oscar-page .back-link {
-    color: var(--accent-color);
-}
+                    <div class="os-statusbar">
+                        <span class="os-path">C:\babo\oscar\a_propos.txt</span>
+                        <span class="os-count">7 travaux</span>
+                    </div>
+                </div>
+            </div>
 
-.oscar-page .artist-bio-section h3,
-.oscar-page .artist-projects-section h3,
-.oscar-page .artist-contact-section h3 {
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent-color);
-}
+            <!-- Boîte de dialogue façon RPG Maker -->
+            <div class="rpg-box" id="rpg-box" role="dialog" aria-label="Oscar parle" hidden>
+                <img class="rpg-face" src="../images/travaux/oscar-projets/oscar-portrait.png" alt="" width="32" height="32">
+                <div class="rpg-content">
+                    <span class="rpg-name">OSCAR</span>
+                    <p class="rpg-text" id="rpg-text" aria-live="polite"></p>
+                    <ul class="rpg-choices" id="rpg-choices" hidden>
+                        <li><a href="#tiroir" class="rpg-choice is-selected">OUVRIR LE TIROIR</a></li>
+                        <li><a href="#genealogie" class="rpg-choice">VOIR LA GÉNÉALOGIE</a></li>
+                        <li><button type="button" class="rpg-choice" data-close>RESTER ICI</button></li>
+                    </ul>
+                    <span class="rpg-next" id="rpg-next" aria-hidden="true">▼</span>
+                </div>
+            </div>
+        </section>
 
-.oscar-page .project-entry-head h4 {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.5rem;
-    text-transform: none;
-    letter-spacing: 0.3px;
-}
+        <!-- ÉCRAN 2 : le tiroir de classement. Haut de l'écran = fond du
+             tiroir. Intercalaires par catégorie puis par thème, travaux
+             classés par ordre alphabétique dans chaque thème. -->
+        <section class="oscar-screen-tiroir" id="tiroir">
+            <p class="tiroir-legend"><span class="legend-pointer">Survolez un dossier pour le sortir du tiroir, cliquez pour l'ouvrir.</span><span class="legend-touch">Touchez un dossier pour le sortir du tiroir, touchez-le encore pour l'ouvrir.</span></p>
 
-.oscar-page .project-entry-tag {
-    color: var(--accent-color);
-}
+            <div class="tiroir" style="--n: 13;">
+                <ol class="tiroir-stack">
+                    <li class="dossier is-cat" style="--i: 0;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">100</span>TRAVAUX</span></span>
+                    </li>
+                    <li class="dossier is-theme" style="--i: 1;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">110</span>MATÉRIALITÉ DE L'IMAGE</span></span>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 2;">
+                        <a href="oscar/deconstruction.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">111</span>Dé-construction</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Dé-construction</span>
+                                    <span class="fiche-specs">2024<br>Installation vidéo</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/deconstruction.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-b" style="--i: 3;">
+                        <a href="oscar/bruit-eau.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">112</span>Le bruit de l'eau</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Le bruit de l'eau</span>
+                                    <span class="fiche-specs">2026<br>Dispositif cathodique, lecteur DVD</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/bruit-eau.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 4;">
+                        <a href="oscar/stase.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">113</span>Rémanence</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Rémanence</span>
+                                    <span class="fiche-specs">2025–2026<br>Tissus lestés, vidéoprojecteurs, son</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/stase.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-b" style="--i: 5;">
+                        <a href="oscar/transmutation.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">114</span>Transmutation</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Transmutation</span>
+                                    <span class="fiche-specs">2024<br>Vidéo générative par codage</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/transmutation.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-theme" style="--i: 6;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">120</span>SATURATION</span></span>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 7;">
+                        <a href="oscar/flux.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">121</span>175 Zettaoctets</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">175 Zettaoctets</span>
+                                    <span class="fiche-specs">2023<br>Installation vidéo et sonore</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/flux.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-b" style="--i: 8;">
+                        <a href="oscar/livre-blanc.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">122</span>Livre blanc</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Livre blanc</span>
+                                    <span class="fiche-specs">2023<br>Installation d'éditions, A4</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/livre-blanc.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <li class="dossier is-work tab-a" style="--i: 9;">
+                        <a href="oscar/vivre-flux.html" class="dossier-link">
+                            <span class="dossier-tab"><span class="tab-label"><span class="tab-code">123</span>Vivre à travers le flux</span></span>
+                            <span class="dossier-fiche">
+                                <span class="fiche-text">
+                                    <span class="fiche-title">Vivre à travers le flux</span>
+                                    <span class="fiche-specs">2025–2026<br>Vidéo, 1h07</span>
+                                </span>
+                                <img class="fiche-thumb" src="../images/travaux/oscar-projets/vivre-flux.jpg" alt="" loading="lazy">
+                            </span>
+                        </a>
+                    </li>
+                    <!-- Catégories à venir : pour en activer une, remplacer le
+                         <span class="dossier-tab"> par un lien comme ci-dessus
+                         et retirer la classe is-soon. -->
+                    <li class="dossier is-cat is-soon" style="--i: 10;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">200</span>RECHERCHE</span><span class="tab-soon">à venir</span></span>
+                    </li>
+                    <li class="dossier is-cat is-soon" style="--i: 11;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">300</span>PORTFOLIO</span><span class="tab-soon">à venir</span></span>
+                    </li>
+                    <li class="dossier is-cat is-soon" style="--i: 12;">
+                        <span class="dossier-tab"><span class="tab-label"><span class="tab-code">400</span>CV</span><span class="tab-soon">à venir</span></span>
+                    </li>
+                </ol>
 
-.oscar-page .contact-btn {
-    color: var(--accent-color);
-    border-bottom-color: var(--accent-color);
-}
+                <div class="tiroir-facade" aria-hidden="true">
+                    <span class="facade-etiquette">O. DUJARRIER<br>100 — 400</span>
+                    <span class="facade-poignee"><i></i><i></i><i></i></span>
+                </div>
+            </div>
+        </section>
 
-.oscar-page .artist-page-container {
-    position: relative;
-    z-index: 1;
-}
+        <!-- ÉCRAN 3 : généalogie, collectif, contact -->
+        <section class="oscar-screen-gallery">
+            <section class="oscar-mindmap-section" id="genealogie">
+                <h3>Généalogie des projets</h3>
+                <div class="mindmap-branch">
+                    <div class="mindmap-node">Livre blanc<span>2023 — accumulation de texte</span></div>
+                    <span class="mindmap-arrow">→</span>
+                    <div class="mindmap-node">175 Zettaoctets<span>2023 — saturation de l'image</span></div>
+                    <span class="mindmap-arrow">→</span>
+                    <div class="mindmap-node mindmap-node-end">Vivre à travers le flux<span>2025 – 2026 — immersion jusqu'à l'épuisement</span></div>
+                </div>
+                <div class="mindmap-branch">
+                    <div class="mindmap-node">Matérialité de l'image<span>Dé-construction / Transmutation, 2024</span></div>
+                    <span class="mindmap-arrow">→</span>
+                    <div class="mindmap-node-group">
+                        <div class="mindmap-node mindmap-node-end">Le bruit de l'eau<span>2026 — l'image se confond avec le signal</span></div>
+                        <div class="mindmap-node mindmap-node-end">Rémanence<span>2025 – 2026 — l'image qui ne se stabilise jamais</span></div>
+                    </div>
+                </div>
+            </section>
 
-/* ============================================================
-   PAGE HUB — trois écrans.
-   1. Accueil : une fenêtre de système ancien sur l'écran bleu,
-      mélange de trois références (fenêtre Notepad, menu de
-      magnétoscope, texte surligné). Une seule image tramée bleu/crème.
-   2. Le tiroir de classement : trait noir sur papier blanc, les
-      dossiers montent au survol, le clic ouvre la page du projet.
-   3. Généalogie, collectif, contact.
-   ============================================================ */
-body.oscar-hub {
-    display: block;
-    height: 100vh;
-    height: 100dvh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-snap-type: y proximity;
-    --o-blue: #1414e2;
-    --o-cream: #eae8d6;
-    --o-ink: #000000;
-    --o-paper: #ffffff;
-    --bg-color: var(--o-blue);
-    --text-color: var(--o-cream);
-    --accent-color: var(--o-cream);
-    --secondary-color: var(--o-cream);
-    --border-color: rgba(234, 232, 214, 0.35);
-    --box-bg: rgba(234, 232, 214, 0.04);
-    --desc-color: rgba(234, 232, 214, 0.75);
-}
-/* Pastille bleue : reste lisible aussi bien sur le bleu que sur le blanc */
-body.oscar-hub .back-link {
-    position: fixed;
-    top: 1.2rem;
-    left: 1.2rem;
-    z-index: 60;
-    margin: 0;
-    padding: 0.35rem 0.6rem;
-    background: var(--o-blue);
-    color: var(--o-cream);
-    border: 1px solid var(--o-cream);
-}
-body.oscar-hub .artist-page-container {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
+            <section class="artist-bio-section" id="babo">
+                <h3>AU SEIN DU COLLECTIF — BABO</h3>
+                <p>BABO, mot coréen signifiant « idiot », désigne une façon d'être à côté des cadres habituels. Le collectif s'est formé en 2023 à l'ésadhar, puis constitué en association en 2025.</p>
+                <p>L'essentiel de cette pratique se construit aujourd'hui à travers Babo : des projets menés à plusieurs, où la vidéo, la sculpture, l'installation et l'art numérique se répondent selon la même exigence que le travail personnel présenté ici.</p>
+                <p class="project-entry-crossref">Voir <a href="collectif.html">Babosphere, Signal faible, Trois dimensions et Portrait immatériel</a> sur la page du Collectif.</p>
+            </section>
 
-/* ---------- ÉCRAN 1 : deux fenêtres superposées ---------- */
-.oscar-screen-hero {
-    position: relative;
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
-    background: var(--o-blue);
-    color: var(--o-cream);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4.2rem 4vw 2.5rem;
-}
-.os-desk { width: min(100%, 1120px); }
-.os-window {
-    border: 1.5px solid var(--o-cream);
-    outline: 1.5px solid var(--o-cream);
-    outline-offset: 3px;
-    background: var(--o-blue);
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--o-cream);
-}
-.os-titlebar {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    align-items: stretch;
-    border-bottom: 1.5px solid var(--o-cream);
-    font-size: 0.82rem;
-    letter-spacing: 1px;
-}
-.os-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    border-right: 1.5px solid var(--o-cream);
-}
-.os-title + .os-box,
-.os-box + .os-box { border-right: none; border-left: 1.5px solid var(--o-cream); }
-.os-title {
-    text-align: center;
-    padding: 0.4rem 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.os-menubar {
-    display: flex;
-    gap: 2.4rem;
-    padding: 0.3rem 1rem;
-    border-bottom: 1.5px solid var(--o-cream);
-    font-size: 0.78rem;
-    letter-spacing: 1px;
-    opacity: 0.5;
-}
+            <section class="artist-contact-section" id="contact-oscar">
+                <h3>CONTACT</h3>
+                <div class="contact-links-grid">
+                    <a href="mailto:oscar.dujarrier001@gmail.com" class="contact-btn">EMAIL</a>
+                    <a href="tel:+33788890201" class="contact-btn">07 88 89 02 01</a>
+                </div>
+            </section>
+        </section>
 
-/* Onglets de l'explorateur = sommaire de la page */
-.os-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.2rem 2rem;
-    padding: 0.35rem 1rem 2.6rem;
-    border-bottom: 1.5px solid var(--o-cream);
-}
-.os-tabs a {
-    color: var(--o-cream);
-    text-decoration: none;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    opacity: 0.55;
-    padding: 0 0.2em;
-}
-.os-tabs a.is-current { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
-.os-tabs a:hover,
-.os-tabs a:focus-visible { opacity: 1; background: var(--o-cream); color: var(--o-blue); outline: none; }
+    </main>
 
-/* Corps de l'explorateur : le bloc-notes déborde sur les onglets */
-.os-back-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 13rem;
-    gap: 1.4rem;
-    padding: 0 1rem 0 1.6rem;
-}
-.os-front {
-    margin-top: -2.1rem;
-    position: relative;
-    z-index: 2;
-}
-.os-front-body {
-    padding: clamp(1rem, 2.2vw, 1.6rem);
-    max-height: min(58vh, 560px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--o-cream) transparent;
-}
-.os-front-body::-webkit-scrollbar { width: 10px; }
-.os-front-body::-webkit-scrollbar-thumb { background: var(--o-cream); border: 3px solid var(--o-blue); }
+    <script>
+    (function () {
+        'use strict';
 
-/* Le titre en grand, en bas de casse, comme « about me » */
-body.oscar-hub .os-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 400;
-    text-transform: none;
-    font-size: clamp(2.4rem, 6.5vw, 4.8rem);
-    line-height: 0.9;
-    letter-spacing: -0.045em;
-    color: var(--o-cream);
-    margin: 0 0 1.2rem;
-}
-.os-intro {
-    display: grid;
-    grid-template-columns: 11rem minmax(0, 1fr);
-    gap: clamp(1rem, 2.6vw, 2rem);
-    align-items: start;
-}
+        /* ============ DIALOGUE FAÇON RPG MAKER ============
+           Pour modifier ce que dit Oscar, changer les lignes ci-dessous.
+           La dernière ligne est suivie du menu de choix. */
+        var LIGNES = [
+            "Bonjour. Je suis Oscar Dujarrier, artiste plasticien et membre fondateur d'Atelier Babo.",
+            "Je fabrique des installations où la vidéo, la sculpture et les dispositifs numériques se répondent et se contaminent.",
+            "Ce qui m'occupe, c'est la matérialité de l'image numérique : la traduire, la fragmenter, lui redonner un corps.",
+            "En ce moment, Le bruit de l'eau est exposé dans « 5D » au Frac Normandie, jusqu'en octobre 2027.",
+            "Mes travaux sont rangés dans le tiroir. Où voulez-vous aller ?"
+        ];
+        var VITESSE = 28; // millisecondes par lettre
 
-/* Portrait pixelisé : c'est aussi le bouton qui lance le dialogue */
-.os-portrait {
-    display: block;
-    width: 100%;
-    padding: 0;
-    background: none;
-    border: none;
-    color: var(--o-cream);
-    font: inherit;
-    cursor: pointer;
-    text-align: left;
-}
-.os-portrait img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    image-rendering: pixelated;
-    border: 1.5px solid var(--o-cream);
-}
-.os-portrait-hint {
-    display: block;
-    margin-top: 0.5rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.5px;
-    animation: rpg-blink 1.1s steps(1) infinite;
-}
-.os-portrait:hover img,
-.os-portrait:focus-visible img { outline: 1.5px dashed var(--o-cream); outline-offset: 4px; }
-.os-portrait:focus-visible { outline: none; }
+        var box = document.getElementById('rpg-box');
+        var textEl = document.getElementById('rpg-text');
+        var nextEl = document.getElementById('rpg-next');
+        var choicesEl = document.getElementById('rpg-choices');
+        var choices = Array.prototype.slice.call(choicesEl.querySelectorAll('.rpg-choice'));
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var line = 0, typing = false, timer = null, choice = 0;
 
-.os-fields {
-    margin: 0 0 1.1rem;
-    font-size: 0.9rem;
-    line-height: 1.55;
-}
-.os-fields div { display: flex; gap: 0.6em; }
-.os-fields dt { flex-shrink: 0; opacity: 0.7; }
-.os-fields dd { margin: 0; }
-.os-demarche {
-    font-size: clamp(0.84rem, 1.4vw, 0.95rem);
-    line-height: 1.7;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin: 0;
-}
-.os-demarche span {
-    background: var(--o-cream);
-    color: var(--o-blue);
-    padding: 0.08em 0.3em;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-}
+        function selectChoice(i) {
+            choice = (i + choices.length) % choices.length;
+            choices.forEach(function (c, k) { c.classList.toggle('is-selected', k === choice); });
+        }
+        function showChoices() {
+            choicesEl.hidden = false;
+            nextEl.hidden = true;
+            selectChoice(0);
+            choices[0].focus({ preventScroll: true });
+        }
+        function type(str) {
+            clearInterval(timer);
+            nextEl.hidden = true;
+            if (reduce) { textEl.textContent = str; done(); return; }
+            typing = true;
+            var i = 0;
+            textEl.textContent = '';
+            timer = setInterval(function () {
+                i++;
+                textEl.textContent = str.slice(0, i);
+                if (i >= str.length) done();
+            }, VITESSE);
+        }
+        function done() {
+            clearInterval(timer);
+            typing = false;
+            if (line === LIGNES.length - 1) showChoices();
+            else nextEl.hidden = false;
+        }
+        function advance() {
+            if (!choicesEl.hidden) return;
+            if (typing) { textEl.textContent = LIGNES[line]; done(); return; }
+            if (line < LIGNES.length - 1) { line++; type(LIGNES[line]); }
+        }
+        function open() {
+            line = 0;
+            choicesEl.hidden = true;
+            box.hidden = false;
+            type(LIGNES[0]);
+            box.focus({ preventScroll: true });
+        }
+        function close() {
+            clearInterval(timer);
+            typing = false;
+            var hadFocus = box.contains(document.activeElement);
+            box.hidden = true;
+            if (hadFocus) document.getElementById('rpg-open').focus({ preventScroll: true });
+        }
+        box.tabIndex = -1;
+        document.getElementById('rpg-open').addEventListener('click', open);
+        box.addEventListener('click', function (e) {
+            if (e.target.closest('.rpg-choice')) return;
+            advance();
+        });
+        choices.forEach(function (c, k) {
+            c.addEventListener('mouseenter', function () { selectChoice(k); });
+            c.addEventListener('click', function () { close(); });
+        });
+        document.addEventListener('keydown', function (e) {
+            if (box.hidden) return;
+            if (e.key === 'Escape') { close(); return; }
+            if (!choicesEl.hidden) {
+                if (e.key === 'ArrowDown') { e.preventDefault(); selectChoice(choice + 1); choices[choice].focus({ preventScroll: true }); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); selectChoice(choice - 1); choices[choice].focus({ preventScroll: true }); }
+                return;
+            }
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); }
+        });
 
-.os-cols {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: 1.6rem;
-    margin-top: 1.6rem;
-}
-body.oscar-hub .os-h {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    font-weight: 400;
-    letter-spacing: 1px;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    color: inherit;
-    opacity: 0.75;
-    margin: 0 0 0.4rem;
-}
-.os-list {
-    list-style: none;
-    margin: 0;
-    padding: 0 0 0 1.4rem;
-    font-size: 0.85rem;
-    line-height: 1.55;
-}
-.os-list-dated li {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-}
-.os-list-dated li span:last-child { flex-shrink: 0; opacity: 0.75; }
+        // Le dialogue se ferme quand on quitte l'écran d'accueil
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) {
+                if (!entries[0].isIntersecting && !box.hidden) close();
+            }, { threshold: 0.15 }).observe(document.getElementById('accueil-oscar'));
+        }
 
-.os-contact {
-    padding-top: 0.6rem;
-    font-size: 0.8rem;
-    line-height: 1.45;
-}
-.os-contact p { margin: 0 0 0.8rem; opacity: 0.85; }
-.os-contact a { color: var(--o-cream); text-decoration: none; }
-.os-contact a:hover,
-.os-contact a:focus-visible { background: var(--o-cream); color: var(--o-blue); outline: none; }
+        /* Les ancres internes défilent dans le body (c'est lui qui scrolle
+           sur cette page), pas dans la fenêtre. */
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                var target = document.querySelector(a.getAttribute('href'));
+                if (!target) return;
+                e.preventDefault();
+                target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+            });
+        });
 
-.os-back-foot {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 11rem;
-    gap: 1.6rem;
-    align-items: start;
-    padding: 1.4rem 1rem 1rem 1.6rem;
-}
-.os-trame { margin: 0; }
-.os-trame img {
-    display: block;
-    width: 100%;
-    height: auto;
-    image-rendering: pixelated;
-}
-.os-statusbar {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    border-top: 1.5px solid var(--o-cream);
-    padding: 0.35rem 1rem;
-    font-size: 0.76rem;
-    letter-spacing: 0.5px;
-}
-.os-path,
-.os-count {
-    border: 1px solid rgba(234, 232, 214, 0.45);
-    padding: 0.1rem 0.5rem;
-    white-space: nowrap;
-}
-.os-path { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-
-/* ---------- Boîte de dialogue façon RPG Maker ---------- */
-.rpg-box {
-    position: fixed;
-    left: 50%;
-    bottom: max(1.2rem, env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    width: min(92vw, 820px);
-    z-index: 80;
-    display: flex;
-    gap: 1.1rem;
-    align-items: flex-start;
-    padding: 1rem 1.1rem;
-    background: var(--o-blue);
-    color: var(--o-cream);
-    border: 2px solid var(--o-cream);
-    outline: 2px solid var(--o-blue);
-    box-shadow: 0 0 0 5px var(--o-cream);
-    font-family: 'Share Tech Mono', monospace;
-    cursor: pointer;
-}
-.rpg-box[hidden] { display: none; }
-.rpg-box:focus { outline: 2px solid var(--o-blue); }
-.rpg-face {
-    width: 96px;
-    height: 96px;
-    flex-shrink: 0;
-    image-rendering: pixelated;
-    border: 1.5px solid var(--o-cream);
-}
-.rpg-content {
-    position: relative;
-    flex: 1;
-    min-height: 96px;
-}
-.rpg-name {
-    display: inline-block;
-    background: var(--o-cream);
-    color: var(--o-blue);
-    padding: 0 0.4em;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    margin-bottom: 0.4rem;
-}
-.rpg-text {
-    margin: 0;
-    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-    line-height: 1.5;
-    min-height: 3em;
-    padding-right: 1.4rem;
-}
-.rpg-next {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    animation: rpg-blink 0.9s steps(1) infinite;
-}
-.rpg-next[hidden] { display: none; }
-.rpg-choices {
-    list-style: none;
-    margin: 0.6rem 0 0;
-    padding: 0 0 0 1.2rem;
-}
-.rpg-choices[hidden] { display: none; }
-.rpg-choice {
-    display: inline-block;
-    background: none;
-    border: none;
-    font: inherit;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    color: var(--o-cream);
-    text-decoration: none;
-    padding: 0 0.25em;
-    cursor: pointer;
-    line-height: 1.6;
-}
-.rpg-choice.is-selected { background: var(--o-cream); color: var(--o-blue); }
-.rpg-choice:focus-visible { outline: 1.5px dashed var(--o-cream); outline-offset: 3px; }
-@keyframes rpg-blink { 50% { opacity: 0; } }
-
-/* ---------- ÉCRAN 2 : le tiroir ----------
-   Haut de l'écran = fond du tiroir. Chaque dossier est posé à
-   --i × --step du haut ; ceux de devant passent par-dessus. Les
-   dossiers du fond sont un peu plus étroits, comme dans la référence. */
-.oscar-screen-tiroir {
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
-    background: var(--o-paper);
-    color: var(--o-ink);
-    padding: 4.5rem 6vw 4rem;
-    --step: 32px;
-    --tab-h: 30px;
-    --body-h: 220px;
-    --rise: 140px;
-}
-.tiroir-legend {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: #555555;
-    text-align: center;
-    margin: 0 0 -2.5rem;
-    position: relative;
-    z-index: 0;
-}
-.legend-touch { display: none; }
-@media (hover: none) {
-    .legend-pointer { display: none; }
-    .legend-touch { display: inline; }
-}
-.tab-code { margin-right: 0.9em; }
-.tiroir {
-    position: relative;
-    max-width: 860px;
-    margin: 0 auto;
-    padding-top: calc(var(--rise) - var(--step));
-}
-.tiroir-stack {
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    height: calc((var(--n) - 1) * var(--step) + var(--tab-h) + var(--body-h));
-}
-/* Parois du tiroir */
-.tiroir-stack::before {
-    content: "";
-    position: absolute;
-    top: calc(var(--tab-h) + 12px);
-    bottom: 0;
-    left: 0.5%;
-    right: 0.5%;
-    border-left: 1.5px solid var(--o-ink);
-    border-right: 1.5px solid var(--o-ink);
-}
-.dossier {
-    --inset: calc((var(--n) - 1 - var(--i)) * 0.45% + 2%);
-    position: absolute;
-    top: calc(var(--i) * var(--step) + var(--tab-h));
-    left: var(--inset);
-    right: var(--inset);
-    height: var(--body-h);
-    background: var(--o-paper);
-    border: 1.5px solid var(--o-ink);
-    border-radius: 4px 4px 0 0;
-    z-index: calc(var(--i) + 1);
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.dossier-link {
-    position: absolute;
-    inset: 0;
-    color: var(--o-ink);
-    text-decoration: none;
-}
-.dossier-link:focus-visible { outline: none; }
-
-/* Onglet : trapèze obtenu en inclinant le pseudo-élément en perspective,
-   ce qui garde des bords nets. Il déborde de 2px vers le bas pour
-   masquer le bord du dossier : l'onglet s'ouvre dans le dossier. */
-.dossier-tab {
-    position: absolute;
-    bottom: calc(100% - 1px);
-    left: var(--tab-x, 30%);
-    width: var(--tab-w, 33%);
-    height: var(--tab-h);
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.dossier-tab::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 -3px 0;
-    z-index: -1;
-    background: var(--o-paper);
-    border: 1.5px solid var(--o-ink);
-    border-bottom: none;
-    border-radius: 7px 7px 0 0;
-    transform: perspective(70px) rotateX(16deg);
-    transform-origin: bottom;
-    transition: background-color 0.25s ease;
-}
-.tab-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    padding: 0 0.9rem;
-    transition: color 0.25s ease;
-}
-.dossier.tab-a { --tab-x: 30%; }
-.dossier.tab-b { --tab-x: 64%; }
-
-/* Intercalaires : catégorie = porte-étiquette noir ; thème = texte en capitales */
-.dossier.is-cat,
-.dossier.is-theme { --tab-x: 2%; --tab-w: 30%; }
-.dossier.is-theme { --tab-w: 38%; }
-.is-cat .tab-label {
-    background: var(--o-ink);
-    color: var(--o-paper);
-    border-radius: 4px;
-    padding: 0.15rem 0.7rem;
-    margin: 0 0.6rem;
-    box-shadow: 0 0 0 2px var(--o-paper), 0 0 0 3.5px var(--o-ink);
-}
-.is-theme .tab-label { font-weight: 700; letter-spacing: 1px; }
-.is-soon .tab-label {
-    background: transparent;
-    color: #8a8a8a;
-    box-shadow: 0 0 0 1.5px #b5b5b5;
-}
-.tab-soon {
-    position: absolute;
-    left: calc(100% + 0.6rem);
-    bottom: 0.45rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    color: #8a8a8a;
-    white-space: nowrap;
-}
-
-/* Le dossier sort du tiroir */
-.dossier-fiche {
-    position: absolute;
-    top: 14px;
-    left: 4%;
-    right: 4%;
-    height: calc(var(--rise) - 24px);
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-.fiche-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-width: 0;
-}
-.fiche-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(1.25rem, 3vw, 1.9rem);
-    line-height: 1;
-    letter-spacing: -0.02em;
-}
-.fiche-specs {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    line-height: 1.45;
-    color: #333333;
-}
-.fiche-thumb {
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border: 1.5px solid var(--o-ink);
-    flex-shrink: 0;
-}
-@media (hover: hover) {
-    .dossier.is-work:hover { transform: translateY(calc(-1 * var(--rise))); }
-    .dossier.is-work:hover .dossier-fiche { opacity: 1; }
-    .dossier.is-work:hover .dossier-tab::before { background: var(--o-ink); }
-    .dossier.is-work:hover .tab-label { color: var(--o-paper); }
-}
-.dossier.is-work.is-up,
-.dossier.is-work:focus-within { transform: translateY(calc(-1 * var(--rise))); }
-.dossier.is-work.is-up .dossier-fiche,
-.dossier.is-work:focus-within .dossier-fiche { opacity: 1; }
-.dossier.is-work.is-up .dossier-tab::before,
-.dossier.is-work:focus-within .dossier-tab::before { background: var(--o-ink); }
-.dossier.is-work.is-up .tab-label,
-.dossier.is-work:focus-within .tab-label { color: var(--o-paper); }
-.dossier.is-work:focus-within .dossier-tab::before {
-    outline: 1.5px dashed var(--o-ink);
-    outline-offset: 3px;
-}
-
-/* Façade du tiroir, par-dessus le bas des dossiers */
-.tiroir-facade {
-    position: relative;
-    z-index: 100;
-    /* doit couvrir tout le bas des dossiers : hauteur ≥ recouvrement */
-    height: calc(var(--body-h) - 36px);
-    margin-top: calc(-1 * (var(--body-h) - 44px));
-    background: var(--o-paper);
-    border: 1.5px solid var(--o-ink);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.4rem;
-}
-.facade-etiquette {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    line-height: 1.35;
-    text-align: center;
-    border: 1.5px solid var(--o-ink);
-    border-radius: 3px;
-    padding: 0.3rem 0.9rem;
-}
-.facade-poignee {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.facade-poignee i {
-    display: block;
-    width: 120px;
-    height: 18px;
-    border: 1.5px solid var(--o-ink);
-    border-radius: 9px;
-    background: var(--o-paper);
-    margin-top: -6px;
-}
-.facade-poignee i:first-child { margin-top: 0; width: 104px; }
-
-/* ---------- ÉCRAN 3 : généalogie, collectif, contact ---------- */
-.oscar-screen-gallery {
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
-    background: #f4f4f0;
-    color: #0a0a0a;
-    padding: 6rem 6vw 4rem;
-}
-.oscar-screen-gallery,
-.oscar-screen-gallery .artist-bio-section,
-.oscar-screen-gallery .artist-contact-section {
-    --text-color: #0a0a0a;
-    --accent-color: #14149c;
-    --secondary-color: #14149c;
-    --border-color: #d8d8d2;
-    --box-bg: rgba(20, 20, 156, 0.03);
-    --desc-color: #555555;
-}
-.oscar-screen-gallery h3 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    color: #14149c;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-}
-.oscar-mindmap-section { padding: 0 0 4rem; }
-.oscar-mindmap-section h3 { opacity: 0.7; margin-bottom: 2.5rem; }
-.mindmap-branch {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-    margin-bottom: 2.2rem;
-}
-.mindmap-node {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.82rem;
-    color: #0a0a0a;
-    border: 1px solid rgba(20, 20, 156, 0.25);
-    padding: 0.75rem 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    line-height: 1.3;
-}
-.mindmap-node span { font-size: 0.68rem; color: #666666; }
-.mindmap-node-end { border-color: #14149c; color: #14149c; }
-.mindmap-arrow { font-size: 1.1rem; color: #14149c; opacity: 0.5; flex-shrink: 0; }
-.mindmap-node-group { display: flex; flex-direction: column; gap: 0.7rem; }
-
-/* Laisser la place à la barre latérale sur grand écran */
-@media (min-width: 901px) {
-    .oscar-screen-hero { padding-left: max(5vw, 4.5rem); }
-    .oscar-screen-tiroir,
-    .oscar-screen-gallery { padding-left: max(6vw, 5rem); }
-}
-
-/* Sous 900px, le menu hamburger occupe le coin gauche : retour à droite */
-@media (max-width: 900px) {
-    body.oscar-hub .back-link { left: auto; right: 1rem; top: 1rem; font-size: 0.72rem; }
-}
-@media (min-width: 901px) {
-    body.oscar-hub .back-link { left: 3.2rem; }
-}
-
-@media (max-width: 760px) {
-    .oscar-screen-hero { padding: 4.2rem 0.8rem 2rem; align-items: flex-start; }
-    .os-titlebar { font-size: 0.66rem; }
-    .os-menubar { gap: 1.2rem; font-size: 0.66rem; }
-    .os-tabs { gap: 0.2rem 1.1rem; padding-bottom: 2.2rem; }
-    .os-tabs a { font-size: 0.74rem; }
-    .os-back-body { grid-template-columns: 1fr; padding: 0 0.6rem; }
-    .os-front { margin-top: -1.8rem; }
-    .os-front-body { max-height: none; overflow: visible; }
-    /* portrait à gauche des champs, démarche sur toute la largeur */
-    .os-intro { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.9rem; }
-    .os-fiche { display: contents; }
-    .os-demarche { grid-column: 1 / -1; }
-    .os-portrait-hint { font-size: 0.62rem; }
-    .os-fields { font-size: 0.8rem; }
-    .os-fields div { flex-direction: column; gap: 0; margin-bottom: 0.3rem; }
-    .os-cols { grid-template-columns: 1fr; gap: 1.1rem; }
-    .os-list { font-size: 0.78rem; padding-left: 0.8rem; }
-    .os-contact { padding: 0.4rem 0.4rem 0; }
-    .os-back-foot { grid-template-columns: 1fr; padding: 1rem 0.8rem; }
-    .os-trame { max-width: 18rem; }
-    .os-statusbar { font-size: 0.66rem; }
-    .rpg-box { gap: 0.7rem; padding: 0.8rem; }
-    .rpg-face { width: 64px; height: 64px; }
-    .rpg-content { min-height: 64px; }
-
-    .oscar-screen-tiroir {
-        padding: 4.2rem 0.8rem 3rem;
-        --step: 31px;
-        --tab-h: 28px;
-        --body-h: 220px;
-        --rise: 140px;
-    }
-    .tab-label { font-size: 0.66rem; padding: 0 0.35rem; }
-    .is-work .tab-code { display: none; }
-    .dossier.tab-a { --tab-x: 4%; --tab-w: 50%; }
-    .dossier.tab-b { --tab-x: 47%; --tab-w: 50%; }
-    .dossier.is-cat { --tab-w: 40%; }
-    .dossier.is-theme { --tab-w: 62%; }
-    .is-cat .tab-label { padding: 0.1rem 0.5rem; margin: 0 0.4rem; }
-    .fiche-thumb { width: 92px; height: 92px; align-self: flex-end; }
-    .fiche-specs { font-size: 0.68rem; }
-
-    .oscar-screen-gallery { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .mindmap-branch { flex-direction: column; align-items: flex-start; }
-    .mindmap-arrow { transform: rotate(90deg); margin-left: 1.5rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .os-portrait-hint,
-    .rpg-next { animation: none; }
-    .dossier,
-    .dossier-fiche,
-    .dossier-tab::before,
-    .tab-label { transition: none; }
-}
-
-/* ============================================================
-   PAGES DE PROJET — défilement plein écran façon TikTok : l'image
-   occupe tout l'écran, le texte suit sur l'écran d'après. Informations
-   techniques en surimpression (repère, medium) pour un rendu pro.
-   ============================================================ */
-body.oscar-project-page {
-    display: block;
-    height: 100vh;
-    height: 100dvh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-snap-type: y mandatory;
-}
-body.oscar-project-page .back-link {
-    position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 30;
-    mix-blend-mode: difference;
-}
-body.oscar-project-page .artist-page-container {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-
-.oscar-project-screen {
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
-    position: relative;
-}
-
-/* Écran image : plein cadre, repères techniques en coin façon viseur */
-.oscar-project-screen-image {
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    background: #000000;
-}
-.oscar-project-screen-image img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.oscar-project-screen-image::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.25) 42%, transparent 68%);
-    z-index: 1;
-}
-.oscar-project-readout {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 1.5px;
-    color: rgba(255, 255, 255, 0.7);
-    text-transform: uppercase;
-}
-.oscar-project-readout-right {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 1.5px;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: right;
-    text-transform: uppercase;
-}
-.oscar-project-scroll-hint {
-    position: absolute;
-    bottom: 1.6rem;
-    right: 2rem;
-    z-index: 2;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 1.5px;
-    color: rgba(255, 255, 255, 0.55);
-    writing-mode: vertical-rl;
-    animation: oscar-scroll-hint-blink 2s ease-in-out infinite;
-}
-@keyframes oscar-scroll-hint-blink {
-    0%, 100% { opacity: 0.55; }
-    50% { opacity: 1; }
-}
-.oscar-project-overlay {
-    position: relative;
-    z-index: 2;
-    padding: 3rem 3rem 4rem;
-    width: 100%;
-}
-.oscar-project-overlay h1 {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(2.4rem, 6.5vw, 4.4rem);
-    color: #ffffff;
-    margin: 0 0 0.6rem;
-    text-transform: none;
-    line-height: 1.05;
-}
-.oscar-project-overlay .specs {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.5px;
-}
-
-/* Écran texte */
-.oscar-project-screen-text {
-    display: flex;
-    align-items: center;
-    background: #050505;
-    padding: 6rem 6vw;
-}
-.oscar-project-text-inner { max-width: 740px; margin: 0 auto; width: 100%; }
-.oscar-project-text-inner p {
-    font-size: 1.02rem;
-    line-height: 1.8;
-    color: #9a9a9a;
-    margin-bottom: 1.4rem;
-}
-.oscar-project-text-inner p:last-child { margin-bottom: 0; }
-.oscar-project-text-inner .project-entry-crossref { margin-top: 1.4rem; }
-
+        /* ---- Tiroir : au doigt (pas de survol), un premier toucher sort
+           le dossier, un second l'ouvre. Souris et clavier : le survol ou
+           le focus le sortent, le clic l'ouvre directement. ---- */
+        var noHover = window.matchMedia('(hover: none)');
+        var dossiers = Array.prototype.slice.call(document.querySelectorAll('.dossier.is-work'));
+        function lowerAll(except) {
+            dossiers.forEach(function (d) { if (d !== except) d.classList.remove('is-up'); });
+        }
+        dossiers.forEach(function (d) {
+            var link = d.querySelector('.dossier-link');
+            link.addEventListener('click', function (e) {
+                if (!noHover.matches) return;
+                if (!d.classList.contains('is-up')) {
+                    // stopPropagation : sinon page-transition.js lance quand
+                    // même la transition vers la page du projet.
+                    e.preventDefault();
+                    e.stopPropagation();
+                    lowerAll(d);
+                    d.classList.add('is-up');
+                }
+            });
+        });
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.dossier.is-work')) lowerAll(null);
+        });
+    })();
+    </script>
+</body>
+</html>
 
 
 
