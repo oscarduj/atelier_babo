@@ -1,67 +1,92 @@
 /* ============================================================
-   TRANSITION ENTRE PAGES — balayage diagonal (clip-path wipe)
+   TRANSITION ENTRE PAGES — panneaux diagonaux décalés
    ------------------------------------------------------------
-   Un panneau opaque traverse l'écran en diagonale : il entre par la
-   droite pour couvrir la page qu'on quitte, puis poursuit sa course
-   vers la gauche pour découvrir la page d'arrivée. Le panneau lui-même
-   ne bouge jamais — seule sa forme de découpe change, ce qui est
-   composité par le GPU et reste fluide même sur mobile.
+   Trois panneaux traversent l'écran en diagonale, décalés dans le
+   temps : le balayage se lit comme un geste composé, pas comme un
+   simple rideau. Chaque panneau garde sa place — seule sa forme de
+   découpe (clip-path) change, ce qui reste composité par le GPU.
 
-   Technique retenue après comparaison : clip-path à formes simples
-   (supporté depuis Chrome 55 / Safari 9.1 / Firefox 54, aucune
-   détection nécessaire), plutôt que les View Transitions natives qui
-   manquent encore à Firefox, et sans dépendance à une librairie.
+   Le panneau de tête porte un liseré d'accent et le mot-repère du
+   collectif, qui apparaît au moment où l'écran est entièrement
+   couvert, puis repart avec les panneaux.
 
-   Les positions sont posées en style inline par JS : aucune bataille
-   de spécificité CSS, et le sens du balayage reste le même d'une page
-   à l'autre.
+   clip-path à formes simples : supporté depuis Chrome 55 / Safari 9.1
+   / Firefox 54, aucune détection nécessaire, et disponible là où les
+   View Transitions natives manquent encore (Firefox).
    ============================================================ */
 (function () {
     'use strict';
 
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Trois états de la découpe. Le bord d'attaque est incliné (les points
-    // du haut et du bas sont décalés de 18%), d'où la diagonale.
-    var OFF_RIGHT = 'polygon(100% 0, 130% 0, 130% 100%, 118% 100%)';
-    var COVER     = 'polygon(-18% 0, 130% 0, 130% 100%, -18% 100%)';
-    var OFF_LEFT  = 'polygon(-30% 0, -18% 0, -30% 100%, -30% 100%)';
+    var OFF_RIGHT = 'polygon(100% 0, 136% 0, 136% 100%, 112% 100%)';
+    var COVER     = 'polygon(-24% 0, 136% 0, 136% 100%, -24% 100%)';
+    var OFF_LEFT  = 'polygon(-40% 0, -24% 0, -40% 100%, -40% 100%)';
 
-    var EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
-    var COVER_MS = 560;
-    var REVEAL_MS = 620;
+    var EASE = 'cubic-bezier(0.72, 0, 0.18, 1)';
+    var COVER_MS = 980;    // course de couverture
+    var REVEAL_MS = 1080;  // course de découverte
+    var STAGGER = 110;     // décalage entre les trois panneaux
+    var LAYERS = 3;
 
-    var veil = document.createElement('div');
-    veil.className = 'page-veil';
-    veil.setAttribute('aria-hidden', 'true');
+    var root = document.createElement('div');
+    root.className = 'page-veil-root';
+    root.setAttribute('aria-hidden', 'true');
 
-    // Le script est chargé en defer : le body existe déjà, on peut poser le
-    // voile tout de suite — avant le premier rendu visible, donc sans
-    // clignotement au chargement.
+    var panels = [];
+    for (var i = 0; i < LAYERS; i++) {
+        var p = document.createElement('div');
+        p.className = 'page-veil-panel page-veil-panel-' + (i + 1);
+        root.appendChild(p);
+        panels.push(p);
+    }
+    var mark = document.createElement('span');
+    mark.className = 'page-veil-mark';
+    mark.textContent = 'ATELIER_BABO';
+    root.appendChild(mark);
+
     function mount() {
         if (!document.body) return false;
-        document.body.appendChild(veil);
+        document.body.appendChild(root);
         return true;
     }
     if (!mount()) document.addEventListener('DOMContentLoaded', mount);
 
     if (reduced) {
-        // Mouvement réduit : pas de balayage du tout, le voile reste invisible.
-        veil.style.display = 'none';
+        root.style.display = 'none';
         return;
     }
 
-    // --- Arrivée : le panneau couvre déjà, puis sort par la gauche ---
-    veil.style.clipPath = COVER;
-    veil.style.webkitClipPath = COVER;
+    function setClip(el, shape) {
+        el.style.clipPath = shape;
+        el.style.webkitClipPath = shape;
+    }
+    // Le panneau de tête mène la course ; les suivants traînent derrière lui.
+    // L'ordre est inversé à la découverte pour que le geste reste continu.
+    function run(shape, ms, reverse) {
+        panels.forEach(function (p, idx) {
+            var order = reverse ? (LAYERS - 1 - idx) : idx;
+            p.style.transition = 'clip-path ' + ms + 'ms ' + EASE + ' ' + (order * STAGGER) + 'ms' +
+                               ', -webkit-clip-path ' + ms + 'ms ' + EASE + ' ' + (order * STAGGER) + 'ms';
+            setClip(p, shape);
+        });
+    }
+    function resetTo(shape) {
+        panels.forEach(function (p) {
+            p.style.transition = 'none';
+            setClip(p, shape);
+        });
+    }
+
+    // --- Arrivée : l'écran est couvert, les panneaux sortent par la gauche ---
+    resetTo(COVER);
+    root.classList.add('is-covered');
 
     function reveal() {
         requestAnimationFrame(function () {
             requestAnimationFrame(function () {
-                veil.style.transition = 'clip-path ' + REVEAL_MS + 'ms ' + EASE +
-                                        ', -webkit-clip-path ' + REVEAL_MS + 'ms ' + EASE;
-                veil.style.clipPath = OFF_LEFT;
-                veil.style.webkitClipPath = OFF_LEFT;
+                root.classList.remove('is-covered');
+                run(OFF_LEFT, REVEAL_MS, true);
             });
         });
     }
@@ -71,18 +96,11 @@
         reveal();
     }
 
-    // Retour arrière depuis le cache du navigateur : la page est restituée
-    // telle quelle, il faut rouvrir le voile.
     window.addEventListener('pageshow', function (e) {
-        if (e.persisted) {
-            veil.style.transition = 'none';
-            veil.style.clipPath = COVER;
-            veil.style.webkitClipPath = COVER;
-            reveal();
-        }
+        if (e.persisted) { resetTo(COVER); root.classList.add('is-covered'); reveal(); }
     });
 
-    // --- Départ : le panneau entre par la droite et couvre ---
+    // --- Départ : les panneaux entrent par la droite ---
     var leaving = false;
 
     document.addEventListener('click', function (e) {
@@ -92,9 +110,6 @@
 
         var href = a.getAttribute('href');
         if (!href) return;
-
-        // Laissés au navigateur : ancres, protocoles spéciaux, nouvel onglet,
-        // téléchargements, clics modifiés, domaines externes.
         if (href.charAt(0) === '#') return;
         if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
         if (a.target && a.target !== '_self') return;
@@ -107,19 +122,20 @@
         if (window.BaboAmbient) window.BaboAmbient.stop();
 
         var dest = a.href;
-        veil.style.transition = 'none';
-        veil.style.clipPath = OFF_RIGHT;
-        veil.style.webkitClipPath = OFF_RIGHT;
+        resetTo(OFF_RIGHT);
 
         requestAnimationFrame(function () {
             requestAnimationFrame(function () {
-                veil.style.transition = 'clip-path ' + COVER_MS + 'ms ' + EASE +
-                                        ', -webkit-clip-path ' + COVER_MS + 'ms ' + EASE;
-                veil.style.clipPath = COVER;
-                veil.style.webkitClipPath = COVER;
+                run(COVER, COVER_MS, false);
+                // Le mot-repère n'apparaît qu'une fois l'écran réellement couvert.
+                setTimeout(function () { root.classList.add('is-covered'); },
+                           COVER_MS * 0.55);
             });
         });
 
-        setTimeout(function () { location.href = dest; }, COVER_MS - 40);
+        // On part quand le dernier panneau a fini sa course.
+        setTimeout(function () { location.href = dest; },
+                   COVER_MS + (LAYERS - 1) * STAGGER - 60);
     });
 })();
+

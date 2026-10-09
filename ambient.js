@@ -155,14 +155,27 @@
         nodes = null;
     }
 
-    // Démarrage au premier geste (contrainte des navigateurs).
+    // Démarrage au premier geste. Les navigateurs refusent l'audio tant que
+    // l'utilisateur n'a rien fait : on tente quand même tout de suite (certains
+    // contextes l'autorisent), puis on guette un éventail large de gestes —
+    // sur une page de lecture, le visiteur ne clique pas forcément un lien.
     function unlock() {
         start();
-        document.removeEventListener('click', unlock);
-        document.removeEventListener('touchstart', unlock);
+        if (ctx && ctx.state === 'running') {
+            ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel'].forEach(function (ev) {
+                document.removeEventListener(ev, unlock);
+            });
+        }
     }
-    document.addEventListener('click', unlock);
-    document.addEventListener('touchstart', unlock);
+    ['pointerdown', 'click', 'touchstart', 'keydown', 'wheel'].forEach(function (ev) {
+        document.addEventListener(ev, unlock, { passive: true });
+    });
+    // Tentative immédiate (échoue silencieusement si le geste manque).
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', unlock);
+    } else {
+        unlock();
+    }
 
     // Coupe proprement avant de quitter la page, pour éviter que le son
     // se superpose au démarrage de la page suivante.
@@ -170,3 +183,4 @@
 
     window.BaboAmbient = { start: start, stop: stop, isPlaying: function () { return playing; } };
 })();
+
