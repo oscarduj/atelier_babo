@@ -135,6 +135,34 @@
                 </button>
             </div>
 
+
+            <!-- Manifeste (réf. Anduril) : grandes capitales centrées, puis une
+                 ligne de petites infos alignées. pointer-events: none pour laisser
+                 passer les clics vers le carrousel ; seuls les liens les captent. -->
+            <div class="hero-manifesto">
+                <p class="hm-title">© Atelier Babo<br>collectif d'artistes émergents<br>entre image, matière<br>et dispositifs techniques</p>
+                <div class="hm-row">
+                    <span class="hm-pair"><b>Installation</b><b>Vidéo</b><b>Sculpture</b><b>Numérique</b></span>
+                    <span class="hm-star" aria-hidden="true">✦</span>
+                    <span class="hm-meta">EST. 2023<br><a href="#travaux">→ TRAVAUX</a></span>
+                </div>
+            </div>
+
+            <!-- Index des derniers projets (réf. « Art ») -->
+            <ol class="hero-index" aria-label="Derniers projets du collectif">
+                <li><a href="travaux/collectif.html#eauracle"><span>2025 — 26</span><span class="hi-title">EAURACLE</span><span>06</span><span>Installation sonore</span></a></li>
+                <li><a href="travaux/collectif.html#babosphere"><span>2025 — 26</span><span class="hi-title">Babosphere</span><span>05</span><span>Installation numérique</span></a></li>
+                <li><a href="travaux/collectif.html#signal-faible"><span>2025 — 26</span><span class="hi-title">Signal faible</span><span>04</span><span>Installation, photographie</span></a></li>
+                <li><a href="travaux/collectif.html#portrait-immateriel"><span>2024</span><span class="hi-title">Portrait immatériel</span><span>02</span><span>Court-métrage</span></a></li>
+            </ol>
+
+            <!-- Bandeau du bas (réf. « Art ») -->
+            <div class="hero-band" aria-hidden="true">
+                <span>• ATELIER BABO</span>
+                <span class="hb-center">Collectif d'artistes émergents — formé en 2023 à l'ésadhar</span>
+                <span id="hero-band-date">[ 2026 ]</span>
+            </div>
+
             <div class="hero-logo-3d-wrap" id="hero-logo-3d-wrap">
                 <canvas id="hero-logo-3d"></canvas>
             </div>
@@ -143,9 +171,11 @@
         <!-- 02. TRAVAUX -->
         <section id="travaux" class="feed-section">
             <div class="section-content" style="width: 100%;">
-                <span class="tag">ARCHIVE // PROJETS</span>
-                <h2>TRAVAUX</h2>
-                <p class="section-desc">Projets collectifs et recherches individuelles des membres.</p>
+                <header class="sec-head">
+                    <div class="sec-meta"><span class="sec-num">02 / 07</span><span class="tag">ARCHIVE // PROJETS</span></div>
+                    <h2>TRAVAUX</h2>
+                    <p class="section-desc">Projets collectifs et recherches individuelles des membres.</p>
+                </header>
 
                 <div class="travaux-asym-grid">
                     <a href="travaux/collectif.html" class="travaux-cell travaux-cell-collectif">
@@ -196,13 +226,15 @@
         <!-- 03. CURATION -->
         <section id="curation" class="feed-section">
             <div class="section-content">
-                <span class="tag">PENSÉE // RECHERCHE</span>
-                <h2>CURATION
+                <header class="sec-head">
+                    <div class="sec-meta"><span class="sec-num">03 / 07</span><span class="tag">PENSÉE // RECHERCHE</span></div>
+                    <h2>CURATION
                     <button class="hidden-key" data-key-id="k2" type="button" aria-label="Objet trouvé" style="vertical-align: middle;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
                     </button>
                 </h2>
-                <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
+                    <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
+                </header>
                 <div class="curation-grid">
                     <a href="travaux/collectif.html" class="curation-item">
                         <span class="curation-tag">INSTALLATION // ENTRE ERREUR, CENSURE ET IMAGINATION</span>
@@ -226,10 +258,11 @@
         <!-- 04. COLLABORATEURS -->
         <section id="collaborateurs" class="feed-section">
             <div class="section-content" style="width: 100%;">
-                <span class="tag">RÉSEAU // IMPLICATION</span>
-                <h2>COLLABORATEURS</h2>
-                
-                <div class="sub-nav-bar">
+                <header class="sec-head">
+                    <div class="sec-meta"><span class="sec-num">04 / 07</span><span class="tag">RÉSEAU // IMPLICATION</span></div>
+                    <h2>COLLABORATEURS</h2>
+                    
+                </header><div class="sub-nav-bar">
                     <button class="sub-nav-btn active" data-cat="artistes">ARTISTES</button>
                     <button class="sub-nav-btn" data-cat="structures">STRUCTURES</button>
                     <button class="sub-nav-btn" data-cat="mecenes">MÉCÈNES</button>
@@ -316,35 +349,38 @@
         <!-- 05. EXPOS -->
         <section id="expos" class="feed-section">
             <div class="section-content" style="width: 100%;">
-                <span class="tag">ESPACE // TEMPOREL</span>
-                <h2>EXPOS</h2>
-                <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
-                <div class="expo-list expo-code-list">
-                    <div class="expo-code-block">
-                        <div class="expo-code-line expo-code-brace">{</div>
-                        <div class="expo-code-line"><span class="code-key">date</span><span class="code-punct">:</span> <span class="code-string">"2026"</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">titre</span><span class="code-punct">:</span> <span class="code-string">"DNSEP — Diplôme national supérieur d'expression plastique"</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">description</span><span class="code-punct">:</span> <span class="code-string">"Présentation des versions finales de Babosphere, Eauracle et Signal Faible : perturbation du visible."</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">statut</span><span class="code-punct">:</span> <span class="code-status code-status-pending">"à_venir"</span></div>
-                        <div class="expo-code-line expo-code-brace">}</div>
-                    </div>
-                    <div class="expo-code-block">
-                        <div class="expo-code-line expo-code-brace">{</div>
-                        <div class="expo-code-line"><span class="code-key">date</span><span class="code-punct">:</span> <span class="code-string">"2026"</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">titre</span><span class="code-punct">:</span> <span class="code-string">"Un possible d'images encore… — ésadhar, Rouen"</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">description</span><span class="code-punct">:</span> <span class="code-string">"Exposition collective imaginée par Jason Karaïndros (projet Fenêtre sur rue), réunissant 17 étudiant·es de l'ésadhar. Atelier Babo y présentait Signal Faible : perturbation du visible 2.0."</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">statut</span><span class="code-punct">:</span> <span class="code-status code-status-archived">"archivé"</span></div>
-                        <div class="expo-code-line expo-code-brace">}</div>
-                    </div>
-                    <div class="expo-code-block">
-                        <div class="expo-code-line expo-code-brace">{</div>
-                        <div class="expo-code-line"><span class="code-key">date</span><span class="code-punct">:</span> <span class="code-string">"2025"</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">titre</span><span class="code-punct">:</span> <span class="code-string">"Journée portes ouvertes — Babosphere Beta 1.5"</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">description</span><span class="code-punct">:</span> <span class="code-string">"Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l'espace."</span><span class="code-punct">,</span></div>
-                        <div class="expo-code-line"><span class="code-key">statut</span><span class="code-punct">:</span> <span class="code-status code-status-archived">"archivé"</span></div>
-                        <div class="expo-code-line expo-code-brace">}</div>
-                    </div>
-                </div>
+                <header class="sec-head">
+                    <div class="sec-meta"><span class="sec-num">05 / 07</span><span class="tag">ESPACE // TEMPOREL</span></div>
+                    <h2>EXPOS</h2>
+                    <p class="section-desc">Installations physiques, immersions virtuelles et résidences.</p>
+                </header>
+                <ol class="expo-tracklist">
+                    <li class="expo-track expo-item">
+                        <span class="et-play" aria-hidden="true">▸</span>
+                        <span class="et-title">DNSEP — Diplôme national supérieur d'expression plastique</span>
+                        <span class="et-date">2026</span>
+                        <span class="et-status is-soon">À VENIR</span>
+                        <span class="et-num">01</span>
+                        <p class="et-desc">Présentation des versions finales de Babosphere, Eauracle et Signal Faible : perturbation du visible.</p>
+                    </li>
+                    <li class="expo-track expo-item">
+                        <span class="et-play" aria-hidden="true">▸</span>
+                        <span class="et-title">Un possible d'images encore… — ésadhar, Rouen</span>
+                        <span class="et-date">2026</span>
+                        <span class="et-status">ARCHIVÉ</span>
+                        <span class="et-num">02</span>
+                        <p class="et-desc">Exposition collective imaginée par Jason Karaïndros (projet Fenêtre sur rue), réunissant 17 étudiant·es de l'ésadhar. Atelier Babo y présentait Signal Faible : perturbation du visible 2.0.</p>
+                    </li>
+                    <li class="expo-track expo-item">
+                        <span class="et-play" aria-hidden="true">▸</span>
+                        <span class="et-title">Journée portes ouvertes — Babosphere Beta 1.5</span>
+                        <span class="et-date">2025</span>
+                        <span class="et-status">ARCHIVÉ</span>
+                        <span class="et-num">03</span>
+                        <p class="et-desc">Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l'espace.</p>
+                    </li>
+                </ol>
+            
             </div>
         </section>
 
@@ -359,9 +395,11 @@
             </div>
             <div class="soutien-video-overlay"></div>
             <div class="section-content">
-                <span class="tag">ÉCOSYSTÈMES // RESSOURCES</span>
-                <h2>SOUTIEN</h2>
-                <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
+                <header class="sec-head">
+                    <div class="sec-meta"><span class="sec-num">06 / 07</span><span class="tag">ÉCOSYSTÈMES // RESSOURCES</span></div>
+                    <h2>SOUTIEN</h2>
+                    <p class="section-desc">Soutenir la recherche indépendante et les infrastructures libres.</p>
+                </header>
                 <div class="soutien-grid">
                     <div class="soutien-card">
                         <h4>Don ponctuel</h4>
@@ -380,34 +418,44 @@
         <!-- 07. CONTACT -->
         <section id="contact" class="feed-section">
             <div class="section-content" style="width: 100%;">
-                <span class="tag">CONNEXION // RÉSEAU</span>
-                <h2>CONTACT</h2>
-                <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
-                <div class="contact-grid">
-                    <div class="contact-info-block">
-                        <div>
-                            <span class="info-label">Email</span>
-                            <span class="info-value">contact@atelierbabo.fr</span>
-                        </div>
-                        <div>
-                            <span class="info-label">Localisation</span>
-                            <span class="info-value">Paris, France</span>
-                            <button class="hidden-key" data-key-id="k3" type="button" aria-label="Objet trouvé" style="margin-left: 0.4rem;">
+                <header class="sec-head">
+                    <div class="sec-meta"><span class="sec-num">07 / 07</span><span class="tag">CONNEXION // RÉSEAU</span></div>
+                    <h2>CONTACT</h2>
+                    <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
+                </header>
+                <div class="site-footer">
+                    <div class="sf-cols">
+                        <ul class="sf-col">
+                            <li><b>1.1</b><a href="#accueil">Accueil</a></li>
+                            <li><b>1.2</b><a href="#travaux">Travaux</a></li>
+                            <li><b>1.3</b><a href="#curation">Curation</a></li>
+                            <li><b>1.4</b><a href="#collaborateurs">Collaborateurs</a></li>
+                            <li><b>1.5</b><a href="#expos">Expos</a></li>
+                            <li><b>1.6</b><a href="#soutien">Soutien</a></li>
+                        </ul>
+                        <ul class="sf-col">
+                            <li><b>2.1</b><a href="travaux/collectif.html">Collectif</a></li>
+                            <li><b>2.2</b><a href="travaux/hyunseok-yoon.html">Hyunseok Yoon</a></li>
+                            <li><b>2.3</b><a href="travaux/tom-lecointre.html">Tom Lecointre</a></li>
+                            <li><b>2.4</b><a href="travaux/oscar-dujarrier.html">Oscar Dujarrier</a></li>
+                            <li><b>2.5</b><a href="travaux/wenjie-tong.html">Wenjie Tong</a></li>
+                        </ul>
+                        <ul class="sf-col">
+                            <li><b>3.1</b><a href="mailto:contact@atelier-babo.com">contact@atelier-babo.com</a></li>
+                            <li><b>3.2</b><a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener">Instagram ↗</a></li>
+                            <li><b>3.3</b><a href="mailto:contact@atelier-babo.com?subject=Proposition%20de%20projet">Soumettre un projet</a></li>
+                        </ul>
+                        <ul class="sf-col">
+                            <li><b>4.1</b><span>Paris, France</span><button class="hidden-key" data-key-id="k3" type="button" aria-label="Objet trouvé">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
-                            </button>
-                        </div>
-                        <div>
-                            <span class="info-label">Réseaux</span>
-                            <div class="contact-links-grid" style="margin-top: 0.4rem;">
-                                <a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener" class="contact-btn">INSTAGRAM</a>
-                                <a href="mailto:contact@atelierbabo.fr" class="contact-btn">EMAIL</a>
-                            </div>
-                        </div>
+                            </button></li>
+                            <li><b>4.2</b><span>Association depuis 2025</span></li>
+                        </ul>
                     </div>
-                    <div class="contact-info-block">
-                        <span class="info-label">Soumettre un projet</span>
-                        <p class="section-desc" style="margin-bottom: 0.5rem;">Décrivez votre projet et vos disponibilités, nous reviendrons vers vous rapidement.</p>
-                        <a href="mailto:contact@atelierbabo.fr?subject=Proposition%20de%20projet" class="contact-btn">ENVOYER UN EMAIL</a>
+                    <p class="sf-pitch">Initier une collaboration, inviter le collectif, soumettre un projet : décrivez votre projet et vos disponibilités, nous reviendrons vers vous rapidement.</p>
+                    <div class="sf-bottom">
+                        <p class="sf-wordmark" aria-hidden="true">BABO</p>
+                        <p class="sf-legal">© 2026 TOUS DROITS RÉSERVÉS, ATELIER BABO<br>COLLECTIF D'ARTISTES ÉMERGENTS</p>
                     </div>
                 </div>
             </div>
@@ -1292,6 +1340,15 @@
             }
         });
         setInterval(rotateTravauxMembers, 8000);
+
+        /* Bandeau de l'accueil : date du jour, au format « [ 09. oct. 2026 ] » */
+        (function () {
+            const el = document.getElementById('hero-band-date');
+            if (!el) return;
+            const d = new Date();
+            const mois = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+            el.textContent = '[ ' + String(d.getDate()).padStart(2, '0') + '. ' + mois[d.getMonth()] + ' ' + d.getFullYear() + ' ]';
+        })();
 
         const sections = document.querySelectorAll('.feed-section');
         const navItems = document.querySelectorAll('.nav-item');

@@ -1926,3 +1926,293 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
 .touch-device .side-nav.menu-open { transform: translateX(0); }
 .touch-device .side-nav::after { display: none; }
 .touch-device .side-nav .nav-links { max-height: none; }
+
+/* ============================================================
+   HARMONISATION DE LA PAGE PRINCIPALE (oct. 2026)
+   Réf. : Anduril (manifeste), « Art » (bandeaux, index de projets),
+   T1 (pied de page numéroté), pochette d'album (liste des expos).
+   Tout est limité à .main-feed pour ne pas toucher aux autres pages.
+   ============================================================ */
+.main-feed {
+    --h-cream: #EAE8E4;
+    --h-ink: #101010;
+}
+
+/* ---------- Accueil : manifeste ---------- */
+.hero-manifesto {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7rem 6vw 15rem;
+    pointer-events: none;
+}
+.hm-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: clamp(1.7rem, 4.4vw, 4.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+    margin: 0;
+}
+.hm-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1.6rem;
+    margin-top: 1.6rem;
+    width: min(100%, 36rem);
+    color: #ffffff;
+}
+.hm-pair {
+    justify-self: end;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: right;
+}
+.hm-star { font-size: 1.4rem; color: var(--secondary-color); }
+.hm-meta {
+    justify-self: start;
+    text-align: left;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+}
+.hm-meta a {
+    color: #ffffff;
+    text-decoration: none;
+    pointer-events: auto;
+}
+.hm-meta a:hover { color: var(--secondary-color); }
+.hm-meta a:focus-visible { outline: 1px dashed #ffffff; outline-offset: 3px; }
+
+/* ---------- Accueil : index des derniers projets ---------- */
+.hero-index {
+    position: absolute;
+    left: max(6vw, 4.5rem);
+    right: 6vw;
+    bottom: 5.6rem;
+    z-index: 3;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+}
+.hero-index a {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 14rem) 3rem 1fr;
+    gap: 1rem;
+    padding: 0.12rem 0.4rem;
+    color: #ffffff;
+    text-decoration: none;
+}
+.hero-index a > span:last-child { text-align: right; opacity: 0.8; }
+.hero-index li:first-child .hi-title,
+.hero-index a:hover .hi-title,
+.hero-index a:focus-visible .hi-title {
+    background: var(--h-cream);
+    color: var(--h-ink);
+    padding: 0 0.3rem;
+    margin: 0 -0.3rem;
+}
+.hero-index a:hover,
+.hero-index a:focus-visible { background: rgba(234, 232, 228, 0.12); outline: none; }
+
+/* ---------- Accueil : bandeau du bas ---------- */
+.hero-band {
+    position: absolute;
+    left: max(1rem, 3.4rem);
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    padding: 0.18rem 0.6rem;
+    background: var(--h-cream);
+    color: var(--h-ink);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+}
+.hero-band span:last-child { text-align: right; }
+.main-feed .carousel-dots { bottom: 3.4rem; }
+
+/* ---------- En-têtes de section uniformes ---------- */
+.main-feed .sec-head {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) minmax(0, 22rem);
+    align-items: end;
+    gap: 0.8rem 2.4rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.8rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.main-feed .sec-meta { display: flex; flex-direction: column; gap: 0.3rem; }
+.main-feed .sec-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+.main-feed .sec-head .tag { margin: 0; letter-spacing: 0.1em; }
+.main-feed .sec-head h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+.main-feed .sec-head .section-desc {
+    margin: 0;
+    text-align: right;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* Cartes : un seul traitement pour toute la page (filet fin, sans fond) */
+.main-feed .curation-item,
+.main-feed .soutien-card,
+.main-feed .partner-card {
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    background: transparent;
+    transition: border-color 0.3s ease;
+}
+.main-feed .curation-item:hover,
+.main-feed .soutien-card:hover,
+.main-feed .partner-card:hover { border-color: var(--secondary-color); }
+.main-feed .curation-tag,
+.main-feed .partner-type { letter-spacing: 0.1em; }
+
+/* ---------- Expos : liste façon pochette d'album ---------- */
+.expo-tracklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.expo-track {
+    display: grid;
+    grid-template-columns: 1.4rem minmax(0, 1fr) 5rem 6rem 2.4rem;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.et-play { color: var(--secondary-color); font-size: 0.9rem; }
+.et-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+    line-height: 1.15;
+    color: var(--text-color);
+    word-spacing: 0.3em;
+}
+.et-date,
+.et-status,
+.et-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--desc-color);
+}
+.et-status.is-soon { color: var(--secondary-color); }
+.et-num { text-align: right; }
+.et-desc {
+    grid-column: 2 / -1;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--desc-color);
+    max-width: 60ch;
+}
+
+/* ---------- Contact : pied de page numéroté (réf. T1) ---------- */
+.site-footer { display: flex; flex-direction: column; flex: 1; gap: 2.4rem; }
+.sf-cols {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+}
+.sf-col {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.sf-col li { display: flex; align-items: center; gap: 1.6rem; }
+.sf-col b { font-weight: 400; color: var(--desc-color); min-width: 1.6rem; }
+.sf-col a { color: var(--text-color); text-decoration: none; }
+.sf-col a:hover { color: var(--secondary-color); }
+.sf-col a:focus-visible { outline: 1px dashed var(--secondary-color); outline-offset: 3px; }
+.sf-col li a[href^="mailto:contact"] { text-transform: none; }
+.sf-pitch { max-width: 46ch; margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--desc-color); }
+.sf-bottom {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 2rem;
+}
+.sf-wordmark {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(5rem, 19vw, 17rem);
+    line-height: 0.78;
+    letter-spacing: -0.05em;
+    color: var(--text-color);
+}
+.sf-legal {
+    margin: 0 0 0.6rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    color: var(--desc-color);
+    text-align: right;
+}
+
+@media (max-width: 900px) {
+    /* place pour le bouton du menu, en haut à gauche */
+    .main-feed .feed-section:not(.hero-section-video) { padding-top: 4.6rem; }
+    .hero-index { display: none; }
+    .hero-manifesto { padding: 6rem 1.2rem 8rem; }
+    .hm-row { grid-template-columns: 1fr; gap: 0.6rem; justify-items: center; }
+    .hm-pair, .hm-meta { justify-self: center; text-align: center; }
+    .hm-star { display: none; }
+    .hero-band { left: 1rem; grid-template-columns: 1fr 1fr; }
+    .hero-band .hb-center { display: none; }
+    .main-feed .sec-head { grid-template-columns: 1fr; }
+    .main-feed .sec-head .section-desc { text-align: left; }
+    .expo-track { grid-template-columns: 1.2rem minmax(0, 1fr) auto; }
+    .et-status { display: none; }
+    .et-date { grid-column: 3; }
+    .et-num { display: none; }
+    .sf-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sf-bottom { grid-template-columns: 1fr; }
+    .sf-legal { text-align: left; }
+}
+
