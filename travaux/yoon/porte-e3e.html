@@ -5,37 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PORTE E3Ɛ — HYUNSEOK YOON // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../yoon.css">
+    <link rel="stylesheet" href="../../yoon.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page yoon-page">
+<body class="standalone-page yoon-hub yoon-work">
+    <a href="../hyunseok-yoon.html#yoon-travaux" class="back-link">← RETOUR AUX PLANS</a>
+
     <main class="artist-page-container">
-        <a href="../hyunseok-yoon.html" class="back-link">← RETOUR AU PORTFOLIO</a>
-
-        <header class="artist-header">
-            <span class="tag">HYUNSEOK YOON // PROJET</span>
-            <h1>Porte E3Ɛ</h1>
-        </header>
-
-        <div class="yoon-pulse-line"></div>
-
-        <section class="artist-projects-section">
-            <div class="project-entries">
-                <article class="project-entry">
-                    <div class="artist-gallery" style="margin-bottom: 2rem;">
-                        <img src="../../images/travaux/yoon-projets/porte-e3e.jpg" alt="Porte E3Ɛ" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+        <!-- Le plan : même viseur que la page de Yoon, l'œuvre dans le moniteur -->
+        <section class="yoon-screen-hero">
+            <div class="vf">
+                <span class="vf-corner vf-tl" aria-hidden="true"></span>
+                <span class="vf-corner vf-tr" aria-hidden="true"></span>
+                <span class="vf-corner vf-bl" aria-hidden="true"></span>
+                <span class="vf-corner vf-br" aria-hidden="true"></span>
+                <div class="vf-top" aria-hidden="true">
+                    <span>RAW <i>HD</i> <i class="on">4K</i> <i>8K</i> 24FPS</span>
+                    <span class="vf-rec"><span class="vf-dot"></span>REC <b id="vf-tc">00:00:00:00</b></span>
+                    <span>HYUNSEOK YOON</span>
+                </div>
+                <div class="vf-body yw-body">
+                    <div class="vf-main">
+                        <span class="vf-tag">[ PLAN 05 / 07 · INSTALLATION ]</span>
+                        <h1 class="vf-name yw-title">Porte E3Ɛ</h1>
+                        <ul class="vf-pills" aria-label="Fiche"><li>2024</li><li>Installation multimédia</li></ul>
+                        <a href="#note" class="yw-read">LIRE LA NOTE DE PLAN ↓</a>
                     </div>
-                    <div class="project-entry-specs">
-                        2024<br>
-                        Installation multimédia
-                    </div>
-                    <p>Ce projet prend la forme d'un espace d'entrée, conçu comme une zone de transition avant d'entrer dans un univers onirique. Un texte lumineux, inspiré des enseignes et des dispositifs de signalisation, agit comme une porte symbolique vers un autre état. Il associe des éléments personnels et géographiques, suggérant à la fois un passage et une transformation.</p>
-                    <p>Un chariot placé dans l'espace fonctionne comme une archive mobile, réunissant des références et des éléments de recherche. À proximité, une animation visuelle projette un mouvement continu, proche d'une aspiration. Elle évoque le moment où l'on quitte la réalité pour glisser vers un autre espace mental. L'ensemble propose une expérience sensorielle, construite autour de la lumière, du mouvement et de l'idée de passage.</p>
-                </article>
+                    <figure class="vf-monitor yw-monitor">
+                        <span class="vf-monitor-screen"><img src="../../images/travaux/yoon-projets/porte-e3e.jpg" alt="Porte E3Ɛ"></span>
+                        <figcaption>[05] Porte E3Ɛ</figcaption>
+                    </figure>
+                </div>
+                <nav class="vf-bottom yw-nav" aria-label="Plans voisins">
+                    <a href="cauchemar.html" class="vf-cta">◀ PLAN 04</a>
+                    <a href="../hyunseok-yoon.html#yoon-travaux" class="vf-cta">TOUS LES PLANS</a>
+                    <a href="parfums-utopie.html" class="vf-cta">PLAN 06 ▶</a>
+                </nav>
+            </div>
+        </section>
+
+        <!-- La note de plan : le texte de l'œuvre -->
+        <section class="yw-note" id="note">
+            <p class="yw-note-label">NOTE DE PLAN · 05 / 07</p>
+            <div class="yw-note-text">
+                <p>Ce projet prend la forme d'un espace d'entrée, conçu comme une zone de transition avant d'entrer dans un univers onirique. Un texte lumineux, inspiré des enseignes et des dispositifs de signalisation, agit comme une porte symbolique vers un autre état. Il associe des éléments personnels et géographiques, suggérant à la fois un passage et une transformation.</p><p>Un chariot placé dans l'espace fonctionne comme une archive mobile, réunissant des références et des éléments de recherche. À proximité, une animation visuelle projette un mouvement continu, proche d'une aspiration. Elle évoque le moment où l'on quitte la réalité pour glisser vers un autre espace mental. L'ensemble propose une expérience sensorielle, construite autour de la lumière, du mouvement et de l'idée de passage.</p>
             </div>
         </section>
     </main>
+
+    <script>
+    (function () {
+        'use strict';
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var tc = document.getElementById('vf-tc');
+        var t0 = Date.now();
+        function pad(n) { return String(n).padStart(2, '0'); }
+        setInterval(function () {
+            var ms = Date.now() - t0, s = Math.floor(ms / 1000);
+            tc.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60) + ':' + pad(Math.floor((ms % 1000) / 1000 * 24));
+        }, reduce ? 1000 : 42);
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                var t = document.querySelector(a.getAttribute('href'));
+                if (!t) return;
+                e.preventDefault();
+                t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
+
 

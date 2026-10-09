@@ -2032,8 +2032,42 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
   fill.position.set(0, -4, -5);
   scene.add(fill);
 
-  var tileMat = new THREE.MeshStandardMaterial({ color: 0x161615, metalness: 0.1, roughness: 0.75 });
-  var letterMat = new THREE.MeshStandardMaterial({ color: 0xEAE8E4, metalness: 0.15, roughness: 0.65 });
+  /* Chromé : un métal ne paraît chromé que s'il reflète quelque chose. On
+     peint un petit « studio » de reflets (bandes claires et sombres, une
+     touche du bleu froid du site) sur un canvas, qu'on passe en carte
+     d'environnement. Aucun fichier ni module supplémentaire. */
+  (function makeStudio() {
+    var c = document.createElement('canvas');
+    c.width = 1024; c.height = 512;
+    var g = c.getContext('2d');
+    var grd = g.createLinearGradient(0, 0, 0, 512);
+    grd.addColorStop(0.00, '#ffffff');
+    grd.addColorStop(0.18, '#dfe4ea');
+    grd.addColorStop(0.36, '#5d6672');
+    grd.addColorStop(0.47, '#0b0c0e');
+    grd.addColorStop(0.53, '#1a1d22');
+    grd.addColorStop(0.62, '#A3B1C2');
+    grd.addColorStop(0.80, '#3b4048');
+    grd.addColorStop(1.00, '#121315');
+    g.fillStyle = grd; g.fillRect(0, 0, 1024, 512);
+    // bandes de lumière verticales, comme des boîtes à lumière de studio
+    [[140, 34, 0.95], [420, 18, 0.7], [610, 60, 0.85], [880, 26, 0.6]].forEach(function (b) {
+      var lg = g.createLinearGradient(b[0] - b[1], 0, b[0] + b[1], 0);
+      lg.addColorStop(0, 'rgba(255,255,255,0)');
+      lg.addColorStop(0.5, 'rgba(255,255,255,' + b[2] + ')');
+      lg.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = lg; g.fillRect(b[0] - b[1], 30, b[1] * 2, 300);
+    });
+    var tex = new THREE.CanvasTexture(c);
+    tex.mapping = THREE.EquirectangularReflectionMapping;
+    tex.colorSpace = THREE.SRGBColorSpace;
+    var pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromEquirectangular(tex).texture;
+    tex.dispose(); pmrem.dispose();
+  })();
+
+  var tileMat = new THREE.MeshStandardMaterial({ color: 0x2a2d31, metalness: 1.0, roughness: 0.32, envMapIntensity: 0.9 });
+  var letterMat = new THREE.MeshStandardMaterial({ color: 0xf2f4f7, metalness: 1.0, roughness: 0.08, envMapIntensity: 1.25 });
 
   function shapeFrom(flat) {
     var s = new THREE.Shape();

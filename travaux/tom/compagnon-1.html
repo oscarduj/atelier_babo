@@ -5,37 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COMPAGNON 1 — TOM LECOINTRE // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../tom.css">
+    <link rel="stylesheet" href="../../tom.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page tom-page">
+<body class="standalone-page tom-hub tom-work">
+    <a href="../tom-lecointre.html#tn-index" class="back-link">← RETOUR À L'INDEX</a>
+
     <main class="artist-page-container">
-        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+        <!-- Même poste de bord que la page de Tom : l'œuvre dans la vue -->
+        <section class="tn-screen">
+            <div class="tn-bezel">
+                <div class="tn-crt">
+                    <header class="tn-band">
+                        <h1 class="tn-name">Compagnon 1</h1>
+                        <p class="tn-band-info">TL-06 / 07<br>Tom Lecointre</p>
+                    </header>
 
-        <header class="artist-header">
-            <span class="tag">TOM LECOINTRE // PROJET</span>
-            <h1>Compagnon 1</h1>
-        </header>
-
-        <div class="tom-pulse-line"></div>
-
-        <section class="artist-projects-section">
-            <div class="project-entries">
-                <article class="project-entry">
-                    <div class="artist-gallery" style="margin-bottom: 2rem;">
-                        <img src="../../images/travaux/tom-projets/compagnon-1.jpg" alt="Compagnon 1" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    <div class="tn-main">
+                        <div class="tn-view tw-view">
+                            <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-tr" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-bl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
+                            <span class="tn-view-label">VUE // TL-06</span>
+                            <img class="tw-img" src="../../images/travaux/tom-projets/compagnon-1.jpg" alt="Compagnon 1">
+                        </div>
+                        <aside class="tn-side">
+                            <dl class="tn-profile">
+                                <dt>Année</dt><dd>2026</dd>
+                                <dt>Médium</dt><dd>Installation sculpturale avec vidéo</dd>
+                                <dt>État</dt><dd class="tn-blink">EN COURS</dd>
+                                
+                            </dl>
+                            <nav class="tw-keys" aria-label="Travaux voisins">
+                                <a href="u.html"><b>F1</b>◀ TL-05</a>
+                                <a href="../tom-lecointre.html#tn-index"><b>F2</b>INDEX</a>
+                                <a href="oma.html"><b>F3</b>TL-07 ▶</a>
+                            </nav>
+                        </aside>
                     </div>
-                    <div class="project-entry-specs">
-                        2026 · Projet en cours<br>
-                        Installation sculpturale avec vidéo
+
+                    <div class="tn-transmission tw-text">
+                        <span class="tn-tag">TRANSMISSION :</span>
+                        <div><p>Si Spoutnik était resté en orbite jusque dans un futur proche ? En réalisant une réplique, le projet cherche à réactiver sa charge symbolique dans un contexte contemporain, où l'espace est devenu un territoire saturé d'infrastructures et d'intérêts économiques.</p><p>Il s'agit ici d'interroger les continuités entre les logiques terrestres et extra-atmosphériques : surveillance, diffusion, marchandisation. Le satellite devient alors un point de convergence entre observation et projection, révélant les imaginaires qui structurent notre rapport à l'espace. L'installation propose ainsi une lecture critique de ces infrastructures invisibles et en devenir, en les replaçant dans un champ perceptible et sensible.</p></div>
                     </div>
-                    <p>Si Spoutnik était resté en orbite jusque dans un futur proche ? En réalisant une réplique, le projet cherche à réactiver sa charge symbolique dans un contexte contemporain, où l'espace est devenu un territoire saturé d'infrastructures et d'intérêts économiques.</p>
-                    <p>Il s'agit ici d'interroger les continuités entre les logiques terrestres et extra-atmosphériques : surveillance, diffusion, marchandisation. Le satellite devient alors un point de convergence entre observation et projection, révélant les imaginaires qui structurent notre rapport à l'espace. L'installation propose ainsi une lecture critique de ces infrastructures invisibles et en devenir, en les replaçant dans un champ perceptible et sensible.</p>
-                </article>
+
+                    <footer class="tn-foot" aria-hidden="true">
+                        <span class="tn-ticks"></span>
+                        <span>TL-SYS 2022—2026</span>
+                        <span id="tn-clock">00:00:00</span>
+                    </footer>
+                </div>
             </div>
         </section>
     </main>
+
+    <script>
+    (function () {
+        var clock = document.getElementById('tn-clock');
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() { var d = new Date(); clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); }
+        tick(); setInterval(tick, 1000);
+    })();
+    </script>
 </body>
 </html>
+
 

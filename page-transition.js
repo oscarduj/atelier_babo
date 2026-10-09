@@ -106,12 +106,25 @@
         reveal();
     }
 
-    window.addEventListener('pageshow', function (e) {
-        if (e.persisted) { resetTo(COVER); root.classList.add('is-covered'); reveal(); }
-    });
-
     // --- Départ : les panneaux entrent par la droite ---
     var leaving = false;
+    var pendingGo = null, pendingKey = null;
+
+    // Annule un départ en cours : retire la porte, rend la main à la page.
+    function cancelLeave() {
+        leaving = false;
+        root.classList.remove('is-gated');
+        if (pendingGo) { gate.removeEventListener('click', pendingGo); pendingGo = null; }
+        if (pendingKey) { document.removeEventListener('keydown', pendingKey); pendingKey = null; }
+    }
+
+    // Retour arrière : Safari restaure la page depuis son cache telle
+    // qu'on l'a quittée, porte « ENTRER » comprise. On la retire et on
+    // rejoue l'arrivée, sinon la porte reste affichée et bloque tout.
+    window.addEventListener('pageshow', function (e) {
+        cancelLeave();
+        if (e.persisted) { resetTo(COVER); root.classList.add('is-covered'); reveal(); }
+    });
 
     document.addEventListener('click', function (e) {
         if (leaving) return;
@@ -148,14 +161,19 @@
         });
 
         function go() { location.href = dest; }
+        pendingGo = go;
         gate.addEventListener('click', go, { once: true });
-        // Entrée au clavier aussi, pour ne pas enfermer la navigation.
-        document.addEventListener('keydown', function onKey(ev) {
+        // Entrée au clavier aussi ; Échap annule le départ et rouvre la page.
+        pendingKey = function (ev) {
             if (ev.key === 'Enter' || ev.key === ' ') {
-                document.removeEventListener('keydown', onKey);
+                document.removeEventListener('keydown', pendingKey);
                 go();
+            } else if (ev.key === 'Escape') {
+                cancelLeave();
+                reveal();
             }
-        });
+        };
+        document.addEventListener('keydown', pendingKey);
     });
 })();
 
@@ -445,3 +463,4 @@
     if (document.readyState === 'complete') restore();
     else window.addEventListener('load', restore);
 })();
+

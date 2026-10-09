@@ -372,10 +372,10 @@ body.standalone-page {
    navigation vidéo en dessous (voir stopPropagation dans le script). */
 .hero-logo-3d-wrap {
     position: absolute;
-    top: 2.5rem;
+    top: 2.2rem;
     left: 50%;
     transform: translateX(-50%);
-    width: min(34vw, 260px);
+    width: min(46vw, 460px);
     aspect-ratio: 3.8 / 1;
     z-index: 3;
     touch-action: none;
@@ -389,7 +389,7 @@ body.standalone-page {
 .hero-logo-3d-wrap.dragging canvas { cursor: grabbing; }
 
 @media (max-width: 700px) {
-    .hero-logo-3d-wrap { width: min(62vw, 220px); }
+    .hero-logo-3d-wrap { width: min(80vw, 320px); top: 3.6rem; }
 }
 
 /* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
@@ -1948,7 +1948,7 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 7rem 6vw 15rem;
+    padding: 12rem 6vw 15rem;
     pointer-events: none;
 }
 .hm-title {
@@ -2199,7 +2199,7 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
     /* place pour le bouton du menu, en haut à gauche */
     .main-feed .feed-section:not(.hero-section-video) { padding-top: 4.6rem; }
     .hero-index { display: none; }
-    .hero-manifesto { padding: 6rem 1.2rem 8rem; }
+    .hero-manifesto { padding: 9rem 1.2rem 8rem; }
     .hm-row { grid-template-columns: 1fr; gap: 0.6rem; justify-items: center; }
     .hm-pair, .hm-meta { justify-self: center; text-align: center; }
     .hm-star { display: none; }
@@ -2215,4 +2215,5 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
     .sf-bottom { grid-template-columns: 1fr; }
     .sf-legal { text-align: left; }
 }
+
 

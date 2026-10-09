@@ -5,37 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NATURE 404 — TOM LECOINTRE // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../tom.css">
+    <link rel="stylesheet" href="../../tom.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page tom-page">
+<body class="standalone-page tom-hub tom-work">
+    <a href="../tom-lecointre.html#tn-index" class="back-link">← RETOUR À L'INDEX</a>
+
     <main class="artist-page-container">
-        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+        <!-- Même poste de bord que la page de Tom : l'œuvre dans la vue -->
+        <section class="tn-screen">
+            <div class="tn-bezel">
+                <div class="tn-crt">
+                    <header class="tn-band">
+                        <h1 class="tn-name">Nature 404</h1>
+                        <p class="tn-band-info">TL-03 / 07<br>Tom Lecointre</p>
+                    </header>
 
-        <header class="artist-header">
-            <span class="tag">TOM LECOINTRE // PROJET</span>
-            <h1>Nature 404</h1>
-        </header>
-
-        <div class="tom-pulse-line"></div>
-
-        <section class="artist-projects-section">
-            <div class="project-entries">
-                <article class="project-entry">
-                    <div class="artist-gallery" style="margin-bottom: 2rem;">
-                        <img src="../../images/travaux/tom-projets/nature-404.jpg" alt="Nature 404" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    <div class="tn-main">
+                        <div class="tn-view tw-view">
+                            <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-tr" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-bl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
+                            <span class="tn-view-label">VUE // TL-03</span>
+                            <img class="tw-img" src="../../images/travaux/tom-projets/nature-404.jpg" alt="Nature 404">
+                        </div>
+                        <aside class="tn-side">
+                            <dl class="tn-profile">
+                                <dt>Année</dt><dd>2023</dd>
+                                <dt>Médium</dt><dd>Installation immersive</dd>
+                                <dt>État</dt><dd>ARCHIVÉ</dd>
+                                
+                            </dl>
+                            <nav class="tw-keys" aria-label="Travaux voisins">
+                                <a href="cosserat.html"><b>F1</b>◀ TL-02</a>
+                                <a href="../tom-lecointre.html#tn-index"><b>F2</b>INDEX</a>
+                                <a href="parasite.html"><b>F3</b>TL-04 ▶</a>
+                            </nav>
+                        </aside>
                     </div>
-                    <div class="project-entry-specs">
-                        2023<br>
-                        Installation immersive
+
+                    <div class="tn-transmission tw-text">
+                        <span class="tn-tag">TRANSMISSION :</span>
+                        <div><p>Nature 404 imagine un monde dystopique où les plantes ont pris le dessus sur les systèmes techniques, colonisant et absorbant les objets manufacturés laissés à l'abandon. En recouvrant, infiltrant et prenant racine dans ces appareils devenus obsolètes, le végétal transforme ces vestiges en supports de nouvelles formes de vie.</p><p>L'installation met en scène un renversement : ce qui relevait autrefois de la domination technologique devient un substrat pour le vivant. Le projet souligne la défaillance d'un modèle fondé sur la maîtrise et l'exploitation, incapable de s'adapter à ses propres conséquences. Entre disparition et régénération, voici un paysage spéculatif où les frontières entre nature et artefact s'effacent, laissant apparaître un monde recomposé à partir des ruines du précédent.</p></div>
                     </div>
-                    <p>Nature 404 imagine un monde dystopique où les plantes ont pris le dessus sur les systèmes techniques, colonisant et absorbant les objets manufacturés laissés à l'abandon. En recouvrant, infiltrant et prenant racine dans ces appareils devenus obsolètes, le végétal transforme ces vestiges en supports de nouvelles formes de vie.</p>
-                    <p>L'installation met en scène un renversement : ce qui relevait autrefois de la domination technologique devient un substrat pour le vivant. Le projet souligne la défaillance d'un modèle fondé sur la maîtrise et l'exploitation, incapable de s'adapter à ses propres conséquences. Entre disparition et régénération, voici un paysage spéculatif où les frontières entre nature et artefact s'effacent, laissant apparaître un monde recomposé à partir des ruines du précédent.</p>
-                </article>
+
+                    <footer class="tn-foot" aria-hidden="true">
+                        <span class="tn-ticks"></span>
+                        <span>TL-SYS 2022—2026</span>
+                        <span id="tn-clock">00:00:00</span>
+                    </footer>
+                </div>
             </div>
         </section>
     </main>
+
+    <script>
+    (function () {
+        var clock = document.getElementById('tn-clock');
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() { var d = new Date(); clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); }
+        tick(); setInterval(tick, 1000);
+    })();
+    </script>
 </body>
 </html>
+
 

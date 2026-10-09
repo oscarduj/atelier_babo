@@ -440,3 +440,56 @@ body.yoon-hub .ym-title {
     .vf-dot { animation: none; }
     .ym-frame img, .vf-monitor-screen img { transition: none; }
 }
+
+/* ============================================================
+   PAGES D'ŒUVRE — YOON : chaque œuvre est un « plan » dans le
+   même viseur que sa page principale (body.yoon-hub.yoon-work).
+   ============================================================ */
+.yw-body { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); }
+body.yoon-hub .yw-title { font-size: clamp(2.2rem, 5.2vw, 5rem); line-height: 0.92; }
+.yw-read {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    color: var(--y-white);
+    text-decoration: none;
+    border-bottom: 1px solid var(--y-red);
+    padding-bottom: 0.15rem;
+}
+.yw-read:hover { color: var(--y-red); }
+.yw-monitor .vf-monitor-screen { aspect-ratio: auto; height: clamp(16rem, 58vh, 38rem); }
+.yw-monitor .vf-monitor-screen img { object-fit: contain; background: #000000; }
+.yw-nav { justify-content: space-between; }
+.yw-note {
+    min-height: 60vh;
+    scroll-snap-align: start;
+    background: var(--y-black);
+    color: var(--y-white);
+    padding: 5rem 2.2rem 5rem;
+    border-top: 1px solid var(--y-line);
+}
+.yw-note-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    color: var(--y-red);
+    margin: 0 0 1.6rem;
+}
+.yw-note-text { max-width: 66ch; }
+.yw-note-text p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: #d9d6d1;
+    margin: 0 0 1.2rem;
+}
+.yw-note-text a { color: var(--y-white); text-decoration-color: var(--y-red); }
+@media (min-width: 901px) { .yw-note { padding-left: max(2.2rem, 4.5rem); } }
+@media (max-width: 900px) {
+    .yw-body { grid-template-columns: minmax(0, 1fr); }
+    .yw-monitor { order: -1; max-width: none; }
+    .yw-monitor .vf-monitor-screen { height: 46vh; }
+    .yw-note { padding: 3.5rem 1.2rem; }
+}
+

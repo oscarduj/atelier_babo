@@ -5,37 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALTERTOPIE — TOM LECOINTRE // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../tom.css">
+    <link rel="stylesheet" href="../../tom.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page tom-page">
+<body class="standalone-page tom-hub tom-work">
+    <a href="../tom-lecointre.html#tn-index" class="back-link">← RETOUR À L'INDEX</a>
+
     <main class="artist-page-container">
-        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+        <!-- Même poste de bord que la page de Tom : l'œuvre dans la vue -->
+        <section class="tn-screen">
+            <div class="tn-bezel">
+                <div class="tn-crt">
+                    <header class="tn-band">
+                        <h1 class="tn-name">ALTERTOPIE</h1>
+                        <p class="tn-band-info">TL-01 / 07<br>Tom Lecointre</p>
+                    </header>
 
-        <header class="artist-header">
-            <span class="tag">TOM LECOINTRE // PROJET</span>
-            <h1>ALTERTOPIE</h1>
-        </header>
-
-        <div class="tom-pulse-line"></div>
-
-        <section class="artist-projects-section">
-            <div class="project-entries">
-                <article class="project-entry">
-                    <div class="artist-gallery" style="margin-bottom: 2rem;">
-                        <img src="../../images/travaux/tom-projets/altertopie.jpg" alt="ALTERTOPIE" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    <div class="tn-main">
+                        <div class="tn-view tw-view">
+                            <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-tr" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-bl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
+                            <span class="tn-view-label">VUE // TL-01</span>
+                            <img class="tw-img" src="../../images/travaux/tom-projets/altertopie.jpg" alt="ALTERTOPIE">
+                        </div>
+                        <aside class="tn-side">
+                            <dl class="tn-profile">
+                                <dt>Année</dt><dd>2022</dd>
+                                <dt>Médium</dt><dd>Vidéo · 3m12s</dd>
+                                <dt>État</dt><dd>SÉLECTIONNÉ</dd>
+                                <dt>Note</dt><dd>Sélectionnée au Video Art Academy (Festival VIDEOFORMES, 2025)</dd>
+                            </dl>
+                            <nav class="tw-keys" aria-label="Travaux voisins">
+                                <span class="is-off"><b>F1</b>—</span>
+                                <a href="../tom-lecointre.html#tn-index"><b>F2</b>INDEX</a>
+                                <a href="cosserat.html"><b>F3</b>TL-02 ▶</a>
+                            </nav>
+                        </aside>
                     </div>
-                    <div class="project-entry-specs">
-                        2022 · Sélectionnée au Video Art Academy (Festival VIDEOFORMES, 2025)<br>
-                        Vidéo · 3m12s
+
+                    <div class="tn-transmission tw-text">
+                        <span class="tn-tag">TRANSMISSION :</span>
+                        <div><p>Altertopie est une performance filmée et restituée dans l'espace d'exposition grâce à un écran translucide de 3 m par 2 m. C'est une invitation à imaginer, voire identifier les causes et l'impact de la vie de l'Homme sur le territoire qu'il occupe.</p><p>Le projet explore les limites entre habitable et inhabitable, en prenant notamment référence à George Perec dans <em>Espèce d'espace</em>. Du latin <em>alter</em> « autre » et du grec <em>tópos</em> « lieu », le terme désigne ici ces espaces, à la frontière d'un réel à un autre. Une frontière résolument fascinante qui nous préserve — ou non — de ce qui peut bien se trouver de l'autre côté.</p></div>
                     </div>
-                    <p>Altertopie est une performance filmée et restituée dans l'espace d'exposition grâce à un écran translucide de 3 m par 2 m. C'est une invitation à imaginer, voire identifier les causes et l'impact de la vie de l'Homme sur le territoire qu'il occupe.</p>
-                    <p>Le projet explore les limites entre habitable et inhabitable, en prenant notamment référence à George Perec dans <em>Espèce d'espace</em>. Du latin <em>alter</em> « autre » et du grec <em>tópos</em> « lieu », le terme désigne ici ces espaces, à la frontière d'un réel à un autre. Une frontière résolument fascinante qui nous préserve — ou non — de ce qui peut bien se trouver de l'autre côté.</p>
-                </article>
+
+                    <footer class="tn-foot" aria-hidden="true">
+                        <span class="tn-ticks"></span>
+                        <span>TL-SYS 2022—2026</span>
+                        <span id="tn-clock">00:00:00</span>
+                    </footer>
+                </div>
             </div>
         </section>
     </main>
+
+    <script>
+    (function () {
+        var clock = document.getElementById('tn-clock');
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() { var d = new Date(); clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); }
+        tick(); setInterval(tick, 1000);
+    })();
+    </script>
 </body>
 </html>
+
 

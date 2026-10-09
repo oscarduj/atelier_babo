@@ -360,3 +360,44 @@ body.tom-hub .tn-name {
 @media (prefers-reduced-motion: reduce) {
     .tn-blink, .td-state.is-live { animation: none; }
 }
+
+/* ============================================================
+   PAGES D'ŒUVRE — TOM : même poste de bord que sa page principale
+   (body.tom-hub.tom-work). La photo garde ses vraies couleurs.
+   ============================================================ */
+.tom-work .tn-screen { min-height: 100vh; min-height: 100dvh; }
+.tw-view { min-height: clamp(18rem, 56vh, 38rem); }
+.tw-img {
+    position: absolute;
+    inset: 2.2rem 2.2rem;
+    width: calc(100% - 4.4rem);
+    height: calc(100% - 4.4rem);
+    object-fit: contain;
+    z-index: 1;
+}
+.tom-work .tn-profile dd { word-break: break-word; }
+.tw-keys { display: flex; flex-direction: column; gap: 0.45rem; margin-top: auto; }
+.tw-keys a, .tw-keys span {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var(--g);
+    text-decoration: none;
+    border: 1px solid var(--g);
+    padding: 0.35rem 0.5rem;
+}
+.tw-keys b { font-weight: 400; border: 1px solid currentColor; padding: 0 0.3rem; }
+.tw-keys a:hover { background: var(--g); color: #000000; text-shadow: none; }
+.tw-keys a:focus-visible { outline: 1px dashed var(--g); outline-offset: 3px; }
+.tw-keys .is-off { opacity: 0.35; }
+.tw-text p { margin: 0 0 0.8rem; font-size: 0.88rem; line-height: 1.6; max-width: 92ch; }
+.tw-text a { color: var(--g); }
+@media (max-width: 900px) {
+    .tw-view { min-height: 62vw; }
+    .tw-img { inset: 1.6rem; width: calc(100% - 3.2rem); height: calc(100% - 3.2rem); }
+    .tw-keys { flex-direction: row; flex-wrap: wrap; }
+    .tw-keys a, .tw-keys span { flex: 1; justify-content: center; }
+}
+

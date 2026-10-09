@@ -3,39 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSSERAT — TOM LECOINTRE // ATELIER BABO</title>
+    <title>COSSERAT, MANUFACTURE DU VIDE — TOM LECOINTRE // ATELIER BABO</title>
     <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../tom.css">
+    <link rel="stylesheet" href="../../tom.css">
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page tom-page">
+<body class="standalone-page tom-hub tom-work">
+    <a href="../tom-lecointre.html#tn-index" class="back-link">← RETOUR À L'INDEX</a>
+
     <main class="artist-page-container">
-        <a href="../tom-lecointre.html" class="back-link">← RETOUR AU PORTFOLIO</a>
+        <!-- Même poste de bord que la page de Tom : l'œuvre dans la vue -->
+        <section class="tn-screen">
+            <div class="tn-bezel">
+                <div class="tn-crt">
+                    <header class="tn-band">
+                        <h1 class="tn-name">COSSERAT, manufacture du vide</h1>
+                        <p class="tn-band-info">TL-02 / 07<br>Tom Lecointre</p>
+                    </header>
 
-        <header class="artist-header">
-            <span class="tag">TOM LECOINTRE // PROJET</span>
-            <h1>COSSERAT, manufacture du vide</h1>
-        </header>
-
-        <div class="tom-pulse-line"></div>
-
-        <section class="artist-projects-section">
-            <div class="project-entries">
-                <article class="project-entry">
-                    <div class="artist-gallery" style="margin-bottom: 2rem;">
-                        <img src="../../images/travaux/tom-projets/cosserat.jpg" alt="COSSERAT, manufacture du vide" style="width:100%; height:auto; display:block; border:1px solid var(--border-color);">
+                    <div class="tn-main">
+                        <div class="tn-view tw-view">
+                            <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-tr" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-bl" aria-hidden="true"></span>
+                            <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
+                            <span class="tn-view-label">VUE // TL-02</span>
+                            <img class="tw-img" src="../../images/travaux/tom-projets/cosserat.jpg" alt="COSSERAT, manufacture du vide">
+                        </div>
+                        <aside class="tn-side">
+                            <dl class="tn-profile">
+                                <dt>Année</dt><dd>2022</dd>
+                                <dt>Médium</dt><dd>Vidéo 360°</dd>
+                                <dt>État</dt><dd>ARCHIVÉ</dd>
+                                
+                            </dl>
+                            <nav class="tw-keys" aria-label="Travaux voisins">
+                                <a href="altertopie.html"><b>F1</b>◀ TL-01</a>
+                                <a href="../tom-lecointre.html#tn-index"><b>F2</b>INDEX</a>
+                                <a href="nature-404.html"><b>F3</b>TL-03 ▶</a>
+                            </nav>
+                        </aside>
                     </div>
-                    <div class="project-entry-specs">
-                        2022<br>
-                        Vidéo 360°
+
+                    <div class="tn-transmission tw-text">
+                        <span class="tn-tag">TRANSMISSION :</span>
+                        <div><p>La manufacture de Cosserat était autrefois un fleuron de l'industrie textile française, notamment réputée pour son velours d'Utrecht, dont elle détenait le quasi-monopole au sein du pays. Après la fermeture du site, la manufacture est devenue un espace hors du temps, un espace liminal.</p><p>Mais cet état est sur le point de changer : Cosserat va subir de profondes transformations en vue d'une réhabilitation. J'ai donc cherché à produire une archive vidéo. En résulte un système mécanique capable de remplacer le plasticien, pour effectuer des prises de vue dans des secteurs trop dangereux et interdits d'accès aux humains.</p></div>
                     </div>
-                    <p>La manufacture de Cosserat était autrefois un fleuron de l'industrie textile française, notamment réputée pour son velours d'Utrecht, dont elle détenait le quasi-monopole au sein du pays. Après la fermeture du site, la manufacture est devenue un espace hors du temps, un espace liminal.</p>
-                    <p>Mais cet état est sur le point de changer : Cosserat va subir de profondes transformations en vue d'une réhabilitation. J'ai donc cherché à produire une archive vidéo. En résulte un système mécanique capable de remplacer le plasticien, pour effectuer des prises de vue dans des secteurs trop dangereux et interdits d'accès aux humains.</p>
-                </article>
+
+                    <footer class="tn-foot" aria-hidden="true">
+                        <span class="tn-ticks"></span>
+                        <span>TL-SYS 2022—2026</span>
+                        <span id="tn-clock">00:00:00</span>
+                    </footer>
+                </div>
             </div>
         </section>
     </main>
+
+    <script>
+    (function () {
+        var clock = document.getElementById('tn-clock');
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() { var d = new Date(); clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); }
+        tick(); setInterval(tick, 1000);
+    })();
+    </script>
 </body>
 </html>
+
 

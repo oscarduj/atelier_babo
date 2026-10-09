@@ -16,7 +16,7 @@ body.collectif-page {
     --c-night: #070a0d;
     --c-text: #ecebe6;
     --c-soft: #b9b8b1;
-    --c-gold: #d8b45a;
+    --c-gold: #A3B1C2;   /* bleu froid de la page d'accueil */
     --bg-color: var(--c-night);
     --text-color: var(--c-text);
     --secondary-color: var(--c-gold);
@@ -146,7 +146,7 @@ body.collectif-page .cs-title {
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.35fr);
     gap: clamp(2rem, 5vw, 5rem);
     padding: 6rem 6vw 6rem;
-    border-top: 1px solid rgba(216, 180, 90, 0.18);
+    border-top: 1px solid rgba(163, 177, 194, 0.18);
 }
 .cd-num {
     font-family: 'Share Tech Mono', monospace;
@@ -214,7 +214,7 @@ body.collectif-page .cd-title {
     text-transform: uppercase;
     color: var(--c-gold);
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(216, 180, 90, 0.3);
+    border-bottom: 1px solid rgba(163, 177, 194, 0.3);
     margin: 0 0 1rem;
 }
 .cd-grid {
@@ -288,7 +288,7 @@ body.panel-open .ch-rail { visibility: hidden; }
     gap: 1rem;
     padding: 1rem 6vw;
     background: rgba(7, 10, 13, 0.92);
-    border-bottom: 1px solid rgba(216, 180, 90, 0.25);
+    border-bottom: 1px solid rgba(163, 177, 194, 0.25);
 }
 .cp-bar-title {
     font-family: 'Share Tech Mono', monospace;
@@ -320,7 +320,7 @@ body.panel-open .ch-rail { visibility: hidden; }
     justify-content: space-between;
     gap: 1rem;
     padding: 2rem 6vw 4rem;
-    border-top: 1px solid rgba(216, 180, 90, 0.18);
+    border-top: 1px solid rgba(163, 177, 194, 0.18);
 }
 
 /* ---------- Index des chapitres (bord droit) ---------- */
@@ -349,7 +349,7 @@ body.panel-open .ch-rail { visibility: hidden; }
     top: 0.5rem;
     bottom: 0.5rem;
     width: 1px;
-    background: rgba(216, 180, 90, 0.35);
+    background: rgba(163, 177, 194, 0.35);
 }
 .ch-rail a {
     display: flex;
@@ -416,3 +416,33 @@ body.panel-open .ch-rail { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) {
     .ch-panel, .ch-splash.is-openable .cs-media, .ch-rail span { transition: none; }
 }
+
+/* ---------- Écran-titre sans image : le ticket d'ATM ---------- */
+.cs-ticket-stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(ellipse at 50% 40%, rgba(163, 177, 194, 0.18), transparent 60%),
+        #070a0d;
+}
+.cs-ticket {
+    width: min(78vw, 17rem);
+    padding: 1.4rem 1.2rem 1.8rem;
+    background: #ecebe6;
+    color: #15171a;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    line-height: 1.6;
+    text-align: center;
+    transform: rotate(-4deg) translateY(-6%);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+    opacity: 0.35;
+    /* bord déchiré en bas, comme un ticket arraché */
+    clip-path: polygon(0 0, 100% 0, 100% 96%, 92% 100%, 84% 96%, 76% 100%, 68% 96%, 60% 100%, 52% 96%, 44% 100%, 36% 96%, 28% 100%, 20% 96%, 12% 100%, 4% 96%, 0 100%);
+}
+.cs-ticket p { margin: 0; }
+.cs-ticket-blank { letter-spacing: 0.02em; opacity: 0.6; }
+
