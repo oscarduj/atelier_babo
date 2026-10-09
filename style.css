@@ -372,9 +372,9 @@ body.standalone-page {
    navigation vidéo en dessous (voir stopPropagation dans le script). */
 .hero-logo-3d-wrap {
     position: absolute;
-    top: 50%;
+    top: 2.5rem;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     width: min(34vw, 260px);
     aspect-ratio: 3.8 / 1;
     z-index: 3;
@@ -1717,18 +1717,40 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
 .nav-tree-d1, .nav-tree-d2 {
     max-height: 0;
     overflow: hidden;
-    opacity: 0;
     padding-left: 0.9rem;
     border-left: 1px solid var(--border-color);
     margin-left: 0.6rem;
-    transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+    /* Ouverture longue et très amortie : la branche se déroule au lieu de
+       surgir. La fermeture est plus courte, pour ne pas traîner. */
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.6, 1);
 }
 .nav-tree-item.is-open > .nav-tree-d1,
 .nav-tree-item.is-open > .nav-tree-d2,
 .nav-tree-item:hover > .nav-tree-d1,
 .nav-tree-item:hover > .nav-tree-d2 {
-    max-height: 60vh;
+    max-height: 70vh;
+    transition: max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Chaque entrée arrive à son tour, décalée selon son rang (--i), en glissant
+   légèrement : la liste se révèle en cascade plutôt que d'un coup. */
+.nav-tree-d1 > .nav-tree-item,
+.nav-tree-d2 > .nav-tree-item {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-tree-item.is-open > .nav-tree-d1 > .nav-tree-item,
+.nav-tree-item.is-open > .nav-tree-d2 > .nav-tree-item,
+.nav-tree-item:hover > .nav-tree-d1 > .nav-tree-item,
+.nav-tree-item:hover > .nav-tree-d2 > .nav-tree-item {
     opacity: 1;
+    transform: translateX(0);
+    transition-delay: calc(var(--i, 0) * 70ms + 120ms);
+}
+@media (prefers-reduced-motion: reduce) {
+    .nav-tree-d1 > .nav-tree-item,
+    .nav-tree-d2 > .nav-tree-item { transition: none; transition-delay: 0s; }
 }
 
 .nav-sub-item {

@@ -227,11 +227,18 @@
         ['07. CONTACT', 'index.html#contact', null],
     ];
 
-    var here = location.pathname.replace(/\/$/, '/index.html');
+    // Nom de fichier de la page courante. Un chemin sans fichier ("/", "/repo",
+    // "/repo/") vaut index.html — c'est ce cas qui faisait échouer le test et
+    // provoquait un rechargement complet sur les liens de section.
+    function fileOf(path) {
+        var last = path.split('?')[0].split('#')[0].split('/').pop();
+        return last && last.indexOf('.') !== -1 ? last : 'index.html';
+    }
+    var hereFile = fileOf(location.pathname);
     function isCurrent(href) {
         var f = href.split('#')[0];
-        return f && here.indexOf('/' + f.replace(/^.*\//, '')) !== -1
-            && here.slice(-f.split('/').pop().length) === f.split('/').pop();
+        if (!f) return false;
+        return fileOf(f) === hereFile;
     }
 
     function buildList(items, depth) {
@@ -239,10 +246,13 @@
         ul.className = 'nav-tree nav-tree-d' + depth;
         var anyOpen = false;
 
-        items.forEach(function (it) {
+        items.forEach(function (it, idx) {
             var label = it[0], href = it[1], kids = it[2];
             var li = document.createElement('li');
             li.className = 'nav-tree-item';
+            // Rang de l'élément : sert au décalage d'apparition, pour que les
+            // sous-parties se révèlent l'une après l'autre plutôt qu'en bloc.
+            li.style.setProperty('--i', idx);
 
             var a = document.createElement('a');
             a.className = depth === 0 ? 'nav-item' : 'nav-sub-item';
