@@ -375,7 +375,7 @@ body.standalone-page {
     top: 5rem;
     left: 50%;
     transform: translateX(-50%);
-    width: min(46vw, 460px);
+    width: min(56vw, 600px);
     aspect-ratio: 3.8 / 1;
     z-index: 3;
     touch-action: none;
@@ -389,7 +389,7 @@ body.standalone-page {
 .hero-logo-3d-wrap.dragging canvas { cursor: grabbing; }
 
 @media (max-width: 700px) {
-    .hero-logo-3d-wrap { width: min(80vw, 320px); top: 5.2rem; }
+    .hero-logo-3d-wrap { width: min(88vw, 380px); top: 7rem; }
 }
 
 /* --- ZONES DE NAVIGATION ENTRE VIDÉOS D'ACCUEIL --- */
@@ -1948,7 +1948,7 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 14rem 6vw 14rem;
+    padding: 16rem 6vw 13rem;
     pointer-events: none;
 }
 .hm-title {
@@ -2199,7 +2199,7 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
     /* place pour le bouton du menu, en haut à gauche */
     .main-feed .feed-section:not(.hero-section-video) { padding-top: 4.6rem; }
     .hero-index { display: none; }
-    .hero-manifesto { padding: 11rem 1.2rem 7rem; }
+    .hero-manifesto { padding: 14rem 1.2rem 6rem; }
     .hm-row { grid-template-columns: 1fr; gap: 0.6rem; justify-items: center; }
     .hm-pair, .hm-meta { justify-self: center; text-align: center; }
     .hm-star { display: none; }
@@ -2218,6 +2218,37 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
 
 /* Séquence d'entrée déjà vue dans cet onglet : masquée dès le chargement */
 html.booted #boot-overlay { display: none !important; }
+
+/* ============================================================
+   CORRECTIFS (oct. 2026)
+   ============================================================ */
+
+/* Logo fixe : on ne le saisit plus, le curseur reste normal */
+.hero-logo-3d-wrap, .hero-logo-3d-wrap canvas { cursor: default; }
+
+/* Carrousel de l'accueil : défilement automatique seul, sans flèches ni points */
+.carousel-nav-zone,
+.carousel-arrow-cursor,
+.carousel-mobile-btn,
+.carousel-dots { display: none !important; }
+
+/* Menu tactile : espacements réguliers au lieu d'étirer le contenu sur
+   toute la hauteur, ce qui tassait les éléments quand la liste est longue */
+.touch-device .side-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.6rem;
+}
+.touch-device .side-nav .nav-top { gap: 0.8rem; }
+.touch-device .side-nav .nav-links { display: flex; flex-direction: column; gap: 0.2rem; flex-shrink: 0; overflow: visible; }
+.touch-device .side-nav .nav-item { margin-bottom: 0.4rem; }
+.touch-device .side-nav .nav-status { margin-top: auto; padding-top: 1.5rem; position: static; }
+
+/* Bouton « Retour » : à droite du bouton menu sur tablette tactile */
+@media (min-width: 901px) {
+    html.touch-device body.standalone-page .back-link { left: 4.4rem !important; }
+}
 
 
 
