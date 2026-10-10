@@ -2643,6 +2643,204 @@ html.light-mode .ct-btn.is-solid, html.light-mode .ct-btn:hover { color: var(--b
     .ct-wrap { grid-template-columns: 1fr; gap: 2rem; }
 }
 
+/* ============================================================
+   EXPOS — cartons d'invitation empilés à feuilleter
+   ============================================================ */
+.ex-deck { display: grid; grid-template-columns: minmax(0, 30rem) 1fr; gap: 3rem; align-items: center; padding: 1.5rem 0 1rem; }
+.ex-stack { position: relative; aspect-ratio: 5 / 3.6; cursor: pointer; }
+.ex-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem 1.4rem 1rem;
+    background: #efece2;
+    color: #121212;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    user-select: none;
+}
+.ex-top, .ex-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.ex-top { padding-bottom: 0.6rem; border-bottom: 1px solid rgba(18, 18, 18, 0.25); }
+.ex-foot { margin-top: auto; padding-top: 0.6rem; border-top: 1px dashed rgba(18, 18, 18, 0.35); opacity: 0.7; }
+.ex-year { margin: 0.8rem 0 0.2rem; font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.6rem, 5vw, 3.6rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.04em; }
+.main-feed .ex-title { margin: 0 0 0.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 500; line-height: 1.2; text-transform: none; color: #121212; }
+.ex-desc { margin: 0; font-size: 0.78rem; line-height: 1.45; color: rgba(18, 18, 18, 0.7); max-width: 26rem; }
+.ex-stamp {
+    position: absolute;
+    right: 1.2rem;
+    top: 3.2rem;
+    padding: 0.3rem 0.7rem;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: rgba(18, 18, 18, 0.45);
+    transform: rotate(-12deg);
+}
+.ex-card.is-soon .ex-stamp { color: #c8321e; }
+.ex-ctrl { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-family: 'Share Tech Mono', monospace; }
+.ex-btn {
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid rgba(234, 232, 228, 0.4);
+    background: transparent;
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.ex-btn:hover { background: var(--text-color); color: var(--bg-color); }
+.ex-btn:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 3px; }
+.ex-count { font-size: 0.9rem; letter-spacing: 0.1em; min-width: 4.5rem; text-align: center; }
+.ex-hint { flex-basis: 100%; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--desc-color); }
+
+/* ============================================================
+   SOUTIEN — carte de membre qui se retourne
+   ============================================================ */
+.mb-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 1.2rem; padding-top: 1rem; }
+.mb-scene { width: min(100%, 27rem); aspect-ratio: 85.6 / 54; perspective: 1400px; }
+.mb-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+}
+.mb-card.is-flipped { transform: rotateY(180deg); }
+.mb-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    color: #eae8e4;
+    background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.06) 60%, rgba(255, 255, 255, 0) 80%),
+        linear-gradient(135deg, #1c1e22 0%, #2d3137 48%, #16181b 100%);
+    border: 1px solid rgba(234, 232, 228, 0.22);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.mb-back { transform: rotateY(180deg); padding: 0; }
+.mb-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.mb-brand { font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; letter-spacing: 0.12em; }
+.mb-kind, .mb-lab { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; opacity: 0.65; }
+.mb-chip {
+    width: 2.6rem;
+    height: 2rem;
+    margin-top: 1rem;
+    border-radius: 6px;
+    background:
+        linear-gradient(90deg, transparent 32%, rgba(0, 0, 0, 0.25) 32% 34%, transparent 34% 66%, rgba(0, 0, 0, 0.25) 66% 68%, transparent 68%),
+        linear-gradient(transparent 45%, rgba(0, 0, 0, 0.25) 45% 55%, transparent 55%),
+        linear-gradient(135deg, #d7d9dc, #8f949a);
+}
+.mb-num { margin: auto 0 0.6rem; font-family: 'Share Tech Mono', monospace; font-size: clamp(1rem, 2.2vw, 1.3rem); letter-spacing: 0.18em; }
+.mb-bottom { align-items: flex-end; }
+.mb-bottom div { display: flex; flex-direction: column; gap: 0.1rem; }
+.mb-line { font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; letter-spacing: 0.1em; }
+.mb-star { font-size: 1.6rem; line-height: 1; }
+.mb-barcode {
+    position: absolute;
+    right: 1.3rem;
+    top: 3.3rem;
+    width: 6rem;
+    height: 1.1rem;
+    background: repeating-linear-gradient(90deg, rgba(234, 232, 228, 0.75) 0 1px, transparent 1px 3px, rgba(234, 232, 228, 0.75) 3px 5px, transparent 5px 6px, rgba(234, 232, 228, 0.75) 6px 7px, transparent 7px 10px);
+}
+.mb-stripe { display: block; height: 18%; margin-top: 9%; background: #050505; }
+.mb-offers { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0.8rem 1.2rem 0.4rem; }
+.mb-offer { display: flex; flex-direction: column; gap: 0.35rem; }
+.mb-offer p { margin: 0; font-size: 0.72rem; line-height: 1.4; opacity: 0.8; }
+.mb-cta {
+    margin-top: auto;
+    align-self: flex-start;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #08090a;
+    background: #eae8e4;
+    padding: 0.3rem 0.6rem;
+    text-decoration: none;
+}
+.mb-cta:hover { background: #ffffff; }
+.mb-cta:focus-visible { outline: 1px dashed #eae8e4; outline-offset: 3px; }
+.mb-sign { margin: 0 1.2rem 0.8rem; padding-top: 0.3rem; border-top: 1px solid rgba(234, 232, 228, 0.3); font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; opacity: 0.55; }
+.mb-flip {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.55rem 1rem;
+    border: 1px solid rgba(234, 232, 228, 0.4);
+    background: rgba(8, 9, 10, 0.5);
+    color: #eae8e4;
+    cursor: pointer;
+}
+.mb-flip:hover { background: #eae8e4; color: #08090a; }
+.mb-flip:focus-visible { outline: 1px dashed #eae8e4; outline-offset: 3px; }
+
+/* ============================================================
+   COLLABORATEURS — liste typographique, façon générique
+   ============================================================ */
+.cb-list { list-style: none; margin: 0.5rem 0 0; padding: 0; border-top: 1px solid rgba(234, 232, 228, 0.16); }
+.cb-row {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) auto 2rem;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 0.7rem 0.3rem;
+    border-bottom: 1px solid rgba(234, 232, 228, 0.16);
+    color: var(--text-color);
+    text-decoration: none;
+    transition: opacity 0.3s ease, padding 0.3s ease;
+}
+.cb-num { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; color: rgba(234, 232, 228, 0.45); }
+.cb-name { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4.6vw, 3.8rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1; }
+.cb-prac { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(234, 232, 228, 0.55); }
+.cb-arrow { justify-self: end; opacity: 0; transition: opacity 0.3s ease; }
+.cb-list:hover .cb-row { opacity: 0.3; }
+.cb-list .cb-row:hover, .cb-list a.cb-row:focus-visible { opacity: 1; padding-left: 1rem; outline: none; }
+.cb-row:hover .cb-arrow, a.cb-row:focus-visible .cb-arrow { opacity: 1; }
+#cat-structures .cb-name, #cat-mecenes .cb-name { font-size: clamp(1.4rem, 3.2vw, 2.6rem); }
+
+@media (max-width: 900px) {
+    .ex-deck { grid-template-columns: 1fr; gap: 1.6rem; }
+    .ex-stack { aspect-ratio: auto; height: 22rem; }
+    .mb-wrap { align-items: stretch; }
+    .mb-scene { width: 100%; }
+    .mb-offers { grid-template-columns: 1fr; gap: 0.5rem; padding: 0.6rem 1rem 0.2rem; }
+    .mb-offer p { display: none; }
+    .cb-row { grid-template-columns: 2.2rem minmax(0, 1fr); gap: 0.2rem 0.8rem; }
+    .cb-prac { grid-column: 2; }
+    .cb-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ex-card, .mb-card { transition: none; }
+}
+/* Ordre et inclinaison par défaut du paquet (le script prend ensuite le relais) */
+.ex-card:nth-child(1) { z-index: 4; transform: rotate(-1deg); }
+.ex-card:nth-child(2) { z-index: 3; transform: translate(16px, 12px) rotate(3deg) scale(0.97); }
+.ex-card:nth-child(3) { z-index: 2; transform: translate(-14px, 22px) rotate(-4deg) scale(0.94); }
+.ex-card:nth-child(n+4) { z-index: 1; transform: translate(10px, 30px) rotate(2deg) scale(0.91); }
+
+
 
 
 
