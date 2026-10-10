@@ -1,441 +1,451 @@
-<!DOCTYPE html>
-<html lang="fr" class="dark-mode">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOM LECOINTRE // ATELIER BABO</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../tom.css">
-    <script src="../ambient.js" defer></script>
-    <script src="../page-transition.js" defer></script>
-</head>
-<body class="standalone-page tom-hub">
-    <a href="../index.html#travaux" class="back-link">← RETOUR AUX TRAVAUX</a>
+/* ============================================================
+   DA — TOM LECOINTRE
+   Même grammaire structurelle qu'Oscar et Yoon (héro plein écran
+   avec callouts + démarche centrée + images animées, puis écran
+   blanc pour la galerie), recolorée en jaune.
+   ============================================================ */
 
-    <main class="artist-page-container">
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500&family=Share+Tech+Mono&display=swap');
 
-        <!-- ÉCRAN 1 : poste de bord (réf. écrans du Nostromo, Alien 1979).
-             L'objet tourne au centre en fil de fer phosphore et se remplit
-             de matière au survol ou avec la touche « MATIÈRE ». -->
-        <section class="tn-screen" id="tn-poste">
-            <div class="tn-bezel">
-                <div class="tn-crt">
-                    <header class="tn-band">
-                        <h1 class="tn-name">Tom Lecointre</h1>
-                        <ol class="tn-menu">
-                            <li><a href="#tn-transmission">1. Démarche</a></li>
-                            <li><a href="#tn-index">2. Travaux</a></li>
-                            <li><a href="#tn-contact">3. Contact</a></li>
-                            <li><a href="../index.html#travaux">4. Retour</a></li>
-                        </ol>
-                    </header>
+/* --- Pages de projet individuelles : fond sombre, accent jaune --- */
+body.tom-page {
+    --bg-color: #050505;
+    --text-color: #EAE8E4;
+    --accent-color: #e8c31a;
+    --secondary-color: #e8c31a;
+    --border-color: #262626;
+    --box-bg: rgba(232, 195, 26, 0.03);
+    --desc-color: #9a9a9a;
+}
+body.tom-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        repeating-linear-gradient(rgba(255, 255, 255, 0.025) 0px, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 3px),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.tom-page .artist-page-container { position: relative; z-index: 1; }
 
-                    <div class="tn-main">
-                        <div class="tn-view">
-                            <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
-                            <span class="tn-cross tn-cross-tr" aria-hidden="true"></span>
-                            <span class="tn-cross tn-cross-bl" aria-hidden="true"></span>
-                            <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
-                            <span class="tn-view-label">OBJET // ROTATION 360°</span>
-                            <div class="tn-object" id="tn-object">
-                                <img class="tn-object-still" src="../images/travaux/tom-projets/objet.jpg" alt="Sculpture organique en boucles superposées, patine vert-de-gris">
-                                <canvas id="tn-object-canvas" aria-label="Objet en rotation" role="img"></canvas>
-                            </div>
-                            <span class="tn-view-hint">SURVOL : MATIÈRE</span>
-                        </div>
+.tom-page .tag { font-family: 'Share Tech Mono', monospace; color: var(--accent-color); }
+.tom-page .back-link { color: var(--accent-color); }
+.tom-page .artist-header h1 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 3.4rem;
+    letter-spacing: 0.5px;
+    text-transform: none;
+}
+.tom-page .artist-bio-section h3,
+.tom-page .artist-projects-section h3,
+.tom-page .artist-contact-section h3 {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent-color);
+}
+.tom-page .project-entry-head h4 {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+    text-transform: none;
+    letter-spacing: 0.3px;
+}
+.tom-page .project-entry-tag { color: var(--accent-color); }
+.tom-page .contact-btn { color: var(--accent-color); border-bottom-color: var(--accent-color); }
 
-                        <aside class="tn-side">
-                            <dl class="tn-profile">
-                                <dt>Profil</dt>
-                                <dd>Plasticien<br>Atelier Babo<br>Protocole : recherche</dd>
-                                <dt>Statut</dt>
-                                <dd>Actif<br><span class="tn-blink">● EN TRANSMISSION</span></dd>
-                            </dl>
-                            <div class="tn-keys" role="group" aria-label="Rendu de l'objet">
-                                <button type="button" data-render="wire" aria-pressed="true">Fil de fer</button>
-                                <button type="button" data-render="matiere" aria-pressed="false">Matière</button>
-                            </div>
-                            <ul class="tn-axes" aria-label="Axes de recherche">
-                                <li><b>F1</b><span>Naturel / artificiel</span><i>Actif</i></li>
-                                <li><b>F2</b><span>Temporalités</span><i>Actif</i></li>
-                                <li><b>F3</b><span>Imaginaires spatiaux</span><i>Actif</i></li>
-                                <li><b>F4</b><span>Infrastructures</span><i>Actif</i></li>
-                            </ul>
-                        </aside>
-                    </div>
+.tom-pulse-line {
+    position: relative;
+    height: 1px;
+    background: var(--accent-color, #e8c31a);
+    opacity: 0.4;
+    margin: 2.5rem 0;
+    animation: tom-pulse 3.4s ease-in-out infinite;
+}
+@keyframes tom-pulse {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.55; }
+}
 
-                    <div class="tn-transmission" id="tn-transmission">
-                        <span class="tn-tag">TRANSMISSION :</span>
-                        <p>Ma démarche interroge les relations que l'humain entretient avec son environnement, qu'il soit naturel, construit ou médiatisé par des systèmes techniques. Je m'intéresse aux zones de tension entre le naturel et l'artificiel, aux traces du passé, aux dynamiques présentes et aux projections futures qui se superposent dans nos paysages.</p>
-                    </div>
+/* ============================================================
+   PAGE HUB — TOM : écrans HUD multicolores.
+   Réf. : Pip-Boy (cadre à crochets, en-tête en segments, onglets),
+   écran satellite (données orange encadrées, grille cyan graduée,
+   statut en rouge), « system error » (cyan, rouge, vert, bleu),
+   Weyland-Yutani (texte blanc sur bleu-noir), carte Blade Runner
+   (fiche d'identité au portrait tramé cyan).
+   Les lignes de balayage sont fixes : un effet de surface d'écran,
+   pas une animation.
+   ============================================================ */
+body.tom-hub {
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+    --bg: #061114;
+    --panel: #0a1c20;
+    --white: #e6f1ee;
+    --orange: #ff9a3c;
+    --cyan: #59e3ff;
+    --green: #5dff8a;
+    --red: #ff4f45;
+    --blue: #3a86ff;
+    --line: rgba(89, 227, 255, 0.35);
+    --bg-color: var(--bg);
+    --text-color: var(--white);
+    --secondary-color: var(--cyan);
+    --border-color: var(--line);
+    --desc-color: rgba(230, 241, 238, 0.7);
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+}
+body.tom-hub::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px);
+}
+body.tom-hub .back-link {
+    position: fixed;
+    top: 1.2rem;
+    left: 1.2rem;
+    z-index: 60;
+    margin: 0;
+    padding: 0.3rem 0.6rem;
+    background: var(--bg);
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+}
+body.tom-hub .artist-page-container { max-width: none; padding: 0; margin: 0; width: 100%; }
 
-                    <footer class="tn-foot" aria-hidden="true">
-                        <span class="tn-ticks"></span>
-                        <span>TL-SYS 2022—2026</span>
-                        <span id="tn-clock">00:00:00</span>
-                    </footer>
-                </div>
-            </div>
-        </section>
+/* ---------- Écran et cadre à crochets ---------- */
+.hx-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    display: flex;
+    padding: 4rem 2.4rem 1.6rem;
+}
+.hx-frame {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    min-width: 0;
+    padding: 0.4rem 1rem 0.2rem;
+    /* crochets façon Pip-Boy : les quatre coins seulement */
+    background:
+        linear-gradient(var(--green), var(--green)) left top / 22px 2px no-repeat,
+        linear-gradient(var(--green), var(--green)) left top / 2px 22px no-repeat,
+        linear-gradient(var(--green), var(--green)) right top / 22px 2px no-repeat,
+        linear-gradient(var(--green), var(--green)) right top / 2px 22px no-repeat,
+        linear-gradient(var(--green), var(--green)) left bottom / 22px 2px no-repeat,
+        linear-gradient(var(--green), var(--green)) left bottom / 2px 22px no-repeat,
+        linear-gradient(var(--green), var(--green)) right bottom / 22px 2px no-repeat,
+        linear-gradient(var(--green), var(--green)) right bottom / 2px 22px no-repeat;
+}
 
-        <!-- ÉCRAN 2 : index des travaux en tableau de données.
-             Survol d'une ligne : aperçu à droite ; clic : page du projet.
-             Au doigt : 1er toucher = aperçu, 2e = ouverture. -->
-        <section class="tn-screen" id="tn-index">
-            <div class="tn-bezel">
-                <div class="tn-crt">
-                    <header class="tn-band">
-                        <h2 class="tn-name">Index // Travaux</h2>
-                        <p class="tn-band-info">7 entrées<br>Tri : année</p>
-                    </header>
+/* En-tête en segments (Pip-Boy) */
+.hx-top {
+    display: flex;
+    align-items: stretch;
+    gap: 0.35rem;
+    color: var(--green);
+    text-shadow: 0 0 6px rgba(93, 255, 138, 0.5);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.hx-title {
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    letter-spacing: 0.18em;
+    padding-right: 1rem;
+}
+.hx-seg {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 0.6rem;
+    padding: 0 0.5rem 0.25rem;
+    border-top: 2px solid var(--green);
+    border-right: 2px solid var(--green);
+    white-space: nowrap;
+    overflow: hidden;
+}
+.hx-seg b { font-weight: 400; }
 
-                    <div class="tn-data">
-                        <div class="tn-table-wrap">
-                            <table class="tn-table">
-                                <thead><tr><th>N°</th><th>Désignation</th><th>Année</th><th class="td-medium">Médium</th><th class="td-state">État</th></tr></thead>
-                                <tbody>
-                        <tr data-img="../images/travaux/tom-projets/altertopie.jpg" data-code="TL-01" data-href="tom/altertopie.html">
-                            <td>01</td>
-                            <td><a href="tom/altertopie.html">ALTERTOPIE</a></td>
-                            <td>2022</td>
-                            <td class="td-medium">Vidéo, performance filmée · 3 min 12</td>
-                            <td class="td-state">SÉLECTIONNÉ</td>
-                        </tr>
-                        <tr data-img="../images/travaux/tom-projets/cosserat.jpg" data-code="TL-02" data-href="tom/cosserat.html">
-                            <td>02</td>
-                            <td><a href="tom/cosserat.html">COSSERAT, manufacture du vide</a></td>
-                            <td>2022</td>
-                            <td class="td-medium">Vidéo 360°</td>
-                            <td class="td-state">ARCHIVÉ</td>
-                        </tr>
-                        <tr data-img="../images/travaux/tom-projets/nature-404.jpg" data-code="TL-03" data-href="tom/nature-404.html">
-                            <td>03</td>
-                            <td><a href="tom/nature-404.html">Nature 404</a></td>
-                            <td>2023</td>
-                            <td class="td-medium">Installation immersive</td>
-                            <td class="td-state">ARCHIVÉ</td>
-                        </tr>
-                        <tr data-img="../images/travaux/tom-projets/parasite.jpg" data-code="TL-04" data-href="tom/parasite.html">
-                            <td>04</td>
-                            <td><a href="tom/parasite.html">PARASITE #1</a></td>
-                            <td>2024</td>
-                            <td class="td-medium">Sculpture · tronc, argile crue</td>
-                            <td class="td-state">ARCHIVÉ</td>
-                        </tr>
-                        <tr data-img="../images/travaux/tom-projets/u.jpg" data-code="TL-05" data-href="tom/u.html">
-                            <td>05</td>
-                            <td><a href="tom/u.html">U</a></td>
-                            <td>2024</td>
-                            <td class="td-medium">Sculpture · verre à l&#x27;uranium, lampe UV</td>
-                            <td class="td-state">ARCHIVÉ</td>
-                        </tr>
-                        <tr data-img="../images/travaux/tom-projets/compagnon-1.jpg" data-code="TL-06" data-href="tom/compagnon-1.html">
-                            <td>06</td>
-                            <td><a href="tom/compagnon-1.html">Compagnon 1</a></td>
-                            <td>2026</td>
-                            <td class="td-medium">Installation sculpturale, vidéo</td>
-                            <td class="td-state is-live">EN COURS</td>
-                        </tr>
-                        <tr data-img="../images/travaux/tom-projets/oma.jpg" data-code="TL-07" data-href="tom/oma.html">
-                            <td>07</td>
-                            <td><a href="tom/oma.html">O.M.A (One Meter Array)</a></td>
-                            <td>2026</td>
-                            <td class="td-medium">Installation sculpturale</td>
-                            <td class="td-state is-live">EN COURS</td>
-                        </tr>
-                                </tbody>
-                            </table>
-                        </div>
+/* Grille principale : données | vue | axes */
+.hx-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr) 13rem;
+    gap: 1rem;
+    min-height: 0;
+}
+.hx-h {
+    margin: 0 0 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid currentColor;
+}
 
-                        <figure class="tn-preview" aria-live="polite">
-                            <div class="tn-ruler-x" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div>
-                            <div class="tn-ruler-y" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
-                            <div class="tn-preview-screen">
-                                <img id="tn-preview-img" src="../images/travaux/tom-projets/altertopie.jpg" alt="">
-                                <span class="tn-cross tn-cross-tl" aria-hidden="true"></span>
-                                <span class="tn-cross tn-cross-br" aria-hidden="true"></span>
-                            </div>
-                            <figcaption><span id="tn-preview-code">TL-01</span><span id="tn-preview-title">ALTERTOPIE</span></figcaption>
-                        </figure>
-                    </div>
+/* Panneau de données orange (écran satellite) */
+.hx-data { color: var(--orange); text-shadow: 0 0 6px rgba(255, 154, 60, 0.45); display: flex; flex-direction: column; }
+.hx-dl { margin: 0; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.hx-dl div { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.05rem 0.3rem; }
+.hx-dl div.is-boxed { border: 1px solid var(--orange); }
+.hx-dl dt { text-transform: uppercase; }
+.hx-dl dd { margin: 0; text-align: right; }
+.hx-keys { display: flex; gap: 0.4rem; margin-top: 1.2rem; }
+.hx-keys button {
+    flex: 1;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1a0e02;
+    background: var(--orange);
+    border: none;
+    padding: 0.15rem 0;
+    cursor: pointer;
+    box-shadow: 0 6px 0 -3px var(--bg), 0 7px 0 -2px var(--orange);
+}
+.hx-keys button[aria-pressed="false"] { background: transparent; color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); }
+.hx-keys button:focus-visible { outline: 1px dashed var(--orange); outline-offset: 3px; }
+.hx-state { margin: auto 0 0; padding-top: 1rem; font-size: 0.85rem; text-transform: uppercase; }
+.hx-state b { font-weight: 400; background: var(--red); color: #1a0402; padding: 0 0.4rem; text-shadow: none; }
 
-                    <footer class="tn-contact" id="tn-contact">
-                        <span class="tn-tag">CONTACT :</span>
-                        <a href="mailto:contact@atelier-babo.com" class="tn-boxed">Email</a>
-                        <a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener" class="tn-boxed">Instagram ↗</a>
-                    </footer>
-                </div>
-            </div>
-        </section>
-    </main>
+/* Vue centrale : grille cyan, crochets, graduations */
+.hx-view {
+    position: relative;
+    min-height: 22rem;
+    border: 1px solid var(--line);
+    background:
+        linear-gradient(rgba(89, 227, 255, 0.12) 1px, transparent 1px) 0 0 / 100% 12.5%,
+        linear-gradient(90deg, rgba(89, 227, 255, 0.12) 1px, transparent 1px) 0 0 / 10% 100%,
+        radial-gradient(ellipse at 50% 50%, #0b2227 0%, #050d10 75%);
+    overflow: hidden;
+}
+.hx-br { position: absolute; z-index: 2; width: 18px; height: 18px; border: 0 solid var(--cyan); }
+.hx-br-tl { top: 10px; left: 10px; border-top-width: 2px; border-left-width: 2px; }
+.hx-br-tr { top: 10px; right: 3.4rem; border-top-width: 2px; border-right-width: 2px; }
+.hx-br-bl { bottom: 10px; left: 10px; border-bottom-width: 2px; border-left-width: 2px; }
+.hx-br-br { bottom: 10px; right: 3.4rem; border-bottom-width: 2px; border-right-width: 2px; }
+.hx-view-labels {
+    position: absolute;
+    z-index: 2;
+    top: 0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--orange);
+    white-space: nowrap;
+}
+.hx-view-labels span { border: 1px solid var(--orange); padding: 0 0.35rem; }
+.hx-ruler {
+    position: absolute;
+    z-index: 2;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    right: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--orange);
+    opacity: 0.8;
+    text-align: right;
+}
+.hx-view-hint { position: absolute; z-index: 2; bottom: 0.8rem; left: 2.4rem; font-size: 0.68rem; color: var(--cyan); opacity: 0.8; }
+.tn-object {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    width: min(88%, 34rem);
+    height: 86%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+.tn-object canvas, .tn-object-still { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tn-object-still { object-fit: contain; }
+.tn-object canvas { display: none; cursor: crosshair; }
+.object-active .tn-object canvas { display: block; }
+.object-active .tn-object-still { display: none; }
 
-    <script>
-    (function () {
-        'use strict';
-        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Panneau cyan (« system error ») */
+.hx-axes { color: var(--cyan); text-shadow: 0 0 6px rgba(89, 227, 255, 0.45); display: flex; flex-direction: column; }
+.hx-axes ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.8rem; }
+.hx-axes li { display: flex; gap: 0.6rem; align-items: center; border: 1px solid var(--line); padding: 0.15rem 0.35rem; }
+.hx-axes li b { font-weight: 400; border: 1px solid var(--cyan); padding: 0 0.25rem; font-size: 0.7rem; }
+.hx-axes li.is-hl { background: var(--cyan); color: #04161b; text-shadow: none; }
+.hx-axes li.is-hl b { border-color: #04161b; }
+.hx-alert { margin: 1.2rem 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; color: var(--green); text-shadow: 0 0 6px rgba(93, 255, 138, 0.5); }
+.hx-alert b { font-weight: 400; font-size: 1.1rem; }
+.hx-bars { display: flex; align-items: flex-end; gap: 4px; height: 2.4rem; margin-top: auto; }
+.hx-bars i { flex: 1; background: var(--blue); opacity: 0.8; }
+.hx-bars i:nth-child(1) { height: 20%; } .hx-bars i:nth-child(2) { height: 45%; } .hx-bars i:nth-child(3) { height: 70%; }
+.hx-bars i:nth-child(4) { height: 55%; } .hx-bars i:nth-child(5) { height: 90%; } .hx-bars i:nth-child(6) { height: 65%; }
+.hx-bars i:nth-child(7) { height: 35%; } .hx-bars i:nth-child(8) { height: 15%; background: var(--red); }
 
-        /* Horloge du pied d'écran */
-        var clock = document.getElementById('tn-clock');
-        function pad(n) { return String(n).padStart(2, '0'); }
-        function tick() { var d = new Date(); clock.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()); }
-        tick(); setInterval(tick, 1000);
+/* Transmission : texte blanc (Weyland-Yutani) */
+.hx-log { display: grid; grid-template-columns: auto 1fr; gap: 1rem; border-top: 1px solid var(--line); padding-top: 0.7rem; }
+.hx-log-label { font-size: 0.75rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+.hx-log p { margin: 0 0 0.6rem; font-size: 0.85rem; line-height: 1.55; color: var(--white); max-width: 100ch; }
 
-        /* Tableau : survol = aperçu ; au doigt, 1er toucher = aperçu, 2e = ouverture */
-        var rows = Array.prototype.slice.call(document.querySelectorAll('.tn-table tbody tr'));
-        var img = document.getElementById('tn-preview-img');
-        var code = document.getElementById('tn-preview-code');
-        var title = document.getElementById('tn-preview-title');
-        var noHover = window.matchMedia('(hover: none)');
-        var current = null;
-        function preview(r) {
-            if (current === r) return;
-            rows.forEach(function (o) { o.classList.toggle('is-active', o === r); });
-            current = r;
-            img.src = r.getAttribute('data-img');
-            code.textContent = r.getAttribute('data-code');
-            title.textContent = r.querySelector('a').textContent;
-        }
-        rows.forEach(function (r) {
-            var a = r.querySelector('a');
-            r.addEventListener('mouseenter', function () { if (!noHover.matches) preview(r); });
-            a.addEventListener('focus', function () { preview(r); });
-            r.addEventListener('click', function (e) {
-                if (noHover.matches && current !== r) {
-                    e.preventDefault(); e.stopPropagation(); preview(r); return;
-                }
-                if (e.target.closest('a')) return;
-                a.click();
-            });
-        });
-        preview(rows[0]);
+/* Onglets du bas (Pip-Boy) */
+.hx-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding-top: 0.5rem;
+    border-bottom: 2px solid var(--green);
+    padding-bottom: 0.4rem;
+    color: var(--green);
+    text-shadow: 0 0 6px rgba(93, 255, 138, 0.5);
+}
+.hx-tabs a {
+    color: var(--green);
+    text-decoration: none;
+    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    padding: 0.1rem 0.6rem;
+    white-space: nowrap;
+}
+.hx-tabs a + a::before { content: "—"; margin-right: 1rem; opacity: 0.7; }
+.hx-tabs a.is-active { border: 2px solid var(--green); }
+.hx-tabs a:hover { background: rgba(93, 255, 138, 0.15); }
+.hx-tabs a:focus-visible { outline: 1px dashed var(--green); outline-offset: 3px; }
 
-        /* Ancres internes : c'est le body qui défile */
-        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-            a.addEventListener('click', function (e) {
-                var t = document.querySelector(a.getAttribute('href'));
-                if (!t) return;
-                e.preventDefault();
-                t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-            });
-        });
-    })();
-    </script>
-    <script>
-    /* ============================================================
-       L'OBJET — WebGL natif, sans bibliothèque ni CDN.
-       Recréation par le code de la sculpture de Tom : huit rubans en
-       boucles pincées à mi-hauteur, disposés en couronne autour d'un
-       axe, sur trois couches imbriquées, avec un cœur d'anneaux ondulés
-       et une base. Deux rendus du même maillage :
-       - fil de fer vert phosphore (lignes additives, façon écran) ;
-       - matière vert-de-gris granuleuse, qui apparaît au survol ou
-         quand on choisit « MATIÈRE ».
-       Replis : photo de l'objet si WebGL est absent ; pas de rotation
-       en mouvement réduit.
-       ============================================================ */
-    (function () {
-        'use strict';
-        var wrap = document.getElementById('tn-object');
-        var canvas = document.getElementById('tn-object-canvas');
-        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var gl = null;
-        try { gl = canvas.getContext('webgl', { antialias: true, alpha: true, premultipliedAlpha: false }); } catch (e) {}
-        if (!gl) return;
+/* ---------- Écran INDEX : tableau + carte d'identité ---------- */
+.hx-index { flex: 1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr); gap: 1.2rem; min-height: 0; }
+.hx-table-wrap { overflow-x: auto; }
+.hx-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; color: var(--white); }
+.hx-table th {
+    text-align: left;
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid var(--cyan);
+}
+.hx-table td { padding: 0.6rem; border-bottom: 1px dashed rgba(230, 241, 238, 0.18); vertical-align: top; }
+.hx-table tbody tr { cursor: pointer; }
+.hx-table a { color: inherit; text-decoration: none; }
+.hx-table a:focus-visible { outline: 1px dashed currentColor; outline-offset: 2px; }
+.hx-table tr.is-active td { background: var(--cyan); color: #04161b; }
+.td-state { white-space: nowrap; color: var(--orange); }
+.td-state.is-live { color: var(--red); animation: hx-blink 1.4s steps(1) infinite; }
+.hx-table tr.is-active .td-state { color: #04161b; animation: none; }
+@keyframes hx-blink { 50% { opacity: 0.3; } }
 
-        /* --- courbes --- */
-        var H = 1.0, R0 = 0.78, K = 8, N = 140;
-        var curves = [];
-        var layers = [
-            { sc: 1.00, rad: 1.00, sy: 1.00, off: 0 },
-            { sc: 0.80, rad: 0.84, sy: 0.93, off: 0.5 },
-            { sc: 0.60, rad: 0.68, sy: 0.86, off: 0 }
-        ];
-        function radiusAt(y, lay) { return R0 * lay.rad * (1 + 0.22 * (1 - (y / H) * (y / H)) - 0.12 * Math.max(0, -y / H)); }
-        layers.forEach(function (lay) {
-            for (var k = 0; k < K; k++) {
-                var phi = (k + lay.off) / K * Math.PI * 2;
-                var A = 0.95 * Math.PI * R0 * lay.rad / K * lay.sc * 1.9;
-                var pts = [];
-                for (var i = 0; i < N; i++) {
-                    var s = i / N;
-                    var y = H * lay.sy * Math.cos(2 * Math.PI * s);
-                    var u = A * Math.sin(2 * Math.PI * s) * (0.55 + 0.45 * Math.cos(4 * Math.PI * s));
-                    var R = radiusAt(y, lay);
-                    var a = phi + u / R;
-                    pts.push([R * Math.cos(a), y, R * Math.sin(a)]);
-                }
-                curves.push({ pts: pts, w: 0.085 * lay.sc + 0.02, h: 0.03 });
-            }
-        });
-        // cœur : anneaux ondulés empilés, comme les « pétales » du sommet et de la base
-        [-0.78, -0.4, 0, 0.4, 0.78].forEach(function (y, j) {
-            var pts = [];
-            var r0 = 0.3 + 0.06 * Math.cos(j);
-            for (var i = 0; i < N; i++) {
-                var t = i / N * Math.PI * 2;
-                var r = r0 * (1 + 0.18 * Math.cos(8 * t + j));
-                pts.push([r * Math.cos(t), y + 0.05 * Math.sin(8 * t), r * Math.sin(t)]);
-            }
-            curves.push({ pts: pts, w: 0.035, h: 0.03 });
-        });
-        // base : trois anneaux qui se resserrent
-        [[-1.08, 0.42], [-1.16, 0.34], [-1.22, 0.24]].forEach(function (b) {
-            var pts = [];
-            for (var i = 0; i < N; i++) {
-                var t = i / N * Math.PI * 2;
-                var r = b[1] * (1 + 0.06 * Math.cos(16 * t));
-                pts.push([r * Math.cos(t), b[0], r * Math.sin(t)]);
-            }
-            curves.push({ pts: pts, w: 0.04, h: 0.03 });
-        });
+/* Carte d'identité (Blade Runner) */
+.hx-card {
+    align-self: start;
+    background: #0d1c20;
+    border: 2px solid #2f4a50;
+    box-shadow: inset 0 0 0 1px #06100f, 0 20px 40px rgba(0, 0, 0, 0.45);
+    color: #a9e3e6;
+    padding: 0.6rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+.hx-card-top { display: flex; justify-content: space-between; border-bottom: 1px solid #2f4a50; padding-bottom: 0.35rem; font-size: 0.9rem; letter-spacing: 0.08em; }
+.hx-card-sig i { display: inline-block; width: 1.8rem; height: 0.7rem; border: 1px solid currentColor; vertical-align: middle; background: linear-gradient(90deg, currentColor 0 70%, transparent 70%); background-clip: content-box; padding: 1px; }
+.hx-card-label { margin: 0.5rem 0 0; opacity: 0.7; letter-spacing: 0.12em; }
+.hx-card-code { margin: 0 0 0.5rem; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: 0.06em; color: #d6f6f7; }
+.hx-card-body { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0.6rem; border-top: 1px solid #2f4a50; border-bottom: 1px solid #2f4a50; padding: 0.5rem 0; }
+.hx-card-body img { width: 100%; height: auto; display: block; image-rendering: pixelated; border: 1px solid #2f4a50; }
+.hx-card-body dl { margin: 0; font-size: 0.72rem; }
+.hx-card-body dt { opacity: 0.6; margin-top: 0.3rem; }
+.hx-card-body dd { margin: 0; color: #d6f6f7; text-transform: none; }
+.hx-card-text { margin: 0.6rem 0; text-transform: uppercase; font-size: 0.74rem; line-height: 1.5; min-height: 5.4em; }
+.hx-card-open { display: inline-block; color: #04161b; background: #a9e3e6; text-decoration: none; padding: 0.1rem 0.5rem; margin-bottom: 0.6rem; }
+.hx-card-open:hover { background: var(--cyan); }
+.hx-card-foot { border-top: 1px solid #2f4a50; padding-top: 0.4rem; text-align: center; font-size: 0.66rem; letter-spacing: 0.1em; opacity: 0.75; }
 
-        /* --- tubes aplatis (rubans) autour de chaque courbe --- */
-        var M = 8;
-        var P = [], NR = [], TRI = [], EDG = [];
-        function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
-        function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
-        function norm(a) { var l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
-        curves.forEach(function (c) {
-            var base = P.length / 3, n = c.pts.length;
-            for (var i = 0; i < n; i++) {
-                var p = c.pts[i];
-                var T = norm(sub(c.pts[(i + 1) % n], c.pts[(i - 1 + n) % n]));
-                var radial = norm([p[0], 0, p[2]]);
-                var B = norm(cross(T, radial));          // dans la surface : largeur du ruban
-                var Nn = norm(cross(B, T));               // vers l'extérieur : épaisseur
-                for (var m = 0; m < M; m++) {
-                    var ang = m / M * Math.PI * 2, ca = Math.cos(ang), sa = Math.sin(ang);
-                    P.push(p[0] + ca * c.w * B[0] + sa * c.h * Nn[0],
-                           p[1] + ca * c.w * B[1] + sa * c.h * Nn[1],
-                           p[2] + ca * c.w * B[2] + sa * c.h * Nn[2]);
-                    var nn = norm([ca / c.w * B[0] + sa / c.h * Nn[0], ca / c.w * B[1] + sa / c.h * Nn[1], ca / c.w * B[2] + sa / c.h * Nn[2]]);
-                    NR.push(nn[0], nn[1], nn[2]);
-                }
-            }
-            for (i = 0; i < n; i++) {
-                for (var m2 = 0; m2 < M; m2++) {
-                    var a0 = base + i * M + m2, a1 = base + i * M + (m2 + 1) % M;
-                    var b0 = base + ((i + 1) % n) * M + m2, b1 = base + ((i + 1) % n) * M + (m2 + 1) % M;
-                    TRI.push(a0, b0, a1, a1, b0, b1);
-                    if (m2 === 0 || m2 === M / 2) EDG.push(a0, b0);  // les deux bords du ruban
-                    if (i % 14 === 0) EDG.push(a0, a1);            // sections, de loin en loin
-                }
-            }
-        });
+@media (min-width: 901px) {
+    body.tom-hub .back-link { left: 3.2rem; }
+    .hx-screen { padding-left: max(2.4rem, 4.5rem); }
+}
+@media (max-width: 1100px) {
+    .hx-grid { grid-template-columns: 11rem minmax(0, 1fr); }
+    .hx-axes { grid-column: 1 / -1; }
+    .hx-axes ul { flex-direction: row; flex-wrap: wrap; }
+}
+@media (max-width: 900px) {
+    body.tom-hub .back-link { left: auto; right: 1rem; top: 1rem; font-size: 0.72rem; }
+    .hx-screen { padding: 4rem 0.7rem 1rem; }
+    .hx-frame { padding: 0.4rem 0.6rem 0.2rem; }
+    .hx-top { flex-wrap: wrap; }
+    .hx-seg { flex: 1 1 40%; }
+    .hx-grid { grid-template-columns: minmax(0, 1fr); }
+    .hx-view { min-height: 72vw; order: -1; }
+    .hx-index { grid-template-columns: minmax(0, 1fr); }
+    .hx-card { order: -1; }
+    .td-medium { display: none; }
+    .hx-log { grid-template-columns: 1fr; gap: 0.3rem; }
+    .hx-tabs { flex-wrap: wrap; row-gap: 0.4rem; }
+    .hx-tabs a + a::before { margin-right: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .td-state.is-live { animation: none; }
+}
 
-        /* --- shaders --- */
-        var vs = 'attribute vec3 aPos; attribute vec3 aNor; uniform mat4 uProj; uniform mat4 uModel;' +
-            'varying vec3 vN; varying vec3 vP; varying vec3 vO;' +
-            'void main(){ vec4 p = uModel * vec4(aPos,1.0); vP = p.xyz; vO = aPos; vN = mat3(uModel) * aNor; gl_Position = uProj * p; }';
-        var fsFill = 'precision mediump float; varying vec3 vN; varying vec3 vP; varying vec3 vO; uniform float uFill;' +
-            'float h(vec3 p){ return fract(sin(dot(p, vec3(12.9898,78.233,37.719))) * 43758.5453); }' +
-            'void main(){ vec3 n = normalize(vN); vec3 L = normalize(vec3(0.5,0.7,0.6));' +
-            ' float d = max(dot(n,L),0.0); float g = h(floor(vO*90.0));' +
-            ' vec3 a = vec3(0.40,0.60,0.54); vec3 b = vec3(0.74,0.88,0.82); vec3 dk = vec3(0.16,0.22,0.19);' +
-            ' vec3 base = mix(a, b, smoothstep(0.35,1.0,g) * 0.7);' +
-            ' base = mix(dk, base, 0.55 + 0.45 * smoothstep(-1.2, 0.6, vO.y));' +
-            ' vec3 col = base * (0.5 + 0.8 * d);' +
-            ' gl_FragColor = vec4(col, uFill); }';
-        var fsWire = 'precision mediump float; uniform float uWire;' +
-            'void main(){ gl_FragColor = vec4(vec3(0.22,1.0,0.43) * uWire, 1.0); }';
-        function sh(type, src) { var o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; }
-        function prog(f) {
-            var p = gl.createProgram();
-            gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, f));
-            gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
-        }
-        var pFill = prog(fsFill), pWire = prog(fsWire);
-        if (!pFill || !pWire) return;
+/* ---------- Pages d'œuvre de Tom : même écran HUD ---------- */
+.hx-seg-wide { flex: 2.4; }
+.hx-dl-stack div { flex-direction: column; gap: 0; }
+.hx-dl-stack dd { text-align: left; }
+.hx-nav { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1.2rem; }
+.hx-nav a, .hx-nav span {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-decoration: none;
+    border: 1px solid var(--orange);
+    padding: 0.2rem 0.5rem;
+}
+.hx-nav a:hover { background: var(--orange); color: #1a0e02; text-shadow: none; }
+.hx-nav a:focus-visible { outline: 1px dashed var(--orange); outline-offset: 3px; }
+.hx-nav .is-off { opacity: 0.35; }
+.tom-work .hx-view { min-height: clamp(18rem, 58vh, 40rem); }
+.tw-img {
+    position: absolute;
+    z-index: 1;
+    inset: 2.6rem 3.6rem 1.6rem 1.6rem;
+    width: calc(100% - 5.2rem);
+    height: calc(100% - 4.2rem);
+    object-fit: contain;
+}
+.hx-card-mini { align-self: start; }
+.hx-card-mini img { width: 100%; height: auto; display: block; image-rendering: pixelated; border: 1px solid #2f4a50; margin: 0.3rem 0 0.5rem; }
+.tom-work .hx-log a { color: var(--cyan); }
+@media (max-width: 1100px) {
+    .tom-work .hx-card-mini { grid-column: auto; max-width: 18rem; }
+}
+@media (max-width: 900px) {
+    .tom-work .hx-view { min-height: 66vw; order: -1; }
+    .tw-img { inset: 2.4rem 3rem 1.2rem 1rem; width: calc(100% - 4rem); height: calc(100% - 3.6rem); }
+    .hx-nav { flex-direction: row; flex-wrap: wrap; }
+    .hx-nav a, .hx-nav span { flex: 1; text-align: center; }
+    .tom-work .hx-card-mini { max-width: none; }
+}
 
-        var bPos = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(P), gl.STATIC_DRAW);
-        var bNor = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bNor); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(NR), gl.STATIC_DRAW);
-        var bTri = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bTri); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(TRI), gl.STATIC_DRAW);
-        var bEdg = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bEdg); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(EDG), gl.STATIC_DRAW);
-        function bind(p) {
-            gl.useProgram(p);
-            var a = gl.getAttribLocation(p, 'aPos'); gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 3, gl.FLOAT, false, 0, 0);
-            var n = gl.getAttribLocation(p, 'aNor');
-            if (n >= 0) { gl.bindBuffer(gl.ARRAY_BUFFER, bNor); gl.enableVertexAttribArray(n); gl.vertexAttribPointer(n, 3, gl.FLOAT, false, 0, 0); }
-        }
 
-        function persp(fovy, asp, near, far) {
-            var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
-            return new Float32Array([f / asp,0,0,0, 0,f,0,0, 0,0,(far + near) * nf,-1, 0,0,2 * far * near * nf,0]);
-        }
-        function model(rx, ry) {
-            var cx = Math.cos(rx), sx = Math.sin(rx), cy = Math.cos(ry), sy = Math.sin(ry);
-            // R = Rx * Ry, puis recul de la caméra
-            return new Float32Array([
-                cy, sx * sy, -cx * sy, 0,
-                0, cx, sx, 0,
-                sy, -sx * cy, cx * cy, 0,
-                0, 0.05, -4.6, 1
-            ]);
-        }
-        var proj;
-        function resize() {
-            var dpr = Math.min(window.devicePixelRatio || 1, 2);
-            var w = wrap.clientWidth, h = wrap.clientHeight;
-            if (!w || !h) return;
-            canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-            gl.viewport(0, 0, canvas.width, canvas.height);
-            proj = persp(0.7, w / h, 0.1, 20);
-        }
-
-        var ry = 0.4, fill = 0, fillTarget = 0, hovering = false, mode = 'wire';
-        function draw() {
-            var M4 = model(0.12, ry);
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            if (fill > 0.01) {
-                bind(pFill);
-                gl.uniformMatrix4fv(gl.getUniformLocation(pFill, 'uProj'), false, proj);
-                gl.uniformMatrix4fv(gl.getUniformLocation(pFill, 'uModel'), false, M4);
-                gl.uniform1f(gl.getUniformLocation(pFill, 'uFill'), fill);
-                gl.enable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bTri);
-                gl.drawElements(gl.TRIANGLES, TRI.length, gl.UNSIGNED_SHORT, 0);
-            }
-            bind(pWire);
-            gl.uniformMatrix4fv(gl.getUniformLocation(pWire, 'uProj'), false, proj);
-            gl.uniformMatrix4fv(gl.getUniformLocation(pWire, 'uModel'), false, M4);
-            gl.uniform1f(gl.getUniformLocation(pWire, 'uWire'), 0.85 * (1 - 0.88 * fill));
-            gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bEdg);
-            gl.drawElements(gl.LINES, EDG.length, gl.UNSIGNED_SHORT, 0);
-        }
-        resize(); draw();
-        document.body.classList.add('object-active');
-        window.addEventListener('resize', function () { resize(); draw(); });
-
-        /* --- survol et boutons FIL DE FER / MATIÈRE --- */
-        var btns = Array.prototype.slice.call(document.querySelectorAll('[data-render]'));
-        function updateTarget() { fillTarget = (mode === 'matiere' || hovering) ? 1 : 0; if (reduce) { fill = fillTarget; draw(); } }
-        btns.forEach(function (b) {
-            b.addEventListener('click', function () {
-                mode = b.getAttribute('data-render');
-                btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
-                updateTarget();
-            });
-        });
-        wrap.addEventListener('mouseenter', function () { hovering = true; updateTarget(); });
-        wrap.addEventListener('mouseleave', function () { hovering = false; updateTarget(); });
-        if (reduce) return;
-
-        var visible = true;
-        if ('IntersectionObserver' in window) {
-            new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }, { threshold: 0.01 }).observe(wrap);
-        }
-        (function loop() {
-            requestAnimationFrame(loop);
-            if (!visible || document.hidden) return;
-            ry += 0.004;
-            fill += (fillTarget - fill) * 0.06;
-            draw();
-        })();
-    })();
-    </script>
-</body>
-</html>
 
 
