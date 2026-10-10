@@ -91,7 +91,7 @@
         try {
             var master = c.createGain();
             master.gain.setValueAtTime(0, c.currentTime);
-            master.gain.linearRampToValueAtTime(0.14, c.currentTime + 3.5);
+            master.gain.linearRampToValueAtTime(0.14, c.currentTime + 6);   // fondu d'entrée lent
             master.connect(c.destination);
 
             // Réverbération maison : delay + feedback filtré (aucun fichier audio)

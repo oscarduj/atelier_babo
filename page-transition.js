@@ -45,13 +45,16 @@
     mark.textContent = 'ATELIER_BABO';
     root.appendChild(mark);
 
-    // Porte d'entrée : une fois l'écran couvert, la navigation attend un clic,
-    // dans le même esprit que le cube du portail d'accueil — on ne tombe pas
-    // sur la page suivante, on choisit d'y entrer.
+    // Porte d'entrée : à l'ARRIVÉE sur une page (sauf l'accueil, qui a sa
+    // propre entrée), l'écran reste couvert et un cube attend un clic sur
+    // ENTRER, dans l'esprit du portail d'accueil. Ce clic est aussi le geste
+    // qui autorise le son : l'ambiance de la page démarre en fondu.
     var gate = document.createElement('button');
     gate.type = 'button';
     gate.className = 'page-veil-gate';
-    gate.innerHTML = '<span class="page-veil-gate-square"></span>' +
+    gate.setAttribute('aria-label', 'Entrer dans la page');
+    gate.innerHTML = '<span class="page-veil-cube" aria-hidden="true">' +
+                     '<i></i><i></i><i></i><i></i><i></i><i></i></span>' +
                      '<span class="page-veil-gate-label">ENTRER</span>';
     root.appendChild(gate);
 
@@ -100,10 +103,42 @@
             });
         });
     }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', reveal);
-    } else {
+
+    // L'accueil (index.html) a son propre portail : pas de porte ici.
+    function needsGate() {
+        return document.body && document.body.classList.contains('standalone-page');
+    }
+    var gateOpen = false;
+    function showGate() {
+        gateOpen = true;
+        root.removeAttribute('aria-hidden');
+        root.classList.add('is-gated');
+        setTimeout(function () { try { gate.focus({ preventScroll: true }); } catch (e) {} }, 400);
+    }
+    function enter() {
+        if (!gateOpen) return;
+        gateOpen = false;
+        root.setAttribute('aria-hidden', 'true');
+        root.classList.remove('is-gated');
+        // Le clic autorise l'audio : l'ambiance démarre en fondu. Une seconde
+        // tentative rattrape le délai de réveil du contexte audio.
+        if (window.BaboAmbient) {
+            window.BaboAmbient.start();
+            setTimeout(function () { if (window.BaboAmbient) window.BaboAmbient.start(); }, 250);
+        }
         reveal();
+    }
+    gate.addEventListener('click', enter);
+    document.addEventListener('keydown', function (ev) {
+        if (gateOpen && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); enter(); }
+    });
+    function arrive() {
+        if (needsGate()) showGate(); else reveal();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', arrive);
+    } else {
+        arrive();
     }
 
     // --- Départ : les panneaux entrent par la droite ---
@@ -122,8 +157,9 @@
     // qu'on l'a quittée, porte « ENTRER » comprise. On la retire et on
     // rejoue l'arrivée, sinon la porte reste affichée et bloque tout.
     window.addEventListener('pageshow', function (e) {
-        cancelLeave();
-        if (e.persisted) { resetTo(COVER); root.classList.add('is-covered'); reveal(); }
+        // Seulement au retour depuis le cache : au chargement normal, la page
+        // vient d'afficher sa porte et il ne faut pas la retirer.
+        if (e.persisted) { cancelLeave(); resetTo(COVER); root.classList.add('is-covered'); arrive(); }
     });
 
     document.addEventListener('click', function (e) {

@@ -1817,27 +1817,51 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.08; }
     pointer-events: auto;
     transform: translate(-50%, -50%) scale(1);
 }
-.page-veil-gate-square {
-    width: 42px;
-    height: 42px;
-    background: var(--secondary-color);
-    animation: gate-breathe 2.6s ease-in-out infinite;
+.page-veil-gate { top: 50%; }
+/* Le cube : six faces en CSS, rotation lente, couleur d'accent de la page */
+.page-veil-cube {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    transform-style: preserve-3d;
+    animation: veil-cube-spin 9s linear infinite;
 }
-@keyframes gate-breathe {
-    0%, 100% { transform: scale(1); opacity: 0.85; }
-    50%      { transform: scale(1.12); opacity: 1; }
+.page-veil-cube i {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--secondary-color);
+    background: color-mix(in srgb, var(--secondary-color) 10%, transparent);
+    box-shadow: inset 0 0 18px color-mix(in srgb, var(--secondary-color) 35%, transparent);
 }
+.page-veil-cube i:nth-child(1) { transform: translateZ(32px); }
+.page-veil-cube i:nth-child(2) { transform: rotateY(180deg) translateZ(32px); }
+.page-veil-cube i:nth-child(3) { transform: rotateY(90deg) translateZ(32px); }
+.page-veil-cube i:nth-child(4) { transform: rotateY(-90deg) translateZ(32px); }
+.page-veil-cube i:nth-child(5) { transform: rotateX(90deg) translateZ(32px); }
+.page-veil-cube i:nth-child(6) { transform: rotateX(-90deg) translateZ(32px); }
+@keyframes veil-cube-spin {
+    from { transform: rotateX(-24deg) rotateY(0deg); }
+    to   { transform: rotateX(-24deg) rotateY(360deg); }
+}
+.page-veil-gate { perspective: 600px; gap: 2.2rem; }
 .page-veil-gate-label {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
     color: var(--secondary-color);
-    opacity: 0.75;
+    border: 1px solid var(--secondary-color);
+    padding: 0.6rem 1.4rem 0.6rem 1.8rem;
+    opacity: 0.85;
+    transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
 }
-.page-veil-gate:hover .page-veil-gate-square { transform: scale(1.15); }
-.page-veil-gate:hover .page-veil-gate-label { opacity: 1; }
+.page-veil-gate:hover .page-veil-gate-label,
+.page-veil-gate:focus-visible .page-veil-gate-label { opacity: 1; background: var(--secondary-color); color: var(--bg-color); }
+.page-veil-gate:hover .page-veil-cube { animation-duration: 4s; }
+.page-veil-gate:focus-visible { outline: none; }
+/* Pendant que la porte attend, le mot-repère s'efface pour laisser le cube seul */
+.page-veil-root.is-gated .page-veil-mark { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
-    .page-veil-gate-square { animation: none; }
+    .page-veil-cube { animation: none; transform: rotateX(-24deg) rotateY(35deg); }
 }
 
 /* --- Chevron de dépliage de l'arborescence --- */
@@ -2267,6 +2291,7 @@ html.booted #boot-overlay { display: none !important; }
 .gate-enter:hover,
 .gate-enter:focus-visible { background: #101010; color: #ffffff; outline: none; }
 .boot-gate.diving .gate-enter { color: #EAE8E4; border-color: #EAE8E4; }
+
 
 
 
