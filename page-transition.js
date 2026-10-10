@@ -152,28 +152,14 @@
                 run(COVER, COVER_MS, false);
                 setTimeout(function () { root.classList.add('is-covered'); },
                            COVER_MS * 0.55);
-                // La porte n'apparaît qu'une fois les panneaux arrêtés.
-                setTimeout(function () {
-                    root.classList.add('is-gated');
-                    gate.focus();
-                }, COVER_MS + (LAYERS - 1) * STAGGER - 120);
+                // Plus de porte « ENTRER » : on change de page dès que les
+                // panneaux ont fini de couvrir l'écran. (Le son, qui exige un
+                // geste du visiteur, reprend au premier toucher sur la page
+                // suivante ; l'entrée du site a son propre bouton ENTRER.)
+                setTimeout(function () { location.href = dest; },
+                           COVER_MS + (LAYERS - 1) * STAGGER + 60);
             });
         });
-
-        function go() { location.href = dest; }
-        pendingGo = go;
-        gate.addEventListener('click', go, { once: true });
-        // Entrée au clavier aussi ; Échap annule le départ et rouvre la page.
-        pendingKey = function (ev) {
-            if (ev.key === 'Enter' || ev.key === ' ') {
-                document.removeEventListener('keydown', pendingKey);
-                go();
-            } else if (ev.key === 'Escape') {
-                cancelLeave();
-                reveal();
-            }
-        };
-        document.addEventListener('keydown', pendingKey);
     });
 })();
 
@@ -463,4 +449,5 @@
     if (document.readyState === 'complete') restore();
     else window.addEventListener('load', restore);
 })();
+
 

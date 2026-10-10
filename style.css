@@ -2250,5 +2250,25 @@ html.booted #boot-overlay { display: none !important; }
     html.touch-device body.standalone-page .back-link { left: 4.4rem !important; }
 }
 
+/* Bouton ENTRER de l'entrée du site : son clic lance aussi l'ambiance sonore */
+.gate-enter {
+    pointer-events: auto;
+    margin-top: 1.4rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    padding: 0.7rem 1.6rem 0.7rem 2rem;
+    color: #101010;
+    background: transparent;
+    border: 1px solid #101010;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+.gate-enter:hover,
+.gate-enter:focus-visible { background: #101010; color: #ffffff; outline: none; }
+.boot-gate.diving .gate-enter { color: #EAE8E4; border-color: #EAE8E4; }
+
+
+
 
 

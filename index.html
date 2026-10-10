@@ -32,7 +32,7 @@
             <div class="gate-quote" id="gate-quote"></div>
             <div class="gate-invite" id="gate-invite">
                 <p class="gate-invite-text">Souhaitez-vous entrer dans la boîte noire ?</p>
-                <span class="gate-invite-hint">Cliquez pour entrer</span>
+                <button type="button" class="gate-enter" id="gate-enter">ENTRER</button>
             </div>
         </div>
 
@@ -592,7 +592,7 @@
         let ambient = null;
         let ambientPlaying = false;
 
-        function startAmbient() {
+        function startAmbient(fadeSec) {
             if (ambientPlaying) return;
             const ctx = getAudioCtx();
             if (!ctx) return;
@@ -600,7 +600,7 @@
             try {
                 const master = ctx.createGain();
                 master.gain.setValueAtTime(0, ctx.currentTime);
-                master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 3.5);
+                master.gain.linearRampToValueAtTime(0.16, ctx.currentTime + (fadeSec || 3.5));
                 master.connect(ctx.destination);
 
                 // Reverb maison : delay + feedback + filtre dans la boucle
@@ -1025,6 +1025,14 @@
         // pendant que l'arrière-plan avale la page.
         document.getElementById('boot-gate').addEventListener('click', () => {
             const gate = document.getElementById('boot-gate');
+            if (gate.classList.contains('diving') || gate.classList.contains('hidden')) return;
+            // Le clic sur ENTRER est le geste qui autorise le son : l'ambiance
+            // démarre ici, en fondu lent, sous la séquence d'entrée.
+            if (soundEnabled) {
+                startAmbient(7);
+                const lbl = document.getElementById('ambient-text');
+                if (lbl) lbl.textContent = 'ON';
+            }
             sfx.eyeOpen();
             gate.classList.add('diving');
             setTimeout(() => {
