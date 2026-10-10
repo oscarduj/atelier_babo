@@ -146,7 +146,12 @@
                  ligne de petites infos alignées. pointer-events: none pour laisser
                  passer les clics vers le carrousel ; seuls les liens les captent. -->
             <div class="hero-manifesto">
-                <p class="hm-title">© Atelier Babo<br>collectif d'artistes émergents<br>entre image, matière<br>et dispositifs techniques</p>
+                <div class="hm-select">
+                    <span class="hm-guide hm-guide-top" aria-hidden="true"></span><span class="hm-guide hm-guide-bot" aria-hidden="true"></span>
+                    <i class="hm-h hm-h1" aria-hidden="true"></i><i class="hm-h hm-h2" aria-hidden="true"></i><i class="hm-h hm-h3" aria-hidden="true"></i><i class="hm-h hm-h4" aria-hidden="true"></i>
+                    <i class="hm-h hm-h5" aria-hidden="true"></i><i class="hm-h hm-h6" aria-hidden="true"></i><i class="hm-h hm-h7" aria-hidden="true"></i><i class="hm-h hm-h8" aria-hidden="true"></i>
+                    <p class="hm-title">© Atelier Babo<br>collectif d'artistes émergents<br>entre image, matière<br>et dispositifs techniques</p>
+                </div>
                 <div class="hm-row">
                     <span class="hm-pair"><b>Installation</b><b>Vidéo</b><b>Sculpture</b><b>Numérique</b></span>
                     <span class="hm-star" aria-hidden="true">✦</span>
@@ -154,19 +159,35 @@
                 </div>
             </div>
 
-            <!-- Index des derniers projets (réf. « Art ») -->
-            <ol class="hero-index" aria-label="Derniers projets du collectif">
-                <li><a href="travaux/collectif.html#eauracle"><span>2025 — 26</span><span class="hi-title">EAURACLE</span><span>06</span><span>Installation sonore</span></a></li>
-                <li><a href="travaux/collectif.html#babosphere"><span>2025 — 26</span><span class="hi-title">Babosphere</span><span>05</span><span>Installation numérique</span></a></li>
-                <li><a href="travaux/collectif.html#signal-faible"><span>2025 — 26</span><span class="hi-title">Signal faible</span><span>04</span><span>Installation, photographie</span></a></li>
-                <li><a href="travaux/collectif.html#portrait-immateriel"><span>2024</span><span class="hi-title">Portrait immatériel</span><span>02</span><span>Court-métrage</span></a></li>
-            </ol>
+            <!-- Grille 3×3 (réf. Nocturne) : fines lignes qui découpent la vidéo,
+                 petits textes calés dans les cases. Purement décorative, sauf
+                 les liens des derniers projets. -->
+            <div class="hero-grid9" aria-hidden="true"></div>
+            <div class="hero-cells">
+                <p class="hc hc-tl">2023 — 2026<br>SITE DU COLLECTIF</p>
+                <p class="hc hc-tm">COLLECTIF<br>D'ARTISTES ÉMERGENTS</p>
+                <p class="hc hc-ml">INSTALLATION, VIDÉO,<br>SCULPTURE, NUMÉRIQUE</p>
+                <div class="hc hc-br">
+                    <p>DERNIERS PROJETS</p>
+                    <ol>
+                        <li><a href="travaux/collectif.html#atm">ATM <span>2026</span></a></li>
+                        <li><a href="travaux/collectif.html#eauracle">EAURACLE <span>2025—26</span></a></li>
+                        <li><a href="travaux/collectif.html#babosphere">Babosphere <span>2025—26</span></a></li>
+                        <li><a href="travaux/collectif.html#signal-faible">Signal faible <span>2025—26</span></a></li>
+                    </ol>
+                </div>
+            </div>
 
-            <!-- Bandeau du bas (réf. « Art ») -->
-            <div class="hero-band" aria-hidden="true">
-                <span>• ATELIER BABO</span>
-                <span class="hb-center">Collectif d'artistes émergents — formé en 2023 à l'ésadhar</span>
-                <span id="hero-band-date">[ 2026 ]</span>
+            <!-- Tableau d'infos (réf. IP.AXIS) -->
+            <div class="hero-info" aria-label="Informations">
+                <div class="hi-cell hi-mark">
+                    <span class="hi-star" aria-hidden="true">✳</span>
+                    <div><b>MARQUE</b><span>ATELIER_BABO</span><i class="hi-barcode" aria-hidden="true"></i></div>
+                </div>
+                <div class="hi-cell"><b>COLLECTIF</b><span>Atelier Babo</span><b>MEMBRES</b><span>Dujarrier, Lecointre, Tong, Yoon</span></div>
+                <div class="hi-cell"><b>DATE</b><span id="hero-band-date">[ 2026 ]</span><b>HEURE</b><span id="hero-clock">--:--:--</span></div>
+                <div class="hi-cell hi-desc"><b>DESCRIPTION</b><span>Collectif d'artistes émergents formé en 2023 à l'ésadhar. Installations hybrides entre image, matière et dispositifs techniques.</span></div>
+                <div class="hi-cell hi-note"><b>NOTE</b><span>© 2026 Atelier Babo. Contenus propriété des artistes.</span></div>
             </div>
 
             <div class="hero-logo-3d-wrap" id="hero-logo-3d-wrap">
@@ -241,19 +262,31 @@
                 </h2>
                     <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
                 </header>
-                <div class="curation-grid">
-                    <a href="travaux/collectif.html" class="curation-item">
-                        <span class="curation-tag">INSTALLATION // ENTRE ERREUR, CENSURE ET IMAGINATION</span>
+                <div class="df-stage df-curation">
+                    <span class="df-blob df-b1" aria-hidden="true"></span><span class="df-blob df-b2" aria-hidden="true"></span><span class="df-blob df-b3" aria-hidden="true"></span>
+                    <svg class="df-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M24 14 C 30 14, 30 40, 38 44"/><path d="M76 14 C 70 14, 70 40, 62 44"/><path d="M24 86 C 30 86, 30 62, 40 58"/>
+                    </svg>
+                    <div class="df-center">
+                        <span class="df-pill">Pensée // Recherche ↗</span>
+                        <p class="df-big">Mise en perspective des <em>écritures numériques</em></p>
+                        <p class="df-sub">Trois textes du collectif sur l'image, le vivant et la matière, à l'heure des systèmes techniques.</p>
+                    </div>
+                    <a href="travaux/collectif.html" class="df-node df-n1">
+                        <span class="df-ico" aria-hidden="true">△</span>
+                        <span class="df-tag">INSTALLATION // ENTRE ERREUR, CENSURE ET IMAGINATION</span>
                         <h4>L'esthétique du raté</h4>
                         <p>Plutôt qu'une vision stable du monde, les images générées par IA révèlent leurs propres instabilités — erreurs, censures, distorsions. Une esthétique du contournement où l'imaginaire surgit là où la représentation échoue.</p>
                     </a>
-                    <a href="travaux/collectif.html" class="curation-item">
-                        <span class="curation-tag">RECHERCHE // BABOSPHERE</span>
+                    <a href="travaux/collectif.html" class="df-node df-n2">
+                        <span class="df-ico" aria-hidden="true">✳</span>
+                        <span class="df-tag">RECHERCHE // BABOSPHERE</span>
                         <h4>Le vivant réduit en données</h4>
                         <p>Scan, analyse, reproduction : à mesure que le vivant devient une suite d'informations exploitables, il risque de perdre sa complexité et sa part d'inconnu — une réflexion post-humaniste sur la matière transformée en objet calculable.</p>
                     </a>
-                    <a href="travaux/collectif.html" class="curation-item">
-                        <span class="curation-tag">INSTALLATION SONORE // EAURACLE</span>
+                    <a href="travaux/collectif.html" class="df-node df-n3">
+                        <span class="df-ico" aria-hidden="true">◎</span>
+                        <span class="df-tag">INSTALLATION SONORE // EAURACLE</span>
                         <h4>Écouter la disparition</h4>
                         <p>Inspirée de Bachelard, Héraclite et Coccia, une installation qui donne une voix à ce qui ne parle pas — l'eau comme matière de résonance, de métamorphose et de disparition.</p>
                     </a>
@@ -429,36 +462,28 @@
                     <h2>CONTACT</h2>
                     <p class="section-desc">Initier une collaboration ou soumettre un projet.</p>
                 </header>
-                <div class="site-footer">
-                    <div class="sf-cols">
-                        <ul class="sf-col">
-                            <li><b>1.1</b><a href="#accueil">Accueil</a></li>
-                            <li><b>1.2</b><a href="#travaux">Travaux</a></li>
-                            <li><b>1.3</b><a href="#curation">Curation</a></li>
-                            <li><b>1.4</b><a href="#collaborateurs">Collaborateurs</a></li>
-                            <li><b>1.5</b><a href="#expos">Expos</a></li>
-                            <li><b>1.6</b><a href="#soutien">Soutien</a></li>
-                        </ul>
-                        <ul class="sf-col">
-                            <li><b>2.1</b><a href="travaux/collectif.html">Collectif</a></li>
-                            <li><b>2.2</b><a href="travaux/hyunseok-yoon.html">Hyunseok Yoon</a></li>
-                            <li><b>2.3</b><a href="travaux/tom-lecointre.html">Tom Lecointre</a></li>
-                            <li><b>2.4</b><a href="travaux/oscar-dujarrier.html">Oscar Dujarrier</a></li>
-                            <li><b>2.5</b><a href="travaux/wenjie-tong.html">Wenjie Tong</a></li>
-                        </ul>
-                        <ul class="sf-col">
-                            <li><b>3.1</b><a href="mailto:contact@atelier-babo.com">contact@atelier-babo.com</a></li>
-                            <li><b>3.2</b><a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener">Instagram ↗</a></li>
-                            <li><b>3.3</b><a href="mailto:contact@atelier-babo.com?subject=Proposition%20de%20projet">Soumettre un projet</a></li>
-                        </ul>
-                        <ul class="sf-col">
-                            <li><b>4.1</b><span>Paris, France</span><button class="hidden-key" data-key-id="k3" type="button" aria-label="Objet trouvé">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
-                            </button></li>
-                            <li><b>4.2</b><span>Association depuis 2025</span></li>
-                        </ul>
+                <div class="df-stage df-contact">
+                    <span class="df-blob df-b1" aria-hidden="true"></span><span class="df-blob df-b2" aria-hidden="true"></span><span class="df-blob df-b3" aria-hidden="true"></span>
+                    <svg class="df-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M21 12 C 30 12, 28 42, 36 46"/><path d="M21 88 C 30 88, 28 60, 36 56"/><path d="M79 12 C 70 12, 72 42, 64 46"/><path d="M79 88 C 70 88, 72 60, 64 56"/>
+                    </svg>
+                    <div class="df-center">
+                        <span class="df-pill">Connexion // Réseau ↗</span>
+                        <p class="df-big">Initier une <em>collaboration</em></p>
+                        <p class="df-sub">Inviter le collectif, proposer une exposition, une résidence ou un projet : décrivez-le et vos disponibilités, nous reviendrons vers vous.</p>
+                        <div class="df-btns">
+                            <a class="df-btn is-solid" href="mailto:contact@atelier-babo.com">Écrire au collectif ↗</a>
+                            <a class="df-btn" href="mailto:contact@atelier-babo.com?subject=Proposition%20de%20projet">Soumettre un projet</a>
+                        </div>
                     </div>
-                    <p class="sf-pitch">Initier une collaboration, inviter le collectif, soumettre un projet : décrivez votre projet et vos disponibilités, nous reviendrons vers vous rapidement.</p>
+                    <a class="df-node df-n1" href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener"><span class="df-ico" aria-hidden="true">◎</span><span class="df-tag">Instagram</span><h4>@atelier_babo_</h4></a>
+                    <a class="df-node df-n3" href="mailto:contact@atelier-babo.com"><span class="df-ico" aria-hidden="true">✉</span><span class="df-tag">Email</span><h4>contact@atelier-babo.com</h4></a>
+                    <div class="df-node df-n2 df-right"><span class="df-ico" aria-hidden="true">△</span><span class="df-tag">Lieu</span><h4>Paris, France <button class="hidden-key" data-key-id="k3" type="button" aria-label="Objet trouvé">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
+                            </button></h4></div>
+                    <div class="df-node df-n4 df-right"><span class="df-ico" aria-hidden="true">✳</span><span class="df-tag">Statut</span><h4>Association depuis 2025</h4></div>
+                </div>
+                <div class="site-footer">
                     <div class="sf-bottom">
                         <p class="sf-wordmark" aria-hidden="true">BABO</p>
                         <p class="sf-legal">© 2026 TOUS DROITS RÉSERVÉS, ATELIER BABO<br>COLLECTIF D'ARTISTES ÉMERGENTS</p>
@@ -1380,7 +1405,11 @@
             if (!el) return;
             const d = new Date();
             const mois = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
-            el.textContent = '[ ' + String(d.getDate()).padStart(2, '0') + '. ' + mois[d.getMonth()] + ' ' + d.getFullYear() + ' ]';
+            el.textContent = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+            const clock = document.getElementById('hero-clock');
+            const pad = (n) => String(n).padStart(2, '0');
+            const tick = () => { const n = new Date(); clock.textContent = pad(n.getHours()) + ':' + pad(n.getMinutes()) + ':' + pad(n.getSeconds()); };
+            if (clock) { tick(); setInterval(tick, 1000); }
         })();
 
         const sections = document.querySelectorAll('.feed-section');

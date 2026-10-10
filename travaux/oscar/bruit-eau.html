@@ -23,84 +23,204 @@
             z-index: 0;
         }
         .shader-active #water-canvas { display: block; }
-        .shader-active .ow-view > img { visibility: hidden; }
+        .shader-active .oscar-project-screen-image > img { visibility: hidden; }
     </style>
     <script src="../../ambient.js" defer></script>
     <script src="../../page-transition.js" defer></script>
 </head>
-<body class="standalone-page oscar-work">
-    <a href="../oscar-dujarrier.html#tiroir" class="back-link">← RANGER LE DOSSIER</a>
+<body class="standalone-page oscar-work oscar-desk">
+    <!-- Bureau (réf. Harrison Boyce) : l'œuvre est un bureau d'ordinateur dans
+         le style d'Oscar. Chaque image, vidéo et le dossier lui-même sont des
+         fenêtres que l'on déplace en les tirant par leur barre de titre. -->
+    <header class="dk-top">
+        <a class="dk-back" href="../oscar-dujarrier.html#tiroir">← RANGER LE DOSSIER</a>
+        <span class="dk-center">112 — Le bruit de l&#x27;eau</span>
+        <span class="dk-mail"><b>EMAIL</b><a href="mailto:oscar.dujarrier001@gmail.com">oscar.dujarrier001@gmail.com</a></span>
+    </header>
 
-    <main class="artist-page-container">
-        <!-- ÉCRAN 1 : la fenêtre qui « lit » l'œuvre — le logiciel et le
-             fichier changent selon le médium de la pièce. -->
-        <section class="work-screen work-screen-window">
-            <div class="os-window work-window">
-                <div class="os-titlebar">
-                    <span class="os-box" aria-hidden="true">–</span>
-                    <span class="os-title">LECTEUR_DVD.EXE — le_bruit_de_l_eau.vob</span>
-                    <span class="os-box" aria-hidden="true">▾</span>
-                    <span class="os-box" aria-hidden="true">▴</span>
+    <main class="dk-desk" id="dk-desk">
+            <section class="dw dw-dossier tab-b" data-x="3" data-y="6" data-w="33" aria-label="Dossier 112">
+                <header class="dw-bar dw-tabbar"><span class="dossier-open-tab">112&nbsp;&nbsp;Le bruit de l&#x27;eau</span><button type="button" class="dw-min" aria-label="Réduire le dossier">–</button></header>
+                <div class="dw-body">
+                    <p class="dk-dhead"><span>DOSSIER 112</span><span>THÈME 110 : Matérialité de l&#x27;image</span></p>
+                    <h1 class="dk-title">Le bruit de l&#x27;eau</h1>
+                    <div class="dk-text"><p>L'eau est le milieu dans lequel la vie s'est transformée. Elle rend possible l'émergence des formes. Dans cette vidéo, l'intelligence artificielle est envisagée selon une logique similaire : une entité de données au sein de laquelle des images naissent.</p><p>En manipulant les paramètres de cette matrice numérique par un travail de méta-prompting, le processus de génération est progressivement détourné. Alors même que l'eau est demandée à l'image, elle est poussée à se décomposer de plus en plus, jusqu'à faire émerger du bruit. L'image quitte alors la représentation pour révéler sa matière première : un flux instable, où l'eau finit par se confondre avec le signal. Un travail de texte accompagne cette dérive, entre apparition et disparition.</p></div>
+                    <nav class="dk-nav" aria-label="Dossiers voisins"><a href="deconstruction.html">◀ 111 Dé-construction</a><a href="../oscar-dujarrier.html#tiroir" class="is-home">RANGER</a><a href="stase.html">113 Rémanence ▶</a></nav>
                 </div>
-                <div class="os-menubar" aria-hidden="true">
-                    <span>FICHIER</span><span>AFFICHAGE</span><span>FENÊTRE</span><span>AIDE</span>
-                </div>
-                <div class="work-window-body">
-                    <div class="ow-view" id="water-screen">
-                        <img src="../../images/travaux/oscar-projets/bruit-eau.jpg" alt="Le bruit de l&#x27;eau" id="water-img" crossorigin="anonymous">
-                            <canvas id="water-canvas"></canvas>
-                    </div>
-                    <div class="work-fiche">
-                        <h1 class="work-title">Le bruit de l&#x27;eau</h1>
-                        <dl class="os-fields work-fields">
-                            <div><dt>ANNÉE :</dt><dd>2026</dd></div>
-                            <div><dt>MÉDIUM :</dt><dd>vidéo, dispositif cathodique, lecteur DVD</dd></div>
-                            <div><dt>DIMENSIONS :</dt><dd>variables</dd></div>
-                            <div><dt>EXPOSÉ :</dt><dd>« 5D », Frac Normandie, 2026–2027</dd></div>
-                        </dl>
-                        <a href="#dossier" class="work-open">▼ OUVRIR LE DOSSIER</a>
-                    </div>
-                </div>
-                <div class="os-statusbar">
-                    <span class="os-path">C:\babo\oscar\tiroir\112_le_bruit_de_l_eau</span>
-                    <span class="os-count">110 Matérialité de l&#x27;image</span>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- ÉCRAN 2 : le dossier ouvert, trait noir sur papier blanc.
-             L'onglet garde la position qu'il a dans le tiroir. -->
-        <section class="work-screen work-screen-dossier" id="dossier">
-            <article class="dossier-open tab-b">
-                <span class="dossier-open-tab">112&nbsp;&nbsp;Le bruit de l&#x27;eau</span>
-                <header class="dossier-open-head">
-                    <span>DOSSIER 112</span>
-                    <span>THÈME 110 : Matérialité de l&#x27;image</span>
-                </header>
-                <div class="dossier-open-text">
-                    <p>L'eau est le milieu dans lequel la vie s'est transformée. Elle rend possible l'émergence des formes. Dans cette vidéo, l'intelligence artificielle est envisagée selon une logique similaire : une entité de données au sein de laquelle des images naissent.</p>
-                    <p>En manipulant les paramètres de cette matrice numérique par un travail de méta-prompting, le processus de génération est progressivement détourné. Alors même que l'eau est demandée à l'image, elle est poussée à se décomposer de plus en plus, jusqu'à faire émerger du bruit. L'image quitte alors la représentation pour révéler sa matière première : un flux instable, où l'eau finit par se confondre avec le signal. Un travail de texte accompagne cette dérive, entre apparition et disparition.</p>
-                </div>
-                <nav class="dossier-nav" aria-label="Dossiers voisins dans le tiroir">
-                    <a href="deconstruction.html" class="dossier-nav-btn"><span aria-hidden="true">◀</span> 111 Dé-construction</a>
-                    <a href="../oscar-dujarrier.html#tiroir" class="dossier-nav-btn is-home">RANGER DANS LE TIROIR</a>
-                    <a href="stase.html" class="dossier-nav-btn">113 Rémanence <span aria-hidden="true">▶</span></a>
-                </nav>
-            </article>
-        </section>
+            <section class="dw dw-fiche" data-x="40" data-y="64" data-w="20" aria-label="Propriétés">
+                <header class="dw-bar"><button type="button" class="dw-min" aria-label="Réduire la fenêtre">–</button><span class="dw-title">PROPRIÉTÉS — 112.inf</span><span class="dw-box" aria-hidden="true">▢</span></header>
+                <div class="dw-body"><dl class="os-fields"><div><dt>ANNÉE</dt><dd>2026</dd></div><div><dt>MÉDIUM</dt><dd>vidéo, dispositif cathodique, lecteur DVD</dd></div><div><dt>DIMENSIONS</dt><dd>variables</dd></div><div><dt>EXPOSÉ</dt><dd>« 5D », Frac Normandie, 2026–2027</dd></div></dl></div>
+            </section>
+
+            <section class="dw" data-x="39" data-y="5" data-w="33" data-water aria-label="image source">
+                <header class="dw-bar"><button type="button" class="dw-min" aria-label="Réduire la fenêtre">–</button><span class="dw-title">LECTEUR_DVD.EXE — bruit-eau.jpg</span><span class="dw-box" aria-hidden="true">▢</span></header>
+                <div class="dw-body"><div class="oscar-project-screen-image dw-water" id="water-screen" style="aspect-ratio:474/512"><img id="water-img" src="../../images/travaux/oscar-projets/bruit-eau.jpg" alt="image source" crossorigin="anonymous"><canvas id="water-canvas"></canvas></div></div>
+                <p class="dw-cap">[112.01] image source</p>
+            </section>
+            <section class="dw" data-x="73" data-y="8" data-w="24" aria-label="vue 01">
+                <header class="dw-bar"><button type="button" class="dw-min" aria-label="Réduire la fenêtre">–</button><span class="dw-title">VISIONNEUSE.EXE — bruit-eau-1.jpg</span><span class="dw-box" aria-hidden="true">▢</span></header>
+                <div class="dw-body"><img src="../../images/travaux/oscar-projets/bruit-eau-1.jpg" alt="vue 01" width="640" height="427" loading="lazy"></div>
+                <p class="dw-cap">[112.02] vue 01</p>
+            </section>
+            <section class="dw" data-x="64" data-y="47" data-w="26" aria-label="vue 02">
+                <header class="dw-bar"><button type="button" class="dw-min" aria-label="Réduire la fenêtre">–</button><span class="dw-title">VISIONNEUSE.EXE — bruit-eau-3.jpg</span><span class="dw-box" aria-hidden="true">▢</span></header>
+                <div class="dw-body"><img src="../../images/travaux/oscar-projets/bruit-eau-3.jpg" alt="vue 02" width="640" height="427" loading="lazy"></div>
+                <p class="dw-cap">[112.03] vue 02</p>
+            </section>
+            <section class="dw" data-x="25" data-y="52" data-w="22" aria-label="vue 03">
+                <header class="dw-bar"><button type="button" class="dw-min" aria-label="Réduire la fenêtre">–</button><span class="dw-title">VISIONNEUSE.EXE — bruit-eau-2.jpg</span><span class="dw-box" aria-hidden="true">▢</span></header>
+                <div class="dw-body"><img src="../../images/travaux/oscar-projets/bruit-eau-2.jpg" alt="vue 03" width="640" height="427" loading="lazy"></div>
+                <p class="dw-cap">[112.04] vue 03</p>
+            </section>
+            <section class="dw" data-x="4" data-y="60" data-w="20" aria-label="vue 04">
+                <header class="dw-bar"><button type="button" class="dw-min" aria-label="Réduire la fenêtre">–</button><span class="dw-title">VISIONNEUSE.EXE — bruit-eau-4.jpg</span><span class="dw-box" aria-hidden="true">▢</span></header>
+                <div class="dw-body"><img src="../../images/travaux/oscar-projets/bruit-eau-4.jpg" alt="vue 04" width="640" height="427" loading="lazy"></div>
+                <p class="dw-cap">[112.05] vue 04</p>
+            </section>
     </main>
 
+    <footer class="dk-status">
+        <span class="dk-path">C:\babo\oscar\tiroir\112_bruit-eau</span>
+        <span class="dk-hint">Faites glisser les fenêtres par leur barre de titre</span>
+        <span>7 fenêtres</span>
+    </footer>
+
     <script>
-    /* Les ancres internes défilent dans le body (c'est lui qui scrolle) */
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-            var t = document.querySelector(a.getAttribute('href'));
-            if (!t) return;
-            e.preventDefault();
-            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    /* ============================================================
+       FENÊTRES FLOTTANTES — déplacement à la souris et au doigt
+       (barre de titre), premier plan au toucher, « – » pour réduire.
+       Sur petit écran, les fenêtres s'empilent et ne bougent pas.
+       ============================================================ */
+    (function () {
+        'use strict';
+        var desk = document.getElementById('dk-desk');
+        var wins = Array.prototype.slice.call(desk.querySelectorAll('.dw'));
+        var small = window.matchMedia('(max-width: 760px)');
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var z = 10;
+
+        function deskSize() { return { w: desk.clientWidth, h: desk.clientHeight }; }
+        function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+        function front(win) {
+            z += 1; win.style.zIndex = z;
+            wins.forEach(function (o) { o.classList.toggle('is-front', o === win); });
+        }
+        function growDesk() {
+            if (small.matches) { desk.style.minHeight = ''; return; }
+            var maxB = 0;
+            wins.forEach(function (o) { maxB = Math.max(maxB, o.offsetTop + o.offsetHeight); });
+            desk.style.minHeight = (maxB + 40) + 'px';
+        }
+        // Disposition de départ : dossier et fiche en colonne à gauche, images
+        // et vidéos réparties sur deux colonnes à droite, avec un léger
+        // décalage (toujours le même) pour l'aspect « bureau en désordre ».
+        function layout() {
+            if (small.matches) {
+                wins.forEach(function (o) { o.style.left = o.style.top = o.style.width = ''; });
+                growDesk(); return;
+            }
+            var d = deskSize();
+            var pad = Math.max(24, d.w * 0.025);
+            var leftW = Math.max(330, Math.min(560, d.w * 0.33));
+            var dossier = desk.querySelector('.dw-dossier');
+            var fiche = desk.querySelector('.dw-fiche');
+            var media = wins.filter(function (o) { return o !== dossier && o !== fiche; });
+            function place(o, x, y, w) {
+                o.style.width = w + 'px';
+                if (!o.dataset.moved) {
+                    o.style.left = x + 'px'; o.style.top = y + 'px';
+                    o.dataset.ox = x; o.dataset.oy = y;
+                }
+            }
+            place(dossier, pad, 34, leftW);
+            place(fiche, pad + leftW * 0.35, 34 + dossier.offsetHeight + 46, Math.min(300, leftW * 0.6));
+            var x0 = pad + leftW + pad * 1.4;
+            var areaW = d.w - x0 - pad;
+            var colW = (areaW - pad) / 2;
+            var cols = [24, 60];
+            var jit = [[0, 0], [-18, 14], [22, -8], [-10, 20], [16, 6], [-22, -12], [8, 18], [-6, -4]];
+            media.forEach(function (o, i) {
+                var c = cols[0] <= cols[1] ? 0 : 1;
+                var w = colW;
+                if (o.classList.contains('is-portrait')) w = colW * 0.68;
+                if (o.classList.contains('dw-insta')) w = Math.min(colW, 340);
+                var j = jit[i % jit.length];
+                var x = x0 + c * (colW + pad) + j[0] + (colW - w) / 2;
+                place(o, Math.max(pad, Math.min(d.w - w - 8, x)), cols[c] + j[1]);
+                cols[c] = (parseFloat(o.style.top) || cols[c]) + o.offsetHeight + pad * 0.9;
+            });
+            wins.forEach(function (o, i) { if (!o.style.zIndex) o.style.zIndex = 10 + i; });
+            front(dossier);
+            growDesk();
+        }
+
+        // Fenêtre de « Le bruit de l'eau » : plus on l'éloigne de sa position
+        // d'origine, plus l'image se décompose (voir le shader plus bas).
+        function waterProgress(o) {
+            var dx = parseFloat(o.style.left) - parseFloat(o.dataset.ox || 0);
+            var dy = parseFloat(o.style.top) - parseFloat(o.dataset.oy || 0);
+            var d = deskSize();
+            var p = Math.sqrt(dx * dx + dy * dy) / (Math.min(d.w, 1400) * 0.45);
+            window.dispatchEvent(new CustomEvent('babo-water', { detail: Math.min(1, p) }));
+        }
+
+        wins.forEach(function (o) {
+            o.addEventListener('pointerdown', function () { front(o); });
+            var bar = o.querySelector('.dw-bar');
+            var sx, sy, ox, oy, dragging = false;
+            bar.addEventListener('pointerdown', function (e) {
+                if (small.matches || e.target.closest('button, a')) return;
+                dragging = true; sx = e.clientX; sy = e.clientY;
+                ox = parseFloat(o.style.left) || 0; oy = parseFloat(o.style.top) || 0;
+                bar.setPointerCapture(e.pointerId);
+                o.classList.add('is-dragging');
+                e.preventDefault();
+            });
+            bar.addEventListener('pointermove', function (e) {
+                if (!dragging) return;
+                var d = deskSize();
+                o.style.left = clamp(ox + e.clientX - sx, -o.offsetWidth + 90, d.w - 90) + 'px';
+                o.style.top = Math.max(0, oy + e.clientY - sy) + 'px';
+                o.dataset.moved = '1';
+                if (o.hasAttribute('data-water')) waterProgress(o);
+            });
+            function end() { if (!dragging) return; dragging = false; o.classList.remove('is-dragging'); growDesk(); }
+            bar.addEventListener('pointerup', end);
+            bar.addEventListener('pointercancel', end);
+            var min = o.querySelector('.dw-min');
+            if (min) min.addEventListener('click', function () {
+                o.classList.toggle('is-min');
+                min.setAttribute('aria-expanded', String(!o.classList.contains('is-min')));
+                growDesk();
+            });
         });
-    });
+
+        // Sur téléphone (fenêtres empilées), le défilement pilote le shader
+        document.body.addEventListener('scroll', function () {
+            var w = desk.querySelector('[data-water]');
+            if (!w || !small.matches) return;
+            var r = w.getBoundingClientRect();
+            var p = 1 - (r.top + r.height * 0.5) / window.innerHeight;
+            window.dispatchEvent(new CustomEvent('babo-water', { detail: Math.max(0, p) }));
+        }, { passive: true });
+
+        // Vidéos : lecture automatique, sauf en mouvement réduit (commandes visibles)
+        desk.querySelectorAll('video[data-autoplay]').forEach(function (v) {
+            if (reduce) { v.controls = true; return; }
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (e) {
+                    if (e[0].isIntersecting) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else v.pause();
+                }, { threshold: 0.15 }).observe(v);
+            }
+        });
+
+        layout();
+        window.addEventListener('resize', layout);
+        window.addEventListener('load', growDesk);
+        desk.querySelectorAll('img').forEach(function (im) { im.addEventListener('load', growDesk); });
+    })();
     </script>
     <script type="module">
     /* ============================================================
@@ -240,15 +360,15 @@
         resize();
         window.addEventListener('resize', resize);
 
-        // Progression liée au défilement : 0 en haut, 1 quand l'écran image a
-        // entièrement défilé. C'est body qui porte le scroll sur ces pages.
+        // Progression pilotée par la page : sur ordinateur, plus on éloigne la
+        // fenêtre de l'image de sa position d'origine, plus elle se décompose ;
+        // sur téléphone (fenêtres empilées), c'est le défilement qui la pilote.
+        // La page envoie la valeur (0 à 1) par l'événement « babo-water ».
         let target = 0, current = 0;
-        function onScroll() {
-            const h = screen.clientHeight || 1;
-            target = Math.min(1, Math.max(0, document.body.scrollTop / h));
-        }
-        document.body.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
+        window.addEventListener('babo-water', (e) => {
+            target = Math.min(1, Math.max(0, Number(e.detail) || 0));
+        });
+        if (window.ResizeObserver) new ResizeObserver(resize).observe(screen);
 
         // Rendu suspendu hors écran : rien ne tourne quand la section n'est pas visible.
         let visible = true;
@@ -299,4 +419,5 @@
     </script>
 </body>
 </html>
+
 

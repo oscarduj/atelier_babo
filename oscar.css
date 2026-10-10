@@ -745,171 +745,157 @@ body.oscar-hub .os-h {
 }
 
 /* ============================================================
-   PAGES D'ŒUVRE — le dossier sorti du tiroir.
-   1. Écran bleu : une fenêtre de logiciel « lit » l'œuvre (le logiciel
-      change selon le médium), fiche technique à côté.
-   2. Écran blanc : le dossier ouvert, trait noir, onglet à la même
-      place que dans le tiroir ; texte, puis dossiers voisins.
+   PAGES D'ŒUVRE — LE BUREAU (réf. Harrison Boyce)
+   Chaque œuvre est un bureau d'ordinateur dans le style d'Oscar :
+   les images, les vidéos, la fiche et le dossier lui-même sont des
+   fenêtres flottantes que l'on déplace par leur barre de titre.
+   Sur petit écran, elles s'empilent et ne bougent plus.
    ============================================================ */
-body.oscar-work {
+body.oscar-desk {
     display: block;
     height: 100vh;
     height: 100dvh;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
-    scroll-snap-type: y proximity;
     --o-blue: #1414e2;
     --o-cream: #eae8d6;
     --o-ink: #000000;
     --o-paper: #ffffff;
     --bg-color: var(--o-blue);
     --text-color: var(--o-cream);
+    --secondary-color: var(--o-cream);
     --border-color: rgba(234, 232, 214, 0.35);
     --desc-color: rgba(234, 232, 214, 0.75);
-    background: var(--o-blue);
-}
-body.oscar-work .back-link {
-    position: fixed;
-    top: 1.2rem;
-    left: 1.2rem;
-    z-index: 60;
-    margin: 0;
-    padding: 0.35rem 0.6rem;
-    background: var(--o-blue);
+    background-color: var(--o-blue);
+    background-image: radial-gradient(rgba(234, 232, 214, 0.16) 1px, transparent 1px);
+    background-size: 28px 28px;
     color: var(--o-cream);
-    border: 1px solid var(--o-cream);
-}
-body.oscar-work .artist-page-container {
-    max-width: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-}
-.work-screen {
-    min-height: 100vh;
-    min-height: 100dvh;
-    scroll-snap-align: start;
+    font-family: 'Share Tech Mono', monospace;
 }
 
-/* ---------- Écran 1 : la fenêtre ---------- */
-.work-screen-window {
+/* Barre du haut */
+.dk-top {
+    position: sticky;
+    top: 0;
+    z-index: 5000;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 1.2rem 0.7rem 3.4rem;
+    background: var(--o-blue);
+    border-bottom: 1.5px solid var(--o-cream);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.dk-back { color: var(--o-cream); text-decoration: none; justify-self: start; }
+.dk-back:hover { background: var(--o-cream); color: var(--o-blue); }
+.dk-center { text-align: center; }
+.dk-mail { justify-self: end; display: flex; border: 1px solid var(--o-cream); font-size: 0.7rem; }
+.dk-mail b { font-weight: 400; background: var(--o-cream); color: var(--o-blue); padding: 0.1rem 0.5rem; }
+.dk-mail a { color: var(--o-cream); text-decoration: none; padding: 0.1rem 0.6rem; text-transform: none; }
+.dk-mail a:hover { text-decoration: underline; }
+html.touch-device .dk-top { padding-left: 4.6rem; }
+
+/* Le bureau */
+.dk-desk {
+    position: relative;
+    min-height: calc(100dvh - 5rem);
+}
+
+/* Une fenêtre */
+.dw {
+    position: absolute;
+    background: var(--o-blue);
+    border: 1.5px solid var(--o-cream);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
+    color: var(--o-cream);
+}
+.dw-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: stretch;
+    min-height: 1.8rem;
+    border-bottom: 1.5px solid var(--o-cream);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.dw.is-front > .dw-bar { background: var(--o-cream); color: var(--o-blue); }
+.dw.is-dragging { box-shadow: 12px 14px 0 rgba(0, 0, 0, 0.4); }
+.dw.is-dragging > .dw-bar { cursor: grabbing; }
+.dw-title { align-self: center; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 0.5rem; }
+.dw-min, .dw-box {
+    width: 1.8rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4.2rem 4vw 2.5rem;
-    background: var(--o-blue);
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    border-right: 1.5px solid currentColor;
 }
-.work-window { width: min(100%, 1180px); }
-.work-window-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
-    gap: clamp(1rem, 2.4vw, 2rem);
-    padding: clamp(0.9rem, 2vw, 1.4rem);
-    align-items: stretch;
-}
-.ow-view {
-    position: relative;
-    height: clamp(16rem, 62vh, 40rem);
-    overflow: hidden;
-    border: 1.5px solid var(--o-cream);
-    background: #000000;
-}
-.ow-view > img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.work-fiche {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-body.oscar-work .work-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 400;
-    text-transform: none;
-    font-size: clamp(2rem, 4.4vw, 3.6rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    color: var(--o-cream);
-    margin: 0 0 1.4rem;
-}
-.work-fields {
-    font-size: 0.85rem;
-    line-height: 1.5;
-}
-.work-fields div {
-    flex-direction: column;
-    gap: 0;
-    margin-bottom: 0.6rem;
-}
-.work-open {
-    margin-top: auto;
-    align-self: flex-start;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(1rem, 1.8vw, 1.25rem);
-    letter-spacing: 1px;
-    background: var(--o-cream);
-    color: var(--o-blue);
-    text-decoration: none;
-    padding: 0.1em 0.4em;
-}
-.work-open:hover { background: transparent; color: var(--o-cream); box-shadow: inset 0 0 0 1.5px var(--o-cream); }
-.work-open:focus-visible { outline: 1.5px dashed var(--o-cream); outline-offset: 4px; }
+.dw-box { border-right: none; border-left: 1.5px solid currentColor; }
+.dw-min { cursor: pointer; }
+.dw-min:focus-visible { outline: 1px dashed currentColor; outline-offset: -4px; }
+.dw-body img, .dw-body video { display: block; width: 100%; height: auto; background: #000000; }
+.dw-cap { margin: 0; padding: 0.3rem 0.5rem; font-size: 0.65rem; letter-spacing: 0.06em; border-top: 1px solid rgba(234, 232, 214, 0.4); }
+.dw.is-min > .dw-body, .dw.is-min > .dw-cap { display: none; }
+.dw.is-min > .dw-bar { border-bottom: none; }
 
-/* ---------- Écran 2 : le dossier ouvert ---------- */
-.work-screen-dossier {
+/* « Le bruit de l'eau » : l'image et son shader */
+.dw-water { position: relative; overflow: hidden; }
+.dw-water > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Instagram */
+.dw-insta iframe { display: block; width: 100%; height: 520px; border: 0; background: #ffffff; }
+.dw-link { display: block; padding: 0.35rem 0.5rem; font-size: 0.7rem; color: var(--o-cream); text-decoration: none; }
+.dw-link:hover { background: var(--o-cream); color: var(--o-blue); }
+
+/* Fiche (propriétés) */
+.dw-fiche .dw-body { padding: 0.7rem 0.8rem; }
+.dw-fiche .os-fields { margin: 0; font-size: 0.78rem; }
+.dw-fiche .os-fields div { flex-direction: column; gap: 0; margin-bottom: 0.5rem; }
+
+/* Le dossier : papier blanc, trait noir, onglet noir */
+.dw-dossier {
+    --tab-x: 30%;
     background: var(--o-paper);
     color: var(--o-ink);
-    padding: 6rem 6vw 4rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-}
-.dossier-open {
-    --tab-x: 30%;
-    position: relative;
-    width: min(100%, 860px);
-    margin-top: 2rem;
     border: 1.5px solid var(--o-ink);
     border-radius: 4px 4px 0 0;
-    background: var(--o-paper);
-    padding: clamp(1.4rem, 4vw, 2.6rem);
+    margin-top: 32px;
 }
-.dossier-open.tab-b { --tab-x: 64%; }
-/* La feuille de derrière : le dossier a une épaisseur */
-.dossier-open::after {
-    content: "";
-    position: absolute;
-    left: 8px;
-    right: -8px;
-    top: 8px;
-    bottom: -8px;
-    border: 1.5px solid var(--o-ink);
-    border-top: none;
-    border-left: none;
-    pointer-events: none;
+.dw-dossier.tab-b { --tab-x: 56%; }
+.dw-dossier > .dw-tabbar {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    min-height: 1.6rem;
+    border-bottom: 1.5px dashed var(--o-ink);
+    color: var(--o-ink);
+    background: transparent !important;
 }
-.dossier-open-tab {
+.dw-dossier .dw-min { border-right: none; border-left: 1.5px solid var(--o-ink); color: var(--o-ink); }
+.dw-dossier .dossier-open-tab {
     position: absolute;
-    bottom: calc(100% - 1px);
+    bottom: calc(100% + 1px);
     left: var(--tab-x);
-    width: 33%;
     height: 32px;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
     z-index: 1;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--o-paper);
     white-space: nowrap;
-    padding: 0 0.8rem;
 }
-.dossier-open-tab::before {
+.dw-dossier .dossier-open-tab::before {
     content: "";
     position: absolute;
     inset: 0 0 -3px 0;
@@ -919,94 +905,68 @@ body.oscar-work .work-title {
     transform: perspective(70px) rotateX(16deg);
     transform-origin: bottom;
 }
-.dossier-open-head {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.4rem 1.5rem;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-    padding-bottom: 0.8rem;
-    margin-bottom: 1.8rem;
-    border-bottom: 1.5px dashed var(--o-ink);
-}
-.dossier-open-text { max-width: 64ch; }
-.dossier-open-text p {
+.dw-dossier > .dw-body { padding: 0.9rem 1.1rem 1rem; }
+.dk-dhead { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin: 0 0 0.8rem; font-size: 0.68rem; letter-spacing: 0.06em; }
+body.oscar-desk .dk-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: #111111;
-    margin: 0 0 1.2rem;
-}
-.dossier-open-text .dossier-crossref {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: #333333;
-    margin-top: 1.8rem;
-}
-.dossier-open-text a {
+    font-weight: 400;
+    text-transform: none;
+    font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
     color: var(--o-ink);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    margin: 0 0 0.8rem;
 }
-.dossier-open-text a:hover { background: var(--o-ink); color: var(--o-paper); text-decoration: none; }
-.dossier-nav {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 0.8rem;
-    margin-top: 2.6rem;
-    padding-top: 1.2rem;
-    border-top: 1.5px solid var(--o-ink);
-}
-.dossier-nav-btn {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.3px;
+.dk-text { max-height: 44vh; overflow-y: auto; padding-right: 0.4rem; scrollbar-width: thin; }
+.dk-text p { font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; line-height: 1.6; color: #111111; margin: 0 0 0.8rem; }
+.dk-text .dossier-crossref { font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: #333333; }
+.dk-text a { color: var(--o-ink); text-underline-offset: 3px; }
+.dk-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.5rem; margin-top: 0.9rem; padding-top: 0.7rem; border-top: 1.5px solid var(--o-ink); }
+.dk-nav a {
+    font-size: 0.7rem;
     color: var(--o-ink);
     text-decoration: none;
     border: 1.5px solid var(--o-ink);
     border-radius: 4px;
-    padding: 0.35rem 0.7rem;
+    padding: 0.25rem 0.5rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.dossier-nav-btn:last-child { text-align: right; }
-.dossier-nav-btn.is-home { background: var(--o-ink); color: var(--o-paper); text-align: center; }
-.dossier-nav-btn.is-empty { border: none; }
-a.dossier-nav-btn:hover { background: var(--o-ink); color: var(--o-paper); }
-a.dossier-nav-btn.is-home:hover { background: var(--o-paper); color: var(--o-ink); }
-a.dossier-nav-btn:focus-visible { outline: 1.5px dashed var(--o-ink); outline-offset: 3px; }
+.dk-nav a:last-child { text-align: right; }
+.dk-nav a.is-home { background: var(--o-ink); color: var(--o-paper); text-align: center; }
+.dk-nav a:hover { background: var(--o-ink); color: var(--o-paper); }
 
-@media (min-width: 901px) {
-    .work-screen-window { padding-left: max(4vw, 4.5rem); }
-    .work-screen-dossier { padding-left: max(6vw, 5rem); }
-    body.oscar-work .back-link { left: 3.2rem; }
+/* Barre d'état */
+.dk-status {
+    position: sticky;
+    bottom: 0;
+    z-index: 5000;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    padding: 0.3rem 1.2rem 0.3rem 3.4rem;
+    background: var(--o-cream);
+    color: var(--o-blue);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
 }
-@media (max-width: 900px) {
-    body.oscar-work .back-link { left: auto; right: 1rem; top: 1rem; font-size: 0.72rem; }
-}
+.dk-status > span:last-child { text-align: right; }
+.dk-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Petit écran : les fenêtres s'empilent */
 @media (max-width: 760px) {
-    .work-screen-window { padding: 4.2rem 0.8rem 2rem; align-items: flex-start; }
-    /* titre et fiche, puis l'image, puis le bouton */
-    .work-window-body { grid-template-columns: 1fr; gap: 0.9rem; }
-    .ow-view { height: 56vh; }
-    .work-fiche { display: contents; }
-    body.oscar-work .work-title { order: -2; }
-    .work-fields { order: -1; }
-    .work-open { order: 1; }
-    body.oscar-work .work-title { margin-bottom: 0.8rem; }
-    .work-fields { display: flex; flex-wrap: wrap; gap: 0 1.4rem; font-size: 0.78rem; margin-bottom: 0.4rem; }
-    .work-open { margin-top: 0.4rem; margin-bottom: 0.4rem; }
-    .work-screen-dossier { padding: 4.5rem 1rem 3rem; }
-    .dossier-open { width: calc(100% - 8px); margin-right: 8px; }
-    .dossier-open-tab { width: 62%; font-size: 0.72rem; }
-    .dossier-open.tab-a { --tab-x: 4%; }
-    .dossier-open.tab-b { --tab-x: 34%; }
-    .dossier-open-text p { font-size: 1rem; }
-    .dossier-nav { grid-template-columns: 1fr; }
-    .dossier-nav-btn:last-child { text-align: left; }
-    .dossier-nav-btn.is-empty { display: none; }
-    .dossier-nav-btn.is-home { order: 3; }
+    .dk-top { grid-template-columns: 1fr; gap: 0.3rem; padding: 0.7rem 1rem 0.7rem 4.2rem; font-size: 0.72rem; }
+    .dk-center { text-align: left; }
+    .dk-mail { display: none; }
+    .dk-desk { display: flex; flex-direction: column; gap: 1.2rem; padding: 1rem 0.8rem 2rem; }
+    .dw { position: relative; left: auto !important; top: auto !important; width: auto !important; }
+    .dw-bar { cursor: default; }
+    .dw-dossier { margin-top: 34px; }
+    .dw-dossier.tab-a, .dw-dossier.tab-b { --tab-x: 4%; }
+    .dk-text { max-height: none; }
+    .dw-insta iframe { height: 480px; }
+    .dk-status { grid-template-columns: 1fr auto; padding-left: 1rem; }
+    .dk-hint { display: none; }
 }
+
