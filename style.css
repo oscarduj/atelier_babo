@@ -3332,6 +3332,191 @@ a.dt-box:hover, a.dt-box:focus-visible, div.dt-box:hover {
     .sv-col + .sv-col { padding-left: 0; border-left: none; border-top: 1px solid rgba(234, 232, 228, 0.2); }
 }
 
+/* ---------- TRAVAUX : voûte titrée et sol en éventail ---------- */
+#travaux .sec-head h2 { visibility: hidden; }
+.main-feed .travaux-asym-grid { padding-top: clamp(9rem, 20vh, 13rem) !important; }
+.tv-vault {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: min(110%, 78rem);
+    transform: translateX(-50%);
+    overflow: visible;
+    pointer-events: none;
+    z-index: 0;
+}
+.tv-vault path { fill: none; stroke: rgba(234, 232, 228, 0.35); stroke-width: 1.2; }
+.tv-vault text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 92px;
+    letter-spacing: 0.18em;
+    fill: #eae8e4;
+}
+.tv-floor {
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    bottom: 0;
+    width: 116%;
+    height: 8.5rem;
+    pointer-events: none;
+    z-index: 0;
+}
+.tv-floor line { stroke: rgba(234, 232, 228, 0.16); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tv-floor .tv-edge, .tv-floor .tv-front { fill: none; stroke: rgba(234, 232, 228, 0.35); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.main-feed .travaux-asym-grid::after { background: linear-gradient(to bottom, rgba(5, 8, 12, 0) 0%, rgba(5, 6, 8, 0.7) 100%) !important; }
+html.light-mode .tv-vault text { fill: var(--text-color); }
+@media (max-width: 900px) {
+    #travaux .sec-head h2 { visibility: visible; }
+    .tv-vault { display: none; }
+    .main-feed .travaux-asym-grid { padding-top: 1.5rem !important; }
+    .tv-floor { left: 0; width: 100%; }
+}
+
+/* ---------- CURATION : couloir pleine largeur, textes dans le couloir ---------- */
+.main-feed .cr-hall {
+    margin: 0.8rem -6rem -3rem;
+    height: clamp(32rem, 80vh, 46rem);
+    border: none;
+    perspective: 560px;
+}
+.cr-screens { display: none !important; }
+.cr-wall { top: 2%; height: 86%; width: 1700px; }
+.cr-floor { width: 12rem; }
+.cr-floor span { font-size: 3rem; color: rgba(234, 232, 228, 0.28); }
+/* Les trois écrans allumés : un sur chaque mur, un au fond */
+.cr-feat {
+    position: absolute;
+    z-index: 2;
+    padding: 0;
+    border: 4px solid #0d0e10;
+    outline: 1px solid rgba(234, 232, 228, 0.5);
+    background: #000000;
+    cursor: pointer;
+    box-shadow: 0 0 34px rgba(190, 210, 240, 0.45);
+    transition: box-shadow 0.35s ease, outline-color 0.35s ease;
+    animation: cr-pulse 3.6s ease-in-out infinite;
+}
+.cr-feat-img { display: block; width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.9); }
+.cr-feat-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+}
+.cr-f1 { left: 9%; top: 30%; width: 15rem; aspect-ratio: 16 / 10; transform: perspective(700px) rotateY(48deg); }
+.cr-f3 { right: 9%; top: 30%; width: 15rem; aspect-ratio: 16 / 10; transform: perspective(700px) rotateY(-48deg); }
+.cr-f2 { left: 50%; top: 36%; width: 9rem; aspect-ratio: 16 / 10; transform: translateX(-50%); }
+.cr-feat:hover, .cr-feat:focus-visible, .cr-feat.is-on {
+    outline-color: #ffffff;
+    box-shadow: 0 0 60px rgba(220, 235, 255, 0.75);
+    animation: none;
+}
+@keyframes cr-pulse {
+    0%, 100% { box-shadow: 0 0 26px rgba(190, 210, 240, 0.35); }
+    50% { box-shadow: 0 0 46px rgba(190, 210, 240, 0.65); }
+}
+/* Panneau de texte, posé en bas du couloir */
+.cr-panel {
+    position: absolute;
+    left: 50%;
+    bottom: 2.4rem;
+    z-index: 4;
+    width: min(92%, 34rem);
+    transform: translateX(-50%);
+    padding: 1.2rem 1.4rem 1.3rem;
+    background: rgba(6, 7, 9, 0.92);
+    border: 1px solid rgba(234, 232, 228, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+.cr-panel[hidden] { display: none; }
+.cr-close { position: absolute; right: 0.5rem; top: 0.3rem; background: none; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; }
+.cr-close:focus-visible { outline: 1px dashed #ffffff; }
+.cr-p-tag { margin: 0 0 0.4rem; font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
+.cr-p-title { margin: 0 0 0.6rem; font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.3rem, 2.4vw, 1.8rem); font-weight: 500; letter-spacing: -0.02em; color: #ffffff; }
+.cr-p-text { margin: 0 0 0.9rem; font-size: 0.85rem; line-height: 1.55; color: rgba(255, 255, 255, 0.75); }
+.cr-p-link { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: #ffffff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
+.cr-hint { position: absolute; left: 50%; bottom: 0.9rem; transform: translateX(-50%); margin: 0; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); z-index: 1; }
+@media (max-width: 900px) {
+    .main-feed .cr-hall { margin: 0.8rem -1.25rem -2.5rem; height: 34rem; padding: 0; }
+    .cr-wall { width: 800px; height: 86%; top: 2%; }
+    .cr-f1, .cr-f3 { width: 8rem; top: 26%; }
+    .cr-f1 { left: 3%; } .cr-f3 { right: 3%; }
+    .cr-f2 { width: 6rem; top: 34%; }
+    .cr-feat-label { white-space: normal; font-size: 0.58rem; }
+}
+@media (prefers-reduced-motion: reduce) { .cr-feat { animation: none; } }
+
+/* ---------- EXPOS : plaques en volume alignées en perspective ---------- */
+.main-feed .sp-row {
+    perspective: 1100px;
+    perspective-origin: 35% 10%;
+    gap: 0;
+    padding-left: 1rem;
+    height: clamp(19rem, 50vh, 27rem);
+}
+.main-feed .sp-item {
+    flex: 0 0 clamp(5.5rem, 10vw, 8.5rem);
+    transform-style: preserve-3d;
+    transform: rotateY(-58deg);
+    transform-origin: left center;
+    margin-right: clamp(2.2rem, 4vw, 3.8rem);
+    background: #121417;
+    box-shadow: none;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), flex-basis 0.7s cubic-bezier(0.16, 1, 0.3, 1), margin 0.7s ease;
+}
+/* Épaisseur : la tranche (côté gauche) et le dessus de la plaque */
+.main-feed .sp-item::before,
+.main-feed .sp-item::after {
+    content: "";
+    position: absolute;
+    background: #2b2f35;
+    border: 1px solid rgba(234, 232, 228, 0.25);
+    pointer-events: none;
+}
+.main-feed .sp-item::before { left: 0; top: 0; bottom: 0; width: 26px; transform-origin: left center; transform: rotateY(90deg); background: linear-gradient(to bottom, #3a3f46, #1b1e22); }
+.main-feed .sp-item::after { left: 0; right: 0; top: 0; height: 26px; transform-origin: top center; transform: rotateX(-90deg); background: #43484f; }
+.main-feed .sp-item .sp-img { outline: 1px solid rgba(234, 232, 228, 0.3); }
+.main-feed .sp-item:hover:not(.is-active) { transform: rotateY(-48deg) translateZ(20px); }
+.main-feed .sp-item.is-active {
+    flex: 1 1 auto;
+    transform: rotateY(-12deg) translateZ(30px);
+    margin-right: clamp(2.6rem, 5vw, 4.5rem);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+.main-feed .sp-item .sp-label { transform: translateZ(1px); }
+@media (max-width: 900px) {
+    .main-feed .sp-row { perspective: 800px; padding-left: 0.4rem; }
+    .main-feed .sp-item { flex-basis: 3.6rem; margin-right: 1.4rem; transform: rotateY(-55deg); }
+    .main-feed .sp-item.is-active { transform: rotateY(-8deg) translateZ(10px); margin-right: 1.4rem; }
+}
+@media (prefers-reduced-motion: reduce) { .main-feed .sp-item { transition: none; } }
+/* Épaisseur lisible : tranches empilées vers l'arrière, comme sur le croquis */
+.main-feed .sp-item::before, .main-feed .sp-item::after { display: none; }
+.main-feed .sp-item {
+    box-shadow:
+        3px -3px 0 #1d2024, 6px -6px 0 #1d2024, 9px -9px 0 #22262b,
+        12px -12px 0 #262a30, 14px -14px 0 rgba(234, 232, 228, 0.35);
+}
+.main-feed .sp-item.is-active {
+    box-shadow:
+        3px -3px 0 #1d2024, 6px -6px 0 #1d2024, 9px -9px 0 #22262b,
+        12px -12px 0 #262a30, 14px -14px 0 rgba(234, 232, 228, 0.45),
+        0 30px 60px rgba(0, 0, 0, 0.6);
+    transform: rotateY(-12deg) translateZ(10px);
+}
+.main-feed .sp-item .sp-label { top: auto; bottom: calc(100% + 1.4rem); }
+.main-feed .sp-bar { margin-top: 3.2rem; }
+.main-feed .sp-bar { margin-top: 4.6rem; }
+
+
 
 
 
