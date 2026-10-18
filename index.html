@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261018a">
+    <link rel="stylesheet" href="style.css?v=20261018b">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -18,7 +18,8 @@
     <script src="page-transition.js" defer></script>
     <script type="importmap">
     { "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
     } }
     </script>
 </head>
@@ -2339,6 +2340,291 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             // WebGL indisponible : le canvas reste vide, la section reste utilisable.
         }
         }
+    </script>
+    <script type="module">
+    /* ============================================================
+       TRAVAUX — SALLE 3D (réf. Nature Treks VR)
+       Les panneaux sont disposés en grand cercle autour du visiteur,
+       de bord à bord, leur nom écrit au-dessus dans leur plan. Le sol
+       est une eau sombre et réfléchissante (Water.js, exemple
+       « ocean » de Three.js) avec des ondes au passage de la souris
+       (inspirées de l'exemple « gpgpu water »).
+       Au survol : le panneau se soulève et s'éclaire, son reflet suit.
+       Filet de sécurité : au moindre souci (pas de WebGL, module non
+       chargé, erreur), la version HTML reste affichée telle quelle.
+       ============================================================ */
+    import * as THREE from 'three';
+    import { Water } from 'three/addons/objects/Water.js';
+
+    (function () {
+        const host = document.querySelector('#travaux .travaux-asym-grid');
+        if (!host) return;
+        if (window.matchMedia('(max-width: 900px)').matches) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const SLOTS = ['.travaux-cell-1', '.travaux-cell-2', '.travaux-cell-collectif', '.travaux-cell-3', '.travaux-cell-4']
+            .map((s) => host.querySelector(s));
+        if (SLOTS.some((s) => !s)) return;
+
+        let renderer, canvas;
+        try {
+            canvas = document.createElement('canvas');
+            canvas.className = 'tw3d-canvas';
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        } catch (e) { return; }
+
+        try {
+            host.classList.add('tw3d-on');
+            host.appendChild(canvas);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(64, 1, 0.1, 200);
+            camera.position.set(0, 1.55, 0.4);
+            camera.lookAt(0, 1.85, -6);
+
+            /* ---- Les panneaux en cercle ---- */
+            const R = 6.2, H = 4.1, BASE = 0.35, N = SLOTS.length;
+            const SPAN = THREE.MathUtils.degToRad(150);
+            const STEP = SPAN / N;
+            const PW = 2 * R * Math.tan(STEP / 2) * 0.93;
+            const group = new THREE.Group();
+            scene.add(group);
+            const loader = new THREE.TextureLoader();
+            const panels = [];
+
+            function labelTexture(text) {
+                const c = document.createElement('canvas');
+                c.width = 1024; c.height = 128;
+                const g = c.getContext('2d');
+                g.clearRect(0, 0, c.width, c.height);
+                g.fillStyle = '#eef0f4';
+                g.font = '500 58px "Space Grotesk", "Helvetica Neue", Arial, sans-serif';
+                g.textBaseline = 'middle';
+                const letters = text.toUpperCase().split('');
+                const spacing = 9;
+                let w = letters.reduce((s, ch) => s + g.measureText(ch).width + spacing, -spacing);
+                let x = 12;
+                letters.forEach((ch) => { g.fillText(ch, x, 70); x += g.measureText(ch).width + spacing; });
+                const t = new THREE.CanvasTexture(c);
+                t.colorSpace = THREE.SRGBColorSpace;
+                t.anisotropy = 4;
+                return t;
+            }
+            function placeholderTexture(text) {
+                const c = document.createElement('canvas');
+                c.width = 512; c.height = 768;
+                const g = c.getContext('2d');
+                g.fillStyle = '#0c0f14'; g.fillRect(0, 0, 512, 768);
+                g.strokeStyle = 'rgba(234,232,228,0.25)'; g.strokeRect(20, 20, 472, 728);
+                g.fillStyle = '#a3b1c2'; g.font = '28px "Share Tech Mono", monospace'; g.textAlign = 'center';
+                g.fillText(text, 256, 384);
+                const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+            }
+            function cover(tex, img) {
+                const a = img.width / img.height, A = PW / H;
+                tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+                if (a > A) { tex.repeat.set(A / a, 1); tex.offset.set((1 - A / a) / 2, 0); }
+                else { tex.repeat.set(1, a / A); tex.offset.set(0, (1 - a / A) / 2); }
+            }
+
+            for (let i = 0; i < N; i++) {
+                const phi = -SPAN / 2 + STEP * (i + 0.5);
+                const pivot = new THREE.Group();
+                pivot.position.set(R * Math.sin(phi), 0, -R * Math.cos(phi));
+                pivot.rotation.y = -phi;
+                group.add(pivot);
+                const lift = new THREE.Group();
+                pivot.add(lift);
+                // cadre sombre derrière l'image
+                const frame = new THREE.Mesh(new THREE.PlaneGeometry(PW + 0.08, H + 0.08), new THREE.MeshBasicMaterial({ color: 0x07080a }));
+                frame.position.set(0, BASE + H / 2, -0.01);
+                lift.add(frame);
+                const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.85, 0.85, 0.85) });
+                const screen = new THREE.Mesh(new THREE.PlaneGeometry(PW, H), mat);
+                screen.position.set(0, BASE + H / 2, 0);
+                screen.userData.index = i;
+                lift.add(screen);
+                const lmat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false });
+                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW * 1.05, PW * 1.05 / 8), lmat);
+                label.position.set(-PW * 0.0, BASE + H + 0.32, 0);
+                lift.add(label);
+                panels.push({ slot: SLOTS[i], lift, screen, mat, label, lmat, url: null, name: null, liftNow: 0, liftTo: 0, glowNow: 0.85, glowTo: 0.85 });
+            }
+
+            // Lit le contenu de chaque emplacement (la rotation des membres et
+            // le défilement des photos d'Oscar changent les images en direct).
+            const cache = new Map();
+            function syncPanels() {
+                panels.forEach((p) => {
+                    const box = p.slot.querySelector('.travaux-cell-box');
+                    const titleEl = p.slot.querySelector('.travaux-cell-title');
+                    const name = titleEl ? titleEl.textContent.trim() : '';
+                    if (name && name !== p.name) {
+                        p.name = name;
+                        if (p.lmat.map) p.lmat.map.dispose();
+                        p.lmat.map = labelTexture(name); p.lmat.needsUpdate = true;
+                    }
+                    // La photo visible est sur le calque « active » ; sinon, fond de la case
+                    const layer = box ? box.querySelector('.cell-photo-layer.active') : null;
+                    const bg = layer ? (layer.style.backgroundImage || getComputedStyle(layer).backgroundImage)
+                                     : (box ? getComputedStyle(box).backgroundImage : 'none');
+                    const m = bg && bg.match(/url\(["']?([^"')]+)["']?\)/);
+                    const url = m ? m[1] : null;
+                    if (url === p.url) return;
+                    p.url = url;
+                    if (!url) {
+                        const txt = box && box.querySelector('.cell-box-text');
+                        p.mat.map = placeholderTexture((txt && txt.textContent.trim()) || name);
+                        p.mat.needsUpdate = true; return;
+                    }
+                    const use = (tex) => { if (p.url === url) { p.mat.map = tex; p.mat.needsUpdate = true; } };
+                    if (cache.has(url)) { use(cache.get(url)); return; }
+                    loader.load(url, (tex) => {
+                        tex.colorSpace = THREE.SRGBColorSpace;
+                        cover(tex, tex.image);
+                        cache.set(url, tex);
+                        use(tex);
+                    });
+                });
+            }
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { panels.forEach((p) => { p.name = null; }); syncPanels(); });
+            syncPanels();
+            setInterval(syncPanels, 700);
+
+            /* ---- L'eau ---- */
+            const normals = loader.load('images/travaux/waternormals.jpg', (t) => { t.wrapS = t.wrapT = THREE.RepeatWrapping; });
+            const water = new Water(new THREE.PlaneGeometry(120, 120), {
+                textureWidth: 1024,
+                textureHeight: 1024,
+                waterNormals: normals,
+                sunDirection: new THREE.Vector3(0.0, 0.35, -1).normalize(),
+                sunColor: 0x8fa6c4,
+                waterColor: 0x020814,
+                distortionScale: 2.6,
+                fog: false
+            });
+            water.rotation.x = -Math.PI / 2;
+            water.material.uniforms.size.value = 2.2;
+            water.material.uniforms.alpha.value = 1.0;
+            scene.add(water);
+
+            // Ondes au passage de la souris : on ajoute un terme d'ondes
+            // circulaires à la normale calculée par Water.js.
+            const RIP = 10;
+            const rip = []; for (let k = 0; k < RIP; k++) rip.push(new THREE.Vector4(0, 0, -99, 0));
+            water.material.uniforms.uRip = { value: rip };
+            water.material.uniforms.uNow = { value: 0 };
+            let fs = water.material.fragmentShader;
+            const NORMAL_LINE = 'vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );';
+            if (fs.includes(NORMAL_LINE) && fs.includes('void main() {')) {
+                fs = fs.replace('void main() {', `
+                uniform vec4 uRip[${RIP}];
+                uniform float uNow;
+                vec3 ripple( vec2 p ) {
+                    vec3 n = vec3( 0.0 );
+                    for ( int i = 0; i < ${RIP}; i++ ) {
+                        float age = uNow - uRip[i].z;
+                        if ( age < 0.0 || age > 4.0 ) continue;
+                        vec2 d = p - uRip[i].xy;
+                        float r = length( d );
+                        float front = age * 2.0;
+                        float w = sin( ( r - front ) * 9.0 ) * exp( -pow( ( r - front ) * 2.2, 2.0 ) ) * ( 1.0 - age / 4.0 ) * uRip[i].w;
+                        vec2 dir = r > 0.0001 ? d / r : vec2( 0.0 );
+                        n.x += dir.x * w; n.z += dir.y * w;
+                    }
+                    return n;
+                }
+                void main() {`);
+                fs = fs.replace(NORMAL_LINE, 'vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) + ripple( worldPosition.xz ) );');
+                water.material.fragmentShader = fs;
+                water.material.needsUpdate = true;
+            }
+            let ripI = 0;
+            function addRipple(x, z, strength) {
+                rip[ripI].set(x, z, water.material.uniforms.uNow.value, strength);
+                ripI = (ripI + 1) % RIP;
+            }
+
+            /* ---- Survol, clic, ondes ---- */
+            const ray = new THREE.Raycaster();
+            const ptr = new THREE.Vector2();
+            const screens = panels.map((p) => p.screen);
+            let hovered = -1, lastRipple = 0;
+            function setPointer(e) {
+                const r = canvas.getBoundingClientRect();
+                ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+                ray.setFromCamera(ptr, camera);
+            }
+            function setHover(i) {
+                hovered = i;
+                panels.forEach((p, k) => {
+                    p.liftTo = k === i ? 0.28 : 0;
+                    p.glowTo = i < 0 ? 0.85 : (k === i ? 1.2 : 0.62);
+                });
+                canvas.style.cursor = i >= 0 ? 'pointer' : 'default';
+            }
+            canvas.addEventListener('pointermove', (e) => {
+                setPointer(e);
+                const hit = ray.intersectObjects(screens, false)[0];
+                setHover(hit ? hit.object.userData.index : -1);
+                const now = performance.now();
+                if (!hit && now - lastRipple > 110) {
+                    const w = ray.intersectObject(water, false)[0];
+                    if (w) { addRipple(w.point.x, w.point.z, 0.35); lastRipple = now; }
+                }
+            });
+            canvas.addEventListener('pointerleave', () => setHover(-1));
+            canvas.addEventListener('click', (e) => {
+                setPointer(e);
+                const hit = ray.intersectObjects(screens, false)[0];
+                if (hit) { panels[hit.object.userData.index].slot.click(); return; }
+                const w = ray.intersectObject(water, false)[0];
+                if (w) addRipple(w.point.x, w.point.z, 1.0);
+            });
+            // Au clavier : le lien focalisé met son panneau en avant
+            SLOTS.forEach((s, i) => {
+                s.addEventListener('focus', () => setHover(i));
+                s.addEventListener('blur', () => setHover(-1));
+            });
+
+            /* ---- Taille, boucle de rendu ---- */
+            function resize() {
+                const w = host.clientWidth, h = host.clientHeight;
+                if (!w || !h) return;
+                renderer.setSize(w, h, false);
+                camera.aspect = w / h;
+                camera.fov = w / h < 1.5 ? 74 : 64;
+                camera.updateProjectionMatrix();
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            let visible = true;
+            new IntersectionObserver((en) => { visible = en[0].isIntersecting; }, { threshold: 0.01 }).observe(host);
+            const clock = new THREE.Clock();
+            function frame() {
+                requestAnimationFrame(frame);
+                if (!visible || document.hidden) { clock.getDelta(); return; }
+                const dt = Math.min(clock.getDelta(), 0.05);
+                if (!reduce) water.material.uniforms.time.value += dt * 0.55;
+                water.material.uniforms.uNow.value += dt;
+                panels.forEach((p) => {
+                    p.liftNow += (p.liftTo - p.liftNow) * 0.12;
+                    p.glowNow += (p.glowTo - p.glowNow) * 0.12;
+                    p.lift.position.y = p.liftNow;
+                    p.mat.color.setScalar(p.glowNow);
+                });
+                renderer.render(scene, camera);
+            }
+            frame();
+        } catch (err) {
+            // Filet de sécurité : on revient à la version HTML
+            host.classList.remove('tw3d-on');
+            if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
+            console.warn('Salle 3D indisponible :', err);
+        }
+    })();
     </script>
 </body>
 </html>

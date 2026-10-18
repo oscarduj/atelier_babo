@@ -3568,6 +3568,27 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 }
 @media (prefers-reduced-motion: reduce) { .tv-water animate { display: none; } }
 
+/* ---------- TRAVAUX : salle 3D (Three.js) ---------- */
+.main-feed .travaux-asym-grid.tw3d-on {
+    height: clamp(30rem, 80vh, 48rem);
+    padding: 0 !important;
+}
+.tw3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 2; }
+/* Les cases HTML restent dans la page (liens, rotation, clavier) mais invisibles */
+.tw3d-on .travaux-cell {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+    width: 1px !important;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0 !important;
+    pointer-events: none;
+}
+.tw3d-on .tv-water { display: none; }
+.tw3d-on::before { z-index: 3; }
+
+
 
 
 
