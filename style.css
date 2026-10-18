@@ -3516,6 +3516,59 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .main-feed .sp-bar { margin-top: 3.2rem; }
 .main-feed .sp-bar { margin-top: 4.6rem; }
 
+/* ---------- TRAVAUX v3 : titre droit, scène jusqu'aux bords (casque VR), eau animée ---------- */
+#travaux .sec-head h2 { visibility: visible; }
+.tv-vault, .tv-floor { display: none !important; }
+.main-feed .travaux-asym-grid {
+    margin: 0 -6rem;
+    padding: 2.6rem 3rem 10rem !important;
+    perspective: 1500px;
+    perspective-origin: 50% 35%;
+    overflow: hidden;
+}
+/* Assombrissement des bords, comme dans un casque */
+.main-feed .travaux-asym-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background: radial-gradient(ellipse 75% 85% at 50% 45%, transparent 55%, rgba(4, 5, 7, 0.85) 100%);
+}
+.main-feed .travaux-asym-grid::after { display: none !important; }
+.main-feed .travaux-asym-grid .travaux-cell { flex-basis: clamp(9.5rem, 15.5vw, 16rem); }
+.main-feed .travaux-cell-collectif { flex-basis: clamp(11rem, 19vw, 19rem) !important; }
+.main-feed .travaux-cell .travaux-cell-box { height: clamp(18rem, 56vh, 31rem); }
+.main-feed .travaux-cell-collectif .travaux-cell-box { height: clamp(20rem, 62vh, 34rem); }
+.main-feed .travaux-cell-1 { transform: rotateY(34deg) translateZ(90px); }
+.main-feed .travaux-cell-4 { transform: rotateY(-34deg) translateZ(90px); }
+.main-feed .travaux-cell .travaux-cell-title { margin-bottom: 0.45rem; }
+/* L'eau : ondulations animées au pied des panneaux, sous leurs reflets */
+.tv-water {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 11rem;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom, #07090d 0%, #030405 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000000 30%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000000 30%);
+    opacity: 0.9;
+}
+.tv-water svg { display: block; width: 100%; height: 100%; }
+@media (max-width: 900px) {
+    #travaux .sec-head h2 { visibility: visible; }
+    .main-feed .travaux-asym-grid { margin: 0 -1.25rem; padding: 1.5rem 1rem 8rem !important; perspective: none; overflow-x: auto; }
+    .main-feed .travaux-asym-grid::before { display: none; }
+    .main-feed .travaux-asym-grid .travaux-cell { flex-basis: 62vw !important; }
+    .main-feed .travaux-cell .travaux-cell-box, .main-feed .travaux-cell-collectif .travaux-cell-box { height: 22rem; }
+    .tv-water { height: 8rem; }
+}
+@media (prefers-reduced-motion: reduce) { .tv-water animate { display: none; } }
+
+
 
 
 
