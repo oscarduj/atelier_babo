@@ -2598,6 +2598,50 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             syncPanels();
             setInterval(syncPanels, 700);
 
+            /* ---- Arbres en silhouette de part et d'autre des panneaux ---- */
+            function treeTexture(seed) {
+                let s = seed;
+                const rnd = () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+                const c = document.createElement('canvas'); c.width = 800; c.height = 768;
+                const g = c.getContext('2d');
+                const col = 'rgba(6,10,20,1)';
+                g.strokeStyle = col; g.fillStyle = col; g.lineCap = 'round';
+                const leaves = [];
+                function branch(x, y, len, ang, w, depth) {
+                    const x2 = x + Math.cos(ang) * len, y2 = y - Math.sin(ang) * len;
+                    g.lineWidth = w; g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.stroke();
+                    if (depth <= 0 || len < 14) { leaves.push([x2, y2]); return; }
+                    const n = 2 + (rnd() < 0.35 ? 1 : 0);
+                    for (let k = 0; k < n; k++) {
+                        const da = (rnd() - 0.5) * 1.1 + (k - (n - 1) / 2) * 0.45;
+                        branch(x2, y2, len * (0.62 + rnd() * 0.2), ang + da, w * 0.68, depth - 1);
+                    }
+                }
+                branch(400, 768, 140 + rnd() * 45, Math.PI / 2 + (rnd() - 0.5) * 0.15, 20, 6);
+                leaves.forEach(([x, y]) => {
+                    const blobs = 3 + Math.floor(rnd() * 4);
+                    for (let k = 0; k < blobs; k++) {
+                        g.beginPath();
+                        g.ellipse(x + (rnd() - 0.5) * 50, y + (rnd() - 0.5) * 40, 14 + rnd() * 26, 10 + rnd() * 20, rnd() * 3, 0, Math.PI * 2);
+                        g.fill();
+                    }
+                });
+                const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; return tex;
+            }
+            const treeTex = [treeTexture(11), treeTexture(29), treeTexture(47), treeTexture(83)];
+            const treeMats = treeTex.map((tx) => new THREE.MeshBasicMaterial({ map: tx, transparent: true, alphaTest: 0.35, depthWrite: true, side: THREE.DoubleSide }));
+            [-1, 1].forEach((side) => {
+                for (let k = 0; k < 7; k++) {
+                    const ang = side * (SPAN / 2 + 0.06 + k * 0.11 + Math.random() * 0.05);
+                    const dist = R + 0.5 + Math.random() * 7;
+                    const h = 8 + Math.random() * 8;
+                    const tree = new THREE.Mesh(new THREE.PlaneGeometry(h * 1.04, h), treeMats[(k + (side > 0 ? 2 : 0)) % treeMats.length]);
+                    tree.position.set(Math.sin(ang) * dist, h / 2 - 0.15, -Math.cos(ang) * dist);
+                    tree.rotation.y = -ang + (Math.random() - 0.5) * 0.3;
+                    scene.add(tree);
+                }
+            });
+
             /* ---- Sol d'herbe de nuit au premier plan ---- */
             const ground = new THREE.Mesh(new THREE.CircleGeometry(4.7, 96), new THREE.MeshBasicMaterial({ color: 0x030605 }));
             ground.rotation.x = -Math.PI / 2; ground.position.y = 0.025;
@@ -2720,7 +2764,10 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                         vec3 col = deep + refl * fres * 0.92 + vec3( 0.35, 0.45, 0.6 ) * sheen;
                         // Brume d'horizon : même couleur que le bas du ciel, raccord sans ligne
                         float dist = length( vWorld.xz - cameraPosition.xz );
-                        col = mix( col, vec3( 0.028, 0.05, 0.095 ), smoothstep( 22.0, 90.0, dist ) );
+                        // L'eau s'assombrit en s'éloignant : le pied des panneaux repose sur du sombre
+                        col *= mix( 1.0, 0.32, smoothstep( 6.0, 15.5, dist ) );
+                        // Au-delà des panneaux seulement, elle rejoint la couleur du bas du ciel
+                        col = mix( col, vec3( 0.022, 0.04, 0.078 ), smoothstep( 26.0, 110.0, dist ) );
                         gl_FragColor = vec4( col, 1.0 );
                         #include <tonemapping_fragment>
                         #include <colorspace_fragment>
