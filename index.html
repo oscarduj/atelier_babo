@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261018c">
+    <link rel="stylesheet" href="style.css?v=20261018d">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -2344,126 +2344,185 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
     <script type="module">
     /* ============================================================
        TRAVAUX — SALLE 3D (réf. Nature Treks VR)
-       Les panneaux sont disposés en grand cercle autour du visiteur,
-       de bord à bord, leur nom écrit au-dessus dans leur plan. Le sol
-       est une eau sombre et réfléchissante (Water.js, exemple
-       « ocean » de Three.js) avec des ondes au passage de la souris
-       (inspirées de l'exemple « gpgpu water »).
-       Au survol : le panneau se soulève et s'éclaire, son reflet suit.
-       Filet de sécurité : au moindre souci (pas de WebGL, module non
-       chargé, erreur), la version HTML reste affichée telle quelle.
+       Sept panneaux en grand cercle autour du visiteur : les cinq
+       travaux, encadrés à gauche d'un panneau « section précédente »
+       et à droite d'un panneau « section suivante ». Noms écrits au-
+       dessus, dans le plan des panneaux. Sol : eau noire et brillante
+       (miroir Reflector de Three.js + vagues + ondes à la souris).
+       Ciel de nuit étoilé, lune, petites lumières flottantes,
+       plateforme sous les pieds. Au survol, le panneau se soulève et
+       s'éclaire ; son reflet suit.
+       Filet de sécurité : au moindre souci, la version HTML reste.
        ============================================================ */
     import * as THREE from 'three';
-    import { Water } from 'three/addons/objects/Water.js';
+    import { Reflector } from 'three/addons/objects/Reflector.js';
 
     (function () {
         const host = document.querySelector('#travaux .travaux-asym-grid');
-        if (!host) return;
+        const section = document.getElementById('travaux');
+        if (!host || !section) return;
         if (window.matchMedia('(max-width: 900px)').matches) return;
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const SLOTS = ['.travaux-cell-1', '.travaux-cell-2', '.travaux-cell-collectif', '.travaux-cell-3', '.travaux-cell-4']
             .map((s) => host.querySelector(s));
         if (SLOTS.some((s) => !s)) return;
 
-        let renderer, canvas;
+        let renderer, canvas, styleEl;
         try {
             canvas = document.createElement('canvas');
             canvas.className = 'tw3d-canvas';
-            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
         } catch (e) { return; }
 
         try {
+            // Styles indispensables injectés ici : la scène s'affiche correctement
+            // même si le navigateur garde une ancienne version de style.css.
+            styleEl = document.createElement('style');
+            styleEl.textContent = `
+                #travaux.tw3d-section { padding-top: 0 !important; padding-bottom: 0 !important; }
+                #travaux.tw3d-section .sec-head { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+                #travaux.tw3d-section .section-content { width: 100%; }
+                .travaux-asym-grid.tw3d-on { display: block !important; position: relative; height: 100vh; height: 100dvh; margin: 0 -6rem !important; padding: 0 !important; overflow: hidden; }
+                .tw3d-on > .tw3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 2; }
+                .tw3d-on .travaux-cell { position: absolute !important; left: 0; top: 0; width: 1px !important; height: 1px; overflow: hidden; opacity: 0 !important; pointer-events: none; transform: none !important; }
+                .tw3d-on .tv-water, .tw3d-on .tv-vault, .tw3d-on .tv-floor { display: none !important; }
+                .tw3d-on::after { display: none !important; }`;
+            document.head.appendChild(styleEl);
+            section.classList.add('tw3d-section');
             host.classList.add('tw3d-on');
             host.appendChild(canvas);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
             renderer.outputColorSpace = THREE.SRGBColorSpace;
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(72, 1, 0.1, 300);
-            camera.position.set(0, 1.9, 0.3);
-            camera.lookAt(0, 2.4, -6);
-            document.getElementById('travaux').classList.add('tw3d-section');
+            scene.background = new THREE.Color(0x010205);
+            const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 400);
+            camera.position.set(0, 1.7, 0);
+            camera.lookAt(0, 1.95, -9);
 
-            /* ---- Les panneaux en cercle ---- */
-            const R = 6.3, H = 4.9, BASE = 0.22, N = SLOTS.length;
-            const SPAN = THREE.MathUtils.degToRad(150);
-            const STEP = SPAN / N;
-            const PW = 2 * R * Math.tan(STEP / 2) * 0.9;
-            const group = new THREE.Group();
-            scene.add(group);
-            const loader = new THREE.TextureLoader();
-            const panels = [];
+            /* ---- Ciel : dégradé de nuit, étoiles, lune ---- */
+            scene.add(new THREE.Mesh(
+                new THREE.SphereGeometry(180, 32, 16),
+                new THREE.ShaderMaterial({
+                    side: THREE.BackSide, depthWrite: false,
+                    vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+                    fragmentShader: 'varying vec3 vP; void main(){ float h = clamp(vP.y, 0.0, 1.0); vec3 hor = vec3(0.03,0.055,0.1); vec3 zen = vec3(0.003,0.005,0.014); gl_FragColor = vec4(mix(hor, zen, pow(h, 0.5)), 1.0); }'
+                })
+            ));
+            const STARS = 2200, sp = new Float32Array(STARS * 3), sc = new Float32Array(STARS * 3);
+            for (let k = 0; k < STARS; k++) {
+                const th = Math.random() * Math.PI * 2, ph = Math.acos(1 - (Math.random() * 0.95 + 0.02));
+                sp[k * 3] = 160 * Math.sin(ph) * Math.cos(th);
+                sp[k * 3 + 1] = 160 * Math.cos(ph);
+                sp[k * 3 + 2] = 160 * Math.sin(ph) * Math.sin(th);
+                const b = 0.45 + Math.random() * 0.55;
+                sc[k * 3] = b * 0.85; sc[k * 3 + 1] = b * 0.9; sc[k * 3 + 2] = b;
+            }
+            const starGeo = new THREE.BufferGeometry();
+            starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+            starGeo.setAttribute('color', new THREE.BufferAttribute(sc, 3));
+            scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 1.7, sizeAttenuation: false, vertexColors: true, transparent: true, opacity: 0.95, depthWrite: false })));
 
-            function labelTexture(text) {
-                const c = document.createElement('canvas');
-                c.width = 1024; c.height = 128;
+            function glowTexture(inner, outer) {
+                const c = document.createElement('canvas'); c.width = c.height = 128;
                 const g = c.getContext('2d');
-                g.clearRect(0, 0, c.width, c.height);
+                const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+                grd.addColorStop(0, inner); grd.addColorStop(0.25, inner); grd.addColorStop(0.32, outer); grd.addColorStop(1, 'rgba(0,0,0,0)');
+                g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+                const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+            }
+            const moon = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(222,230,245,0.95)', 'rgba(140,165,210,0.22)'), transparent: true, depthWrite: false }));
+            moon.position.set(0, 58, -150); moon.scale.set(44, 44, 1);
+            scene.add(moon);
+
+            /* ---- Panneaux : 2 de navigation + 5 travaux ---- */
+            const R = 9, N = 7, H = 4.4, BASE = 0.55;
+            const SPAN = THREE.MathUtils.degToRad(152), STEP = SPAN / N;
+            const PW = 2 * R * Math.tan(STEP / 2) * 0.86;
+            const loader = new THREE.TextureLoader();
+
+            function textCanvas(text, w, h, size, align) {
+                const c = document.createElement('canvas'); c.width = w; c.height = h;
+                const g = c.getContext('2d');
                 g.fillStyle = '#eef0f4';
-                g.font = '500 58px "Space Grotesk", "Helvetica Neue", Arial, sans-serif';
+                g.font = `500 ${size}px "Space Grotesk", "Helvetica Neue", Arial, sans-serif`;
                 g.textBaseline = 'middle';
-                const letters = text.toUpperCase().split('');
-                const spacing = 9;
-                let w = letters.reduce((s, ch) => s + g.measureText(ch).width + spacing, -spacing);
-                let x = 12;
-                letters.forEach((ch) => { g.fillText(ch, x, 70); x += g.measureText(ch).width + spacing; });
-                const t = new THREE.CanvasTexture(c);
-                t.colorSpace = THREE.SRGBColorSpace;
-                t.anisotropy = 4;
-                return t;
+                const letters = text.toUpperCase().split(''), spacing = size * 0.16;
+                const total = letters.reduce((s, ch) => s + g.measureText(ch).width + spacing, -spacing);
+                let x = align === 'center' ? (w - total) / 2 : 10;
+                letters.forEach((ch) => { g.fillText(ch, x, h / 2 + 4); x += g.measureText(ch).width + spacing; });
+                const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+            }
+            function navTexture(arrow, word) {
+                const c = document.createElement('canvas'); c.width = 512; c.height = 768;
+                const g = c.getContext('2d');
+                const grd = g.createLinearGradient(0, 0, 0, 768);
+                grd.addColorStop(0, '#0d1420'); grd.addColorStop(1, '#05080d');
+                g.fillStyle = grd; g.fillRect(0, 0, 512, 768);
+                g.strokeStyle = 'rgba(163,177,194,0.45)'; g.lineWidth = 2; g.strokeRect(18, 18, 476, 732);
+                g.fillStyle = '#dfe6f0'; g.textAlign = 'center'; g.textBaseline = 'middle';
+                g.font = '300 220px "Space Grotesk", Arial, sans-serif'; g.fillText(arrow, 256, 330);
+                g.font = '500 40px "Space Grotesk", Arial, sans-serif'; g.fillText(word, 256, 520);
+                g.fillStyle = 'rgba(163,177,194,0.8)'; g.font = '24px "Share Tech Mono", monospace';
+                g.fillText(arrow === '←' ? 'SECTION PRÉCÉDENTE' : 'SECTION SUIVANTE', 256, 580);
+                const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
             }
             function placeholderTexture(text) {
-                const c = document.createElement('canvas');
-                c.width = 512; c.height = 768;
+                const c = document.createElement('canvas'); c.width = 512; c.height = 768;
                 const g = c.getContext('2d');
                 g.fillStyle = '#0c0f14'; g.fillRect(0, 0, 512, 768);
-                g.strokeStyle = 'rgba(234,232,228,0.25)'; g.strokeRect(20, 20, 472, 728);
                 g.fillStyle = '#a3b1c2'; g.font = '28px "Share Tech Mono", monospace'; g.textAlign = 'center';
                 g.fillText(text, 256, 384);
                 const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
             }
-            function cover(tex, img) {
-                const a = img.width / img.height, A = PW / H;
-                tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+            function cover(tex) {
+                const a = tex.image.width / tex.image.height, A = PW / H;
                 if (a > A) { tex.repeat.set(A / a, 1); tex.offset.set((1 - A / a) / 2, 0); }
                 else { tex.repeat.set(1, a / A); tex.offset.set(0, (1 - a / A) / 2); }
             }
 
+            const goTo = (id) => {
+                const nav = document.querySelector('.nav-item[data-target="' + id + '"]');
+                if (nav) { nav.click(); return; }
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+            };
+            const panels = [];
             for (let i = 0; i < N; i++) {
                 const phi = -SPAN / 2 + STEP * (i + 0.5);
                 const pivot = new THREE.Group();
                 pivot.position.set(R * Math.sin(phi), 0, -R * Math.cos(phi));
                 pivot.rotation.y = -phi;
-                group.add(pivot);
-                const lift = new THREE.Group();
-                pivot.add(lift);
-                // cadre sombre derrière l'image
-                const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.85, 0.85, 0.85) });
+                scene.add(pivot);
+                const lift = new THREE.Group(); pivot.add(lift);
+                const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.86, 0.86, 0.86) });
                 const screen = new THREE.Mesh(new THREE.PlaneGeometry(PW, H), mat);
-                screen.position.set(0, BASE + H / 2, 0);
+                screen.position.y = BASE + H / 2;
                 screen.userData.index = i;
                 lift.add(screen);
                 const lmat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false });
-                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW * 1.05, PW * 1.05 / 8), lmat);
-                label.position.set(-PW * 0.0, BASE + H + 0.32, 0);
+                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW * 1.15, PW * 1.15 / 8), lmat);
+                label.position.y = BASE + H + 0.42;
                 lift.add(label);
-                panels.push({ slot: SLOTS[i], lift, screen, mat, label, lmat, url: null, name: null, liftNow: 0, liftTo: 0, glowNow: 0.85, glowTo: 0.85 });
+                const p = { lift, screen, mat, lmat, liftNow: 0, liftTo: 0, glowNow: 0.86, glowTo: 0.86, url: null, name: null };
+                if (i === 0) { p.nav = 'accueil'; mat.map = navTexture('←', 'ACCUEIL'); lmat.map = textCanvas('← Accueil', 1024, 128, 56, 'center'); }
+                else if (i === N - 1) { p.nav = 'curation'; mat.map = navTexture('→', 'CURATION'); lmat.map = textCanvas('Curation →', 1024, 128, 56, 'center'); }
+                else p.slot = SLOTS[i - 1];
+                panels.push(p);
             }
 
-            // Lit le contenu de chaque emplacement (la rotation des membres et
-            // le défilement des photos d'Oscar changent les images en direct).
             const cache = new Map();
             function syncPanels() {
                 panels.forEach((p) => {
+                    if (!p.slot) return;
                     const box = p.slot.querySelector('.travaux-cell-box');
                     const titleEl = p.slot.querySelector('.travaux-cell-title');
                     const name = titleEl ? titleEl.textContent.trim() : '';
                     if (name && name !== p.name) {
                         p.name = name;
                         if (p.lmat.map) p.lmat.map.dispose();
-                        p.lmat.map = labelTexture(name); p.lmat.needsUpdate = true;
+                        p.lmat.map = textCanvas(name, 1024, 128, 56, 'center'); p.lmat.needsUpdate = true;
                     }
-                    // La photo visible est sur le calque « active » ; sinon, fond de la case
                     const layer = box ? box.querySelector('.cell-photo-layer.active') : null;
                     const bg = layer ? (layer.style.backgroundImage || getComputedStyle(layer).backgroundImage)
                                      : (box ? getComputedStyle(box).backgroundImage : 'none');
@@ -2478,141 +2537,126 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                     }
                     const use = (tex) => { if (p.url === url) { p.mat.map = tex; p.mat.needsUpdate = true; } };
                     if (cache.has(url)) { use(cache.get(url)); return; }
-                    loader.load(url, (tex) => {
-                        tex.colorSpace = THREE.SRGBColorSpace;
-                        cover(tex, tex.image);
-                        cache.set(url, tex);
-                        use(tex);
-                    });
+                    loader.load(url, (tex) => { tex.colorSpace = THREE.SRGBColorSpace; cover(tex); cache.set(url, tex); use(tex); });
                 });
             }
-            if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { panels.forEach((p) => { p.name = null; }); syncPanels(); });
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+                panels.forEach((p) => { if (p.slot) p.name = null; });
+                panels[0].lmat.map = textCanvas('← Accueil', 1024, 128, 56, 'center'); panels[0].lmat.needsUpdate = true;
+                panels[0].mat.map = navTexture('←', 'ACCUEIL'); panels[0].mat.needsUpdate = true;
+                panels[N - 1].lmat.map = textCanvas('Curation →', 1024, 128, 56, 'center'); panels[N - 1].lmat.needsUpdate = true;
+                panels[N - 1].mat.map = navTexture('→', 'CURATION'); panels[N - 1].mat.needsUpdate = true;
+                syncPanels();
+            });
             syncPanels();
             setInterval(syncPanels, 700);
 
-            /* ---- Le ciel : nuit étoilée, lune pâle ---- */
-            const sky = new THREE.Mesh(
-                new THREE.SphereGeometry(140, 32, 16),
-                new THREE.ShaderMaterial({
-                    side: THREE.BackSide,
-                    depthWrite: false,
-                    vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-                    fragmentShader: 'varying vec3 vP; void main(){ float h = clamp(vP.y, 0.0, 1.0); vec3 hor = vec3(0.035,0.06,0.11); vec3 zen = vec3(0.004,0.006,0.016); gl_FragColor = vec4(mix(hor, zen, pow(h, 0.45)), 1.0); }'
-                })
-            );
-            scene.add(sky);
-            const starGeo = new THREE.BufferGeometry();
-            const STARS = 1600, sp = new Float32Array(STARS * 3), sc = new Float32Array(STARS * 3);
-            for (let k = 0; k < STARS; k++) {
-                const u = Math.random(), v = Math.random() * 0.92 + 0.04;
-                const th = u * Math.PI * 2, ph = Math.acos(1 - v);           // hémisphère du haut
-                const r = 120;
-                sp[k * 3] = r * Math.sin(ph) * Math.cos(th);
-                sp[k * 3 + 1] = r * Math.cos(ph);
-                sp[k * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
-                const b = 0.55 + Math.random() * 0.45, blue = Math.random() < 0.3 ? 1.0 : 0.85;
-                sc[k * 3] = b * 0.85; sc[k * 3 + 1] = b * 0.9; sc[k * 3 + 2] = b * blue;
-            }
-            starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
-            starGeo.setAttribute('color', new THREE.BufferAttribute(sc, 3));
-            const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 1.6, sizeAttenuation: false, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false }));
-            scene.add(stars);
-            (function moon() {
-                const c = document.createElement('canvas'); c.width = c.height = 256;
-                const g = c.getContext('2d');
-                const grd = g.createRadialGradient(128, 128, 30, 128, 128, 128);
-                grd.addColorStop(0, 'rgba(225,232,245,0.95)'); grd.addColorStop(0.32, 'rgba(200,212,235,0.85)');
-                grd.addColorStop(0.36, 'rgba(150,170,210,0.18)'); grd.addColorStop(1, 'rgba(120,140,190,0)');
-                g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
-                const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
-                const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
-                m.position.set(-28, 46, -95); m.scale.set(26, 26, 1);
-                scene.add(m);
-            })();
+            /* ---- Petites lumières flottantes ---- */
+            const orbTex = glowTexture('rgba(235,242,255,1)', 'rgba(120,170,255,0.35)');
+            const orbs = [];
+            [[-3.2, 0.9, -6.2], [-1.2, 0.6, -5.0], [1.6, 1.1, -6.8], [3.6, 0.7, -5.4], [-4.8, 1.3, -7.6], [5.2, 1.0, -7.2]].forEach((pos, k) => {
+                const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: orbTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+                s.position.set(pos[0], pos[1], pos[2]); s.scale.setScalar(0.42);
+                s.userData = { y: pos[1], ph: k * 1.3 };
+                scene.add(s); orbs.push(s);
+            });
 
-            // Petite plateforme sous les pieds du visiteur
-            const plat = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 2.75, 0.14, 72), new THREE.MeshBasicMaterial({ color: 0x0b0e13 }));
-            plat.position.set(0, 0.07, 0.3);
+            /* ---- Plateforme sous les pieds ---- */
+            const plat = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 3.55, 0.16, 96), new THREE.MeshBasicMaterial({ color: 0x0a0d12 }));
+            plat.position.set(0, 0.06, 0.4);
             scene.add(plat);
-            const rim = new THREE.Mesh(new THREE.TorusGeometry(2.62, 0.012, 6, 120), new THREE.MeshBasicMaterial({ color: 0x6d86a8 }));
-            rim.rotation.x = Math.PI / 2; rim.position.set(0, 0.145, 0.3);
+            const rim = new THREE.Mesh(new THREE.TorusGeometry(3.42, 0.014, 6, 160), new THREE.MeshBasicMaterial({ color: 0x5d779c }));
+            rim.rotation.x = Math.PI / 2; rim.position.set(0, 0.145, 0.4);
             scene.add(rim);
 
-            /* ---- L'eau ---- */
+            /* ---- L'eau : miroir + vagues + ondes à la souris ---- */
             const normals = loader.load('images/travaux/waternormals.jpg', (t) => { t.wrapS = t.wrapT = THREE.RepeatWrapping; });
-            const water = new Water(new THREE.PlaneGeometry(120, 120), {
-                textureWidth: 1024,
-                textureHeight: 1024,
-                waterNormals: normals,
-                sunDirection: new THREE.Vector3(-0.3, 0.25, -1).normalize(),
-                sunColor: 0x26344a,
-                waterColor: 0x01040a,
-                distortionScale: 2.2,
-                fog: false
+            normals.wrapS = normals.wrapT = THREE.RepeatWrapping;
+            const RIP = 10, rip = [];
+            for (let k = 0; k < RIP; k++) rip.push(new THREE.Vector4(0, 0, -99, 0));
+            const WaterShader = {
+                name: 'BaboWater',
+                uniforms: {
+                    color: { value: null }, tDiffuse: { value: null }, textureMatrix: { value: null },
+                    uTime: { value: 0 }, uNormals: { value: null }, uRip: { value: rip }, uNow: { value: 0 }
+                },
+                vertexShader: `
+                    uniform mat4 textureMatrix;
+                    varying vec4 vUv;
+                    varying vec3 vWorld;
+                    void main() {
+                        vUv = textureMatrix * vec4( position, 1.0 );
+                        vWorld = ( modelMatrix * vec4( position, 1.0 ) ).xyz;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+                    }`,
+                fragmentShader: `
+                    uniform sampler2D tDiffuse;
+                    uniform sampler2D uNormals;
+                    uniform float uTime;
+                    uniform vec4 uRip[ ${RIP} ];
+                    uniform float uNow;
+                    varying vec4 vUv;
+                    varying vec3 vWorld;
+                    vec2 waves( vec2 p ) {
+                        vec2 a = texture2D( uNormals, p * 0.09 + vec2( uTime * 0.021, uTime * 0.013 ) ).rg * 2.0 - 1.0;
+                        vec2 b = texture2D( uNormals, p * 0.15 - vec2( uTime * 0.016, -uTime * 0.012 ) ).rg * 2.0 - 1.0;
+                        return a + b;
+                    }
+                    vec2 ripple( vec2 p ) {
+                        vec2 n = vec2( 0.0 );
+                        for ( int i = 0; i < ${RIP}; i++ ) {
+                            float age = uNow - uRip[ i ].z;
+                            if ( age < 0.0 || age > 4.0 ) continue;
+                            vec2 d = p - uRip[ i ].xy;
+                            float r = length( d );
+                            float f = age * 1.3;
+                            float w = sin( ( r - f ) * 5.0 ) * exp( -pow( ( r - f ) * 1.4, 2.0 ) ) * ( 1.0 - age / 4.0 ) * uRip[ i ].w;
+                            n += ( r > 0.0001 ? d / r : vec2( 0.0 ) ) * w;
+                        }
+                        return n;
+                    }
+                    void main() {
+                        vec2 n = waves( vWorld.xz ) + ripple( vWorld.xz ) * 2.0;
+                        vec4 uv = vUv;
+                        uv.xy += n * 0.045 * uv.w;
+                        vec3 refl = texture2DProj( tDiffuse, uv ).rgb;
+                        vec3 v = normalize( cameraPosition - vWorld );
+                        float fres = 0.35 + 0.65 * pow( 1.0 - clamp( v.y, 0.0, 1.0 ), 2.5 );
+                        vec3 deep = vec3( 0.0, 0.006, 0.016 );
+                        float sheen = pow( clamp( 0.5 + n.y * 0.35, 0.0, 1.0 ), 6.0 ) * 0.06;
+                        vec3 col = deep + refl * fres * 0.92 + vec3( 0.35, 0.45, 0.6 ) * sheen;
+                        gl_FragColor = vec4( col, 1.0 );
+                        #include <tonemapping_fragment>
+                        #include <colorspace_fragment>
+                    }`
+            };
+            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+            const water = new Reflector(new THREE.PlaneGeometry(200, 200), {
+                shader: WaterShader,
+                textureWidth: Math.round(host.clientWidth * dpr),
+                textureHeight: Math.round(host.clientHeight * dpr),
+                clipBias: 0.003
             });
             water.rotation.x = -Math.PI / 2;
-            water.material.uniforms.size.value = 2.2;
-            water.material.uniforms.alpha.value = 1.0;
+            water.material.uniforms.uNormals.value = normals;
+            water.material.uniforms.uRip.value = rip;
             scene.add(water);
-
-            // Ondes au passage de la souris : on ajoute un terme d'ondes
-            // circulaires à la normale calculée par Water.js.
-            const RIP = 10;
-            const rip = []; for (let k = 0; k < RIP; k++) rip.push(new THREE.Vector4(0, 0, -99, 0));
-            water.material.uniforms.uRip = { value: rip };
-            water.material.uniforms.uNow = { value: 0 };
-            water.material.uniforms.uDim = { value: 0.5 };
-            let fs = water.material.fragmentShader;
-            const NORMAL_LINE = 'vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );';
-            if (fs.includes(NORMAL_LINE) && fs.includes('void main() {')) {
-                fs = fs.replace('void main() {', `
-                uniform vec4 uRip[${RIP}];
-                uniform float uNow;
-                vec3 ripple( vec2 p ) {
-                    vec3 n = vec3( 0.0 );
-                    for ( int i = 0; i < ${RIP}; i++ ) {
-                        float age = uNow - uRip[i].z;
-                        if ( age < 0.0 || age > 4.0 ) continue;
-                        vec2 d = p - uRip[i].xy;
-                        float r = length( d );
-                        float front = age * 1.3;
-                        float w = sin( ( r - front ) * 5.0 ) * exp( -pow( ( r - front ) * 1.4, 2.0 ) ) * ( 1.0 - age / 4.0 ) * uRip[i].w;
-                        vec2 dir = r > 0.0001 ? d / r : vec2( 0.0 );
-                        n.x += dir.x * w; n.z += dir.y * w;
-                    }
-                    return n;
-                }
-                void main() {`);
-                fs = fs.replace(NORMAL_LINE, 'vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) + ripple( worldPosition.xz ) );');
-                // Eau de nuit : on assombrit le résultat final
-                fs = fs.replace('uniform float uNow;', 'uniform float uNow;\n                uniform float uDim;');
-                if (fs.includes('gl_FragColor = vec4( outgoingLight, alpha );')) {
-                    fs = fs.replace('gl_FragColor = vec4( outgoingLight, alpha );', 'gl_FragColor = vec4( outgoingLight * uDim, alpha );');
-                }
-                water.material.fragmentShader = fs;
-                water.material.needsUpdate = true;
-            }
             let ripI = 0;
-            function addRipple(x, z, strength) {
-                rip[ripI].set(x, z, water.material.uniforms.uNow.value, strength);
-                ripI = (ripI + 1) % RIP;
-            }
+            const addRipple = (x, z, s) => { rip[ripI].set(x, z, water.material.uniforms.uNow.value, s); ripI = (ripI + 1) % RIP; };
 
             /* ---- Survol, clic, ondes ---- */
-            const ray = new THREE.Raycaster();
-            const ptr = new THREE.Vector2();
+            const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
             const screens = panels.map((p) => p.screen);
-            let hovered = -1, lastRipple = 0;
+            let lastRipple = 0;
             function setPointer(e) {
                 const r = canvas.getBoundingClientRect();
                 ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
                 ray.setFromCamera(ptr, camera);
             }
             function setHover(i) {
-                hovered = i;
                 panels.forEach((p, k) => {
-                    p.liftTo = k === i ? 0.28 : 0;
-                    p.glowTo = i < 0 ? 0.85 : (k === i ? 1.2 : 0.62);
+                    p.liftTo = k === i ? 0.3 : 0;
+                    p.glowTo = i < 0 ? 0.86 : (k === i ? 1.2 : 0.6);
                 });
                 canvas.style.cursor = i >= 0 ? 'pointer' : 'default';
             }
@@ -2630,24 +2674,29 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             canvas.addEventListener('click', (e) => {
                 setPointer(e);
                 const hit = ray.intersectObjects(screens, false)[0];
-                if (hit) { panels[hit.object.userData.index].slot.click(); return; }
+                if (hit) {
+                    const p = panels[hit.object.userData.index];
+                    if (p.nav) goTo(p.nav); else p.slot.click();
+                    return;
+                }
                 const w = ray.intersectObject(water, false)[0];
                 if (w) addRipple(w.point.x, w.point.z, 0.45);
             });
-            // Au clavier : le lien focalisé met son panneau en avant
             SLOTS.forEach((s, i) => {
-                s.addEventListener('focus', () => setHover(i));
+                s.addEventListener('focus', () => setHover(i + 1));
                 s.addEventListener('blur', () => setHover(-1));
             });
 
-            /* ---- Taille, boucle de rendu ---- */
+            /* ---- Taille et rendu ---- */
             function resize() {
                 const w = host.clientWidth, h = host.clientHeight;
                 if (!w || !h) return;
                 renderer.setSize(w, h, false);
                 camera.aspect = w / h;
-                camera.fov = w / h < 1.5 ? 80 : 72;
+                camera.fov = w / h < 1.5 ? 62 : 52;
                 camera.updateProjectionMatrix();
+                const rt = water.getRenderTarget && water.getRenderTarget();
+                if (rt) rt.setSize(Math.round(w * dpr), Math.round(h * dpr));
             }
             resize();
             window.addEventListener('resize', resize);
@@ -2655,12 +2704,15 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             let visible = true;
             new IntersectionObserver((en) => { visible = en[0].isIntersecting; }, { threshold: 0.01 }).observe(host);
             const clock = new THREE.Clock();
-            function frame() {
+            let t = 0;
+            (function frame() {
                 requestAnimationFrame(frame);
                 if (!visible || document.hidden) { clock.getDelta(); return; }
                 const dt = Math.min(clock.getDelta(), 0.05);
-                if (!reduce) water.material.uniforms.time.value += dt * 0.55;
+                if (!reduce) t += dt;
+                water.material.uniforms.uTime.value = t;
                 water.material.uniforms.uNow.value += dt;
+                orbs.forEach((o) => { o.position.y = o.userData.y + Math.sin(t * 0.6 + o.userData.ph) * 0.18; });
                 panels.forEach((p) => {
                     p.liftNow += (p.liftTo - p.liftNow) * 0.12;
                     p.glowNow += (p.glowTo - p.glowNow) * 0.12;
@@ -2668,12 +2720,12 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                     p.mat.color.setScalar(p.glowNow);
                 });
                 renderer.render(scene, camera);
-            }
-            frame();
+            })();
         } catch (err) {
-            // Filet de sécurité : on revient à la version HTML
             host.classList.remove('tw3d-on');
+            section.classList.remove('tw3d-section');
             if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
+            if (styleEl && styleEl.parentNode) styleEl.parentNode.removeChild(styleEl);
             console.warn('Salle 3D indisponible :', err);
         }
     })();
