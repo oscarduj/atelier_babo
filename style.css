@@ -3600,6 +3600,72 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 #travaux.tw3d-section .section-content { width: 100%; }
 .main-feed .travaux-asym-grid.tw3d-on { height: 100vh; height: 100dvh; margin: 0 -6rem; }
 
+/* ============================================================
+   CURATION — version minimale (réf. Studio Agar, Marie Bliss Delpy)
+   Le titre en cours est net au centre, encadré de coins fins ; les
+   autres titres flottent au-dessus et en dessous, flous et estompés.
+   ============================================================ */
+#curation { background: #08090a; }
+.cm {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 32rem) minmax(0, 1fr);
+    align-items: center;
+    gap: 2rem;
+    height: clamp(26rem, 64vh, 36rem);
+    margin-top: 1rem;
+    outline: none;
+}
+.cm-side { display: flex; flex-direction: column; gap: 0.35rem; font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.cm-left { align-items: flex-end; text-align: right; }
+.cm-num { color: rgba(234, 232, 228, 0.5); }
+.cm-tag { color: var(--text-color); max-width: 16rem; line-height: 1.4; }
+.cm-right { align-items: flex-start; }
+.cm-text { max-width: 18rem; font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; line-height: 1.55; letter-spacing: 0; text-transform: none; color: rgba(234, 232, 228, 0.6); }
+.cm-link { margin-top: 0.4rem; color: var(--text-color); text-decoration: none; border-bottom: 1px solid rgba(234, 232, 228, 0.5); }
+.cm-link:hover { border-bottom-color: var(--text-color); }
+.cm-link:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 3px; }
+.cm-list { position: relative; height: 100%; list-style: none; margin: 0; padding: 0; }
+.cm-item {
+    --d: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    padding: 1.6rem 1.4rem;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-align: center;
+    cursor: pointer;
+    transform: translate(-50%, calc(-50% + var(--d) * 7.5rem)) scale(calc(1 - min(1, abs(var(--d))) * 0.42));
+    filter: blur(calc(min(2, abs(var(--d))) * 5px));
+    opacity: calc(1 - min(2, abs(var(--d))) * 0.38);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease, opacity 0.6s ease;
+}
+.cm-item.is-active { cursor: pointer; }
+.cm-item:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 4px; }
+/* Quatre coins fins autour du titre central */
+.cm-corner { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; border: 0 solid rgba(234, 232, 228, 0.7); pointer-events: none; }
+.cm-c1 { transform: translate(calc(-16rem), -4.2rem); border-top-width: 1px; border-left-width: 1px; }
+.cm-c2 { transform: translate(calc(16rem - 14px), -4.2rem); border-top-width: 1px; border-right-width: 1px; }
+.cm-c3 { transform: translate(calc(-16rem), calc(4.2rem - 14px)); border-bottom-width: 1px; border-left-width: 1px; }
+.cm-c4 { transform: translate(calc(16rem - 14px), calc(4.2rem - 14px)); border-bottom-width: 1px; border-right-width: 1px; }
+@media (max-width: 900px) {
+    .cm { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; height: auto; gap: 1rem; }
+    .cm-left, .cm-right { align-items: center; text-align: center; }
+    .cm-list { height: 20rem; }
+    .cm-item { font-size: 1.4rem; }
+    .cm-corner { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cm-item { transition: none; } }
+
+
 
 
 
