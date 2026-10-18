@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261018b">
+    <link rel="stylesheet" href="style.css?v=20261018c">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -2379,15 +2379,16 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             renderer.outputColorSpace = THREE.SRGBColorSpace;
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(64, 1, 0.1, 200);
-            camera.position.set(0, 1.55, 0.4);
-            camera.lookAt(0, 1.85, -6);
+            const camera = new THREE.PerspectiveCamera(72, 1, 0.1, 300);
+            camera.position.set(0, 1.9, 0.3);
+            camera.lookAt(0, 2.4, -6);
+            document.getElementById('travaux').classList.add('tw3d-section');
 
             /* ---- Les panneaux en cercle ---- */
-            const R = 6.2, H = 4.1, BASE = 0.35, N = SLOTS.length;
+            const R = 6.3, H = 4.9, BASE = 0.22, N = SLOTS.length;
             const SPAN = THREE.MathUtils.degToRad(150);
             const STEP = SPAN / N;
-            const PW = 2 * R * Math.tan(STEP / 2) * 0.93;
+            const PW = 2 * R * Math.tan(STEP / 2) * 0.9;
             const group = new THREE.Group();
             scene.add(group);
             const loader = new THREE.TextureLoader();
@@ -2437,9 +2438,6 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 const lift = new THREE.Group();
                 pivot.add(lift);
                 // cadre sombre derrière l'image
-                const frame = new THREE.Mesh(new THREE.PlaneGeometry(PW + 0.08, H + 0.08), new THREE.MeshBasicMaterial({ color: 0x07080a }));
-                frame.position.set(0, BASE + H / 2, -0.01);
-                lift.add(frame);
                 const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.85, 0.85, 0.85) });
                 const screen = new THREE.Mesh(new THREE.PlaneGeometry(PW, H), mat);
                 screen.position.set(0, BASE + H / 2, 0);
@@ -2492,16 +2490,64 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             syncPanels();
             setInterval(syncPanels, 700);
 
+            /* ---- Le ciel : nuit étoilée, lune pâle ---- */
+            const sky = new THREE.Mesh(
+                new THREE.SphereGeometry(140, 32, 16),
+                new THREE.ShaderMaterial({
+                    side: THREE.BackSide,
+                    depthWrite: false,
+                    vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+                    fragmentShader: 'varying vec3 vP; void main(){ float h = clamp(vP.y, 0.0, 1.0); vec3 hor = vec3(0.035,0.06,0.11); vec3 zen = vec3(0.004,0.006,0.016); gl_FragColor = vec4(mix(hor, zen, pow(h, 0.45)), 1.0); }'
+                })
+            );
+            scene.add(sky);
+            const starGeo = new THREE.BufferGeometry();
+            const STARS = 1600, sp = new Float32Array(STARS * 3), sc = new Float32Array(STARS * 3);
+            for (let k = 0; k < STARS; k++) {
+                const u = Math.random(), v = Math.random() * 0.92 + 0.04;
+                const th = u * Math.PI * 2, ph = Math.acos(1 - v);           // hémisphère du haut
+                const r = 120;
+                sp[k * 3] = r * Math.sin(ph) * Math.cos(th);
+                sp[k * 3 + 1] = r * Math.cos(ph);
+                sp[k * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+                const b = 0.55 + Math.random() * 0.45, blue = Math.random() < 0.3 ? 1.0 : 0.85;
+                sc[k * 3] = b * 0.85; sc[k * 3 + 1] = b * 0.9; sc[k * 3 + 2] = b * blue;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+            starGeo.setAttribute('color', new THREE.BufferAttribute(sc, 3));
+            const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 1.6, sizeAttenuation: false, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false }));
+            scene.add(stars);
+            (function moon() {
+                const c = document.createElement('canvas'); c.width = c.height = 256;
+                const g = c.getContext('2d');
+                const grd = g.createRadialGradient(128, 128, 30, 128, 128, 128);
+                grd.addColorStop(0, 'rgba(225,232,245,0.95)'); grd.addColorStop(0.32, 'rgba(200,212,235,0.85)');
+                grd.addColorStop(0.36, 'rgba(150,170,210,0.18)'); grd.addColorStop(1, 'rgba(120,140,190,0)');
+                g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+                const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+                const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
+                m.position.set(-28, 46, -95); m.scale.set(26, 26, 1);
+                scene.add(m);
+            })();
+
+            // Petite plateforme sous les pieds du visiteur
+            const plat = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 2.75, 0.14, 72), new THREE.MeshBasicMaterial({ color: 0x0b0e13 }));
+            plat.position.set(0, 0.07, 0.3);
+            scene.add(plat);
+            const rim = new THREE.Mesh(new THREE.TorusGeometry(2.62, 0.012, 6, 120), new THREE.MeshBasicMaterial({ color: 0x6d86a8 }));
+            rim.rotation.x = Math.PI / 2; rim.position.set(0, 0.145, 0.3);
+            scene.add(rim);
+
             /* ---- L'eau ---- */
             const normals = loader.load('images/travaux/waternormals.jpg', (t) => { t.wrapS = t.wrapT = THREE.RepeatWrapping; });
             const water = new Water(new THREE.PlaneGeometry(120, 120), {
                 textureWidth: 1024,
                 textureHeight: 1024,
                 waterNormals: normals,
-                sunDirection: new THREE.Vector3(0.0, 0.35, -1).normalize(),
-                sunColor: 0x8fa6c4,
-                waterColor: 0x020814,
-                distortionScale: 2.6,
+                sunDirection: new THREE.Vector3(-0.3, 0.25, -1).normalize(),
+                sunColor: 0x26344a,
+                waterColor: 0x01040a,
+                distortionScale: 2.2,
                 fog: false
             });
             water.rotation.x = -Math.PI / 2;
@@ -2515,6 +2561,7 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             const rip = []; for (let k = 0; k < RIP; k++) rip.push(new THREE.Vector4(0, 0, -99, 0));
             water.material.uniforms.uRip = { value: rip };
             water.material.uniforms.uNow = { value: 0 };
+            water.material.uniforms.uDim = { value: 0.5 };
             let fs = water.material.fragmentShader;
             const NORMAL_LINE = 'vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );';
             if (fs.includes(NORMAL_LINE) && fs.includes('void main() {')) {
@@ -2528,8 +2575,8 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                         if ( age < 0.0 || age > 4.0 ) continue;
                         vec2 d = p - uRip[i].xy;
                         float r = length( d );
-                        float front = age * 2.0;
-                        float w = sin( ( r - front ) * 9.0 ) * exp( -pow( ( r - front ) * 2.2, 2.0 ) ) * ( 1.0 - age / 4.0 ) * uRip[i].w;
+                        float front = age * 1.3;
+                        float w = sin( ( r - front ) * 5.0 ) * exp( -pow( ( r - front ) * 1.4, 2.0 ) ) * ( 1.0 - age / 4.0 ) * uRip[i].w;
                         vec2 dir = r > 0.0001 ? d / r : vec2( 0.0 );
                         n.x += dir.x * w; n.z += dir.y * w;
                     }
@@ -2537,6 +2584,11 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 }
                 void main() {`);
                 fs = fs.replace(NORMAL_LINE, 'vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) + ripple( worldPosition.xz ) );');
+                // Eau de nuit : on assombrit le résultat final
+                fs = fs.replace('uniform float uNow;', 'uniform float uNow;\n                uniform float uDim;');
+                if (fs.includes('gl_FragColor = vec4( outgoingLight, alpha );')) {
+                    fs = fs.replace('gl_FragColor = vec4( outgoingLight, alpha );', 'gl_FragColor = vec4( outgoingLight * uDim, alpha );');
+                }
                 water.material.fragmentShader = fs;
                 water.material.needsUpdate = true;
             }
@@ -2569,9 +2621,9 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 const hit = ray.intersectObjects(screens, false)[0];
                 setHover(hit ? hit.object.userData.index : -1);
                 const now = performance.now();
-                if (!hit && now - lastRipple > 110) {
+                if (!hit && now - lastRipple > 220) {
                     const w = ray.intersectObject(water, false)[0];
-                    if (w) { addRipple(w.point.x, w.point.z, 0.35); lastRipple = now; }
+                    if (w) { addRipple(w.point.x, w.point.z, 0.14); lastRipple = now; }
                 }
             });
             canvas.addEventListener('pointerleave', () => setHover(-1));
@@ -2580,7 +2632,7 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 const hit = ray.intersectObjects(screens, false)[0];
                 if (hit) { panels[hit.object.userData.index].slot.click(); return; }
                 const w = ray.intersectObject(water, false)[0];
-                if (w) addRipple(w.point.x, w.point.z, 1.0);
+                if (w) addRipple(w.point.x, w.point.z, 0.45);
             });
             // Au clavier : le lien focalisé met son panneau en avant
             SLOTS.forEach((s, i) => {
@@ -2594,7 +2646,7 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 if (!w || !h) return;
                 renderer.setSize(w, h, false);
                 camera.aspect = w / h;
-                camera.fov = w / h < 1.5 ? 74 : 64;
+                camera.fov = w / h < 1.5 ? 80 : 72;
                 camera.updateProjectionMatrix();
             }
             resize();

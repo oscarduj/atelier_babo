@@ -3588,6 +3588,19 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .tw3d-on .tv-water { display: none; }
 .tw3d-on::before { z-index: 3; }
 
+/* ---------- TRAVAUX 3D : la scène prend tout l'écran, sans la barre de titre ---------- */
+#travaux.tw3d-section { padding-top: 0; padding-bottom: 0; }
+#travaux.tw3d-section .sec-head {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+#travaux.tw3d-section .section-content { width: 100%; }
+.main-feed .travaux-asym-grid.tw3d-on { height: 100vh; height: 100dvh; margin: 0 -6rem; }
+
+
 
 
 
