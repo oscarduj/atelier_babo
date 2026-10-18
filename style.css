@@ -3665,6 +3665,38 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 }
 @media (prefers-reduced-motion: reduce) { .cm-item { transition: none; } }
 
+/* ---------- CURATION : en-tête centré et symétrique, extrait plus petit ---------- */
+#curation .sec-head {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+}
+#curation .sec-head h2 { text-align: center; }
+#curation .sec-head .sec-meta,
+#curation .sec-head .section-desc {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(234, 232, 228, 0.6);
+}
+#curation .sec-head .sec-meta .tag,
+#curation .sec-head .sec-meta .sec-num { font-size: inherit; letter-spacing: inherit; opacity: 1; color: inherit; }
+#curation .sec-head .section-desc { justify-self: end; text-align: right; max-width: 16rem; }
+/* Colonnes latérales de même largeur, extrait plus petit */
+.cm { grid-template-columns: minmax(0, 1fr) minmax(0, 30rem) minmax(0, 1fr); }
+.cm-left, .cm-right { width: 15rem; max-width: 100%; }
+.cm-left { justify-self: end; }
+.cm-right { justify-self: start; }
+.cm-text { font-size: 0.72rem; line-height: 1.6; max-width: 15rem; }
+@media (max-width: 900px) {
+    #curation .sec-head { grid-template-columns: 1fr; text-align: center; }
+    #curation .sec-head .sec-meta { align-items: center; }
+    #curation .sec-head .section-desc { justify-self: center; text-align: center; }
+    .cm-left, .cm-right { width: auto; justify-self: center; }
+}
+
+
 
 
 
