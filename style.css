@@ -3696,6 +3696,112 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     .cm-left, .cm-right { width: auto; justify-self: center; }
 }
 
+/* ============================================================
+   EXPOS v3 — rangée de pochettes vues par la tranche (réf. lecteur
+   de musique). Remplace les plaques épaisses précédentes.
+   ============================================================ */
+.sp2 { padding-top: 0.4rem; }
+.sp2 .sp-viewport { position: relative; overflow: hidden; padding: 3.8rem 0 0.5rem; margin: 0 -6rem; }
+.sp2 .sp-row {
+    display: flex !important;
+    gap: 0.9rem;
+    height: clamp(17rem, 44vh, 24rem);
+    padding: 0 !important;
+    perspective: none !important;
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+.sp2 .sp-item {
+    --sp-closed: 4.6;
+    --sp-open: 17;
+    position: relative;
+    flex: 0 0 calc(var(--sp-closed) * 1rem) !important;
+    margin: 0 !important;
+    padding: 0;
+    border: none;
+    background: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: pointer;
+    transition: flex-basis 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    perspective: 700px;
+}
+.sp2 .sp-item.is-active { flex-basis: calc(var(--sp-open) * 1rem) !important; }
+.sp2 .sp-item::before, .sp2 .sp-item::after { display: none !important; }
+/* La pochette : vue presque par la tranche, de face quand elle est choisie */
+.sp2 .sp-cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: calc(var(--sp-open) * 1rem);
+    transform-origin: left center;
+    transform: rotateY(-74deg);
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sp2 .sp-item.is-active .sp-cover { transform: rotateY(0deg); }
+.sp2 .sp-item:hover:not(.is-active) .sp-cover { transform: rotateY(-64deg); }
+.sp2 .sp-img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.7) saturate(0.85);
+    outline: none !important;
+    transition: filter 0.6s ease;
+}
+.sp2 .sp-item.is-active .sp-img, .sp2 .sp-item:hover .sp-img { filter: none; }
+/* Étiquette : deux lignes et un point, au-dessus de chaque pochette */
+.sp2 .sp-label {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 0.8rem) !important;
+    top: auto !important;
+    width: calc(var(--sp-closed) * 1rem + 0.6rem);
+    max-width: none !important;
+    transform: none !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.sp2 .sp-item.is-active .sp-label { width: calc(var(--sp-open) * 1rem); }
+.sp2 .sp-label b { display: block !important; font-size: 0.64rem; font-weight: 500; line-height: 1.25; white-space: normal; overflow: hidden; display: -webkit-box !important; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.sp2 .sp-label i { display: block !important; font-size: 0.55rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp2 .sp-label em { margin-top: 0.4rem; }
+/* Barre du bas : titre à gauche, commandes au centre, infos à droite */
+.sp2 .sp-bar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: end;
+    gap: 2rem;
+    margin-top: 1.8rem !important;
+}
+.sp2 .sp-big { font-size: clamp(1.3rem, 2.2vw, 1.9rem) !important; line-height: 1.1; }
+.sp2 .sp-meta { margin: 0.45rem 0 0; }
+.sp2 .sp-ctrl { justify-self: center; }
+.sp2 .sp-info { justify-self: end; text-align: right; max-width: 22rem; }
+.sp2 .sp-place { margin: 0 0 0.35rem; font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-color); }
+.sp2 .sp-desc { margin: 0; font-size: 0.75rem; line-height: 1.5; color: rgba(234, 232, 228, 0.6); }
+@media (max-width: 900px) {
+    .sp2 .sp-viewport { margin: 0 -1.25rem; }
+    .sp2 .sp-item { --sp-closed: 3.2; --sp-open: 13; }
+    .sp2 .sp-row { height: 18rem; }
+    .sp2 .sp-item:not(.is-active) .sp-label b, .sp2 .sp-item:not(.is-active) .sp-label i { display: none !important; }
+    .sp2 .sp-bar { grid-template-columns: 1fr; gap: 1rem; }
+    .sp2 .sp-ctrl, .sp2 .sp-info { justify-self: start; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sp2 .sp-row, .sp2 .sp-item, .sp2 .sp-cover { transition: none; }
+}
+/* Pochettes fermées : fines, sans chevauchement ; étiquettes dans leur colonne */
+.sp2 .sp-item { --sp-closed: 5.4; }
+.sp2 .sp-cover { width: 100%; transform: perspective(500px) rotateY(-38deg); }
+.sp2 .sp-item.is-active .sp-cover { transform: perspective(500px) rotateY(0deg); }
+.sp2 .sp-item:hover:not(.is-active) .sp-cover { transform: perspective(500px) rotateY(-24deg); }
+.sp2 .sp-label { width: calc(var(--sp-closed) * 1rem); }
+@media (max-width: 900px) { .sp2 .sp-item { --sp-closed: 3.4; } }
+
+
 
 
 
