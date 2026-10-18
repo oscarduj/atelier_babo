@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261018e">
+    <link rel="stylesheet" href="style.css?v=20261018f">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -2470,7 +2470,15 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             // Mur sombre circulaire derrière les panneaux : les fentes restent noires
             const wall = new THREE.Mesh(
                 new THREE.CylinderGeometry(R + 0.6, R + 0.6, BASE + H + 1.6, 96, 1, true),
-                new THREE.MeshBasicMaterial({ color: 0x020306, side: THREE.BackSide })
+                // Opaque en bas (fentes noires entre les panneaux), puis fondu vers
+                // le haut pour laisser voir le ciel au-dessus des panneaux.
+                new THREE.ShaderMaterial({
+                    side: THREE.BackSide,
+                    transparent: true,
+                    depthWrite: false,
+                    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+                    fragmentShader: 'varying vec2 vUv; void main(){ float a = 1.0 - smoothstep(0.45, 0.82, vUv.y); gl_FragColor = vec4(0.008, 0.012, 0.024, a); }'
+                })
             );
             wall.position.y = (BASE + H + 1.6) / 2;
             scene.add(wall);
