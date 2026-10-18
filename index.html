@@ -2386,7 +2386,10 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 .tw3d-on > .tw3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 2; }
                 .tw3d-on .travaux-cell { position: absolute !important; left: 0; top: 0; width: 1px !important; height: 1px; overflow: hidden; opacity: 0 !important; pointer-events: none; transform: none !important; }
                 .tw3d-on .tv-water, .tw3d-on .tv-vault, .tw3d-on .tv-floor { display: none !important; }
-                .tw3d-on::after { display: none !important; }`;
+                .tw3d-on::after { display: none !important; }
+                .tw3d-hint { position: absolute; left: 50%; bottom: 1.4rem; z-index: 4; margin: 0; transform: translateX(-50%); font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(234,232,228,0.7); pointer-events: none; transition: opacity 0.8s ease; }
+                .tw3d-hint.is-gone { opacity: 0; }
+                .tw3d-canvas:focus-visible { outline: 1px dashed rgba(234,232,228,0.6); outline-offset: -6px; }`;
             document.head.appendChild(styleEl);
             section.classList.add('tw3d-section');
             host.classList.add('tw3d-on');
@@ -2398,7 +2401,8 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             scene.background = new THREE.Color(0x010205);
             const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 400);
             camera.position.set(0, 1.7, 0);
-            camera.lookAt(0, 1.75, -16);
+            camera.rotation.order = 'YXZ';
+            let yaw = 0, pitch = 0.004, yawTo = 0, pitchTo = 0.004;
 
             /* ---- Ciel 100 % procédural : shader sur un dôme vu de l'intérieur ----
                Plusieurs couches de bruit pour les nébuleuses et la Voie lactée,
@@ -2594,13 +2598,53 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             syncPanels();
             setInterval(syncPanels, 700);
 
-            /* ---- Plateforme sous les pieds ---- */
-            const plat = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.35, 0.16, 96), new THREE.MeshBasicMaterial({ color: 0x0a0d12 }));
-            plat.position.set(0, 0.06, 0.4);
-            scene.add(plat);
-            const rim = new THREE.Mesh(new THREE.TorusGeometry(4.22, 0.016, 6, 180), new THREE.MeshBasicMaterial({ color: 0x5d779c }));
-            rim.rotation.x = Math.PI / 2; rim.position.set(0, 0.145, 0.4);
-            scene.add(rim);
+            /* ---- Sol d'herbe de nuit au premier plan ---- */
+            const ground = new THREE.Mesh(new THREE.CircleGeometry(4.7, 96), new THREE.MeshBasicMaterial({ color: 0x030605 }));
+            ground.rotation.x = -Math.PI / 2; ground.position.y = 0.025;
+            scene.add(ground);
+            const bladeGeo = new THREE.BufferGeometry();
+            bladeGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([
+                -0.035, 0, 0,   0.035, 0, 0,   -0.018, 0.5, 0,
+                 0.035, 0, 0,   0.018, 0.5, 0,  -0.018, 0.5, 0,
+                -0.018, 0.5, 0, 0.018, 0.5, 0,   0.0, 1.0, 0
+            ]), 3));
+            const grassMat = new THREE.ShaderMaterial({
+                side: THREE.DoubleSide,
+                uniforms: { uTime: { value: 0 } },
+                vertexShader: `
+                    uniform float uTime;
+                    varying float vH;
+                    void main() {
+                        vec4 wp = modelMatrix * instanceMatrix * vec4( position, 1.0 );
+                        float k = position.y;
+                        vH = k;
+                        wp.x += sin( uTime * 1.1 + wp.x * 0.7 + wp.z * 0.5 ) * 0.07 * k * k;
+                        wp.z += cos( uTime * 0.9 + wp.x * 0.4 ) * 0.04 * k * k;
+                        gl_Position = projectionMatrix * viewMatrix * wp;
+                    }`,
+                fragmentShader: `
+                    varying float vH;
+                    void main() {
+                        vec3 base = vec3( 0.004, 0.012, 0.01 );
+                        vec3 tip = vec3( 0.03, 0.06, 0.09 );
+                        gl_FragColor = vec4( mix( base, tip, vH * vH ), 1.0 );
+                    }`
+            });
+            const BLADES = 2600;
+            const grassMesh = new THREE.InstancedMesh(bladeGeo, grassMat, BLADES);
+            const dummy = new THREE.Object3D();
+            for (let k = 0; k < BLADES; k++) {
+                const a = Math.random() * Math.PI * 2;
+                const r = 2.2 + Math.pow(Math.random(), 0.6) * 2.6;
+                dummy.position.set(Math.cos(a) * r, 0.02, Math.sin(a) * r);
+                dummy.rotation.set((Math.random() - 0.5) * 0.35, Math.random() * Math.PI, (Math.random() - 0.5) * 0.35);
+                const s = 0.45 + Math.random() * 0.9 * (r > 3.8 ? 0.7 : 1.0);
+                dummy.scale.set(1, s, 1);
+                dummy.updateMatrix();
+                grassMesh.setMatrixAt(k, dummy.matrix);
+            }
+            grassMesh.frustumCulled = false;
+            scene.add(grassMesh);
 
             /* ---- L'eau : miroir + vagues + ondes à la souris ---- */
             const normals = loader.load('images/travaux/waternormals.jpg', (t) => { t.wrapS = t.wrapT = THREE.RepeatWrapping; });
@@ -2693,7 +2737,29 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 });
                 canvas.style.cursor = i >= 0 ? 'pointer' : 'default';
             }
+            // Regard à la première personne : on fait glisser pour tourner la tête
+            const YAW_MAX = SPAN / 2 - 0.08, PITCH_MIN = -0.12, PITCH_MAX = 0.22;
+            let dragging = false, moved = false, sx = 0, sy = 0, syaw = 0, spitch = 0;
+            canvas.style.touchAction = 'pan-y';
+            const hint = document.createElement('p');
+            hint.className = 'tw3d-hint';
+            hint.textContent = 'Glissez pour regarder autour';
+            host.appendChild(hint);
+            canvas.addEventListener('pointerdown', (e) => {
+                dragging = true; moved = false; sx = e.clientX; sy = e.clientY; syaw = yawTo; spitch = pitchTo;
+            });
+            window.addEventListener('pointerup', () => { dragging = false; });
             canvas.addEventListener('pointermove', (e) => {
+                if (dragging && (e.buttons || e.pointerType === 'touch')) {
+                    const dx = e.clientX - sx, dy = e.clientY - sy;
+                    if (Math.abs(dx) + Math.abs(dy) > 6) {
+                        moved = true;
+                        hint.classList.add('is-gone');
+                        yawTo = THREE.MathUtils.clamp(syaw + dx * 0.0032, -YAW_MAX, YAW_MAX);
+                        pitchTo = THREE.MathUtils.clamp(spitch + dy * 0.0022, PITCH_MIN, PITCH_MAX);
+                    }
+                    return;
+                }
                 setPointer(e);
                 const hit = ray.intersectObjects(screens, false)[0];
                 setHover(hit ? hit.object.userData.index : -1);
@@ -2705,6 +2771,7 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
             });
             canvas.addEventListener('pointerleave', () => setHover(-1));
             canvas.addEventListener('click', (e) => {
+                if (moved) { moved = false; return; }
                 setPointer(e);
                 const hit = ray.intersectObjects(screens, false)[0];
                 if (hit) {
@@ -2714,6 +2781,14 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 }
                 const w = ray.intersectObject(water, false)[0];
                 if (w) addRipple(w.point.x, w.point.z, 0.45);
+            });
+            canvas.tabIndex = 0;
+            canvas.setAttribute('aria-label', 'Salle des travaux : glissez ou utilisez les flèches pour regarder autour');
+            canvas.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') { yawTo = Math.min(YAW_MAX, yawTo + 0.18); e.preventDefault(); }
+                if (e.key === 'ArrowRight') { yawTo = Math.max(-YAW_MAX, yawTo - 0.18); e.preventDefault(); }
+                if (e.key === 'ArrowUp') { pitchTo = Math.min(PITCH_MAX, pitchTo + 0.06); e.preventDefault(); }
+                if (e.key === 'ArrowDown') { pitchTo = Math.max(PITCH_MIN, pitchTo - 0.06); e.preventDefault(); }
             });
             SLOTS.forEach((s, i) => {
                 s.addEventListener('focus', () => setHover(i + 1));
@@ -2746,6 +2821,10 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
                 water.material.uniforms.uTime.value = t;
                 water.material.uniforms.uNow.value += dt;
                 skyMat.uniforms.uTime.value = t;
+                grassMat.uniforms.uTime.value = t;
+                const ease = reduce ? 1 : 0.09;
+                yaw += (yawTo - yaw) * ease; pitch += (pitchTo - pitch) * ease;
+                camera.rotation.set(pitch, yaw, 0);
                 panels.forEach((p) => {
                     p.liftNow += (p.liftTo - p.liftNow) * 0.12;
                     p.glowNow += (p.glowTo - p.glowNow) * 0.12;
