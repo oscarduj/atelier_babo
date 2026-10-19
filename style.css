@@ -4019,6 +4019,40 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     .dfm-disc { animation: none; }
 }
 
+/* ---------- EXPOS : sans icônes de lecture, angles stables, affiches en volume ---------- */
+.dfm-lab em { width: 5px; height: 5px; border-radius: 50%; background: #ffffff; margin-top: 1.9rem; font-size: 0; }
+.dfm-col.is-sel .dfm-lab em { box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
+.dfm-skip { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border: 1px solid rgba(255, 255, 255, 0.35) !important; border-radius: 50%; }
+.dfm-skip svg { width: 1.1rem; height: 0.6rem; fill: none; stroke: #ffffff; stroke-width: 1.2; }
+.dfm-count { font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; letter-spacing: 0.12em; color: #ffffff; min-width: 4.6rem; text-align: center; }
+.dfm-disc { display: none; }
+/* Épaisseur : une tranche sur le bord qui fuit et un dessus */
+.dfm-door::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 22px;
+    transform-origin: right center;
+    transform: rotateY(90deg);
+    background: linear-gradient(to bottom, #3b4047 0%, #23272c 45%, #111316 100%);
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.18);
+}
+.dfm-door::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 22px;
+    transform-origin: top center;
+    transform: rotateX(-90deg);
+    background: #2d3137;
+}
+.dfm-col.is-sel .dfm-door { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
+
+
 
 
 
