@@ -4052,6 +4052,38 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 }
 .dfm-col.is-sel .dfm-door { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7); }
 
+/* ---------- EXPOS : bande alignée, sans perspective (réf. vidéo) ---------- */
+.dfm-col { perspective: none; transition: flex-basis 0.7s cubic-bezier(0.16, 1, 0.3, 1), width 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.dfm-col.is-sel { flex-basis: min(34vw, 520px); width: min(34vw, 520px); }
+.dfm-door {
+    top: 6.6rem;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: 100%;
+    transform: scaleX(var(--k, 0.6)) !important;
+    transform-origin: left center;
+    transform-style: flat;
+    box-shadow: none;
+}
+.dfm-door::before, .dfm-door::after { display: none !important; }
+/* L'affiche entière, centrée, sur un fond de sa couleur moyenne */
+.dfm-img {
+    background-color: var(--avg, #222222);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.dfm-img::before {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.85) 100%);
+    opacity: var(--shade, 0.4);
+}
+.dfm-col.is-sel .dfm-door { box-shadow: none; }
+@media (max-width: 900px) {
+    .dfm-col.is-sel { flex-basis: 62vw; width: 62vw; }
+}
+
+
 
 
 
