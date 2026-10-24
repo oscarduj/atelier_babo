@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261024c">
+    <link rel="stylesheet" href="style.css?v=20261024d">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -368,36 +368,42 @@
                 </header>
                 <div class="sg" id="sg">
                     <div class="sg-bg" aria-hidden="true"><span class="sg-bg-a"></span><span class="sg-bg-b"></span></div>
+                    <aside class="sg-about" id="sg-about" aria-live="polite">
+                        <span class="sg-about-k">À propos</span>
+                        <p class="sg-about-t" id="sg-about-t"></p>
+                        <p class="sg-about-d" id="sg-about-d"></p>
+                        <p class="sg-about-m" id="sg-about-m"></p>
+                    </aside>
                     <div class="sg-stage" id="sg-stage" tabindex="0" aria-label="Expositions : flèches pour naviguer, Entrée pour ouvrir">
-                        <button type="button" class="sg-item" data-t="2024.22" data-cat="expo" data-img="images/expos/possible-2024.jpg" data-title="Un possible d&#x27;images" data-dates="23 — 24 mars 2024" data-place="La Petite fabrique d&#x27;art, Paris" data-state="ARCHIVÉ" data-desc="Première exposition collective, sous le commissariat de Jason Karaïndros, avec l&#x27;ésadhar." aria-label="Un possible d&#x27;images, 23 — 24 mars 2024">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/trois-installation-1.jpg,images/travaux/collectif/trois-installation-2.jpg,images/travaux/collectif/trois-installation-3.jpg,images/travaux/collectif/trois-1.jpg,images/travaux/collectif/trois-affiche.jpg" data-t="2024.22" data-cat="expo" data-img="images/expos/possible-2024.jpg" data-title="Un possible d&#x27;images" data-dates="23 — 24 mars 2024" data-place="La Petite fabrique d&#x27;art, Paris" data-state="ARCHIVÉ" data-desc="Première exposition collective, sous le commissariat de Jason Karaïndros, avec l&#x27;ésadhar." aria-label="Un possible d&#x27;images, 23 — 24 mars 2024">
                             <span class="sg-cap"><b>Un possible d&#x27;images</b><i>23 — 24 mars 2024</i></span>
                             <img src="images/expos/possible-2024.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2025.05" data-cat="workshop" data-img="images/expos/workshop-orleans.jpg" data-title="Art et Intelligences Artificielles" data-dates="21 — 25 janv. 2025" data-place="ESAD Orléans" data-state="ARCHIVÉ" data-desc="Workshop avec l&#x27;École nationale supérieure de la photographie d&#x27;Arles : quelle nature compose le numérique ?" aria-label="Art et Intelligences Artificielles, 21 — 25 janv. 2025">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/workshop-ia-4.jpg,images/travaux/collectif/workshop-ia-5.jpg,images/travaux/collectif/workshop-ia-1.jpg,images/travaux/collectif/workshop-ia-2.jpg,images/travaux/collectif/workshop-ia-3.jpg" data-t="2025.05" data-cat="workshop" data-img="images/expos/workshop-orleans.jpg" data-title="Art et Intelligences Artificielles" data-dates="21 — 25 janv. 2025" data-place="ESAD Orléans" data-state="ARCHIVÉ" data-desc="Workshop avec l&#x27;École nationale supérieure de la photographie d&#x27;Arles : quelle nature compose le numérique ?" aria-label="Art et Intelligences Artificielles, 21 — 25 janv. 2025">
                             <span class="sg-cap"><b>Art et Intelligences Artificielles</b><i>21 — 25 janv. 2025</i></span>
                             <img src="images/expos/workshop-orleans.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2025.2" data-cat="workshop" data-img="images/expos/workshop-esadhar.jpg" data-title="Art et Intelligences Artificielles" data-dates="17 — 21 mars 2025" data-place="ésadhar, Rouen" data-state="ARCHIVÉ" data-desc="Workshop autour de l&#x27;intelligence artificielle et de l&#x27;image générée." aria-label="Art et Intelligences Artificielles, 17 — 21 mars 2025">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/workshop-ia-1.jpg,images/travaux/collectif/workshop-ia-2.jpg,images/travaux/collectif/workshop-ia-3.jpg,images/travaux/collectif/workshop-ia-4.jpg,images/travaux/collectif/workshop-ia-5.jpg" data-t="2025.2" data-cat="workshop" data-img="images/expos/workshop-esadhar.jpg" data-title="Art et Intelligences Artificielles" data-dates="17 — 21 mars 2025" data-place="ésadhar, Rouen" data-state="ARCHIVÉ" data-desc="Workshop autour de l&#x27;intelligence artificielle et de l&#x27;image générée." aria-label="Art et Intelligences Artificielles, 17 — 21 mars 2025">
                             <span class="sg-cap"><b>Art et Intelligences Artificielles</b><i>17 — 21 mars 2025</i></span>
                             <img src="images/expos/workshop-esadhar.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2025.6" data-cat="expo" data-img="images/expos/portes-ouvertes.jpg" data-title="Portes ouvertes — Babosphere Beta 1.5" data-dates="2025" data-place="ésadhar, Rouen" data-state="ARCHIVÉ" data-desc="Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l&#x27;espace." aria-label="Portes ouvertes — Babosphere Beta 1.5, 2025">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/babosphere-11.jpg,images/travaux/collectif/babosphere-12.jpg,images/travaux/collectif/babosphere-13.jpg,images/travaux/collectif/babosphere-08.jpg,images/travaux/collectif/babosphere-09.jpg" data-t="2025.6" data-cat="expo" data-img="images/expos/portes-ouvertes.jpg" data-title="Portes ouvertes — Babosphere Beta 1.5" data-dates="2025" data-place="ésadhar, Rouen" data-state="ARCHIVÉ" data-desc="Présentation de la version dispersée de Babosphere, aux modules désormais éclatés dans l&#x27;espace." aria-label="Portes ouvertes — Babosphere Beta 1.5, 2025">
                             <span class="sg-cap"><b>Portes ouvertes — Babosphere Beta 1.5</b><i>2025</i></span>
                             <img src="images/expos/portes-ouvertes.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2026.2" data-cat="expo" data-img="images/expos/videoformes-2026.jpg" data-title="Video Art Academy" data-dates="13 — 27 mars 2026" data-place="Festival VIDEOFORMES, Clermont-Ferrand" data-state="ARCHIVÉ" data-desc="Projections au festival VIDEOFORMES, Galerie Dolet, dans le cadre de la Video Art Academy." aria-label="Video Art Academy, 13 — 27 mars 2026">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/portrait-immateriel-affiche.jpg,images/travaux/collectif/portrait-immateriel-plan-18.jpg,images/travaux/collectif/portrait-immateriel-plan-24.jpg,images/travaux/collectif/portrait-immateriel-plan-27.jpg,images/travaux/collectif/portrait-immateriel-installation-1.jpg" data-t="2026.2" data-cat="expo" data-img="images/expos/videoformes-2026.jpg" data-title="Video Art Academy" data-dates="13 — 27 mars 2026" data-place="Festival VIDEOFORMES, Clermont-Ferrand" data-state="ARCHIVÉ" data-desc="Projections au festival VIDEOFORMES, Galerie Dolet, dans le cadre de la Video Art Academy." aria-label="Video Art Academy, 13 — 27 mars 2026">
                             <span class="sg-cap"><b>Video Art Academy</b><i>13 — 27 mars 2026</i></span>
                             <img src="images/expos/videoformes-2026.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2026.39" data-cat="expo" data-img="images/expos/possible-encore-2026.jpg" data-title="Un possible d&#x27;image encore…" data-dates="23 — 25 mai 2026" data-place="Immanence, Paris" data-state="ARCHIVÉ" data-desc="Exposition collective imaginée par Jason Karaïndros. Atelier Babo y présentait Signal faible : perturbation du visible 2.0." aria-label="Un possible d&#x27;image encore…, 23 — 25 mai 2026">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/signal-faible-v2-mur.jpg,images/travaux/collectif/signal-faible-v2-mur-2.jpg,images/travaux/collectif/signal-faible-tirage-1.jpg,images/travaux/collectif/signal-faible-tirage-2.jpg,images/travaux/collectif/signal-faible-toile.jpg" data-t="2026.39" data-cat="expo" data-img="images/expos/possible-encore-2026.jpg" data-title="Un possible d&#x27;image encore…" data-dates="23 — 25 mai 2026" data-place="Immanence, Paris" data-state="ARCHIVÉ" data-desc="Exposition collective imaginée par Jason Karaïndros. Atelier Babo y présentait Signal faible : perturbation du visible 2.0." aria-label="Un possible d&#x27;image encore…, 23 — 25 mai 2026">
                             <span class="sg-cap"><b>Un possible d&#x27;image encore…</b><i>23 — 25 mai 2026</i></span>
                             <img src="images/expos/possible-encore-2026.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2026.45" data-cat="expo" data-img="images/expos/dnsep.jpg" data-title="DNSEP" data-dates="Juin 2026" data-place="ésadhar, Rouen" data-state="ARCHIVÉ" data-desc="Diplôme national supérieur d&#x27;expression plastique : présentation des versions finales de Babosphere, EAURACLE et Signal faible : perturbation du visible." aria-label="DNSEP, Juin 2026">
+                        <button type="button" class="sg-item" data-photos="images/travaux/collectif/eauracle-1.jpg,images/travaux/collectif/babosphere-06.jpg,images/travaux/collectif/signal-faible-v2-mur.jpg,images/travaux/collectif/eauracle-3.jpg,images/travaux/collectif/babosphere-10.jpg" data-t="2026.45" data-cat="expo" data-img="images/expos/dnsep.jpg" data-title="DNSEP" data-dates="Juin 2026" data-place="ésadhar, Rouen" data-state="ARCHIVÉ" data-desc="Diplôme national supérieur d&#x27;expression plastique : présentation des versions finales de Babosphere, EAURACLE et Signal faible : perturbation du visible." aria-label="DNSEP, Juin 2026">
                             <span class="sg-cap"><b>DNSEP</b><i>Juin 2026</i></span>
                             <img src="images/expos/dnsep.jpg" alt="" loading="lazy">
                         </button>
-                        <button type="button" class="sg-item" data-t="2026.78" data-cat="expo" data-img="images/expos/5d.jpg" data-title="5D" data-dates="3 — 25 oct. 2026" data-place="SHED, Notre-Dame-de-Bondeville" data-state="EN COURS" data-desc="Exposition collective au SHED, Frac Normandie. Oscar Dujarrier y présente Le bruit de l&#x27;eau." aria-label="5D, 3 — 25 oct. 2026">
+                        <button type="button" class="sg-item" data-photos="images/travaux/oscar-projets/bruit-eau-1.jpg,images/travaux/oscar-projets/bruit-eau-2.jpg,images/travaux/oscar-projets/bruit-eau-3.jpg,images/travaux/oscar-projets/bruit-eau-4.jpg,images/travaux/oscar-projets/bruit-eau.jpg" data-t="2026.78" data-cat="expo" data-img="images/expos/5d.jpg" data-title="5D" data-dates="3 — 25 oct. 2026" data-place="SHED, Notre-Dame-de-Bondeville" data-state="EN COURS" data-desc="Exposition collective au SHED, Frac Normandie. Oscar Dujarrier y présente Le bruit de l&#x27;eau." aria-label="5D, 3 — 25 oct. 2026">
                             <span class="sg-cap"><b>5D</b><i>3 — 25 oct. 2026</i></span>
                             <img src="images/expos/5d.jpg" alt="" loading="lazy">
                         </button>
@@ -1500,6 +1506,8 @@
             const $ = (id) => document.getElementById(id);
             const stage = $('sg-stage');
             const bgA = root.querySelector('.sg-bg-a'), bgB = root.querySelector('.sg-bg-b');
+            const sec = root.closest('section');
+            if (sec) { sec.classList.add('sg-section'); sec.insertBefore(root.querySelector('.sg-bg'), sec.firstChild); }
             let list = all.filter((c) => c.dataset.cat === 'expo');
             let P = 0, PTo = 0, cur = -1, bgFlip = false, snapT = null, lastDir = 1, base = 0;
 
@@ -1510,6 +1518,15 @@
                 if (!c) return;
                 all.forEach((o) => { o.classList.toggle('is-cur', o === c); o.tabIndex = o === c ? 0 : -1; });
                 $('sg-place').textContent = c.dataset.place + ' · ' + c.dataset.state;
+                const about = $('sg-about');
+                about.classList.remove('is-in'); void about.offsetWidth;
+                $('sg-about-t').textContent = c.dataset.title;
+                $('sg-about-d').textContent = c.dataset.desc;
+                $('sg-about-m').textContent = c.dataset.dates + ' — ' + c.dataset.place;
+                // Le texte se place du côté opposé à la vignette suivante (toujours dans le vide)
+                const nextDir = (cur + 1) % 2 ? -1 : 1;
+                about.classList.toggle('is-right', nextDir < 0 && cur + 1 < list.length);
+                about.classList.add('is-in');
                 $('sg-count').textContent = String(cur + 1).padStart(2, '0') + ' / ' + String(list.length).padStart(2, '0');
                 const on = bgFlip ? bgA : bgB, off = bgFlip ? bgB : bgA;
                 on.style.backgroundImage = 'url("' + c.dataset.img + '")'; on.classList.add('is-on'); off.classList.remove('is-on');
@@ -1621,24 +1638,13 @@
             let opener = null;
             function openDetail(c) {
                 opener = c;
-                // Chaque colonne montre sa tranche de l'affiche : réunies, elles
-                // reforment l'image entière (calcul « cover » sur la taille réelle).
+                // Chaque colonne montre une photo différente de l'exposition
                 det.hidden = false;
-                const box = $('sg-cols');
-                const W = box.clientWidth, H = box.clientHeight, n = colsEl.length;
-                const im = new Image();
-                im.onload = () => {
-                    const sc = Math.max(W / im.naturalWidth, H / im.naturalHeight);
-                    const iw = im.naturalWidth * sc, ih = im.naturalHeight * sc;
-                    const ox = (W - iw) / 2, oy = (H - ih) / 2;
-                    colsEl.forEach((col, k) => {
-                        col.style.backgroundSize = iw + 'px ' + ih + 'px';
-                        col.style.backgroundPosition = (ox - k * W / n) + 'px ' + oy + 'px';
-                    });
-                };
-                im.src = c.dataset.img;
+                const photos = (c.dataset.photos || c.dataset.img).split(',');
                 colsEl.forEach((col, k) => {
-                    col.style.backgroundImage = 'url("' + c.dataset.img + '")';
+                    col.style.backgroundImage = 'url("' + photos[k % photos.length] + '")';
+                    col.style.backgroundSize = 'cover';
+                    col.style.backgroundPosition = 'center';
                     col.style.transitionDelay = (reduceM ? 0 : k * 70) + 'ms';
                 });
                 $('sg-i-state').textContent = c.dataset.state;
