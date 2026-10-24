@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261024b">
+    <link rel="stylesheet" href="style.css?v=20261024c">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -285,40 +285,17 @@
 
                 <div id="cat-artistes" class="collab-category-content active">
                     <p class="section-desc">Artistes invité·es et compagnons de route du collectif.</p>
-                    <div class="dt-field">
-                        <img class="dt-bg" src="images/travaux/collectif/babosphere-10.jpg" alt="" loading="lazy">
-                        <svg class="dt-net" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="12.0" y1="32.0" x2="29.0" y2="56.0"/><line x1="29.0" y1="56.0" x2="47.5" y2="29.0"/><line x1="47.5" y1="29.0" x2="63.5" y2="54.0"/><line x1="63.5" y1="54.0" x2="79.0" y2="28.0"/><line x1="79.0" y1="28.0" x2="91.5" y2="57.0"/><line class="is-faint" x1="12.0" y1="32.0" x2="47.5" y2="29.0"/><line class="is-faint" x1="29.0" y1="56.0" x2="91.5" y2="57.0"/></svg>
-                        <a class="dt-box" href="artistes/goshe.html" style="--x:5%;--y:10%;--w:14%;--h:44%">
-                            <span class="dt-face" aria-hidden="true">G0</span>
-                            <span class="dt-name">g0she</span>
-                            <span class="dt-data"><b>ID 01 // ARTISTE</b>Arts Numériques<i>STATUT : DÉTECTÉ</i></span>
-                        </a>
-                        <a class="dt-box" href="artistes/nino.html" style="--x:23%;--y:36%;--w:12%;--h:40%">
-                            <span class="dt-face" aria-hidden="true">NI</span>
-                            <span class="dt-name">Nino</span>
-                            <span class="dt-data"><b>ID 02 // ARTISTE</b>Plastique & Son<i>STATUT : DÉTECTÉ</i></span>
-                        </a>
-                        <a class="dt-box" href="artistes/quidenovie.html" style="--x:40%;--y:6%;--w:15%;--h:46%">
-                            <span class="dt-face" aria-hidden="true">QU</span>
-                            <span class="dt-name">quideNovie</span>
-                            <span class="dt-data"><b>ID 03 // ARTISTE</b>Recherche & Code<i>STATUT : DÉTECTÉ</i></span>
-                        </a>
-                        <a class="dt-box" href="artistes/collectif-naif.html" style="--x:57%;--y:32%;--w:13%;--h:44%">
-                            <span class="dt-face" aria-hidden="true">CN</span>
-                            <span class="dt-name">collectif naïf</span>
-                            <span class="dt-data"><b>ID 04 // ARTISTE</b>Création Collaborative<i>STATUT : DÉTECTÉ</i></span>
-                        </a>
-                        <a class="dt-box is-left" href="artistes/hugo-denise.html" style="--x:73%;--y:8%;--w:12%;--h:40%">
-                            <span class="dt-face" aria-hidden="true">HD</span>
-                            <span class="dt-name">Hugo Denise</span>
-                            <span class="dt-data"><b>ID 05 // ARTISTE</b>Installation & Matière<i>STATUT : DÉTECTÉ</i></span>
-                        </a>
-                        <a class="dt-box is-left" href="artistes/leon-chotard.html" style="--x:86%;--y:36%;--w:11%;--h:42%">
-                            <span class="dt-face" aria-hidden="true">LC</span>
-                            <span class="dt-name">Léon Chotard</span>
-                            <span class="dt-data"><b>ID 06 // ARTISTE</b>Génératif & Visuel<i>STATUT : DÉTECTÉ</i></span>
-                        </a>
-                        <span class="dt-hud" aria-hidden="true">DÉTECTION // 06 PROFILS — RÉSEAU ATELIER BABO</span>
+                    <div class="ar3d" id="ar3d">
+                        <div class="ar3d-labels" id="ar3d-labels" aria-hidden="true"></div>
+                        <ul class="ar3d-list" id="ar3d-list" aria-label="Artistes collaborateurs">
+                            <li><a class="ar3d-link" href="artistes/goshe.html" data-i="0" data-name="g0she" data-practice="Arts Numériques">g0she <span>Arts Numériques</span></a></li>
+                            <li><a class="ar3d-link" href="artistes/nino.html" data-i="1" data-name="Nino" data-practice="Plastique &amp; Son">Nino <span>Plastique &amp; Son</span></a></li>
+                            <li><a class="ar3d-link" href="artistes/quidenovie.html" data-i="2" data-name="quideNovie" data-practice="Recherche &amp; Code">quideNovie <span>Recherche &amp; Code</span></a></li>
+                            <li><a class="ar3d-link" href="artistes/collectif-naif.html" data-i="3" data-name="collectif naïf" data-practice="Création Collaborative">collectif naïf <span>Création Collaborative</span></a></li>
+                            <li><a class="ar3d-link" href="artistes/hugo-denise.html" data-i="4" data-name="Hugo Denise" data-practice="Installation &amp; Matière">Hugo Denise <span>Installation &amp; Matière</span></a></li>
+                            <li><a class="ar3d-link" href="artistes/leon-chotard.html" data-i="5" data-name="Léon Chotard" data-practice="Génératif &amp; Visuel">Léon Chotard <span>Génératif &amp; Visuel</span></a></li>
+                        </ul>
+                        <p class="ar3d-hint" aria-hidden="true">Survoler pour identifier · cliquer pour ouvrir</p>
                     </div>
                 </div>
 
@@ -3318,5 +3295,252 @@ o:{offsetX:6.825,tile:[-1.7375,1.825,-1.74167,1.81667,-1.75,1.80833,-1.75417,1.8
         }
     })();
     </script>
+    <script type="module">
+    /* ============================================================
+       COLLABORATEURS — ARTISTES EN 3D
+       Grand espace noir vu en plongée ; chaque artiste est une silhouette
+       anonyme stylisée, debout sur une dalle lumineuse. Survol : la dalle
+       s'illumine, le halo grandit, nom et pratique apparaissent. Clic :
+       page de l'artiste. Si WebGL échoue, la liste de liens reste visible.
+       ============================================================ */
+    import * as THREE from 'three';
+
+    (function () {
+        const host = document.getElementById('ar3d');
+        const list = document.getElementById('ar3d-list');
+        if (!host || !list) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const links = Array.from(list.querySelectorAll('.ar3d-link'));
+
+        let renderer, canvas;
+        try {
+            canvas = document.createElement('canvas');
+            canvas.className = 'ar3d-canvas';
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+        } catch (e) { host.classList.add('is-fallback'); return; }
+
+        try {
+            host.insertBefore(canvas, host.firstChild);
+            host.classList.add('is-3d');
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x070707);
+            scene.fog = new THREE.Fog(0x070707, 16, 30);
+            const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+            const CAM = new THREE.Vector3(0, 10.5, 9.5);
+            camera.position.copy(CAM);
+            camera.lookAt(0, 0.4, 0);
+
+            // Intensités adaptées à l'éclairage physique de Three.js 0.160
+            scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+            const key = new THREE.DirectionalLight(0xffffff, 1.7);
+            key.position.set(-4, 10, 6);
+            scene.add(key);
+
+            // Sol noir mat, qui recueille les flaques de lumière des dalles
+            const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshStandardMaterial({ color: 0x0b0b0b, roughness: 1 }));
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
+
+            // Halo coloré sous chaque dalle
+            function haloTex() {
+                const c = document.createElement('canvas'); c.width = c.height = 128;
+                const g = c.getContext('2d');
+                const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+                grd.addColorStop(0, 'rgba(255,255,255,0.9)'); grd.addColorStop(0.35, 'rgba(255,255,255,0.35)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
+                g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+                const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx;
+            }
+            const HALO = haloTex();
+
+            // Une silhouette anonyme stylisée : jambes, buste, bras, tête, parfois un sac
+            const SKIN = new THREE.MeshStandardMaterial({ color: 0xb9b2aa, roughness: 0.85 });
+            const DARK = new THREE.MeshStandardMaterial({ color: 0x23262b, roughness: 0.9 });
+            const SHOE = new THREE.MeshStandardMaterial({ color: 0xe8e6e2, roughness: 0.7 });
+            function capsule(r, len, mat) { return new THREE.Mesh(new THREE.CapsuleGeometry(r, len, 6, 12), mat); }
+            function figure(o) {
+                const g = new THREE.Group();
+                const top = new THREE.MeshStandardMaterial({ color: o.top, roughness: 0.8 });
+                const legs = new THREE.MeshStandardMaterial({ color: o.legs, roughness: 0.9 });
+                [-1, 1].forEach((sd) => {
+                    const leg = capsule(0.07, 0.62, legs);
+                    leg.position.set(sd * 0.085, 0.42 + 0.02, sd * o.step);
+                    leg.rotation.x = -sd * o.step * 0.6;
+                    g.add(leg);
+                    const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.06, 0.22), SHOE);
+                    shoe.position.set(sd * 0.085, 0.04, sd * o.step + 0.04);
+                    g.add(shoe);
+                });
+                const torso = capsule(0.165, 0.36, top);
+                torso.scale.set(1, 1, 0.68);
+                torso.position.y = 1.08;
+                g.add(torso);
+                const arms = [];
+                [-1, 1].forEach((sd, k) => {
+                    const pivot = new THREE.Group();
+                    pivot.position.set(sd * 0.215, 1.3, 0);
+                    const arm = capsule(0.048, 0.5, top);
+                    arm.position.y = -0.3;
+                    pivot.add(arm);
+                    pivot.rotation.z = sd * 0.08;
+                    pivot.rotation.x = o.arms[k];
+                    g.add(pivot);
+                    arms.push(pivot);
+                });
+                const head = new THREE.Group();
+                head.position.y = 1.56;
+                const skull = new THREE.Mesh(new THREE.SphereGeometry(0.115, 18, 14), SKIN);
+                skull.scale.set(0.92, 1.05, 1);
+                head.add(skull);
+                const hair = new THREE.Mesh(new THREE.SphereGeometry(0.12, 18, 10, 0, Math.PI * 2, 0, Math.PI * 0.55), o.hood ? top : DARK);
+                hair.position.y = 0.012; hair.rotation.x = -0.25;
+                head.add(hair);
+                head.rotation.x = o.look;
+                g.add(head);
+                if (o.bag) {
+                    const bag = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.14), new THREE.MeshStandardMaterial({ color: o.bag, roughness: 0.85 }));
+                    bag.position.set(0, 1.1, -0.17);
+                    g.add(bag);
+                }
+                g.rotation.y = o.turn;
+                g.userData = { torso, head, arms, look: o.look };
+                return g;
+            }
+
+            // Six artistes : position, tenue, pose, couleur du halo
+            const SET = [
+                { p: [-3.6, -1.2], top: 0x2f6f73, legs: 0x2a3550, bag: 0x1d1f22, arms: [0.1, -0.15], step: 0.04, look: 0.25, turn: 0.6,  halo: 0x5fd6e0 },
+                { p: [-1.5, 0.9],  top: 0xb23a2c, legs: 0x2b2f3a, bag: null,     arms: [-1.2, 0.05], step: 0.0, look: 0.45, turn: -0.4, halo: 0xff5a3c },
+                { p: [0.6, -1.6],  top: 0xe6e3dc, legs: 0x1f2228, bag: 0x3f5f3a, arms: [0.05, 0.12], step: 0.06, look: 0.1, turn: 2.6,  halo: 0xffffff },
+                { p: [2.4, 0.6],   top: 0xd98b2b, legs: 0x3b4a6b, bag: null,     arms: [0.0, -0.9], step: 0.03, look: 0.3, turn: -2.2, halo: 0xffb04a },
+                { p: [3.9, -1.0],  top: 0x4d5a3f, legs: 0x26282c, bag: 0x2a2a2a, arms: [0.12, 0.08], step: 0.05, look: 0.05, turn: 1.4,  halo: 0xfff1d6, hood: true },
+                { p: [-0.2, 2.3],  top: 0x6a4b8a, legs: 0x1c1d22, bag: null,     arms: [-0.6, -0.1], step: 0.02, look: 0.35, turn: 0.2,  halo: 0xb48cff }
+            ];
+            const people = [];
+            const hits = [];
+            SET.forEach((o, i) => {
+                const root = new THREE.Group();
+                root.position.set(o.p[0], 0, o.p[1]);
+                scene.add(root);
+                const tileMat = new THREE.MeshStandardMaterial({ color: 0xd8d6d0, emissive: 0xffffff, emissiveIntensity: 0.35, roughness: 0.6 });
+                const tile = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.06, 0.85), tileMat);
+                tile.position.y = 0.03;
+                root.add(tile);
+                const halo = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 3.0), new THREE.MeshBasicMaterial({ map: HALO, color: o.halo, transparent: true, opacity: 0.28, depthWrite: false, blending: THREE.AdditiveBlending }));
+                halo.rotation.x = -Math.PI / 2; halo.position.y = 0.005;
+                root.add(halo);
+                const light = new THREE.PointLight(o.halo, 4, 3.6, 1.2);
+                light.position.set(0, 0.35, 0.2);
+                root.add(light);
+                const fig = figure(o);
+                fig.position.y = 0.06;
+                root.add(fig);
+                const hit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.9, 0.9), new THREE.MeshBasicMaterial({ visible: false }));
+                hit.position.y = 0.95; hit.userData.i = i;
+                root.add(hit); hits.push(hit);
+                people.push({ root, tileMat, halo, light, fig, glow: 0, glowTo: 0, phase: Math.random() * 6 });
+            });
+
+            // Étiquettes HTML, placées par projection des positions 3D
+            const labelsBox = document.getElementById('ar3d-labels');
+            const labels = links.map((a) => {
+                const el = document.createElement('span');
+                el.className = 'ar3d-label';
+                el.innerHTML = '<b></b><i></i>';
+                el.querySelector('b').textContent = a.dataset.name;
+                el.querySelector('i').textContent = a.dataset.practice;
+                labelsBox.appendChild(el);
+                return el;
+            });
+
+            // Survol, clic, clavier
+            const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+            let hover = -1, mx = 0, my = 0;
+            function setHover(i) {
+                hover = i;
+                people.forEach((p, k) => { p.glowTo = k === i ? 1 : (i < 0 ? 0 : -0.5); });
+                labels.forEach((l, k) => l.classList.toggle('is-on', k === i));
+                canvas.style.cursor = i >= 0 ? 'pointer' : 'default';
+            }
+            function pick(e) {
+                const r = canvas.getBoundingClientRect();
+                ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+                ray.setFromCamera(ptr, camera);
+                const h = ray.intersectObjects(hits, false)[0];
+                return h ? h.object.userData.i : -1;
+            }
+            canvas.addEventListener('pointermove', (e) => {
+                const r = canvas.getBoundingClientRect();
+                mx = ((e.clientX - r.left) / r.width) * 2 - 1;
+                my = ((e.clientY - r.top) / r.height) * 2 - 1;
+                setHover(pick(e));
+            });
+            canvas.addEventListener('pointerleave', () => { setHover(-1); mx = my = 0; });
+            canvas.addEventListener('click', (e) => {
+                const i = pick(e);
+                if (i >= 0) window.location.href = links[i].href;
+            });
+            links.forEach((a, i) => {
+                a.addEventListener('focus', () => setHover(i));
+                a.addEventListener('blur', () => setHover(-1));
+            });
+
+            // Taille
+            function resize() {
+                const w = host.clientWidth, h = host.clientHeight;
+                if (!w || !h) return;
+                renderer.setSize(w, h, false);
+                camera.aspect = w / h;
+                // Sur un écran étroit, on recule pour garder les six artistes
+                const far = w / h < 1 ? 1.75 : (w / h < 1.4 ? 1.25 : 1);
+                CAM.set(0, 10.5 * far, 9.5 * far);
+                camera.updateProjectionMatrix();
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            let visible = true;
+            new IntersectionObserver((en) => { visible = en[0].isIntersecting; }, { threshold: 0.01 }).observe(host);
+            const v = new THREE.Vector3(), clock = new THREE.Clock();
+            let t = 0;
+            (function frame() {
+                requestAnimationFrame(frame);
+                if (!visible || document.hidden || host.offsetParent === null) { clock.getDelta(); return; }
+                const dt = Math.min(clock.getDelta(), 0.05);
+                if (!reduce) t += dt;
+                // Vue : léger mouvement avec la souris
+                camera.position.x += ((CAM.x + mx * 0.9) - camera.position.x) * 0.04;
+                camera.position.y += ((CAM.y - my * 0.5) - camera.position.y) * 0.04;
+                camera.position.z += (CAM.z - camera.position.z) * 0.04;
+                camera.lookAt(0, 0.4, 0);
+                const r = canvas.getBoundingClientRect();
+                people.forEach((p, i) => {
+                    p.glow += (p.glowTo - p.glow) * 0.12;
+                    const g = p.glow;
+                    p.tileMat.emissiveIntensity = 0.35 + Math.max(0, g) * 0.9 + Math.min(0, g) * 0.25;
+                    p.halo.material.opacity = 0.28 + Math.max(0, g) * 0.55 + Math.min(0, g) * 0.2;
+                    p.halo.scale.setScalar(1 + Math.max(0, g) * 0.35);
+                    p.light.intensity = 4 + Math.max(0, g) * 7;
+                    // Respiration, regard qui bouge à peine
+                    const u = p.fig.userData;
+                    u.torso.scale.y = 1 + Math.sin(t * 1.4 + p.phase) * 0.012;
+                    u.head.rotation.y = Math.sin(t * 0.35 + p.phase) * 0.35;
+                    u.head.rotation.x = u.look + Math.sin(t * 0.5 + p.phase) * 0.04;
+                    // Étiquette sous la dalle
+                    v.set(p.root.position.x, 0, p.root.position.z + 0.55).project(camera);
+                    labels[i].style.transform = 'translate(' + ((v.x + 1) / 2 * r.width).toFixed(1) + 'px,' + ((1 - v.y) / 2 * r.height).toFixed(1) + 'px)';
+                });
+                renderer.render(scene, camera);
+            })();
+        } catch (err) {
+            host.classList.remove('is-3d');
+            host.classList.add('is-fallback');
+            if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
+            console.warn('Artistes 3D indisponibles :', err);
+        }
+    })();
+    </script>
+
 </body>
 </html>

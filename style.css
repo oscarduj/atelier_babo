@@ -4275,6 +4275,54 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 /* La frise est retirée : l'avancée suffit */
 .sg-time { display: none !important; }
 
+/* ============================================================
+   COLLABORATEURS — ARTISTES EN 3D (silhouettes sur dalles lumineuses)
+   ============================================================ */
+.ar3d {
+    position: relative;
+    margin: 1rem calc(50% - 50vw) 0;
+    height: clamp(26rem, 68vh, 42rem);
+    background: #070707;
+    overflow: hidden;
+}
+.ar3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ar3d-labels { position: absolute; inset: 0; pointer-events: none; }
+.ar3d-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    margin-left: -6rem;
+    width: 12rem;
+    text-align: center;
+    opacity: 0.55;
+    transition: opacity 0.35s ease;
+    will-change: transform;
+}
+.ar3d-label b { font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; font-weight: 500; color: #ffffff; margin-top: 0.6rem; }
+.ar3d-label i { font-style: normal; font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); opacity: 0; transform: translateY(-4px); transition: opacity 0.35s ease, transform 0.35s ease; }
+.ar3d-label.is-on { opacity: 1; }
+.ar3d-label.is-on i { opacity: 1; transform: none; }
+.ar3d-hint { position: absolute; left: 50%; bottom: 1.2rem; transform: translateX(-50%); margin: 0; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.45); pointer-events: none; white-space: nowrap; }
+/* Liens : invisibles mais utilisables au clavier quand la 3D tourne */
+.ar3d.is-3d .ar3d-list { position: absolute; left: 0; top: 0; margin: 0; padding: 0; list-style: none; }
+.ar3d.is-3d .ar3d-link { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ar3d.is-3d .ar3d-link:focus { clip: auto; width: auto; height: auto; left: 1rem; top: 1rem; padding: 0.4rem 0.7rem; background: #000000; color: #ffffff; border: 1px dashed #ffffff; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; z-index: 3; }
+/* Sans 3D : liste simple */
+.ar3d:not(.is-3d) { height: auto; padding: 2rem max(1.6rem, 6rem); }
+.ar3d:not(.is-3d) .ar3d-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 1rem; }
+.ar3d:not(.is-3d) .ar3d-link { display: block; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; text-decoration: none; font-family: 'Space Grotesk', sans-serif; }
+.ar3d:not(.is-3d) .ar3d-link span { display: block; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); margin-top: 0.3rem; }
+.ar3d:not(.is-3d) .ar3d-hint { display: none; }
+@media (max-width: 900px) {
+    .ar3d { height: 30rem; }
+    .ar3d-label b { font-size: 0.64rem; }
+}
+
+
 
 
 
