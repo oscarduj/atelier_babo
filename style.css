@@ -4239,6 +4239,43 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     .sg-item, .sg-bg span, .sg-col, .sg-cols, .sg-info { transition: none; }
 }
 
+/* ---------- EXPOS : avancée dans le temps (positions pilotées par le script) ---------- */
+.sg-item { transition: none !important; transform: translate(-50%, -50%); }
+.sg-item.is-cur { transform-origin: center; }
+/* Frise chronologique */
+.sg-time { position: absolute; left: max(4.4rem, 8vw); right: max(1.6rem, 8vw); bottom: 4.6rem; height: 2.2rem; z-index: 4; transition: opacity 0.4s ease; }
+.sg.is-open .sg-time { opacity: 0; pointer-events: none; }
+.sg-time-line { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(255, 255, 255, 0.22); }
+.sg-time-fill { position: absolute; left: 0; top: 50%; height: 1px; width: 0; background: rgba(255, 255, 255, 0.85); }
+.sg-time-years { position: absolute; left: 0; right: 0; top: calc(50% + 0.55rem); display: flex; justify-content: space-between; pointer-events: none; }
+.sg-time-years i { font-style: normal; font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.5); transform: translateX(-50%); }
+.sg-time-years i:first-child { transform: none; }
+.sg-time-years i:last-child { transform: translateX(-100%); }
+.sg-time-dots { position: absolute; left: 0; right: 0; top: 50%; }
+.sg-dot {
+    position: absolute;
+    top: 0;
+    width: 0.95rem;
+    height: 0.95rem;
+    margin: -0.475rem 0 0 -0.475rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+.sg-dot::after { content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: rgba(255, 255, 255, 0.55); transition: transform 0.3s ease, background 0.3s ease; }
+.sg-dot.is-on::after { background: #ffffff; transform: scale(1.6); }
+.sg-dot:hover::after { background: #ffffff; }
+.sg-dot:focus-visible { outline: 1px dashed #ffffff; outline-offset: 2px; }
+.sg-time-cursor { position: absolute; top: 50%; width: 1px; height: 1.4rem; margin-top: -0.7rem; background: #ffffff; box-shadow: 0 0 8px rgba(255, 255, 255, 0.7); pointer-events: none; }
+@media (max-width: 900px) {
+    .sg-time { left: 1rem; right: 1rem; bottom: 4.4rem; }
+}
+/* La frise est retirée : l'avancée suffit */
+.sg-time { display: none !important; }
+
+
 
 
 
