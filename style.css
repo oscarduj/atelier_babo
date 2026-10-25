@@ -3458,6 +3458,161 @@ body, .main-feed { background: var(--ab-bg); }
 .hx-tags li.hx-tag-key { border: none; padding: 0 0.2rem; }
 @media (max-width: 900px) { #curation .sec-head h2:not(.dfm-sr) { justify-self: center; } }
 
+/* ============================================================
+   FLÈCHES « DÉFILER » — en bas de chaque section principale
+   ============================================================ */
+.feed-section { position: relative; }
+.sec-down {
+    position: absolute;
+    left: 50%;
+    bottom: 0.9rem;
+    z-index: 5;
+    width: 1.9rem;
+    height: 1.9rem;
+    margin-left: -0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    animation: hx-bob 2.4s ease-in-out infinite;
+    transition: color 0.25s ease;
+}
+.sec-down:hover { color: #ffffff; }
+.sec-down svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.sec-down:focus-visible { outline: 1px dashed #ffffff; outline-offset: 4px; }
+/* Travaux : la flèche est posée sur la salle 3D ; l'indication remonte un peu */
+#travaux .sec-down { bottom: 2rem; }
+.tw3d-hint { bottom: 4.4rem !important; }
+/* Expos : la flèche passe sous la barre de commandes */
+#expos .sec-down { bottom: 0.4rem; }
+@media (prefers-reduced-motion: reduce) { .sec-down { animation: none; } }
+
+/* ============================================================
+   TÉLÉPHONE ET PETITES TABLETTES — versions fluides et lisibles
+   ============================================================ */
+@media (max-width: 900px) {
+    .feed-section { height: auto !important; min-height: 100vh; min-height: 100svh; padding-bottom: 4.2rem !important; }
+    .sec-down { bottom: 1rem; }
+    #travaux .sec-down, #expos .sec-down { bottom: 1rem; }
+
+    /* ---- ACCUEIL : titre, une phrase, deux boutons, la flèche ---- */
+    #accueil.feed-section { padding-bottom: 0.7rem !important; }
+    .hx-title { top: 4.6rem; font-size: clamp(3.4rem, 17vw, 5rem); }
+    .hx-tl { top: auto; bottom: 9.4rem; }
+    .hx-rule { display: none; }
+    .hx-tags li:not(.hx-tag-key) { display: none; }
+    .hx-tags { margin-top: 0.3rem; }
+    .hx-tagline { font-size: 1rem; line-height: 1.4; max-width: 20rem; }
+    .hx-lead { display: none; }
+    .hx-bl { bottom: 4.4rem; }
+    .hx-btns { gap: 0.6rem; }
+    .hx-btn { padding: 0.75rem 1.1rem; font-size: 0.9rem; }
+    .hx-down { display: block; bottom: 1.2rem; }
+
+    /* ---- TRAVAUX : une liste de grandes cartes ---- */
+    #travaux .travaux-asym-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: none !important;
+        gap: 1.1rem !important;
+        height: auto !important;
+        margin: 1.2rem 0 0 !important;
+        padding: 0 !important;
+        perspective: none !important;
+        transform: none !important;
+        overflow: visible !important;
+    }
+    #travaux .travaux-asym-grid::before, #travaux .travaux-asym-grid::after { display: none !important; }
+    #travaux .tv-water, #travaux .tv-floor, #travaux .tv-vault { display: none !important; }
+    #travaux .travaux-cell {
+        position: relative !important;
+        inset: auto !important;
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        text-decoration: none;
+    }
+    #travaux .travaux-cell-box {
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        aspect-ratio: 16 / 10;
+        margin: 0 !important;
+        border: none !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+        transform: none !important;
+        background-color: #15171a !important;
+    }
+    #travaux .travaux-cell-box::before, #travaux .travaux-cell-box::after { display: none !important; }
+    #travaux .cell-box-text { font-size: 0.66rem; opacity: 0.6; }
+    #travaux .travaux-cell-title {
+        position: absolute !important;
+        left: 1rem;
+        bottom: 0.9rem;
+        right: 1rem;
+        z-index: 3;
+        margin: 0 !important;
+        transform: none !important;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.15rem !important;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        text-transform: none;
+        color: #ffffff;
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+    }
+    #travaux .travaux-cell-title::after { content: " →"; opacity: 0.8; }
+    #travaux .travaux-cell-sub { display: none !important; }
+    #travaux .travaux-cell-box .cell-photo-layer { border-radius: inherit; }
+    #travaux .travaux-cell:first-of-type .travaux-cell-box { aspect-ratio: 4 / 3; }
+    #travaux .travaux-cell .travaux-cell-box { box-shadow: inset 0 -70px 60px -30px rgba(0, 0, 0, 0.55); }
+
+    /* ---- CURATION : les trois textes à plat, en cartes ---- */
+    #curation .cm { display: block !important; height: auto !important; margin-top: 1.4rem; }
+    #curation .cm::before { display: none; }
+    #curation .cm-left, #curation .cm-right, #curation .cm-corner { display: none !important; }
+    #curation .cm-list { position: static !important; height: auto !important; display: flex; flex-direction: column; gap: 0.9rem; }
+    #curation .cm-item {
+        position: static !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.55rem;
+        padding: 1.1rem 1.15rem 1.15rem;
+        border: 1px solid var(--ab-line);
+        border-radius: 16px;
+        background: rgba(6, 9, 13, 0.62);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        text-align: left;
+        font-size: 1.25rem !important;
+        line-height: 1.15;
+        transition: none;
+    }
+    #curation .cm-item::before { content: attr(data-num) "  ·  " attr(data-tag); font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ab-dim); line-height: 1.5; }
+    #curation .cm-item::after { content: attr(data-text) "\A\ALire →"; white-space: pre-line; font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 400; line-height: 1.55; letter-spacing: 0; color: rgba(234, 232, 228, 0.72); }
+    #curation .cm-item:active { background: rgba(255, 255, 255, 0.08); }
+}
+@media (max-width: 900px) {
+    .main-feed #travaux .travaux-cell .travaux-cell-title { text-align: left !important; white-space: normal; letter-spacing: -0.01em; font-family: 'Space Grotesk', sans-serif; text-transform: none; }
+    .main-feed #travaux .travaux-cell .travaux-cell-title::after { content: " →"; float: none; font-size: inherit; opacity: 0.8; margin: 0; }
+    .main-feed #travaux .travaux-cell .travaux-cell-title::before { content: none; }
+}
+/* La zone cliquable des flèches reste fixe : seul le dessin respire */
+.sec-down, .hx-down { animation: none !important; }
+.sec-down svg, .hx-down svg { animation: hx-bob 2.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .sec-down svg, .hx-down svg { animation: none; } }
+
+
 
 
 

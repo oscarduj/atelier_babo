@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261025a">
+    <link rel="stylesheet" href="style.css?v=20261025b">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -231,6 +231,7 @@
                     </a>
                 </div>
             </div>
+            <a class="sec-down" href="#curation" aria-label="Descendre vers Curation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg></a>
         </section>
 
         <!-- 03. CURATION -->
@@ -264,6 +265,7 @@
                     <span class="cm-corner cm-c3" aria-hidden="true"></span><span class="cm-corner cm-c4" aria-hidden="true"></span>
                 </div>
             </div>
+            <a class="sec-down" href="#collaborateurs" aria-label="Descendre vers Collaborateurs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg></a>
         </section>
 
         <!-- 04. COLLABORATEURS -->
@@ -335,6 +337,7 @@
                     </div>
                 </div>
             </div>
+            <a class="sec-down" href="#expos" aria-label="Descendre vers Expos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg></a>
         </section>
 
         <!-- 05. EXPOS -->
@@ -422,6 +425,7 @@
                 </div>
             
             </div>
+            <a class="sec-down" href="#soutien" aria-label="Descendre vers Soutien"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg></a>
         </section>
 
         <!-- 06. SOUTIEN -->
@@ -458,6 +462,7 @@
                     </div>
                 </div>
             </div>
+            <a class="sec-down" href="#contact" aria-label="Descendre vers Contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg></a>
         </section>
 
         <!-- 07. CONTACT -->
@@ -1354,6 +1359,7 @@
         }
 
         function rotateTravauxMembers() {
+            if (window.matchMedia('(max-width: 900px)').matches) return;   // liste stable sur téléphone
             const slots = [1, 2, 3, 4].map(n => document.querySelector('.travaux-cell-' + n));
             if (slots.some(s => !s)) return;
 
@@ -1418,6 +1424,20 @@
 
 
 
+
+        /* ---- Flèches « défiler » : vers la section suivante, en douceur ---- */
+        document.querySelectorAll('.sec-down, .hx-down').forEach((a) => {
+            a.addEventListener('click', (e) => {
+                const id = (a.getAttribute('href') || '').slice(1);
+                const nav = document.querySelector('.nav-item[data-target="' + id + '"]');
+                const target = document.getElementById(id);
+                if (!target) return;
+                e.preventDefault();
+                if (nav) nav.click();
+                else target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+            });
+        });
+
         /* ---- Curation : liste verticale minimale, titre net au centre, voisins flous ---- */
         (function () {
             const wrap = document.getElementById('cm');
@@ -1441,7 +1461,9 @@
                 $('cm-text').textContent = it.dataset.text;
                 $('cm-link').href = it.dataset.href;
             }
+            const small = () => window.matchMedia('(max-width: 900px)').matches;
             items.forEach((it, k) => it.addEventListener('click', () => {
+                if (small()) { window.location.href = it.dataset.href; return; }   // téléphone : la liste est à plat
                 if (k === cur) { $('cm-link').click(); } else show(k);
             }));
             wrap.addEventListener('keydown', (e) => {
@@ -1451,6 +1473,7 @@
             let sy = 0;
             wrap.addEventListener('touchstart', (e) => { sy = e.touches[0].clientY; }, { passive: true });
             wrap.addEventListener('touchend', (e) => {
+                if (small()) return;                       // sur téléphone, le glissement fait seulement défiler la page
                 const dy = e.changedTouches[0].clientY - sy;
                 if (Math.abs(dy) > 40) show(cur + (dy < 0 ? 1 : -1));
             }, { passive: true });
