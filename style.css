@@ -3300,6 +3300,39 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     #curation .sec-head .section-desc { justify-self: center; text-align: center; max-width: none; }
 }
 
+/* ---------- CURATION : eau vue du dessus en fond ---------- */
+#curation { position: relative; overflow: hidden; }
+#curation.cw-on { background: #04070b; }
+.cw-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.cw-bg canvas { display: block; width: 100% !important; height: 100% !important; }
+#curation > .section-content { position: relative; z-index: 1; }
+/* Lisibilité : un voile sombre derrière la liste */
+#curation.cw-on .cm::before {
+    content: "";
+    position: absolute;
+    inset: -2rem -3rem;
+    background: radial-gradient(ellipse at 50% 50%, rgba(2, 4, 7, 0.55) 0%, rgba(2, 4, 7, 0) 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ---------- Petite flèche dessinée (remplace le caractère ↗, affiché en émoji sur iPad) ---------- */
+.ico-ne { display: inline-block; width: 0.62em; height: 0.62em; margin-left: 0.4em; vertical-align: 0.02em; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.3s ease; }
+a:hover > .ico-ne { transform: translate(2px, -2px); }
+
+/* ---------- SOUTIEN : lettre d'information et don ponctuel ---------- */
+.sv-num { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.sv-note { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; letter-spacing: 0.06em; line-height: 1.6; color: rgba(234, 232, 228, 0.65); margin: 0.9rem 0 1.3rem; max-width: 26rem; display: flex; align-items: flex-start; gap: 0.5rem; text-transform: none; }
+.sv-dot { flex: 0 0 auto; width: 6px; height: 6px; margin-top: 0.38rem; border-radius: 50%; background: #ffd27a; box-shadow: 0 0 8px rgba(255, 210, 122, 0.8); animation: sv-pulse 2.4s ease-in-out infinite; }
+@keyframes sv-pulse { 50% { opacity: 0.35; } }
+.sv-btn { display: inline-flex; align-items: center; }
+.sv-btn.is-solid { background: #ffffff; color: #000000; border-color: #ffffff; }
+.sv-btn.is-solid:hover { background: transparent; color: #ffffff; }
+@media (prefers-reduced-motion: reduce) { .sv-dot { animation: none; } }
+/* La phrase de chaque onglet est reprise dans l'en-tête : on ne l'affiche pas deux fois */
+#collaborateurs .collab-category-content > .section-desc { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+
 
 
 
