@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
 /* ============================================================
    TRANSITIONS ENTRE PAGES — View Transitions natives (cross-document)
@@ -3535,26 +3535,3 @@ body, .main-feed { background: var(--ab-bg); }
 .sec-down, .hx-down { animation: none !important; }
 .sec-down svg, .hx-down svg { animation: hx-bob 2.4s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .sec-down svg, .hx-down svg { animation: none; } }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

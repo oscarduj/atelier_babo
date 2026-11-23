@@ -3,6 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        /* Empêche un autre site d'afficher cette page dans un cadre invisible pour
+           piéger les clics des visiteurs (clickjacking). */
+        if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
+    </script>
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data: blob:;
+        media-src 'self';
+        connect-src 'self' https://cdn.jsdelivr.net;
+        object-src 'none';
+        base-uri 'self';
+        form-action 'none';
+        frame-src 'none';
+        worker-src 'self' blob:;
+        upgrade-insecure-requests;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
     <link rel="stylesheet" href="style.css?v=20261123">
     <script>
@@ -264,12 +284,12 @@
                     <div class="ar3d st3d" id="st3d">
                         <div class="ar3d-labels" id="st3d-labels" aria-hidden="true"></div>
                         <ul class="ar3d-list" id="st3d-list" aria-label="Structures partenaires">
-                            <li><a class="ar3d-link" href="https://www.fracnormandie.fr" target="_blank" rel="noopener" data-i="0" data-name="Frac Normandie — SHED" data-practice="Centre d&#x27;art · Exposition 5D">Frac Normandie — SHED <span>Centre d&#x27;art · Exposition 5D</span></a></li>
-                            <li><a class="ar3d-link" href="https://www.esadhar.fr" target="_blank" rel="noopener" data-i="1" data-name="ésadhar" data-practice="École · Rouen">ésadhar <span>École · Rouen</span></a></li>
-                            <li><a class="ar3d-link" href="http://www.art-immanence.org" target="_blank" rel="noopener" data-i="2" data-name="Immanence" data-practice="Espace d&#x27;art · Paris">Immanence <span>Espace d&#x27;art · Paris</span></a></li>
-                            <li><a class="ar3d-link" href="https://videoformes.com" target="_blank" rel="noopener" data-i="3" data-name="VIDEOFORMES" data-practice="Festival · Clermont-Ferrand">VIDEOFORMES <span>Festival · Clermont-Ferrand</span></a></li>
+                            <li><a class="ar3d-link" href="https://www.fracnormandie.fr" target="_blank" rel="noopener noreferrer" data-i="0" data-name="Frac Normandie — SHED" data-practice="Centre d&#x27;art · Exposition 5D">Frac Normandie — SHED <span>Centre d&#x27;art · Exposition 5D</span></a></li>
+                            <li><a class="ar3d-link" href="https://www.esadhar.fr" target="_blank" rel="noopener noreferrer" data-i="1" data-name="ésadhar" data-practice="École · Rouen">ésadhar <span>École · Rouen</span></a></li>
+                            <li><a class="ar3d-link" href="http://www.art-immanence.org" target="_blank" rel="noopener noreferrer" data-i="2" data-name="Immanence" data-practice="Espace d&#x27;art · Paris">Immanence <span>Espace d&#x27;art · Paris</span></a></li>
+                            <li><a class="ar3d-link" href="https://videoformes.com" target="_blank" rel="noopener noreferrer" data-i="3" data-name="VIDEOFORMES" data-practice="Festival · Clermont-Ferrand">VIDEOFORMES <span>Festival · Clermont-Ferrand</span></a></li>
                             <li><a class="ar3d-link" href="#" data-i="4" data-name="Hangar 107" data-practice="Lieu d&#x27;art · Rouen">Hangar 107 <span>Lieu d&#x27;art · Rouen</span></a></li>
-                            <li><a class="ar3d-link" href="https://www.esad-orleans.fr" target="_blank" rel="noopener" data-i="5" data-name="ESAD Orléans" data-practice="École · Orléans">ESAD Orléans <span>École · Orléans</span></a></li>
+                            <li><a class="ar3d-link" href="https://www.esad-orleans.fr" target="_blank" rel="noopener noreferrer" data-i="5" data-name="ESAD Orléans" data-practice="École · Orléans">ESAD Orléans <span>École · Orléans</span></a></li>
                         </ul>
                         <p class="ar3d-hint" aria-hidden="true">Survoler pour identifier · cliquer pour visiter</p>
                     </div>
@@ -375,7 +395,7 @@
                             <p class="sg-i-dates" id="sg-i-dates"></p>
                             <p class="sg-i-place" id="sg-i-place"></p>
                             <p class="sg-i-desc" id="sg-i-desc"></p>
-                            <a class="sg-link" id="sg-link" href="#" target="_blank" rel="noopener" hidden><span id="sg-link-t"></span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a>
+                            <a class="sg-link" id="sg-link" href="#" target="_blank" rel="noopener noreferrer" hidden><span id="sg-link-t"></span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a>
                             <div class="sg-zoom-nav" id="sg-zoom-nav" hidden>
                                 <button type="button" class="sg-arrow" id="sg-z-prev" aria-label="Photo précédente"><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M23 6H2M7 1L2 6l5 5"/></svg></button>
                                 <button type="button" class="sg-arrow" id="sg-z-next" aria-label="Photo suivante"><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M1 6h21M17 1l5 5-5 5"/></svg></button>
@@ -418,7 +438,7 @@
                     </div>
                     <dl class="ct-table">
                         <div><dt>Email</dt><dd><a href="mailto:contact@atelier-babo.com">contact@atelier-babo.com</a></dd></div>
-                        <div><dt>Instagram</dt><dd><a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener">@atelier_babo_<svg class="ico-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a></dd></div>
+                        <div><dt>Instagram</dt><dd><a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener noreferrer">@atelier_babo_<svg class="ico-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a></dd></div>
                         <div><dt>Lieu</dt><dd>Rouen, France <button class="hidden-key" data-key-id="k3" type="button" aria-label="Objet trouvé">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="12" r="4"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="17" y1="12" x2="17" y2="16"/><line x1="20" y1="12" x2="20" y2="15"/></svg>
                             </button></dd></div>
@@ -439,7 +459,7 @@
                         <p>Soutenir librement la production des œuvres, le matériel et les expositions du collectif.</p>
                         <p class="sv-note">Paiement sécurisé par HelloAsso, plateforme française gratuite pour les associations : aucune commission n'est prélevée sur votre don.</p>
                         <!-- À REMPLACER : adresse exacte de la page de don HelloAsso d'Atelier Babo, une fois créée -->
-                        <a href="https://www.helloasso.com/associations/atelier-babo" target="_blank" rel="noopener" class="sv-btn is-solid">Faire un don sur HelloAsso<svg class="ico-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a>
+                        <a href="https://www.helloasso.com/associations/atelier-babo" target="_blank" rel="noopener noreferrer" class="sv-btn is-solid">Faire un don sur HelloAsso<svg class="ico-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a>
                     </div>
                 </div>
                 <div class="site-footer">

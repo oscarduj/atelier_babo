@@ -1,0 +1,7 @@
+# Atelier Babo — contact sécurité
+# Format standard RFC 9116 : indique à qui signaler une faille.
+
+Contact: mailto:contact@atelier-babo.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: fr, en
+Canonical: https://atelier-babo.com/.well-known/security.txt
