@@ -46,6 +46,7 @@
 <body>
 
     <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
+    <button class="fs-toggle" id="fullscreen-exit" type="button">PLEIN ÉCRAN</button>
 
     <div class="boot-overlay" id="boot-overlay">
         <div class="boot-gate" id="boot-gate">
@@ -1008,6 +1009,9 @@
                 const lbl = document.getElementById('ambient-text');
                 if (lbl) lbl.textContent = 'ON';
             }
+            // Le même geste sert à passer en plein écran : les navigateurs
+            // n'autorisent la demande que depuis une interaction directe.
+            requestFullscreen();
             sfx.eyeOpen();
             gate.classList.add('diving');
             setTimeout(() => {
@@ -1016,6 +1020,41 @@
                 playBoot();
             }, 900);
         });
+
+        /* ---- Plein écran ----
+           Demandé au moment du clic sur ENTRER (seul instant où le navigateur
+           l'accepte). Le bouton de sortie n'apparaît qu'une fois le plein écran
+           réellement actif, et la touche Échap fonctionne toujours : on ne peut
+           pas enfermer le visiteur. */
+        function requestFullscreen() {
+            const el = document.documentElement;
+            const fn = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+            if (!fn) return;                       // navigateur sans plein écran : on continue normalement
+            try { fn.call(el); } catch (e) { /* refusé : le site reste utilisable */ }
+        }
+        function exitFullscreen() {
+            const fn = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+            if (fn) { try { fn.call(document); } catch (e) { /* ignore */ } }
+        }
+        function isFullscreen() {
+            return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+        }
+        (function setupFullscreenButton() {
+            const btn = document.getElementById('fullscreen-exit');
+            if (!btn) return;
+            btn.addEventListener('click', () => {
+                if (isFullscreen()) exitFullscreen(); else requestFullscreen();
+            });
+            function sync() {
+                const on = isFullscreen();
+                document.body.classList.toggle('is-fullscreen', on);
+                btn.textContent = on ? 'QUITTER LE PLEIN ÉCRAN' : 'PLEIN ÉCRAN';
+                btn.setAttribute('aria-label', btn.textContent);
+            }
+            ['fullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange']
+                .forEach(ev => document.addEventListener(ev, sync));
+            sync();
+        })();
 
         /* Le cube du portail est désormais un vrai objet 3D (Three.js), pas une
            simulation CSS — voir le <script type="module"> tout en bas du fichier. */
@@ -1240,19 +1279,15 @@
         ];
         const tomPhotos = [
             'images/travaux/tom/tom-1.jpg', 'images/travaux/tom/tom-2.jpg',
-            'images/travaux/tom/tom-3.jpg', 'images/travaux/tom/tom-4.jpg',
-            'images/travaux/tom/tom-5.jpg', 'images/travaux/tom/tom-6.jpg'
+            'images/travaux/tom/tom-3.jpg', 'images/travaux/tom/tom-4.jpg'
         ];
         const oscarPhotos = [
-            'images/travaux/oscar/oscar-11.jpg', 'images/travaux/oscar/oscar-12.jpg',
-            'images/travaux/oscar/oscar-13.jpg', 'images/travaux/oscar/oscar-14.jpg',
-            'images/travaux/oscar/oscar-15.jpg', 'images/travaux/oscar/oscar-16.jpg',
-            'images/travaux/oscar/oscar-17.jpg'
+            'images/travaux/oscar/oscar-1.jpg', 'images/travaux/oscar/oscar-2.jpg',
+            'images/travaux/oscar/oscar-3.jpg', 'images/travaux/oscar/oscar-4.jpg'
         ];
         const tongPhotos = [
             'images/travaux/tong/tong-1.jpg', 'images/travaux/tong/tong-2.jpg',
-            'images/travaux/tong/tong-3.jpg', 'images/travaux/tong/tong-4.jpg',
-            'images/travaux/tong/tong-5.jpg'
+            'images/travaux/tong/tong-3.jpg', 'images/travaux/tong/tong-4.jpg'
         ];
         const travauxMembers = [
             { name: 'Hyunseok Yoon', href: 'travaux/hyunseok-yoon.html', label: '[ HYUNSEOK YOON ]', photos: yoonPhotos },

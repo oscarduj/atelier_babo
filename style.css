@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;700&display=swap');
 
 /* ============================================================
    TRANSITIONS ENTRE PAGES — View Transitions natives (cross-document)
@@ -1390,8 +1390,8 @@ h2 { font-size: 1.8rem; }
     transition: opacity 0.4s ease;
 }
 .eye-cell.lit { opacity: 1; }
-.eye-cell.band-sclera { color: #52585d; }
-.eye-cell.band-iris { color: #A3B1C2; }
+.eye-cell.band-sclera { color: #5a5a58; }
+.eye-cell.band-iris { color: #ffffff; }
 
 .eye-screen {
     position: absolute;
@@ -1413,12 +1413,13 @@ h2 { font-size: 1.8rem; }
 .eye-bar {
     font-family: 'Share Tech Mono', monospace;
     font-size: clamp(0.5rem, 1.3vw, 0.68rem);
-    color: #A3B1C2;
+    color: #c9c9c6;
     letter-spacing: 0.5px;
 }
 
 /* Logo qui se matérialise depuis le centre */
 #boot-overlay .wordmark {
+    color: #ffffff;
     font-family: 'Share Tech Mono', monospace;
     font-size: clamp(1.8rem, 6vw, 4rem);
     letter-spacing: 2px;
@@ -3535,3 +3536,53 @@ body, .main-feed { background: var(--ab-bg); }
 .sec-down, .hx-down { animation: none !important; }
 .sec-down svg, .hx-down svg { animation: hx-bob 2.4s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .sec-down svg, .hx-down svg { animation: none; } }
+
+/* --- Curation : contenu centré sur la hauteur de l'écran --- */
+#curation .section-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+}
+#curation .sec-head { flex-shrink: 0; }
+.cm { height: auto; min-height: clamp(22rem, 52vh, 30rem); margin-top: 2rem; }
+
+/* --- Travaux : la grille occupe tout l'espace disponible (zoom) --- */
+#travaux .section-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+#travaux .travaux-asym-grid {
+    flex: 1;
+    min-height: 0;
+    margin-top: 1.5rem;
+}
+
+/* --- Bouton plein écran (voir index.html) ---
+   Placé sous le bouton SON, même traitement. Il reste toujours visible pour
+   qu'on puisse sortir du plein écran sans chercher : la touche Échap marche
+   aussi, le visiteur n'est jamais enfermé. */
+.fs-toggle {
+    position: fixed;
+    top: 3.4rem;
+    right: 1.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    background: rgba(16, 16, 16, 0.72);
+    border: 1px solid #333333;
+    color: #999999;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    border-radius: 3px;
+    z-index: 600;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+.fs-toggle:hover { color: var(--text-color); border-color: var(--secondary-color); }
+body.is-fullscreen .fs-toggle { color: var(--secondary-color); }
+@media (max-width: 700px) {
+    .fs-toggle { font-size: 0.62rem; padding: 0.4rem 0.6rem; top: 3rem; }
+}
