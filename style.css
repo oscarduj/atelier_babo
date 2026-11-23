@@ -2722,24 +2722,25 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 #curation { background: #08090a; }
 .cm {
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 32rem) minmax(0, 1fr);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    justify-content: center;
+    gap: 1.6rem;
     height: clamp(26rem, 64vh, 36rem);
     margin-top: 1rem;
     outline: none;
 }
 .cm-side { display: flex; flex-direction: column; gap: 0.35rem; font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.cm-left { align-items: flex-end; text-align: right; }
+.cm-left { align-items: center; text-align: center; order: -1; flex-direction: row; gap: 0.8rem; }
 .cm-num { color: rgba(234, 232, 228, 0.5); }
-.cm-tag { color: var(--text-color); max-width: 16rem; line-height: 1.4; }
-.cm-right { align-items: flex-start; }
-.cm-text { max-width: 18rem; font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; line-height: 1.55; letter-spacing: 0; text-transform: none; color: rgba(234, 232, 228, 0.6); }
+.cm-tag { color: var(--text-color); max-width: none; line-height: 1.4; }
+.cm-right { align-items: center; text-align: center; }
+.cm-text { max-width: 30rem; font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; line-height: 1.55; letter-spacing: 0; text-transform: none; color: rgba(234, 232, 228, 0.6); }
 .cm-link { margin-top: 0.4rem; color: var(--text-color); text-decoration: none; border-bottom: 1px solid rgba(234, 232, 228, 0.5); }
 .cm-link:hover { border-bottom-color: var(--text-color); }
 .cm-link:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 3px; }
-.cm-list { position: relative; height: 100%; list-style: none; margin: 0; padding: 0; }
+.cm-list { position: relative; width: min(100%, 34rem); height: clamp(13rem, 34vh, 18rem); list-style: none; margin: 0; padding: 0; }
 .cm-item {
     --d: 0;
     position: absolute;
@@ -3534,7 +3535,6 @@ body, .main-feed { background: var(--ab-bg); }
 .sec-down, .hx-down { animation: none !important; }
 .sec-down svg, .hx-down svg { animation: hx-bob 2.4s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .sec-down svg, .hx-down svg { animation: none; } }
-
 
 
 
