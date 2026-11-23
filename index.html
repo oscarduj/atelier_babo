@@ -1238,8 +1238,7 @@
             'images/travaux/collectif/collectif-1.jpg',
             'images/travaux/collectif/collectif-2.jpg',
             'images/travaux/collectif/collectif-3.jpg',
-            'images/travaux/collectif/collectif-4.jpg',
-            'images/travaux/collectif/collectif-5.jpg'
+            'images/travaux/collectif/collectif-4.jpg'
         ];
         let collectifPhotoIndex = 0;
         let collectifActiveLayer = 0;
@@ -2406,10 +2405,17 @@
             scene.add(moon);
 
             /* ---- Panneaux : 2 de navigation + 5 travaux ---- */
-            const R = 16, N = 7, BASE = 0.15;
-            const STEP = THREE.MathUtils.degToRad(13.4), SPAN = STEP * N;
+            /* Cinq panneaux seulement : les cinq travaux. Les anciens panneaux
+               « ← Accueil » et « Curation → » sont retirés, et l'arc s'ouvre
+               d'autant (16.2° par panneau au lieu de 13.4°) pour que Yoon
+               touche le bord gauche du cadre et Tong le bord droit. */
+            const R = 16, N = 5, BASE = 0.15;
+            const STEP = THREE.MathUtils.degToRad(16.2), SPAN = STEP * N;
             const PW = 2 * R * Math.tan(STEP / 2) * 0.89;
             const H = PW / 0.58;
+            /* Angle, depuis le point de vue, du bord extérieur des deux panneaux
+               extrêmes : c'est sur lui que se règle le champ de vision. */
+            const EDGE = (SPAN / 2 - STEP / 2) + Math.atan((PW / 2) / R) + THREE.MathUtils.degToRad(0.3);
             // Mur sombre circulaire derrière les panneaux : les fentes restent noires
             const wall = new THREE.Mesh(
                 new THREE.CylinderGeometry(R + 0.6, R + 0.6, BASE + H + 1.6, 64, 1, true, Math.PI - SPAN / 2 - 0.35, SPAN + 0.7),
@@ -2491,9 +2497,7 @@
                 label.position.y = BASE + H + 0.55;
                 lift.add(label);
                 const p = { lift, screen, mat, lmat, liftNow: 0, liftTo: 0, glowNow: 0.86, glowTo: 0.86, url: null, name: null };
-                if (i === 0) { p.nav = 'accueil'; mat.map = navTexture('←', 'ACCUEIL'); lmat.map = textCanvas('← Accueil', 1024, 128, 56, 'center'); }
-                else if (i === N - 1) { p.nav = 'curation'; mat.map = navTexture('→', 'CURATION'); lmat.map = textCanvas('Curation →', 1024, 128, 56, 'center'); }
-                else p.slot = SLOTS[i - 1];
+                p.slot = SLOTS[i];
                 panels.push(p);
             }
 
@@ -2528,10 +2532,6 @@
             }
             if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
                 panels.forEach((p) => { if (p.slot) p.name = null; });
-                panels[0].lmat.map = textCanvas('← Accueil', 1024, 128, 56, 'center'); panels[0].lmat.needsUpdate = true;
-                panels[0].mat.map = navTexture('←', 'ACCUEIL'); panels[0].mat.needsUpdate = true;
-                panels[N - 1].lmat.map = textCanvas('Curation →', 1024, 128, 56, 'center'); panels[N - 1].lmat.needsUpdate = true;
-                panels[N - 1].mat.map = navTexture('→', 'CURATION'); panels[N - 1].mat.needsUpdate = true;
                 syncPanels();
             });
             syncPanels();
@@ -2747,7 +2747,9 @@
             const PITCH_MIN = -0.08, PITCH_MAX = 0.14;
             function updateYawLimit() {
                 const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect);
-                YAW_MAX = Math.max(0.04, SPAN / 2 - hfov / 2 + 0.1);
+                /* Marge de regard volontairement courte : l'arc occupe tout le
+                   cadre, un débattement large ne montrerait que du vide. */
+                YAW_MAX = Math.max(0.03, SPAN / 2 - hfov / 2 + 0.05);
                 yawTo = THREE.MathUtils.clamp(yawTo, -YAW_MAX, YAW_MAX);
             }
             let dragging = false, moved = false, sx = 0, sy = 0, syaw = 0, spitch = 0;
@@ -2789,7 +2791,7 @@
                 const hit = ray.intersectObjects(screens, false)[0];
                 if (hit) {
                     const p = panels[hit.object.userData.index];
-                    if (p.nav) goTo(p.nav); else p.slot.click();
+                    if (p.slot) p.slot.click();
                     return;
                 }
                 const w = ray.intersectObject(water, false)[0];
@@ -2814,7 +2816,13 @@
                 if (!w || !h) return;
                 renderer.setSize(w, h, false);
                 camera.aspect = w / h;
-                camera.fov = w / h < 1.5 ? 60 : 50;
+                /* Le champ de vision se cale sur l'ouverture de l'arc : les cinq
+                   panneaux remplissent le cadre d'un bord à l'autre, quel que soit
+                   le format de l'écran (16:9, 16:10 ou ultra-large). */
+                camera.fov = THREE.MathUtils.clamp(
+                    THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(EDGE) / camera.aspect)),
+                    32, 74
+                );
                 camera.updateProjectionMatrix();
                 if (typeof updateYawLimit === 'function') updateYawLimit();
                 const rt = water.getRenderTarget && water.getRenderTarget();
