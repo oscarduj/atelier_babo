@@ -3289,18 +3289,9 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 #expos.sg-section .sg-stage { left: 0; right: 53%; }
 #expos.sg-section .sg-item { width: 100%; }
 #expos.sg-section .sg-item img { max-height: 76vh; }
-/* Les affiches arrivent toujours par la gauche et repartent par la gauche :
-   elles restent dans leur colonne au lieu de traverser le texte. */
-#expos.sg-section .sg-item.is-prev,
-#expos.sg-section .sg-item.is-next,
-#expos.sg-section .sg-item.is-gone-l,
-#expos.sg-section .sg-item.is-gone-r {
-    transform: translate(-96%, -50%) scale(0.96);
-    opacity: 0;
-    filter: none;
-    pointer-events: none;
-}
-#expos.sg-section .sg-item.is-cur { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+/* Le placement des affiches est calculé en JavaScript (styles en ligne) :
+   rien à régler ici, sinon le débordement est bridé par la scène. */
+#expos.sg-section .sg-stage { overflow: hidden; }
 /* La légende ferait doublon avec le titre de droite */
 #expos.sg-section .sg-cap { display: none; }
 
@@ -3777,7 +3768,10 @@ body, .main-feed { background: var(--ab-bg); }
 #curation .sec-head { flex-shrink: 0; }
 /* Le bloc remonte sous le titre au lieu de flotter au milieu de l'écran. */
 /* L'en-tête reste en haut, le bloc de sélection se centre dans ce qui reste. */
-.cm { flex: 1; height: auto; min-height: 0; margin-top: 1.2rem; gap: clamp(1.6rem, 4.5vh, 3.8rem); justify-content: center; }
+/* L'écart tient compte des titres voisins du carrousel : ils débordent
+   de 7.5rem au-dessus et au-dessous du bloc, et venaient coller au
+   « 01/03 » et à l'extrait. */
+.cm { flex: 1; height: auto; min-height: 0; margin-top: 1.2rem; gap: clamp(2.6rem, 10vh, 8.5rem); justify-content: center; }
 .cm-list { height: clamp(11rem, 28vh, 15rem); }
 
 /* --- Travaux : la grille occupe tout l'espace disponible (zoom) --- */

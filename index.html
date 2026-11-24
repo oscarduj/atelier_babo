@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261124c">
+    <link rel="stylesheet" href="style.css?v=20261124e">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261124c" defer></script>
-    <script src="page-transition.js?v=20261124c" defer></script>
-    <script src="agent.js?v=20261124c" defer></script>
+    <script src="ambient.js?v=20261124e" defer></script>
+    <script src="page-transition.js?v=20261124e" defer></script>
+    <script src="agent.js?v=20261124e" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -1675,25 +1675,30 @@
             // Chaque image : position, taille, opacité et flou selon sa distance d = i - P
             function place() {
                 const vw = window.innerWidth, mob = vw < 900;
-                const side = mob ? vw * 0.46 : vw * 0.27;
+                /* Les affiches vont et viennent toujours par la gauche, et
+                   restent dans leur colonne : calées sur la largeur de la
+                   scène, elles ne débordent plus sur le texte de droite. */
+                const stage = document.getElementById('sg-stage');
+                const larg = (stage && stage.clientWidth) || vw;
+                const side = mob ? vw * 0.46 : larg * 0.56;
                 all.forEach((c) => {
                     const i = list.indexOf(c);
                     if (i < 0) { c.style.display = 'none'; return; }
                     c.style.display = '';
-                    const d = i - P, dir = i % 2 ? -1 : 1;
+                    const d = i - P;
                     let x, s, o, bl;
-                    if (d >= 0) {            // à venir : petite, sur le côté, elle approche
+                    if (d >= 0) {            // à venir : elle attend à gauche et se rapproche
                         const k = Math.min(d, 1);
-                        x = dir * side * k;
-                        s = 1 - 0.66 * k;
+                        x = -side * k;
+                        s = 1 - 0.5 * k;
                         o = d <= 1 ? 1 - 0.45 * k : Math.max(0, 0.55 * (1.6 - d) / 0.6);
                         bl = d > 1 ? (d - 1) * 4 : 0;
-                    } else {                 // dépassée : elle grandit et sort par le côté
+                    } else {                 // dépassée : elle repart par la gauche
                         const a = Math.min(-d, 1.2);
-                        x = -dir * vw * 0.55 * a;
-                        s = 1 + a * 2.6;
-                        o = Math.max(0, 1 - a * 1.1);
-                        bl = a * 14;
+                        x = -larg * (0.5 + 0.55 * a);
+                        s = 1 - a * 0.3;
+                        o = Math.max(0, 1 - a * 1.5);
+                        bl = a * 7;
                     }
                     c.style.transform = 'translate(calc(-50% + ' + x.toFixed(1) + 'px), -50%) scale(' + s.toFixed(3) + ')';
                     c.style.opacity = o.toFixed(3);
@@ -3042,24 +3047,6 @@
                 return g;
             }
 
-            /* Feuillage en surplomb : de grandes feuilles accrochées haut,
-               tournées vers le bas, qui entrent dans le cadre par les coins. */
-            function surplomb(x, y, z, taille, teinte, versBas) {
-                const g = new THREE.Group();
-                g.position.set(x, y, z);
-                const n = Math.round(entre(3, 6));
-                for (let i = 0; i < n; i++) {
-                    const f = new THREE.Mesh(GEO_FEUILLE, matFeuille(teinte));
-                    const t = taille * entre(0.7, 1.25);
-                    f.scale.set(t, t * 1.6, 1);
-                    const a = (i / n) * 1.5 + entre(-0.25, 0.25) - 0.75;
-                    f.position.set(Math.cos(a) * t * 0.5, entre(-0.3, 0.3), Math.sin(a) * t * 0.5 - 0.2);
-                    f.rotation.set(versBas + entre(-0.3, 0.3), -a, entre(-0.35, 0.35));
-                    g.add(f);
-                }
-                return g;
-            }
-
             /* ---- Plantation ----
                Trois rangs par côté : tout près pour cadrer l'image, à
                mi-distance pour épaissir, au loin pour fermer l'horizon.
@@ -3067,50 +3054,48 @@
                détache les silhouettes les unes des autres. */
             const PROCHE = 0x02040a, MOYEN = 0x050a12, LOIN = 0x0a131d;
 
+            /* La végétation vit au-delà de l'arc des fenêtres (±40°) et
+               jamais à moins de 9 unités : plus près, le moindre buisson
+               occupe la moitié du cadre et masque tout. Elle encadre les
+               panneaux par les côtés au lieu de passer devant. */
+            function planter(angleMin, angleMax, distMin, distMax, cote) {
+                const a = THREE.MathUtils.degToRad(entre(angleMin, angleMax)) * cote;
+                const r = entre(distMin, distMax);
+                return { x: Math.sin(a) * r, z: -Math.cos(a) * r, r: r };
+            }
+
             [-1, 1].forEach(function (cote) {
-                /* Premier plan : des plantes basses dont on voit la couronne.
-                   Au-dessus de 4 unités de haut, à cette distance, la tête
-                   sort du cadre et il ne reste qu'un tronc nu. */
-                for (let i = 0; i < 4; i++) {
-                    const x = cote * entre(4.4, 8.2);
-                    const z = -entre(4.5, 8.5);
-                    jungle.add(palmier(x, z, entre(2.4, 4.2), PROCHE, true));
-                    jungle.add(racines(x, z, entre(0.5, 0.9), PROCHE));
+                /* Bande latérale, juste à côté des fenêtres. */
+                for (let i = 0; i < 5; i++) {
+                    const p = planter(43, 64, 9, 15, cote);
+                    jungle.add(palmier(p.x, p.z, entre(3.2, 6), PROCHE, true));
+                    if (alea() > 0.5) jungle.add(racines(p.x, p.z, entre(0.4, 0.7), PROCHE));
                 }
                 for (let i = 0; i < 3; i++) {
-                    jungle.add(buisson(cote * entre(4.2, 8), -entre(3.5, 7.5), entre(0.9, 1.7), PROCHE));
+                    const p = planter(46, 70, 10, 16, cote);
+                    jungle.add(buisson(p.x, p.z, entre(0.5, 1), PROCHE));
                 }
-                jungle.add(roseaux(cote * entre(4.2, 7), -entre(2.6, 5.5), 1.4, 20, PROCHE));
-                /* Deux surplombs par côté, dans les coins hauts du cadre. */
-                jungle.add(surplomb(cote * entre(2.6, 4.2), entre(3.1, 4.2), -entre(3.2, 4.6),
-                                    entre(1.5, 2.3), PROCHE, 2.5));
-                jungle.add(surplomb(cote * entre(3.4, 5.4), entre(3.6, 4.8), -entre(4.6, 6.4),
-                                    entre(1.7, 2.6), PROCHE, 2.3));
+                jungle.add(roseaux(Math.sin(THREE.MathUtils.degToRad(48) * cote) * 10,
+                                   -Math.cos(THREE.MathUtils.degToRad(48)) * 10, 1.6, 18, PROCHE));
 
-                /* Rang intermédiaire, derrière la ligne des fenêtres. */
+                /* Deuxième rideau, plus loin et plus ouvert. */
+                for (let i = 0; i < 6; i++) {
+                    const p = planter(42, 86, 15, 24, cote);
+                    jungle.add(palmier(p.x, p.z, entre(4, 7.5), MOYEN, false));
+                    if (alea() > 0.55) jungle.add(buisson(p.x + entre(-1.2, 1.2), p.z + entre(-1.2, 1.2), entre(0.7, 1.3), MOYEN));
+                }
+
+                /* Lisière : elle ferme l'horizon derrière les fenêtres,
+                   on l'aperçoit entre les panneaux et au-dessus d'eux. */
+                for (let i = 0; i < 8; i++) {
+                    const p = planter(12, 92, 26, 38, cote);
+                    jungle.add(palmier(p.x, p.z, entre(4, 8.5), LOIN, false));
+                }
                 for (let i = 0; i < 5; i++) {
-                    const a = (0.42 + alea() * 0.5) * Math.PI * 0.5 * cote;
-                    const r = entre(10, 18);
-                    const x = Math.sin(a) * r, z = -Math.cos(a) * r;
-                    jungle.add(palmier(x, z, entre(4, 6.8), MOYEN, false));
-                    if (alea() > 0.45) jungle.add(buisson(x + entre(-1.5, 1.5), z + entre(-1.5, 1.5), entre(0.9, 1.8), MOYEN));
-                }
-                jungle.add(roseaux(cote * entre(9, 14), -entre(6, 13), 2.2, 22, MOYEN));
-
-                /* Lisière lointaine : elle ferme le fond. */
-                for (let i = 0; i < 7; i++) {
-                    const a = (0.1 + alea() * 0.85) * Math.PI * 0.5 * cote;
-                    const r = entre(22, 34);
-                    jungle.add(palmier(Math.sin(a) * r, -Math.cos(a) * r, entre(3.5, 7), LOIN, false));
+                    const p = planter(10, 95, 28, 40, cote);
+                    jungle.add(buisson(p.x, p.z, entre(1.2, 2.4), LOIN));
                 }
             });
-            /* Quelques masses derrière les panneaux, pour que l'horizon
-               ne soit pas une simple ligne. */
-            for (let i = 0; i < 9; i++) {
-                const a = entre(-1, 1) * Math.PI * 0.62;
-                const r = entre(24, 36);
-                jungle.add(buisson(Math.sin(a) * r, -Math.cos(a) * r, entre(1.6, 3.4), LOIN));
-            }
 
             /* Respiration : la jungle bouge à peine, comme sous un souffle. */
             const jungleBase = jungle.children.map(function (g) { return g.rotation.z; });
@@ -3407,6 +3392,11 @@
             function montrer() {
                 fiches.forEach(function (f) {
                     f.li.classList.remove('is-on', 'is-avant', 'is-apres', 'is-avant2', 'is-apres2');
+                    var a = f.li.querySelector('.dsv-a');
+                    if (a && a.hasAttribute('href')) {
+                        a.setAttribute('data-href', a.getAttribute('href'));
+                        a.removeAttribute('href');
+                    }
                 });
                 if (!retenues.length) {
                     if (pos) pos.textContent = '—';
@@ -3417,6 +3407,10 @@
                 if (vide) vide.hidden = true;
                 index = (index + retenues.length) % retenues.length;
                 retenues[index].li.classList.add('is-on');
+                var ouvrable = retenues[index].li.querySelector('.dsv-a');
+                if (ouvrable && ouvrable.getAttribute('data-href')) {
+                    ouvrable.setAttribute('href', ouvrable.getAttribute('data-href'));
+                }
                 /* Deux dossiers de chaque côté, sans jamais réutiliser
                    une carte déjà placée quand la liste est courte. */
                 var pris = [index];
@@ -3455,6 +3449,7 @@
                 var carte = e.target.closest ? e.target.closest('.dsv-card') : null;
                 if (!carte || carte.classList.contains('is-on')) return;
                 e.preventDefault();
+                e.stopPropagation();
                 if (carte.classList.contains('is-avant')) { index--; montrer(); }
                 else if (carte.classList.contains('is-apres')) { index++; montrer(); }
                 else if (carte.classList.contains('is-avant2')) { index -= 2; montrer(); }
