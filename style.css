@@ -4082,13 +4082,21 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
    floutées d'Expos), 1 = les champs de lumière, 2 = le grain,
    3 = le contenu. Sans cet ordre les fonds de section repassent
    par-dessus les champs et la section redevient noire. */
-/* Le « screen » est posé sur le conteneur, pas seulement sur les
-   disques : toute la nappe de lumière est alors fondue d'un bloc
-   sur ce qu'il y a derrière. Un screen ne fait qu'AJOUTER de la
-   lumière, jamais en retirer — l'eau de Curation et les vidéos
-   restent visibles à 100 %, simplement éclairées. Avec le blend
-   sur les disques seuls, c'étaient des pastilles opaques posées
-   par-dessus, et le fond disparaissait. */
+/* Le « screen » est posé sur le conteneur : toute la nappe de
+   lumière est fondue d'un bloc sur ce qu'il y a derrière. Un screen
+   ne fait qu'AJOUTER de la lumière, jamais en retirer — l'eau de
+   Curation et les vidéos restent visibles à 100 %, simplement
+   éclairées.
+
+   PAS DE DISQUES. Un disque flouté, même à 90 px, garde une
+   chute de lumière circulaire : l'œil la lit comme une pastille.
+   À la place, deux voiles pleine page. Chaque voile empile quatre
+   ou cinq ellipses très larges, toutes ancrées SUR OU AU-DELÀ du
+   bord, si bien qu'on n'en voit jamais une entière : il ne reste
+   que des bascules de couleur qui se traversent. Les voiles
+   débordent de 40 % et tournent très lentement, l'un dans un sens
+   et l'autre dans l'autre, à des vitesses premières entre elles —
+   la composition ne se répète donc jamais à l'œil. */
 .da-aura {
     position: absolute;
     inset: 0;
@@ -4098,41 +4106,70 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
     contain: strict;
     mix-blend-mode: screen;
 }
-.da-aura i {
+.da-voile {
     position: absolute;
+    inset: -40%;
     display: block;
-    border-radius: 50%;
     mix-blend-mode: screen;
+    transform-origin: 50% 50%;
     will-change: transform;
-}
-/* Les grandes nappes de fond : énormes, très floues, très sourdes. */
-.da-aura i.nappe {
-    filter: blur(90px);
-    opacity: 0.44;
-    animation: daDerive 46s ease-in-out infinite alternate;
-}
-/* Les halos : plus petits, plus nets, ce sont eux qui font le bloom. */
-.da-aura i.halo {
-    filter: blur(38px);
-    opacity: 0.55;
-    animation: daPouls 13s ease-in-out infinite alternate;
-}
-/* L'accent rouge, unique et discret, comme sur les références. */
-.da-aura i.braise {
-    filter: blur(58px);
-    opacity: 0.3;
-    background: radial-gradient(circle, var(--da-rouge) 0%, rgba(255, 59, 48, 0) 70%);
-    animation: daPouls 19s ease-in-out infinite alternate;
+    backface-visibility: hidden;
 }
 
-@keyframes daDerive {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(2.5%, -3%, 0) scale(1.1); }
+/* Voile 1 : les grandes masses froides, du bleu profond au cyan.
+   Toutes les ancres sont hors cadre (−12 %, 108 %, 118 %…). */
+.da-voile.un {
+    filter: blur(78px) saturate(1.04);
+    opacity: 0.72;
+    background:
+        radial-gradient(118% 82% at -12% 112%, rgba(27, 63, 168, 0.95) 0%, rgba(27, 63, 168, 0) 64%),
+        radial-gradient(104% 74% at 112% -8%,  rgba(56, 189, 248, 0.74) 0%, rgba(56, 189, 248, 0) 60%),
+        radial-gradient(142% 64% at 44% 124%,  rgba(79, 102, 241, 0.62) 0%, rgba(79, 102, 241, 0) 62%),
+        radial-gradient(86% 118% at 108% 68%,  rgba(125, 211, 252, 0.5) 0%, rgba(125, 211, 252, 0) 58%);
+    animation: daVoileA 97s linear infinite;
 }
-@keyframes daPouls {
-    from { transform: translate3d(0, 0, 0) scale(0.94); opacity: 0.42; }
-    to   { transform: translate3d(-2%, 2.5%, 0) scale(1.08); opacity: 0.72; }
+
+/* Voile 2 : la dispersion. C'est lui qui apporte l'indigo, le
+   violet et l'unique braise rouge, posés en biais pour que les
+   couleurs se traversent au lieu de se juxtaposer. */
+.da-voile.deux {
+    filter: blur(94px) saturate(1.08);
+    opacity: 0.6;
+    background:
+        radial-gradient(112% 78% at 104% 22%,  rgba(37, 99, 235, 0.85) 0%, rgba(37, 99, 235, 0) 62%),
+        radial-gradient(134% 92% at -14% 38%,  rgba(56, 130, 246, 0.64) 0%, rgba(56, 130, 246, 0) 60%),
+        radial-gradient(96% 72% at 58% -18%,   rgba(139, 156, 255, 0.52) 0%, rgba(139, 156, 255, 0) 58%),
+        radial-gradient(74% 58% at 16% 106%,   rgba(255, 59, 48, 0.34) 0%, rgba(255, 59, 48, 0) 62%);
+    animation: daVoileB 139s linear infinite;
 }
+
+/* Une rotation entière, très lente : à cette vitesse on ne voit
+   pas tourner, on voit la lumière se déplacer. L'échelle évite
+   que les coins du voile n'entrent dans le cadre en tournant. */
+@keyframes daVoileA {
+    from { transform: rotate(0deg)    scale(1.16); }
+    to   { transform: rotate(360deg)  scale(1.16); }
+}
+@keyframes daVoileB {
+    from { transform: rotate(360deg)  scale(1.24) translate3d(2%, -2%, 0); }
+    to   { transform: rotate(0deg)    scale(1.24) translate3d(2%, -2%, 0); }
+}
+
+/* Chaque section pèse ses deux voiles différemment. Pas de
+   hue-rotate ici : le filtre CSS approxime la rotation par une
+   matrice, et sur des bleus saturés il vire au vert olive — c'est
+   ce qui donnait un Expos marron. On reste donc dans la gamme, et
+   c'est la dominante qui change d'une section à l'autre. */
+#accueil        .da-voile.un { opacity: 0.78; }
+#accueil        .da-voile.deux { opacity: 0.58; }
+#curation       .da-voile.un { opacity: 0.6; }
+#curation       .da-voile.deux { opacity: 0.74; }
+#collaborateurs .da-voile.un { opacity: 0.66; }
+#collaborateurs .da-voile.deux { opacity: 0.5; }
+#expos          .da-voile.un { opacity: 0.8; }
+#expos          .da-voile.deux { opacity: 0.56; }
+#contact        .da-voile.un { opacity: 0.62; }
+#contact        .da-voile.deux { opacity: 0.7; }
 
 /* --------------------------------------------------------------
    2. Le grain
@@ -4252,10 +4289,9 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
    -------------------------------------------------------------- */
 
 @media (max-width: 860px) {
-    .da-aura i.nappe { filter: blur(60px); }
-    .da-aura i.halo  { filter: blur(26px); }
-    .da-aura i:nth-child(n + 6) { display: none; }
+    .da-aura .da-voile { filter: blur(52px) saturate(1.04) !important; }
+    .da-voile.deux { opacity: 0.4; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .da-aura i { animation: none !important; }
+    .da-voile { animation: none !important; }
 }

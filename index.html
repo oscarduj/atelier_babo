@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125b">
+    <link rel="stylesheet" href="style.css?v=20261125c">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125b" defer></script>
-    <script src="page-transition.js?v=20261125b" defer></script>
-    <script src="agent.js?v=20261125b" defer></script>
+    <script src="ambient.js?v=20261125c" defer></script>
+    <script src="page-transition.js?v=20261125c" defer></script>
+    <script src="agent.js?v=20261125c" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3855,75 +3855,28 @@
     </script>
 
     <!-- ================================================================
-         DIRECTION ARTISTIQUE COMMUNE — pose des champs de lumière
-         Chaque section reçoit une composition écrite à la main : une
-         grande nappe d'un côté, une seconde plus froide en face, un ou
-         deux halos qui font le bloom, et une seule braise rouge.
-         Rien d'aléatoire : les positions sont choisies pour laisser
-         le texte lisible.
+         DIRECTION ARTISTIQUE COMMUNE — pose des voiles spectraux
+         Deux voiles par section, dont toute l'apparence est dans la
+         feuille de style. Le script ne fait que les insérer au bon
+         endroit et décaler leur phase, pour que deux sections
+         voisines ne montrent jamais la même image au même moment.
          ================================================================ -->
     <script>
     (function () {
         'use strict';
 
-        /* couleur, x, y, largeur, hauteur — en % de la section.
-           Les tailles dépassent volontairement les bords : on ne veut
-           jamais voir où un champ s'arrête. */
-        var COMPOSITIONS = {
-            accueil: [
-                ['nappe', 'var(--da-bleu)',  -18,  -25,  78,  120],
-                ['nappe', 'var(--da-azur)',   62,   38,  70,  105],
-                ['halo',  'var(--da-cyan)',   -6,   18,  30,   46],
-                ['halo',  'var(--da-ciel)',   74,   -8,  26,   40],
-                ['braise', null,              12,   70,  20,   28]
-            ],
-            curation: [
-                ['nappe', 'var(--da-azur)',   58,  -30,  74,  118],
-                ['nappe', 'var(--da-bleu)',  -24,   44,  68,  100],
-                ['halo',  'var(--da-cyan)',   70,   52,  28,   42],
-                ['halo',  'var(--da-ciel)',    4,   -6,  22,   34],
-                ['braise', null,              -8,   74,  20,   28]
-            ],
-            collaborateurs: [
-                ['nappe', 'var(--da-bleu)',  -22,    4,  66,  104],
-                ['nappe', 'var(--da-azur)',   64,  -18,  70,  110],
-                ['halo',  'var(--da-cyan)',   -4,   60,  24,   36]
-            ],
-            expos: [
-                ['nappe', 'var(--da-bleu)',   -20, -22,  72,  114],
-                ['nappe', 'var(--da-azur)',    60,  30,  74,  110],
-                ['halo',  'var(--da-ciel)',    46, -14,  30,   44],
-                ['halo',  'var(--da-cyan)',   -10,  56,  26,   40],
-                ['braise', null,               80,  70,  20,   28]
-            ],
-            contact: [
-                ['nappe', 'var(--da-azur)',    24, -28,  86,  124],
-                ['nappe', 'var(--da-bleu)',   -26,  40,  64,   96],
-                ['halo',  'var(--da-cyan)',    40,  44,  34,   50],
-                ['braise', null,               88,   2,  16,   22]
-            ]
+        /* Décalage de phase par section, en secondes. Les valeurs sont
+           volontairement sans rapport entre elles : deux sections ne
+           repassent jamais par la même position en même temps. */
+        var PHASES = {
+            accueil:        [  -4, -61],
+            curation:       [ -29, -12],
+            collaborateurs: [ -53, -88],
+            expos:          [ -17, -44],
+            contact:        [ -71, -25]
         };
 
-        function champ(genre, couleur, x, y, l, h, rang) {
-            var i = document.createElement('i');
-            i.className = genre;
-            i.style.left = x + '%';
-            i.style.top = y + '%';
-            i.style.width = l + '%';
-            i.style.height = h + '%';
-            if (couleur) {
-                i.style.background =
-                    'radial-gradient(circle, ' + couleur + ' 0%, rgba(2, 6, 23, 0) 70%)';
-            }
-            /* Chaque champ part à un moment différent de son cycle :
-               sans ça les cinq respirent ensemble, et ça se voit. */
-            i.style.animationDelay = (-rang * 3.7).toFixed(1) + 's';
-            i.style.animationDuration =
-                (genre === 'nappe' ? 46 + rang * 5 : 13 + rang * 2.4).toFixed(1) + 's';
-            return i;
-        }
-
-        Object.keys(COMPOSITIONS).forEach(function (id) {
+        Object.keys(PHASES).forEach(function (id) {
             var sec = document.getElementById(id);
             if (!sec) return;
             sec.classList.add('da');
@@ -3931,11 +3884,15 @@
             var aura = document.createElement('div');
             aura.className = 'da-aura';
             aura.setAttribute('aria-hidden', 'true');
-            COMPOSITIONS[id].forEach(function (c, n) {
-                aura.appendChild(champ(c[0], c[1], c[2], c[3], c[4], c[5], n));
+
+            ['un', 'deux'].forEach(function (rang, n) {
+                var voile = document.createElement('span');
+                voile.className = 'da-voile ' + rang;
+                voile.style.animationDelay = PHASES[id][n] + 's';
+                aura.appendChild(voile);
             });
 
-            /* Sur l'accueil les champs vont dans le cadre vidéo, pour
+            /* Sur l'accueil les voiles vont dans le cadre vidéo, pour
                passer par-dessus la vidéo et sous le titre. */
             var cadre = sec.querySelector(':scope > .hx-frame');
             (cadre || sec).insertBefore(aura, (cadre || sec).firstChild);
