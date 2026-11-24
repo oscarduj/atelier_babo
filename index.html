@@ -3042,6 +3042,24 @@
                 return g;
             }
 
+            /* Feuillage en surplomb : de grandes feuilles accrochées haut,
+               tournées vers le bas, qui entrent dans le cadre par les coins. */
+            function surplomb(x, y, z, taille, teinte, versBas) {
+                const g = new THREE.Group();
+                g.position.set(x, y, z);
+                const n = Math.round(entre(3, 6));
+                for (let i = 0; i < n; i++) {
+                    const f = new THREE.Mesh(GEO_FEUILLE, matFeuille(teinte));
+                    const t = taille * entre(0.7, 1.25);
+                    f.scale.set(t, t * 1.6, 1);
+                    const a = (i / n) * 1.5 + entre(-0.25, 0.25) - 0.75;
+                    f.position.set(Math.cos(a) * t * 0.5, entre(-0.3, 0.3), Math.sin(a) * t * 0.5 - 0.2);
+                    f.rotation.set(versBas + entre(-0.3, 0.3), -a, entre(-0.35, 0.35));
+                    g.add(f);
+                }
+                return g;
+            }
+
             /* ---- Plantation ----
                Trois rangs par côté : tout près pour cadrer l'image, à
                mi-distance pour épaissir, au loin pour fermer l'horizon.
@@ -3050,22 +3068,31 @@
             const PROCHE = 0x02040a, MOYEN = 0x050a12, LOIN = 0x0a131d;
 
             [-1, 1].forEach(function (cote) {
-                /* Premier plan : hauts, en bord de cadre, ils débordent vers le haut. */
-                for (let i = 0; i < 3; i++) {
-                    const x = cote * entre(4.6, 7.4);
-                    const z = -entre(2.4, 6.2);
-                    jungle.add(palmier(x, z, entre(6.5, 10.5), PROCHE, true));
+                /* Premier plan : des plantes basses dont on voit la couronne.
+                   Au-dessus de 4 unités de haut, à cette distance, la tête
+                   sort du cadre et il ne reste qu'un tronc nu. */
+                for (let i = 0; i < 4; i++) {
+                    const x = cote * entre(4.4, 8.2);
+                    const z = -entre(4.5, 8.5);
+                    jungle.add(palmier(x, z, entre(2.4, 4.2), PROCHE, true));
                     jungle.add(racines(x, z, entre(0.5, 0.9), PROCHE));
                 }
-                jungle.add(buisson(cote * entre(5, 8), -entre(2, 5), entre(1.1, 1.9), PROCHE));
-                jungle.add(roseaux(cote * entre(4.2, 6.5), -entre(1.6, 4), 1.1, 16, PROCHE));
+                for (let i = 0; i < 3; i++) {
+                    jungle.add(buisson(cote * entre(4.2, 8), -entre(3.5, 7.5), entre(0.9, 1.7), PROCHE));
+                }
+                jungle.add(roseaux(cote * entre(4.2, 7), -entre(2.6, 5.5), 1.4, 20, PROCHE));
+                /* Deux surplombs par côté, dans les coins hauts du cadre. */
+                jungle.add(surplomb(cote * entre(2.6, 4.2), entre(3.1, 4.2), -entre(3.2, 4.6),
+                                    entre(1.5, 2.3), PROCHE, 2.5));
+                jungle.add(surplomb(cote * entre(3.4, 5.4), entre(3.6, 4.8), -entre(4.6, 6.4),
+                                    entre(1.7, 2.6), PROCHE, 2.3));
 
                 /* Rang intermédiaire, derrière la ligne des fenêtres. */
                 for (let i = 0; i < 5; i++) {
                     const a = (0.42 + alea() * 0.5) * Math.PI * 0.5 * cote;
-                    const r = entre(11, 19);
+                    const r = entre(10, 18);
                     const x = Math.sin(a) * r, z = -Math.cos(a) * r;
-                    jungle.add(palmier(x, z, entre(4.5, 8), MOYEN, false));
+                    jungle.add(palmier(x, z, entre(4, 6.8), MOYEN, false));
                     if (alea() > 0.45) jungle.add(buisson(x + entre(-1.5, 1.5), z + entre(-1.5, 1.5), entre(0.9, 1.8), MOYEN));
                 }
                 jungle.add(roseaux(cote * entre(9, 14), -entre(6, 13), 2.2, 22, MOYEN));
