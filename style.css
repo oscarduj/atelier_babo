@@ -2912,7 +2912,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .sg {
     position: relative;
     margin: 1.4rem calc(50% - 50vw) 0;
-    height: clamp(32rem, 84vh, 52rem);
+    height: clamp(32rem, 88vh, 80rem);
     overflow: hidden;
     background: #050505;
 }
@@ -2938,7 +2938,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     position: absolute;
     left: 50%;
     top: 50%;
-    width: min(41vw, 39rem);
+    width: min(38vw, 56rem);
     padding: 0;
     border: none;
     background: none;
@@ -2951,7 +2951,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.95s ease, filter 0.95s ease;
     will-change: transform;
 }
-.sg-item img { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: contain; box-shadow: 0 36px 90px rgba(0, 0, 0, 0.55); }
+.sg-item img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; box-shadow: 0 36px 90px rgba(0, 0, 0, 0.55); }
 /* La légende sort du flux : l'affiche est alors seule dans le bloc, donc
    centrée pour de bon au milieu de la scène. */
 .sg-cap { position: absolute; left: 50%; bottom: calc(100% + 0.8rem); transform: translateX(-50%); width: max-content; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.15rem; text-align: center; }
@@ -3099,7 +3099,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .dsv-count { margin: 0; justify-self: end; white-space: nowrap; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(234, 232, 228, 0.5); }
 
 /* ---- La pile : une seule fiche visible à la fois ---- */
-.dsv-grid { position: relative; height: clamp(26rem, 64vh, 44rem); display: flex; align-items: center; justify-content: center; list-style: none; margin: 0.9rem 0 0; padding: 0; }
+.dsv-grid { position: relative; height: clamp(26rem, 72vh, 62rem); display: flex; align-items: center; justify-content: center; list-style: none; margin: 0.9rem 0 0; padding: 0; }
 .dsv-card { display: none; }
 .dsv-card.is-on { display: flex; height: 100%; align-items: center; justify-content: center; animation: dsv-in 0.4s ease both; }
 @keyframes dsv-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
@@ -3202,7 +3202,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 #expos.sg-section > .section-content { position: relative; z-index: 1; }
 #expos.sg-section .sg { background: transparent; margin-top: 0.5rem; overflow: visible; }
 /* L'affiche à sa taille exacte : plus de bandes sur les côtés */
-.sg-item img { width: auto; max-width: 100%; height: auto; max-height: 62vh; margin: 0 auto; }
+.sg-item img { width: auto; max-width: 100%; height: auto; max-height: 72vh; margin: 0 auto; }
 /* Texte qui explique l'exposition, dans le vide à gauche */
 .sg-about {
     position: absolute;
@@ -3238,6 +3238,99 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 @media (max-width: 1100px) { .sg-about { width: min(19vw, 15rem); } .sg-about-d { font-size: 0.74rem; } }
 @media (max-width: 900px) { .sg-about { display: none; } }
 .sg-about.is-right { left: auto; right: max(1.6rem, 6vw); text-align: right; }
+
+
+/* ============================================================
+   EXPOS — mise en page éditoriale : l'affiche à gauche, le texte
+   en grand à droite. Sur un écran large, l'affiche portrait seule
+   laissait deux vides noirs sur les côtés ; ici la largeur sert.
+   ============================================================ */
+/* Les deux colonnes forment un bloc centré : sur un écran très large,
+   elles se seraient retrouvées isolées aux deux extrémités. */
+#expos.sg-section .sg {
+    height: clamp(30rem, 84vh, 78rem);
+    width: min(100%, 112rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* L'affiche occupe la colonne de gauche */
+#expos.sg-section .sg-stage { left: 0; right: 53%; }
+#expos.sg-section .sg-item { width: 100%; }
+#expos.sg-section .sg-item img { max-height: 76vh; }
+/* Une seule affiche à la fois : les voisines s'effacent au lieu de déborder */
+#expos.sg-section .sg-item.is-prev,
+#expos.sg-section .sg-item.is-next {
+    transform: translate(-50%, -50%) scale(0.97);
+    opacity: 0;
+    filter: none;
+    pointer-events: none;
+}
+/* La légende ferait doublon avec le titre de droite */
+#expos.sg-section .sg-cap { display: none; }
+
+/* Le texte occupe la colonne de droite, et y reste */
+#expos.sg-section .sg-about,
+#expos.sg-section .sg-about.is-right {
+    left: 53%;
+    right: 0;
+    width: auto;
+    max-width: none;
+    top: 50%;
+    text-align: left;
+    pointer-events: auto;
+}
+#expos.sg-section .sg-about::before { display: none; }
+#expos.sg-section .sg-about-k { font-size: 0.66rem; letter-spacing: 0.18em; margin-bottom: 1.4rem; }
+#expos.sg-section .sg-about-t {
+    font-size: clamp(2rem, 4vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.3rem !important;
+}
+#expos.sg-section .sg-about-m {
+    order: 2;
+    margin: 0 0 1.5rem !important;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.72);
+}
+#expos.sg-section .sg-about-d {
+    font-size: clamp(0.88rem, 1.05vw, 1.12rem);
+    line-height: 1.7;
+    max-width: 40rem;
+    color: rgba(255, 255, 255, 0.78);
+}
+/* dates juste sous le titre, description ensuite */
+#expos.sg-section .sg-about { display: flex; flex-direction: column; }
+#expos.sg-section .sg-about-d { order: 3; }
+
+/* Les commandes passent sous le texte, dans la même colonne */
+#expos.sg-section .sg-foot {
+    left: 53%;
+    right: 0;
+    bottom: max(2.4rem, 7vh);
+    padding: 0;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    justify-items: start;
+    gap: 1.6rem;
+}
+#expos.sg-section .sg-ctrl { order: -1; }
+#expos.sg-section .sg-hint { justify-self: end; }
+
+@media (max-width: 1100px) {
+    #expos.sg-section .sg { height: auto; min-height: 0; padding-bottom: 2rem; }
+    #expos.sg-section .sg-stage { position: relative; inset: auto; left: auto; right: auto; height: 56vh; margin: 0 auto; }
+    #expos.sg-section .sg-item img { max-height: 54vh; }
+    #expos.sg-section .sg-about,
+    #expos.sg-section .sg-about.is-right {
+        display: block; position: relative; left: auto; right: auto; top: auto;
+        transform: none; max-width: none; margin-top: 1.4rem; text-align: center;
+    }
+    #expos.sg-section .sg-about-d { max-width: 100%; }
+    #expos.sg-section .sg-foot { position: relative; left: auto; right: auto; bottom: auto; margin-top: 1.2rem; grid-template-columns: 1fr; justify-items: center; gap: 0.8rem; }
+    #expos.sg-section .sg-hint { justify-self: center; }
+}
 
 /* ---------- COLLABORATEURS : en-tête compact sur une ligne, fond noir uni ---------- */
 #collaborateurs { background: #070707; }
@@ -3377,8 +3470,8 @@ body, .main-feed { background: var(--ab-bg); }
 .hx-tag-key .hidden-key { position: static !important; margin: 0 !important; }
 /* Titre et bloc de texte empilés en haut à gauche : un seul conteneur
    positionné, le texte suit le titre sans calcul de hauteur. */
-.hx-head { position: absolute; left: 4.6rem; top: 2rem; z-index: 3; width: min(46rem, 66vw); }
-.hx-title { position: static; margin: 0 0 1.4rem; text-align: left; font-family: 'Space Grotesk', sans-serif; font-size: clamp(3.6rem, 10vw, 10.5rem); font-weight: 500; line-height: 0.92; letter-spacing: -0.04em; text-transform: none; color: #f3f3f1; }
+.hx-head { position: absolute; left: 4.6rem; top: 1.8rem; z-index: 3; width: min(88vw, 100rem); }
+.hx-title { position: static; margin: 0 0 1.4rem; text-align: left; font-family: 'Space Grotesk', sans-serif; font-size: clamp(3.6rem, min(14vw, 22vh), 22rem); font-weight: 500; line-height: 0.92; letter-spacing: -0.04em; text-transform: none; color: #f3f3f1; }
 .hx-bl { position: absolute; left: 2rem; bottom: 2rem; z-index: 3; width: min(31rem, 46vw); }
 .hx-lead { margin: 0 0 1.4rem; font-family: 'Space Grotesk', sans-serif; font-size: clamp(1rem, 1.55vw, 1.35rem); line-height: 1.32; color: #ffffff; }
 .hx-btns { display: flex; flex-wrap: wrap; gap: 0.8rem; }
@@ -3641,7 +3734,10 @@ body, .main-feed { background: var(--ab-bg); }
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    min-height: 0;
+    /* Hauteur garantie : sans elle, le bloc ne s'etirait pas et tout
+       restait collé en haut sur les grands écrans. */
+    min-height: calc(100vh - 7rem);
+    min-height: calc(100dvh - 7rem);
 }
 #curation .sec-head { flex-shrink: 0; }
 /* Le bloc remonte sous le titre au lieu de flotter au milieu de l'écran. */

@@ -2640,12 +2640,12 @@
                 screen.position.y = BASE + H / 2;
                 screen.userData.index = i;
                 lift.add(screen);
-                /* Le nom est posé en bas du panneau, comme un cartel. Au-dessus,
-                   il sortait du cadre sur les panneaux de bord dès que l'écran
-                   était large, et le nom de la dernière fenêtre disparaissait. */
+                /* Nom au-dessus du panneau. Il tient dans le cadre tant que le
+                   champ de vision reste à 52° : c'est son réglage variable qui
+                   faisait disparaître le nom des fenêtres de bord. */
                 const lmat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false });
-                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW, PW / 7), lmat);
-                label.position.set(0, BASE + PW / 14 + 0.14, 0.03);
+                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW * 1.15, PW * 1.15 / 8), lmat);
+                label.position.set(0, BASE + H + 0.5, 0);
                 lift.add(label);
                 const p = { lift, pivot, screen, mat, lmat, liftNow: 0, liftTo: 0, glowNow: 0.86, glowTo: 0.86, url: null, name: null };
                 p.slot = SLOTS[i];
@@ -2662,7 +2662,7 @@
                     if (name && name !== p.name) {
                         p.name = name;
                         if (p.lmat.map) p.lmat.map.dispose();
-                        p.lmat.map = textCanvas(name, 1024, 146, 52, 'center', 'rgba(8, 9, 10, 0.74)'); p.lmat.needsUpdate = true;
+                        p.lmat.map = textCanvas(name, 1024, 128, 56, 'center'); p.lmat.needsUpdate = true;
                     }
                     const layer = box ? box.querySelector('.cell-photo-layer.active') : null;
                     const bg = layer ? (layer.style.backgroundImage || getComputedStyle(layer).backgroundImage)
@@ -2896,22 +2896,7 @@
             // Regard à la première personne : on fait glisser pour tourner la tête
             let YAW_MAX = 0.2;
             const PITCH_MIN = -0.08, PITCH_MAX = 0.14;
-            /* Ouverture de l'arc : les panneaux sont replacés à chaque
-               redimensionnement pour occuper toute la largeur du cadre, des
-               bords aux bords, sans jamais dépasser en haut. */
-            let spanNow = SPAN;
-            function placePanels() {
-                const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect);
-                const demi = Math.atan((PW / 2) / R);
-                const mini = N * 2 * demi * 1.04;          /* jamais de chevauchement */
-                spanNow = THREE.MathUtils.clamp(hfov, mini, Math.PI * 0.82);
-                const pas = N > 1 ? (spanNow - 2 * demi) / (N - 1) : 0;
-                panels.forEach((p, i) => {
-                    const phi = -(spanNow / 2 - demi) + pas * i;
-                    p.pivot.position.set(R * Math.sin(phi), 0, -R * Math.cos(phi));
-                    p.pivot.rotation.y = -phi;
-                });
-            }
+            const spanNow = SPAN;
 
             function updateYawLimit() {
                 const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect);
@@ -2989,7 +2974,6 @@
                    l'arc, lui, qui s'ouvre pour remplir la largeur. */
                 camera.fov = 52;
                 camera.updateProjectionMatrix();
-                if (typeof placePanels === 'function') placePanels();
                 if (typeof updateYawLimit === 'function') updateYawLimit();
                 const rt = water.getRenderTarget && water.getRenderTarget();
                 if (rt) rt.setSize(Math.round(w * dpr), Math.round(h * dpr));
