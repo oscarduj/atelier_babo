@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261124h">
+    <link rel="stylesheet" href="style.css?v=20261124j">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261124h" defer></script>
-    <script src="page-transition.js?v=20261124h" defer></script>
-    <script src="agent.js?v=20261124h" defer></script>
+    <script src="ambient.js?v=20261124j" defer></script>
+    <script src="page-transition.js?v=20261124j" defer></script>
+    <script src="agent.js?v=20261124j" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3156,20 +3156,26 @@
                des pans de feuillage entiers, qu'on superpose ensuite. */
 
             function feuille(g, longueur, largeur, dents) {
+                /* « longueur » est négative quand la feuille pousse vers le
+                   haut. Le tracé accepte ce signe, mais les rayons des
+                   entailles doivent rester positifs : ellipse() refuse un
+                   rayon négatif et faisait tomber toute la salle 3D. */
+                const L = Math.abs(longueur), E = Math.abs(largeur);
                 g.beginPath();
                 g.moveTo(0, 0);
                 g.bezierCurveTo(largeur, longueur * 0.3, largeur * 0.85, longueur * 0.8, 0, longueur);
                 g.bezierCurveTo(-largeur * 0.85, longueur * 0.8, -largeur, longueur * 0.3, 0, 0);
                 g.fill();
-                if (dents) {                       /* entailles : la feuille respire */
+                if (dents && L > 8 && E > 1) {     /* entailles : la feuille respire */
                     g.save();
                     g.globalCompositeOperation = 'destination-out';
-                    const n = Math.max(3, Math.round(longueur / 26));
+                    const n = Math.max(3, Math.round(L / 26));
+                    const rx = Math.max(0.5, E * 0.52);
+                    const ry = Math.max(0.5, L / (n * 3.4));
                     for (let i = 1; i < n; i++) {
-                        const y = (i / n) * longueur;
-                        const e = largeur * 0.52;
-                        g.beginPath(); g.ellipse(-largeur * 0.8, y, e, longueur / (n * 3.4), -0.25, 0, Math.PI * 2); g.fill();
-                        g.beginPath(); g.ellipse(largeur * 0.8, y + longueur / (n * 2), e, longueur / (n * 3.4), 0.25, 0, Math.PI * 2); g.fill();
+                        const y = (i / n) * longueur;   /* garde le sens de la feuille */
+                        g.beginPath(); g.ellipse(-largeur * 0.8, y, rx, ry, -0.25, 0, Math.PI * 2); g.fill();
+                        g.beginPath(); g.ellipse(largeur * 0.8, y + longueur / (n * 2), rx, ry, 0.25, 0, Math.PI * 2); g.fill();
                     }
                     g.restore();
                 }
@@ -3177,23 +3183,37 @@
 
             /* Un pan de jungle : des dizaines de feuilles entremêlées, plus
                claires en haut — c'est la lune qui tombe dessus. */
-            function panTexture(largeurPx, hauteurPx, densite, dents) {
+            /* « taille » est la longueur d'une feuille en fraction de la
+               hauteur du pan. Elle doit rester petite — une feuille qui
+               fait un tiers du pan donne une tache, pas du feuillage. Et
+               le canevas doit avoir à peu près les proportions du pan sur
+               lequel il sera posé, sinon les feuilles s'étirent. */
+            function panTexture(largeurPx, hauteurPx, touffes, taille, dents) {
                 const c = document.createElement('canvas');
                 c.width = largeurPx; c.height = hauteurPx;
                 const g = c.getContext('2d');
-                for (let i = 0; i < densite; i++) {
-                    const x = Math.random() * largeurPx;
-                    const base = hauteurPx * (0.82 + Math.random() * 0.3);
-                    const lg = hauteurPx * (0.28 + Math.random() * 0.52);
-                    const la = lg * (0.17 + Math.random() * 0.2);
-                    /* plus la feuille monte, plus elle capte la lumière */
-                    const clair = Math.round(26 + (lg / hauteurPx) * 54 + Math.random() * 22);
-                    g.save();
-                    g.translate(x, base);
-                    g.rotate((Math.random() - 0.5) * 1.5);
-                    g.fillStyle = 'rgb(' + Math.round(clair * 0.72) + ',' + clair + ',' + Math.round(clair * 0.92) + ')';
-                    feuille(g, -lg, la, dents);
-                    g.restore();
+                const unite = Math.min(largeurPx, hauteurPx);
+                /* Une jungle, ce sont des paquets de feuilles qui se
+                   recouvrent : on dessine donc touffe par touffe. */
+                for (let t = 0; t < touffes; t++) {
+                    const cx = Math.random() * largeurPx;
+                    const cy = hauteurPx * (0.04 + Math.random() * 1.0);
+                    const rayon = unite * taille * (1.2 + Math.random() * 1.6);
+                    const n = 6 + Math.round(Math.random() * 10);
+                    /* plus la touffe est haute, plus elle capte la lune */
+                    const base = 48 + (1 - cy / hauteurPx) * 98;
+                    for (let i = 0; i < n; i++) {
+                        const lg = unite * taille * (0.55 + Math.random() * 0.85);
+                        const la = lg * (0.2 + Math.random() * 0.22);
+                        const clair = Math.round(base + Math.random() * 54);
+                        g.save();
+                        g.translate(cx + (Math.random() - 0.5) * rayon,
+                                    cy + (Math.random() - 0.5) * rayon * 0.85);
+                        g.rotate(Math.random() * Math.PI * 2);
+                        g.fillStyle = 'rgb(' + Math.round(clair * 0.7) + ',' + clair + ',' + Math.round(clair * 0.88) + ')';
+                        feuille(g, -lg, la, dents);
+                        g.restore();
+                    }
                 }
                 const t = new THREE.CanvasTexture(c);
                 t.colorSpace = THREE.SRGBColorSpace;
@@ -3239,9 +3259,16 @@
                 t.colorSpace = THREE.SRGBColorSpace; return t;
             }
 
-            const TEX_PAN_DENSE = panTexture(1024, 512, 150, true);
-            const TEX_PAN_HAUT = panTexture(1024, 768, 120, true);
-            const TEX_SOUS_BOIS = panTexture(1024, 384, 190, false);
+            /* Plusieurs variantes par couche : sans ça, tous les pans d'un
+               même rideau se ressemblent et la jungle fait papier peint.
+               Les proportions du canevas suivent celles des pans. */
+            const TEX_HAUTE = [panTexture(512, 1280, 130, 0.045, true),
+                               panTexture(512, 1280, 120, 0.055, true)];
+            const TEX_MOYENNE = [panTexture(640, 1024, 120, 0.05, true),
+                                 panTexture(640, 1024, 110, 0.065, true)];
+            const TEX_VOUTE = [panTexture(768, 1024, 120, 0.065, true),
+                               panTexture(768, 1024, 110, 0.08, true)];
+            const TEX_SOUS_BOIS = panTexture(1024, 384, 150, 0.13, false);
             const TEX_GRANDE = grandeFeuilleTexture();
             const TEX_ECORCE = ecorceTexture();
 
@@ -3252,18 +3279,24 @@
                     side: THREE.DoubleSide, depthWrite: true
                 });
             }
+            /* Les teintes vont du clair (premier plan, éclairé par la lune)
+               au sombre (fond) : c'est ce dégradé qui donne la profondeur.
+               Chaque couche est une liste de variantes, piochée au hasard. */
+            function auHasard(liste) { return liste[Math.floor(Math.random() * liste.length)]; }
             const MAT_PAN = {
-                proche: matPan(TEX_PAN_DENSE, 0x8a9a8e),
-                haut: matPan(TEX_PAN_HAUT, 0x6e7d73),
-                moyen: matPan(TEX_PAN_DENSE, 0x44514a),
-                loin: matPan(TEX_PAN_HAUT, 0x27312c),
-                sol: matPan(TEX_SOUS_BOIS, 0x7c8c80),
+                proche: TEX_HAUTE.map(function (t) { return matPan(t, 0xb4c3a6); }),
+                moyen: TEX_MOYENNE.map(function (t) { return matPan(t, 0x5a6a5d); }),
+                canopee: TEX_VOUTE.map(function (t) { return matPan(t, 0x6e7f6b); }),
+                loin: TEX_MOYENNE.map(function (t) { return matPan(t, 0x36423a); }),
+                sol: [matPan(TEX_SOUS_BOIS, 0x93a28d)],
                 grande: new THREE.MeshBasicMaterial({
                     map: TEX_GRANDE, alphaMap: TEX_GRANDE, transparent: true,
                     alphaTest: 0.35, side: THREE.DoubleSide, color: 0x9aab9f
                 })
             };
-            const MAT_TRONC = new THREE.MeshBasicMaterial({ map: TEX_ECORCE, color: 0x3a443d });
+            /* Le tronc prend la teinte du feuillage : trop clair, il ressortait
+               en barre et cassait la masse de la jungle. */
+            const MAT_TRONC = new THREE.MeshBasicMaterial({ map: TEX_ECORCE, color: 0x5d6a56 });
             const MAT_LIANE = new THREE.MeshBasicMaterial({ color: 0x2a332d });
 
             const GEO_PLAN = new THREE.PlaneGeometry(1, 1);
@@ -3275,6 +3308,17 @@
                 m.scale.set(largeur, hauteur, 1);
                 m.position.set(x, (yBas || 0) + hauteur / 2, z);
                 m.lookAt(0, m.position.y, 0);
+                return m;
+            }
+
+            /* Un pan de voûte : le même feuillage, retourné, pour qu'il
+               retombe du haut du cadre au lieu de pousser du sol. */
+            function voute(x, z, largeur, hauteur, yBas) {
+                const m = new THREE.Mesh(GEO_PLAN, auHasard(MAT_PAN.canopee));
+                m.scale.set(largeur, hauteur, 1);
+                m.position.set(x, yBas + hauteur / 2, z);
+                m.lookAt(0, m.position.y, 0);
+                m.rotateZ(Math.PI);
                 return m;
             }
 
@@ -3316,78 +3360,113 @@
             }
 
             /* ---------- Plantation ----------
-               Trois rideaux par côté, du plus proche au plus lointain, plus
-               du sous-bois au ras de l'eau et des troncs qui les traversent.
-               Tout reste au-delà de 42° : l'arc des fenêtres va jusqu'à 40°,
-               et une plante posée devant masquerait l'image. */
+               Repères mesurés dans la scène : la caméra est à 1,70, le
+               champ vertical fait 52° (26° au-dessus de l'horizon), les
+               fenêtres occupent l'arc ±38° et montent jusqu'à 21° de
+               hauteur. Il reste donc deux bandes à habiller : les côtés,
+               de 38° jusqu'au bord du champ (44,7° en 16/9, 49,4° en
+               ultra-large), et le ciel au-dessus des fenêtres, de 21° à
+               26°. Toute la jungle tient dans ces deux bandes : plus à
+               l'extérieur elle sort du cadre, plus à l'intérieur elle
+               masque les images. */
+
+            const DEG = Math.PI / 180;
+
+            /* Pose un élément pour que son bord intérieur tombe très
+               exactement à l'angle voulu : c'est ce qui l'empêche de
+               déborder sur les photos. */
+            function poseBord(angleInterieur, largeur, dist, cote) {
+                const demi = Math.atan(largeur / (2 * dist)) / DEG;
+                const a = (angleInterieur + demi) * DEG * cote;
+                return { x: Math.sin(a) * dist, z: -Math.cos(a) * dist };
+            }
+
+            /* Pose libre, pour ce qui passe derrière les fenêtres. */
             function pose(angleMin, angleMax, distMin, distMax, cote) {
-                const a = THREE.MathUtils.degToRad(entre(angleMin, angleMax)) * cote;
+                const a = entre(angleMin, angleMax) * DEG * cote;
                 const r = entre(distMin, distMax);
                 return { x: Math.sin(a) * r, z: -Math.cos(a) * r };
             }
 
             [-1, 1].forEach(function (cote) {
-                /* Rideau proche : haut, il borde le cadre. */
-                for (let i = 0; i < 7; i++) {
-                    const p = pose(43, 78, 8.5, 13, cote);
-                    jungle.add(pan(p.x, p.z, entre(6, 10), entre(5, 8.5), MAT_PAN.proche, -0.3));
+                /* Rideau proche : c'est lui qu'on voit le mieux. Il monte
+                   plus haut que le cadre et borde la fenêtre extérieure. */
+                for (let i = 0; i < 14; i++) {
+                    const l = entre(4, 7.5), d = entre(6, 10);
+                    const p = poseBord(entre(38, 42), l, d, cote);
+                    jungle.add(pan(p.x, p.z, l, entre(9, 16), auHasard(MAT_PAN.proche), -0.5));
                 }
-                /* Les troncs traversent le feuillage et lui donnent sa structure. */
-                for (let i = 0; i < 5; i++) {
-                    const p = pose(44, 76, 9, 13, cote);
-                    jungle.add(tronc(p.x, p.z, entre(7, 13), entre(0.75, 1.5)));
-                }
+                /* Les troncs ne font que structurer : peu nombreux, courts
+                   et de la couleur du feuillage, sinon ils ressortent en
+                   barres claires et on ne voit plus la jungle. */
                 for (let i = 0; i < 4; i++) {
-                    const p = pose(45, 74, 8.5, 12, cote);
-                    jungle.add(liane(p.x, entre(5, 9), p.z, entre(3, 6.5)));
+                    const e = entre(0.6, 1.1), d = entre(7.5, 11.5);
+                    const p = poseBord(entre(40, 46), e * 1.4, d, cote);
+                    jungle.add(tronc(p.x, p.z, entre(7, 12), e));
                 }
-                /* Grandes feuilles isolées, qui entrent dans le champ. */
                 for (let i = 0; i < 5; i++) {
-                    const p = pose(41, 58, 7.5, 11, cote);
-                    jungle.add(grandeFeuille(p.x, entre(1.2, 4.4), p.z, entre(1.8, 3.2), entre(-1.1, 1.1) - cote * 0.5));
+                    const d = entre(6.5, 10);
+                    const p = poseBord(entre(39, 45), 0.4, d, cote);
+                    jungle.add(liane(p.x, entre(6, 11), p.z, entre(3.5, 7)));
                 }
-                /* Sous-bois : la lisière basse qui plonge dans l'eau. */
+                /* Grandes feuilles au tout premier plan : elles entrent
+                   dans l'image par le bord, comme si on écartait les
+                   branches pour regarder. */
                 for (let i = 0; i < 6; i++) {
-                    const p = pose(40, 86, 8, 14, cote);
-                    jungle.add(pan(p.x, p.z, entre(4.5, 8), entre(1.1, 2.4), MAT_PAN.sol, -0.25));
+                    const t = entre(2.2, 4), d = entre(4.5, 7.5);
+                    const p = poseBord(entre(36, 41), t * 0.5, d, cote);
+                    jungle.add(grandeFeuille(p.x, entre(1.4, 5.2), p.z, t, entre(-1.1, 1.1) - cote * 0.5));
                 }
-
-                /* Deuxième rideau. */
+                /* Lisière basse : le feuillage plonge dans l'eau. */
                 for (let i = 0; i < 7; i++) {
-                    const p = pose(40, 94, 15, 23, cote);
-                    jungle.add(pan(p.x, p.z, entre(9, 15), entre(6, 11), MAT_PAN.moyen, -0.3));
-                }
-                for (let i = 0; i < 4; i++) {
-                    const p = pose(42, 90, 16, 23, cote);
-                    jungle.add(tronc(p.x, p.z, entre(9, 16), entre(0.8, 1.6)));
+                    const l = entre(4, 7), d = entre(7, 13);
+                    const p = poseBord(entre(37, 43), l, d, cote);
+                    jungle.add(pan(p.x, p.z, l, entre(1.3, 2.8), auHasard(MAT_PAN.sol), -0.35));
                 }
 
-                /* Rideau lointain : il ferme l'horizon derrière les fenêtres. */
+                /* Deuxième rideau, plus loin : il creuse la profondeur. */
                 for (let i = 0; i < 8; i++) {
-                    const p = pose(8, 100, 26, 40, cote);
-                    jungle.add(pan(p.x, p.z, entre(14, 24), entre(8, 15), MAT_PAN.loin, -0.5));
+                    const l = entre(6, 11), d = entre(12, 18);
+                    const p = poseBord(entre(38, 44), l, d, cote);
+                    jungle.add(pan(p.x, p.z, l, entre(10, 17), auHasard(MAT_PAN.moyen), -0.4));
                 }
 
-                /* Derrière les fenêtres : les panneaux montent à 7.1 et sont
-                   posés à 16 unités. Des rideaux hauts placés à 19-25 passent
-                   au-dessus d'eux et se glissent dans les intervalles, pour
-                   que la jungle encadre vraiment au lieu de border les côtés. */
-                for (let i = 0; i < 6; i++) {
-                    const p = pose(4, 40, 19, 25, cote);
-                    jungle.add(pan(p.x, p.z, entre(9, 15), entre(13, 20), MAT_PAN.moyen, -0.4));
+                /* Derrière les fenêtres, mais seulement vers les bords
+                   (17° et plus) : la jungle passe derrière les images sans
+                   monter au milieu du cadre, où le ciel doit rester
+                   étoilé. */
+                for (let i = 0; i < 5; i++) {
+                    const l = entre(9, 14), d = entre(20, 29);
+                    const p = poseBord(entre(20, 40), l, d, cote);
+                    jungle.add(pan(p.x, p.z, l, entre(11, 17), auHasard(MAT_PAN.canopee), -0.4));
                 }
-                for (let i = 0; i < 4; i++) {
-                    const p = pose(6, 38, 18, 23, cote);
-                    jungle.add(tronc(p.x, p.z, entre(13, 20), entre(0.7, 1.4)));
+                for (let i = 0; i < 3; i++) {
+                    const p = poseBord(entre(22, 38), 1.5, entre(19, 27), cote);
+                    jungle.add(tronc(p.x, p.z, entre(13, 19), entre(0.6, 1.2)));
+                }
+            });
+
+            /* Voûte : du feuillage retombe des deux coins hauts du cadre.
+               Elle reste dans les angles (18° à 45°) et s'arrête juste
+               au-dessus des images : le milieu du ciel garde ses étoiles,
+               qui doivent rester ce qu'on voit en premier là-haut. */
+            [-1, 1].forEach(function (cote) {
+                for (let i = 0; i < 3; i++) {
+                    const l = entre(3.5, 6), d = entre(6, 10);
+                    /* même règle que sur les côtés : c'est le bord
+                       intérieur qu'on place, pas le centre du pan. */
+                    const p = poseBord(entre(20, 40), l, d, cote);
+                    const bas = 1.7 + d * Math.tan(entre(22.5, 25) * DEG);
+                    jungle.add(voute(p.x, p.z, l, entre(3.5, 6), bas));
                 }
             });
 
             /* Sous-bois au ras de l'eau, tout autour, pour que la lisière
                ne s'arrête pas net sur les côtés. */
-            for (let i = 0; i < 14; i++) {
+            for (let i = 0; i < 16; i++) {
                 const a = entre(-1, 1) * Math.PI * 0.75;
-                const r = entre(20, 34);
-                jungle.add(pan(Math.sin(a) * r, -Math.cos(a) * r, entre(8, 16), entre(1.6, 3.4), MAT_PAN.loin, -0.4));
+                const r = entre(19, 34);
+                jungle.add(pan(Math.sin(a) * r, -Math.cos(a) * r, entre(8, 16), entre(1.8, 3.6), auHasard(MAT_PAN.loin), -0.4));
             }
 
             /* Respiration : la jungle bouge à peine, comme sous un souffle. */
@@ -3690,6 +3769,28 @@
             var retenues = fiches.slice();
             var index = 0;
 
+            /* --- Parasite au changement de fiche ---
+               Quatre pannes possibles, tirée au sort à chaque passage, en
+               évitant de rejouer la même deux fois de suite. Les animations
+               sont dans style.css ; ici on ne fait que poser la classe. */
+            var PANNES = ['gl1', 'gl2', 'gl3', 'gl4'];
+            var dernierePanne = '';
+            var minuteurPanne = null;
+            var sansMouvement = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function parasite(li) {
+                if (!li || sansMouvement) return;
+                fiches.forEach(function (f) { f.li.classList.remove.apply(f.li.classList, PANNES); });
+                var tirage;
+                do { tirage = PANNES[Math.floor(Math.random() * PANNES.length)]; }
+                while (tirage === dernierePanne);
+                dernierePanne = tirage;
+                void li.offsetWidth;          /* relance l'animation même si la classe revient */
+                li.classList.add(tirage);
+                clearTimeout(minuteurPanne);
+                minuteurPanne = setTimeout(function () { li.classList.remove(tirage); }, 560);
+            }
+
             function sansAccent(s) {
                 return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '') : s;
             }
@@ -3729,6 +3830,7 @@
                 if (pos) pos.textContent = (index + 1 < 10 ? '0' : '') + (index + 1) +
                     ' / ' + (retenues.length < 10 ? '0' : '') + retenues.length;
                 bPrev.disabled = bNext.disabled = retenues.length < 2;
+                parasite(retenues[index].li);
             }
 
             function filtrer(garderPlace) {
