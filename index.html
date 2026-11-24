@@ -1396,7 +1396,8 @@
             layers[0].style.backgroundImage = `url('${collectifPhotos[0]}')`;
             layers[0].classList.add('active');
         })();
-        setInterval(advanceCollectifPhoto, 4200);
+        /* Le rythme du collectif est repris plus bas, avec celui des quatre
+           autres fenêtres, pour que la vague parte bien de la gauche. */
 
         /* ---- Rotation des membres dans la grille Travaux ----
            Le Collectif garde sa place fixe (il représente le groupe, pas un individu).
@@ -1447,13 +1448,32 @@
             member._activeLayer = next;
         }
 
-        travauxMembers.forEach((member, i) => {
+        travauxMembers.forEach((member) => {
             if (!member._box) return;
             const t = member._box.querySelector('.cell-box-text');
             if (t) t.style.display = 'none';
             showPhoto(member, false);
-            setTimeout(() => setInterval(() => showPhoto(member, true), 7000), i * 1750);
         });
+
+        /* Les photos changent en vague, de la gauche vers la droite : chaque
+           fenêtre part 900 ms après sa voisine de gauche, dans l'ordre où
+           l'arc les présente (Yoon, Tom, Collectif, Oscar, Tong). */
+        (function () {
+            const PERIODE = 7000, PAS = 900, DEPART = 1600;
+            const vague = [
+                () => showPhoto(travauxMembers[0], true),
+                () => showPhoto(travauxMembers[1], true),
+                advanceCollectifPhoto,
+                () => showPhoto(travauxMembers[2], true),
+                () => showPhoto(travauxMembers[3], true)
+            ];
+            vague.forEach((avancer, pos) => {
+                setTimeout(() => {
+                    avancer();
+                    setInterval(avancer, PERIODE);
+                }, DEPART + pos * PAS);
+            });
+        })();
 
         /* Bandeau de l'accueil : date du jour, au format « [ 09. oct. 2026 ] » */
         (function () {
@@ -2543,9 +2563,6 @@
             const STEP = THREE.MathUtils.degToRad(16.2), SPAN = STEP * N;
             const PW = 2 * R * Math.tan(STEP / 2) * 0.89;
             const H = PW / 0.58;
-            /* Angle, depuis le point de vue, du bord extérieur des deux panneaux
-               extrêmes : c'est sur lui que se règle le champ de vision. */
-            const EDGE = (SPAN / 2 - STEP / 2) + Math.atan((PW / 2) / R) + THREE.MathUtils.degToRad(0.3);
             // Mur sombre circulaire derrière les panneaux : les fentes restent noires
             const wall = new THREE.Mesh(
                 new THREE.CylinderGeometry(R + 0.6, R + 0.6, BASE + H + 1.6, 64, 1, true, Math.PI - SPAN / 2 - 0.35, SPAN + 0.7),
@@ -2563,9 +2580,10 @@
             scene.add(wall);
             const loader = new THREE.TextureLoader();
 
-            function textCanvas(text, w, h, size, align) {
+            function textCanvas(text, w, h, size, align, bg) {
                 const c = document.createElement('canvas'); c.width = w; c.height = h;
                 const g = c.getContext('2d');
+                if (bg) { g.fillStyle = bg; g.fillRect(0, 0, w, h); }
                 g.fillStyle = '#eef0f4';
                 g.font = `500 ${size}px "Space Grotesk", "Helvetica Neue", Arial, sans-serif`;
                 g.textBaseline = 'middle';
@@ -2622,11 +2640,14 @@
                 screen.position.y = BASE + H / 2;
                 screen.userData.index = i;
                 lift.add(screen);
+                /* Le nom est posé en bas du panneau, comme un cartel. Au-dessus,
+                   il sortait du cadre sur les panneaux de bord dès que l'écran
+                   était large, et le nom de la dernière fenêtre disparaissait. */
                 const lmat = new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false });
-                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW * 1.15, PW * 1.15 / 8), lmat);
-                label.position.y = BASE + H + 0.55;
+                const label = new THREE.Mesh(new THREE.PlaneGeometry(PW, PW / 7), lmat);
+                label.position.set(0, BASE + PW / 14 + 0.14, 0.03);
                 lift.add(label);
-                const p = { lift, screen, mat, lmat, liftNow: 0, liftTo: 0, glowNow: 0.86, glowTo: 0.86, url: null, name: null };
+                const p = { lift, pivot, screen, mat, lmat, liftNow: 0, liftTo: 0, glowNow: 0.86, glowTo: 0.86, url: null, name: null };
                 p.slot = SLOTS[i];
                 panels.push(p);
             }
@@ -2641,7 +2662,7 @@
                     if (name && name !== p.name) {
                         p.name = name;
                         if (p.lmat.map) p.lmat.map.dispose();
-                        p.lmat.map = textCanvas(name, 1024, 128, 56, 'center'); p.lmat.needsUpdate = true;
+                        p.lmat.map = textCanvas(name, 1024, 146, 52, 'center', 'rgba(8, 9, 10, 0.74)'); p.lmat.needsUpdate = true;
                     }
                     const layer = box ? box.querySelector('.cell-photo-layer.active') : null;
                     const bg = layer ? (layer.style.backgroundImage || getComputedStyle(layer).backgroundImage)
@@ -2875,11 +2896,28 @@
             // Regard à la première personne : on fait glisser pour tourner la tête
             let YAW_MAX = 0.2;
             const PITCH_MIN = -0.08, PITCH_MAX = 0.14;
+            /* Ouverture de l'arc : les panneaux sont replacés à chaque
+               redimensionnement pour occuper toute la largeur du cadre, des
+               bords aux bords, sans jamais dépasser en haut. */
+            let spanNow = SPAN;
+            function placePanels() {
+                const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect);
+                const demi = Math.atan((PW / 2) / R);
+                const mini = N * 2 * demi * 1.04;          /* jamais de chevauchement */
+                spanNow = THREE.MathUtils.clamp(hfov, mini, Math.PI * 0.82);
+                const pas = N > 1 ? (spanNow - 2 * demi) / (N - 1) : 0;
+                panels.forEach((p, i) => {
+                    const phi = -(spanNow / 2 - demi) + pas * i;
+                    p.pivot.position.set(R * Math.sin(phi), 0, -R * Math.cos(phi));
+                    p.pivot.rotation.y = -phi;
+                });
+            }
+
             function updateYawLimit() {
                 const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect);
                 /* Marge de regard volontairement courte : l'arc occupe tout le
                    cadre, un débattement large ne montrerait que du vide. */
-                YAW_MAX = Math.max(0.03, SPAN / 2 - hfov / 2 + 0.05);
+                YAW_MAX = Math.max(0.03, spanNow / 2 - hfov / 2 + 0.05);
                 yawTo = THREE.MathUtils.clamp(yawTo, -YAW_MAX, YAW_MAX);
             }
             let dragging = false, moved = false, sx = 0, sy = 0, syaw = 0, spitch = 0;
@@ -2946,14 +2984,12 @@
                 if (!w || !h) return;
                 renderer.setSize(w, h, false);
                 camera.aspect = w / h;
-                /* Le champ de vision se cale sur l'ouverture de l'arc : les cinq
-                   panneaux remplissent le cadre d'un bord à l'autre, quel que soit
-                   le format de l'écran (16:9, 16:10 ou ultra-large). */
-                camera.fov = THREE.MathUtils.clamp(
-                    THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(EDGE) / camera.aspect)),
-                    32, 74
-                );
+                /* Champ de vision constant : il garantit que les panneaux et
+                   leurs noms tiennent en hauteur sur tous les écrans. C'est
+                   l'arc, lui, qui s'ouvre pour remplir la largeur. */
+                camera.fov = 52;
                 camera.updateProjectionMatrix();
+                if (typeof placePanels === 'function') placePanels();
                 if (typeof updateYawLimit === 'function') updateYawLimit();
                 const rt = water.getRenderTarget && water.getRenderTarget();
                 if (rt) rt.setSize(Math.round(w * dpr), Math.round(h * dpr));
@@ -3004,53 +3040,103 @@
     <script>
     /* ============================================================
        COLLABORATEURS — DOSSIERS DE SURVEILLANCE
-       Chaque fiche porte ses mots-clés dans data-keys. Le script en
-       déduit la liste des filtres, les affiche en haut, et croise
-       la sélection avec le champ de recherche. Plusieurs mots-clés
-       cochés élargissent la recherche (l'un OU l'autre) ; le texte
-       saisi, lui, restreint. Sans JavaScript, toutes les fiches
-       restent visibles et cliquables.
+       Une fiche à la fois, en grand, dans l'ordre alphabétique.
+       Chaque fiche porte ses mots-clés dans data-keys : le script en
+       déduit les filtres du haut et les croise avec la recherche.
+       Plusieurs mots-clés cochés élargissent la sélection, le texte
+       saisi la restreint. Sans JavaScript, la liste de liens reste
+       lisible et cliquable.
        ============================================================ */
     (function () {
-        var noms = document.querySelectorAll('.dsv');
-        Array.prototype.forEach.call(noms, function (root) {
+        var AUJ = (function () {
+            var d = new Date(), z = function (n) { return n < 10 ? '0' + n : '' + n; };
+            return d.getFullYear() + '.' + z(d.getMonth() + 1) + '.' + z(d.getDate());
+        })();
+
+        Array.prototype.forEach.call(document.querySelectorAll('.dsv'), function (root) {
             var grid = root.querySelector('.dsv-grid');
             var boite = root.querySelector('.dsv-keys');
             var compte = root.querySelector('.dsv-count');
             var vide = root.querySelector('.dsv-empty');
             var champ = root.querySelector('.dsv-q');
             if (!grid || !boite) return;
+            var prefixe = root.getAttribute('data-dsv') === 'structures' ? 'S' : 'A';
+            var statut = prefixe === 'S' ? 'PARTENAIRE' : 'DOSSIER OUVERT';
 
-            /* --- Lecture des fiches et des mots-clés --- */
+            function ajoute(parent, tag, cls, texte) {
+                var e = document.createElement(tag);
+                if (cls) e.className = cls;
+                if (texte != null) e.textContent = texte;
+                parent.appendChild(e);
+                return e;
+            }
+
+            /* --- Lecture des fiches --- */
             var fiches = Array.prototype.map.call(grid.querySelectorAll('.dsv-card'), function (li) {
                 var cles = (li.getAttribute('data-keys') || '').split(',')
                     .map(function (s) { return s.trim().toLowerCase(); })
                     .filter(function (s) { return s.length > 0; });
-                var zone = li.querySelector('.dsv-tags');
-                if (zone) {
-                    zone.textContent = '';
-                    cles.forEach(function (k) {
-                        var b = document.createElement('b');
-                        b.setAttribute('data-k', k);
-                        b.textContent = k;
-                        zone.appendChild(b);
-                    });
-                }
-                var nom = li.querySelector('.dsv-name');
-                var prat = li.querySelector('.dsv-practice');
-                var texte = ((nom ? nom.textContent : '') + ' ' +
-                             (prat ? prat.textContent : '') + ' ' +
-                             cles.join(' ')).toLowerCase();
-                return { li: li, cles: cles, texte: texte };
+                var elNom = li.querySelector('.dsv-name');
+                var elPrat = li.querySelector('.dsv-practice');
+                var nom = elNom ? elNom.textContent.trim() : '';
+                var prat = elPrat ? elPrat.textContent.trim() : '';
+                return {
+                    li: li, cles: cles, nom: nom,
+                    texte: (nom + ' ' + prat + ' ' + cles.join(' ')).toLowerCase(),
+                    prat: prat
+                };
             });
 
-            /* --- Les filtres : un bouton par mot-clé rencontré --- */
+            /* --- Ordre alphabétique --- */
+            fiches.sort(function (a, b) {
+                return a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' });
+            });
+            fiches.forEach(function (f) { grid.appendChild(f.li); });
+
+            /* --- Mise en forme « relevé de surveillance » --- */
+            fiches.forEach(function (f, rang) {
+                var a = f.li.querySelector('.dsv-a');
+                if (!a) return;
+                var num = (rang + 1 < 10 ? '0' : '') + (rang + 1);
+                f.id = prefixe + '-' + num;
+
+                var ref = a.querySelector('.dsv-ref');
+                if (ref) ref.textContent = 'SUJET ' + num + ' // NŒUD DE SURVEILLANCE ACTIF';
+                var etat = a.querySelector('.dsv-state');
+                if (etat) etat.textContent = 'SIGNAL 92% · BRUIT MINIMAL';
+
+                ajoute(a, 'span', 'dsv-stamp', AUJ);
+                ajoute(a, 'span', 'dsv-sig', 'FILTRE DE SORTIE : ACTIF');
+
+                var ret = ajoute(a, 'span', 'dsv-retic');
+                for (var k = 0; k < 4; k++) ajoute(ret, 'span', null, null);
+
+                /* Encart d'identité : reprend les initiales de la vignette */
+                var shot = a.querySelector('.dsv-shot');
+                var ini = shot ? shot.querySelector('i') : null;
+                var carte = ajoute(a, 'span', 'dsv-idcard');
+                ajoute(carte, 'span', 'dsv-alert', 'ACTIVITÉ HORS LIGNE DÉTECTÉE');
+                var mug = ajoute(carte, 'span', 'dsv-mug');
+                ajoute(mug, 'b', null, ini ? ini.textContent : f.nom.slice(0, 2));
+
+                /* Lignes de données, pleines, comme sur le relevé */
+                var rows = ajoute(a, 'span', 'dsv-rows');
+                ajoute(rows, 'b', null, 'ID : ' + f.id);
+                if (f.prat) ajoute(rows, 'b', null, 'PRATIQUE : ' + f.prat);
+                if (f.cles.length) ajoute(rows, 'b', null, 'MOTS-CLÉS : ' + f.cles.join(', '));
+                ajoute(rows, 'b', null, 'STATUT : ' + statut);
+
+                var ouvre = ajoute(rows, 'span', 'dsv-open',
+                    a.getAttribute('target') === '_blank' ? 'VISITER' : 'OUVRIR LE DOSSIER');
+                ouvre.setAttribute('aria-hidden', 'true');
+            });
+
+            /* --- Filtres déduits des mots-clés --- */
             var tous = [];
             fiches.forEach(function (f) {
                 f.cles.forEach(function (k) { if (tous.indexOf(k) < 0) tous.push(k); });
             });
             tous.sort(function (a, b) { return a.localeCompare(b, 'fr'); });
-
             var actifs = [];
             boite.textContent = '';
             tous.forEach(function (k) {
@@ -3063,68 +3149,87 @@
                 boite.appendChild(b);
             });
 
+            /* --- Navigation d'une fiche à l'autre --- */
+            var nav = document.createElement('div');
+            nav.className = 'dsv-nav';
+            nav.innerHTML =
+                '<button type="button" class="dsv-arrow dsv-prev" aria-label="Dossier précédent">' +
+                '<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M8 1L2 6l6 5M2 6h16"/></svg></button>' +
+                '<span class="dsv-pos" aria-live="polite"></span>' +
+                '<button type="button" class="dsv-arrow dsv-next" aria-label="Dossier suivant">' +
+                '<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M12 1l6 5-6 5M18 6H2"/></svg></button>';
+            grid.parentNode.insertBefore(nav, grid.nextSibling);
+            var bPrev = nav.querySelector('.dsv-prev');
+            var bNext = nav.querySelector('.dsv-next');
+            var pos = nav.querySelector('.dsv-pos');
+
+            var retenues = fiches.slice();
+            var index = 0;
+
             function sansAccent(s) {
                 return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '') : s;
             }
 
-            function filtrer() {
+            function montrer() {
+                fiches.forEach(function (f) { f.li.classList.remove('is-on'); });
+                if (!retenues.length) {
+                    if (pos) pos.textContent = '—';
+                    bPrev.disabled = bNext.disabled = true;
+                    if (vide) vide.hidden = false;
+                    return;
+                }
+                if (vide) vide.hidden = true;
+                index = (index + retenues.length) % retenues.length;
+                retenues[index].li.classList.add('is-on');
+                if (pos) pos.textContent = (index + 1 < 10 ? '0' : '') + (index + 1) +
+                    ' / ' + (retenues.length < 10 ? '0' : '') + retenues.length;
+                bPrev.disabled = bNext.disabled = retenues.length < 2;
+            }
+
+            function filtrer(garderPlace) {
                 var q = sansAccent((champ ? champ.value : '').trim().toLowerCase());
-                var n = 0;
-                fiches.forEach(function (f) {
+                var avant = retenues[index];
+                retenues = fiches.filter(function (f) {
                     var parCle = actifs.length === 0 || f.cles.some(function (k) {
                         return actifs.indexOf(k) >= 0;
                     });
-                    var parTexte = !q || sansAccent(f.texte).indexOf(q) >= 0;
-                    var garde = parCle && parTexte;
-                    var etait = !f.li.classList.contains('is-out');
-                    f.li.classList.toggle('is-out', !garde);
-                    if (garde) {
-                        n++;
-                        if (!etait) {           /* relance l'apparition */
-                            f.li.style.animation = 'none';
-                            void f.li.offsetWidth;
-                            f.li.style.animation = '';
-                        }
-                    }
-                    Array.prototype.forEach.call(f.li.querySelectorAll('.dsv-tags b'), function (b) {
-                        b.classList.toggle('is-hit', actifs.indexOf(b.getAttribute('data-k')) >= 0);
-                    });
+                    return parCle && (!q || sansAccent(f.texte).indexOf(q) >= 0);
                 });
+                var place = garderPlace ? retenues.indexOf(avant) : -1;
+                index = place >= 0 ? place : 0;
                 if (compte) {
-                    compte.textContent = (n < 10 ? '0' + n : n) + ' / ' +
-                        (fiches.length < 10 ? '0' + fiches.length : fiches.length) +
-                        (n > 1 ? ' dossiers' : ' dossier');
+                    compte.textContent = (retenues.length < 10 ? '0' : '') + retenues.length +
+                        ' / ' + (fiches.length < 10 ? '0' : '') + fiches.length +
+                        (retenues.length > 1 ? ' dossiers' : ' dossier');
                 }
-                if (vide) vide.hidden = n > 0;
+                montrer();
             }
 
-            function basculer(k, bouton) {
-                var i = actifs.indexOf(k);
-                if (i >= 0) { actifs.splice(i, 1); bouton.setAttribute('aria-pressed', 'false'); }
-                else { actifs.push(k); bouton.setAttribute('aria-pressed', 'true'); }
-                filtrer();
-            }
+            bPrev.addEventListener('click', function () { index--; montrer(); });
+            bNext.addEventListener('click', function () { index++; montrer(); });
 
             boite.addEventListener('click', function (e) {
                 var b = e.target.closest ? e.target.closest('.dsv-key') : null;
-                if (b) basculer(b.getAttribute('data-k'), b);
-            });
-
-            /* Les étiquettes d'une fiche activent le même filtre */
-            grid.addEventListener('click', function (e) {
-                var t = e.target.closest ? e.target.closest('.dsv-tags b') : null;
-                if (!t) return;
-                e.preventDefault();
-                e.stopPropagation();
-                var b = boite.querySelector('.dsv-key[data-k="' + t.getAttribute('data-k').replace(/"/g, '\\"') + '"]');
-                if (b) basculer(b.getAttribute('data-k'), b);
+                if (!b) return;
+                var k = b.getAttribute('data-k');
+                var i = actifs.indexOf(k);
+                if (i >= 0) { actifs.splice(i, 1); b.setAttribute('aria-pressed', 'false'); }
+                else { actifs.push(k); b.setAttribute('aria-pressed', 'true'); }
+                filtrer(true);
             });
 
             if (champ) {
-                champ.addEventListener('input', filtrer);
-                champ.addEventListener('search', filtrer);
+                champ.addEventListener('input', function () { filtrer(true); });
+                champ.addEventListener('search', function () { filtrer(true); });
             }
-            filtrer();
+
+            /* Flèches du clavier quand la section a le focus */
+            grid.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowLeft') { index--; montrer(); }
+                else if (e.key === 'ArrowRight') { index++; montrer(); }
+            });
+
+            filtrer(false);
         });
     })();
     </script>
