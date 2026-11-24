@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261124k">
+    <link rel="stylesheet" href="style.css?v=20261125b">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261124k" defer></script>
-    <script src="page-transition.js?v=20261124k" defer></script>
-    <script src="agent.js?v=20261124k" defer></script>
+    <script src="ambient.js?v=20261125b" defer></script>
+    <script src="page-transition.js?v=20261125b" defer></script>
+    <script src="agent.js?v=20261125b" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -664,46 +664,51 @@
                     </div>
                 </div>
 
+                <!-- Les trois « mécènes » qui figuraient ici étaient
+                     inventés (une fondation et un cercle d'amis qui
+                     n'existent pas). Remplacés par les trois manières
+                     réelles de soutenir le collectif : tant qu'un
+                     soutien n'est pas acquis, on ne l'affiche pas. -->
                 <div id="cat-mecenes" class="collab-category-content" style="display: none;">
-                    <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
+                    <p class="section-desc">Le collectif n'a pas encore de mécène. Voici les trois manières de le soutenir.</p>
                     <div class="dsv" data-dsv="mecenes">
                         <div class="dsv-bar">
                             <label class="dsv-search">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
-                                <input type="search" class="dsv-q" placeholder="Nom, type de soutien" aria-label="Rechercher dans les mécènes">
+                                <input type="search" class="dsv-q" placeholder="Type de soutien" aria-label="Rechercher dans les formes de soutien">
                             </label>
                             <div class="dsv-keys" role="group" aria-label="Filtrer par mot-clé"></div>
                             <p class="dsv-count" aria-live="polite"></p>
                         </div>
-                        <ul class="dsv-grid" aria-label="Mécènes et soutiens">
-                            <li class="dsv-card" data-face="50 34" data-keys="fondation, grand mécène">
+                        <ul class="dsv-grid" aria-label="Formes de soutien">
+                            <li class="dsv-card" data-face="50 34" data-keys="don, hello asso, particulier">
                                 <a class="dsv-a" href="#contact">
                                     <span class="dsv-ref">DOSSIER 01</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>FD</i></span>
-                                    <span class="dsv-name">Fondation des Arts Numériques</span>
-                                    <span class="dsv-practice">Grand mécène</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Dn</i></span>
+                                    <span class="dsv-name">Don ponctuel</span>
+                                    <span class="dsv-practice">Par HelloAsso, sans commission</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
-                                    <span class="dsv-state">SOUTIEN</span>
+                                    <span class="dsv-state">OUVERT</span>
                                 </a>
                             </li>
-                            <li class="dsv-card" data-face="50 34" data-keys="cercle, soutien récurrent">
+                            <li class="dsv-card" data-face="50 34" data-keys="adhésion, membre, association">
                                 <a class="dsv-a" href="#contact">
                                     <span class="dsv-ref">DOSSIER 02</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>CD</i></span>
-                                    <span class="dsv-name">Cercle des Amis d'Atelier Babo</span>
-                                    <span class="dsv-practice">Soutien récurrent</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ad</i></span>
+                                    <span class="dsv-name">Adhésion</span>
+                                    <span class="dsv-practice">Suivre les expositions et les résidences</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
-                                    <span class="dsv-state">SOUTIEN</span>
+                                    <span class="dsv-state">OUVERT</span>
                                 </a>
                             </li>
-                            <li class="dsv-card" data-face="50 34" data-keys="donateurs, contribution ponctuelle">
+                            <li class="dsv-card" data-face="50 34" data-keys="mécénat, structure, entreprise">
                                 <a class="dsv-a" href="#contact">
                                     <span class="dsv-ref">DOSSIER 03</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>DI</i></span>
-                                    <span class="dsv-name">Donateurs individuels</span>
-                                    <span class="dsv-practice">Contribution ponctuelle</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Mc</i></span>
+                                    <span class="dsv-name">Mécénat</span>
+                                    <span class="dsv-practice">Structures et entreprises : nous écrire</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
-                                    <span class="dsv-state">SOUTIEN</span>
+                                    <span class="dsv-state">À OUVRIR</span>
                                 </a>
                             </li>
                         </ul>
@@ -2954,49 +2959,10 @@
             syncPanels();
             setInterval(syncPanels, 700);
 
-            /* ---- Arbres en silhouette de part et d'autre des panneaux ---- */
-            function treeTexture(seed) {
-                let s = seed;
-                const rnd = () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
-                const c = document.createElement('canvas'); c.width = 800; c.height = 768;
-                const g = c.getContext('2d');
-                const col = 'rgba(6,10,20,1)';
-                g.strokeStyle = col; g.fillStyle = col; g.lineCap = 'round';
-                const leaves = [];
-                function branch(x, y, len, ang, w, depth) {
-                    const x2 = x + Math.cos(ang) * len, y2 = y - Math.sin(ang) * len;
-                    g.lineWidth = w; g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.stroke();
-                    if (depth <= 0 || len < 14) { leaves.push([x2, y2]); return; }
-                    const n = 2 + (rnd() < 0.35 ? 1 : 0);
-                    for (let k = 0; k < n; k++) {
-                        const da = (rnd() - 0.5) * 1.1 + (k - (n - 1) / 2) * 0.45;
-                        branch(x2, y2, len * (0.62 + rnd() * 0.2), ang + da, w * 0.68, depth - 1);
-                    }
-                }
-                branch(400, 768, 140 + rnd() * 45, Math.PI / 2 + (rnd() - 0.5) * 0.15, 20, 6);
-                leaves.forEach(([x, y]) => {
-                    const blobs = 3 + Math.floor(rnd() * 4);
-                    for (let k = 0; k < blobs; k++) {
-                        g.beginPath();
-                        g.ellipse(x + (rnd() - 0.5) * 50, y + (rnd() - 0.5) * 40, 14 + rnd() * 26, 10 + rnd() * 20, rnd() * 3, 0, Math.PI * 2);
-                        g.fill();
-                    }
-                });
-                const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; return tex;
-            }
-            const treeTex = [treeTexture(11), treeTexture(29), treeTexture(47), treeTexture(83)];
-            const treeMats = treeTex.map((tx) => new THREE.MeshBasicMaterial({ map: tx, transparent: true, alphaTest: 0.35, depthWrite: true, side: THREE.DoubleSide }));
-            [-1, 1].forEach((side) => {
-                for (let k = 0; k < 7; k++) {
-                    const ang = side * (SPAN / 2 + 0.06 + k * 0.11 + Math.random() * 0.05);
-                    const dist = R + 0.5 + Math.random() * 7;
-                    const h = 8 + Math.random() * 8;
-                    const tree = new THREE.Mesh(new THREE.PlaneGeometry(h * 1.04, h), treeMats[(k + (side > 0 ? 2 : 0)) % treeMats.length]);
-                    tree.position.set(Math.sin(ang) * dist, h / 2 - 0.15, -Math.cos(ang) * dist);
-                    tree.rotation.y = -ang + (Math.random() - 0.5) * 0.3;
-                    scene.add(tree);
-                }
-            });
+            /* Les arbres en silhouette qui bordaient les panneaux ont été
+               retirés : le décor des côtés est maintenant fait de champs
+               de lumière, plus bas dans ce fichier. */
+
 
             /* ---- Sol d'herbe de nuit au premier plan ---- */
             const ground = new THREE.Mesh(new THREE.CircleGeometry(4.7, 96), new THREE.MeshBasicMaterial({ color: 0x030605 }));
@@ -3157,416 +3123,173 @@
             function alea() { graine = (graine * 1664525 + 1013904223) % 4294967296; return graine / 4294967296; }
             function entre(a, b) { return a + alea() * (b - a); }
 
-            /* ---------- Les textures, toutes dessinées ici ----------
-               Une jungle ne se fait pas avec des arbres isolés : il faut
-               de la masse et des plans qui se recouvrent. On dessine donc
-               des pans de feuillage entiers, qu'on superpose ensuite. */
+            /* ---------- L'atmosphère ----------
+               Plus de forêt. La direction artistique des références :
+               un noir profond, des champs de lumière bleus et cyan très
+               flous, du bloom, et une poussière de particules qui dérive.
 
-            function feuille(g, longueur, largeur, dents) {
-                /* « longueur » est négative quand la feuille pousse vers le
-                   haut. Le tracé accepte ce signe, mais les rayons des
-                   entailles doivent rester positifs : ellipse() refuse un
-                   rayon négatif et faisait tomber toute la salle 3D. */
-                const L = Math.abs(longueur), E = Math.abs(largeur);
-                g.beginPath();
-                g.moveTo(0, 0);
-                g.bezierCurveTo(largeur, longueur * 0.3, largeur * 0.85, longueur * 0.8, 0, longueur);
-                g.bezierCurveTo(-largeur * 0.85, longueur * 0.8, -largeur, longueur * 0.3, 0, 0);
-                g.fill();
-                if (dents && L > 8 && E > 1) {     /* entailles : la feuille respire */
-                    g.save();
-                    g.globalCompositeOperation = 'destination-out';
-                    const n = Math.max(3, Math.round(L / 26));
-                    const rx = Math.max(0.5, E * 0.52);
-                    const ry = Math.max(0.5, L / (n * 3.4));
-                    for (let i = 1; i < n; i++) {
-                        const y = (i / n) * longueur;   /* garde le sens de la feuille */
-                        g.beginPath(); g.ellipse(-largeur * 0.8, y, rx, ry, -0.25, 0, Math.PI * 2); g.fill();
-                        g.beginPath(); g.ellipse(largeur * 0.8, y + longueur / (n * 2), rx, ry, 0.25, 0, Math.PI * 2); g.fill();
-                    }
-                    g.restore();
-                }
-            }
-
-            /* Un pan de jungle : des dizaines de feuilles entremêlées, plus
-               claires en haut — c'est la lune qui tombe dessus. */
-            /* « taille » est la longueur d'une feuille en fraction de la
-               hauteur du pan. Elle doit rester petite — une feuille qui
-               fait un tiers du pan donne une tache, pas du feuillage. Et
-               le canevas doit avoir à peu près les proportions du pan sur
-               lequel il sera posé, sinon les feuilles s'étirent. */
-            function panTexture(largeurPx, hauteurPx, touffes, taille, dents) {
-                const c = document.createElement('canvas');
-                c.width = largeurPx; c.height = hauteurPx;
-                const g = c.getContext('2d');
-                const unite = Math.min(largeurPx, hauteurPx);
-                /* Aucune touffe ne touche le bord : c'est la silhouette
-                   dentelée des feuilles qui doit faire la limite du pan,
-                   jamais le bord du rectangle. Le bas fait exception, il
-                   est sous l'eau. */
-                const marge = unite * taille * 2.4;
-                const utileX = Math.max(1, largeurPx - marge * 2);
-                const utileY = Math.max(1, hauteurPx - marge);
-                /* Une jungle, ce sont des paquets de feuilles qui se
-                   recouvrent : on dessine donc touffe par touffe. */
-                for (let t = 0; t < touffes; t++) {
-                    const cx = marge + Math.random() * utileX;
-                    const cy = marge + Math.random() * utileY;
-                    const rayon = unite * taille * (1.2 + Math.random() * 1.6);
-                    const n = 6 + Math.round(Math.random() * 10);
-                    /* plus la touffe est haute, plus elle capte la lune */
-                    const base = 48 + (1 - cy / hauteurPx) * 98;
-                    for (let i = 0; i < n; i++) {
-                        const lg = unite * taille * (0.55 + Math.random() * 0.85);
-                        const la = lg * (0.2 + Math.random() * 0.22);
-                        const clair = Math.round(base + Math.random() * 54);
-                        g.save();
-                        g.translate(cx + (Math.random() - 0.5) * rayon,
-                                    cy + (Math.random() - 0.5) * rayon * 0.85);
-                        g.rotate(Math.random() * Math.PI * 2);
-                        g.fillStyle = 'rgb(' + Math.round(clair * 0.7) + ',' + clair + ',' + Math.round(clair * 0.88) + ')';
-                        feuille(g, -lg, la, dents);
-                        g.restore();
-                    }
-                }
-                const t = new THREE.CanvasTexture(c);
-                t.colorSpace = THREE.SRGBColorSpace;
-                t.anisotropy = 4;
-                return t;
-            }
-
-            /* Une seule grande feuille, pour le détail du premier plan. */
-            function grandeFeuilleTexture() {
-                const c = document.createElement('canvas');
-                c.width = 192; c.height = 384;
-                const g = c.getContext('2d');
-                g.fillStyle = '#5a6a60';
-                g.save(); g.translate(96, 10); feuille(g, 364, 86, true); g.restore();
-                g.strokeStyle = 'rgba(150,165,155,0.5)'; g.lineWidth = 2.5;
-                g.beginPath(); g.moveTo(96, 14); g.lineTo(96, 370); g.stroke();
-                g.lineWidth = 1.2; g.strokeStyle = 'rgba(150,165,155,0.32)';
-                for (let i = 1; i < 9; i++) {
-                    const y = 20 + i * 38;
-                    g.beginPath(); g.moveTo(96, y); g.lineTo(28, y + 26); g.stroke();
-                    g.beginPath(); g.moveTo(96, y); g.lineTo(164, y + 26); g.stroke();
-                }
-                const t = new THREE.CanvasTexture(c);
-                t.colorSpace = THREE.SRGBColorSpace; return t;
-            }
-
-            /* Écorce : des stries verticales, un modelé de cylindre et un
-               haut qui s'efface. Sans le modelé, un tronc non éclairé est
-               une planche ; sans l'effacement, il se termine net au milieu
-               du feuillage. */
-            function ecorceTexture() {
-                const L = 128, H = 512, mi = L / 2, demi = L * 0.3;
-                const c = document.createElement('canvas');
-                c.width = L; c.height = H;
-                const g = c.getContext('2d');
-                /* Silhouette : un fût fuselé et légèrement sinueux. Le
-                   reste du canevas reste transparent, donc le tronc n'a
-                   pas de bord droit. */
-                g.beginPath();
-                g.moveTo(mi - demi * 1.1, H);
-                g.bezierCurveTo(mi - demi * 0.94, H * 0.62, mi - demi * 0.78, H * 0.3, mi - demi * 0.5, 0);
-                g.lineTo(mi + demi * 0.5, 0);
-                g.bezierCurveTo(mi + demi * 0.8, H * 0.3, mi + demi * 0.96, H * 0.62, mi + demi * 1.1, H);
-                g.closePath();
-                g.save();
-                g.clip();
-                g.fillStyle = '#20261f'; g.fillRect(0, 0, L, H);
-                for (let i = 0; i < 56; i++) {
-                    g.strokeStyle = 'rgba(' + (14 + Math.random() * 56) + ',' + (20 + Math.random() * 62) + ',' + (16 + Math.random() * 52) + ',0.8)';
-                    g.lineWidth = 1 + Math.random() * 3.2;
-                    const x = mi + (Math.random() - 0.5) * demi * 2.2;
-                    g.beginPath(); g.moveTo(x, 0);
-                    g.bezierCurveTo(x + (Math.random() - 0.5) * 12, H * 0.35,
-                                    x + (Math.random() - 0.5) * 12, H * 0.66,
-                                    x + (Math.random() - 0.5) * 9, H);
-                    g.stroke();
-                }
-                /* Modelé : les deux flancs s'assombrissent, le milieu
-                   accroche la lune. C'est ce qui donne le volume — sans
-                   lui, un tronc non éclairé n'est qu'une planche. */
-                const volume = g.createLinearGradient(mi - demi * 1.1, 0, mi + demi * 1.1, 0);
-                volume.addColorStop(0, 'rgba(0,0,0,0.9)');
-                volume.addColorStop(0.26, 'rgba(0,0,0,0.14)');
-                volume.addColorStop(0.44, 'rgba(255,255,255,0.16)');
-                volume.addColorStop(0.72, 'rgba(0,0,0,0.34)');
-                volume.addColorStop(1, 'rgba(0,0,0,0.94)');
-                g.fillStyle = volume; g.fillRect(0, 0, L, H);
-                g.restore();
-                /* Le sommet disparaît dans les feuilles. */
-                g.globalCompositeOperation = 'destination-out';
-                const fondu = g.createLinearGradient(0, 0, 0, H * 0.34);
-                fondu.addColorStop(0, 'rgba(0,0,0,1)');
-                fondu.addColorStop(1, 'rgba(0,0,0,0)');
-                g.fillStyle = fondu; g.fillRect(0, 0, L, H * 0.34);
-                g.globalCompositeOperation = 'source-over';
-                const t = new THREE.CanvasTexture(c);
-                t.colorSpace = THREE.SRGBColorSpace;
-                t.anisotropy = 4;
-                return t;
-            }
-
-            /* Plusieurs variantes par couche : sans ça, tous les pans d'un
-               même rideau se ressemblent et la jungle fait papier peint.
-               Les proportions du canevas suivent celles des pans. */
-            const TEX_HAUTE = [panTexture(512, 1280, 130, 0.045, true),
-                               panTexture(512, 1280, 120, 0.055, true)];
-            const TEX_MOYENNE = [panTexture(640, 1024, 120, 0.05, true),
-                                 panTexture(640, 1024, 110, 0.065, true)];
-            const TEX_VOUTE = [panTexture(768, 1024, 120, 0.065, true),
-                               panTexture(768, 1024, 110, 0.08, true)];
-            const TEX_SOUS_BOIS = panTexture(1024, 384, 150, 0.13, false);
-            const TEX_GRANDE = grandeFeuilleTexture();
-            const TEX_ECORCE = ecorceTexture();
-
-            function matPan(tex, teinte, opacite) {
-                return new THREE.MeshBasicMaterial({
-                    map: tex, alphaMap: tex, transparent: true, alphaTest: 0.28,
-                    color: teinte, opacity: opacite === undefined ? 1 : opacite,
-                    side: THREE.DoubleSide, depthWrite: true
-                });
-            }
-            function auHasard(liste) { return liste[Math.floor(Math.random() * liste.length)]; }
-
-            /* ---------- Éclairage ----------
-               La lune est au fond, haut, au-dessus des fenêtres. Le
-               feuillage tourné vers le centre du cadre la prend de plein
-               fouet, celui des bords reste dans l'ombre. Comme tout est
-               en matériau non éclairé, on peint cette lumière dans la
-               teinte : cinq paliers du bord vers le centre suffisent à
-               modeler la masse, et on ne crée qu'une poignée de
-               matériaux au lieu d'un par pan. */
-            const PALIERS = 5;
-            function palier(x, z) {
-                const a = Math.abs(Math.atan2(x, -z)) * 180 / Math.PI;
-                const k = 1 - Math.min(1, Math.max(0, (a - 16) / 36));
-                return Math.round(k * (PALIERS - 1));
-            }
-            /* « biais » remonte une couche dans l'échelle : un rideau
-               proche reste éclairé même tout au bord du cadre, parce que
-               la distance compte autant que l'angle. Sans lui, le
-               feuillage qu'on voit le mieux était le plus sombre. */
-            const COUCHES = {
-                proche:  { tex: TEX_HAUTE,   ombre: 0x6c7a64, lune: 0xd2dec2, biais: 2 },
-                moyen:   { tex: TEX_MOYENNE, ombre: 0x3a4640, lune: 0x768871, biais: 1 },
-                canopee: { tex: TEX_VOUTE,   ombre: 0x414c3c, lune: 0x8fa285, biais: 0 },
-                loin:    { tex: TEX_MOYENNE, ombre: 0x222a25, lune: 0x4a584f, biais: 0 },
-                sol:     { tex: [TEX_SOUS_BOIS], ombre: 0x5a6756, lune: 0xb3c0aa, biais: 2 }
-            };
-            const MATS = {};
-            function matFeuillage(couche, x, z) {
-                const c = COUCHES[couche];
-                const p = Math.min(PALIERS - 1, palier(x, z) + (c.biais || 0));
-                const v = Math.floor(Math.random() * c.tex.length);
-                const cle = couche + p + v;
-                if (!MATS[cle]) {
-                    const col = new THREE.Color(c.ombre)
-                        .lerp(new THREE.Color(c.lune), p / (PALIERS - 1));
-                    MATS[cle] = matPan(c.tex[v], col);
-                }
-                return MATS[cle];
-            }
-            const MAT_PAN = {
-                grande: new THREE.MeshBasicMaterial({
-                    map: TEX_GRANDE, alphaMap: TEX_GRANDE, transparent: true,
-                    alphaTest: 0.35, side: THREE.DoubleSide, color: 0x9aab9f
-                })
-            };
-            /* Le tronc suit le même éclairage que le feuillage, et son
-               sommet s'efface : il doit se fondre dans les feuilles, pas
-               s'arrêter net au milieu. */
-            const MATS_TRONC = [];
-            function matTronc(x, z) {
-                const p = Math.min(PALIERS - 1, palier(x, z) + 2);
-                if (!MATS_TRONC[p]) {
-                    MATS_TRONC[p] = new THREE.MeshBasicMaterial({
-                        map: TEX_ECORCE, alphaMap: TEX_ECORCE,
-                        transparent: true, alphaTest: 0.12, depthWrite: true,
-                        color: new THREE.Color(0x3b443a)
-                            .lerp(new THREE.Color(0x7e8c73), p / (PALIERS - 1))
-                    });
-                }
-                return MATS_TRONC[p];
-            }
-            const MAT_LIANE = new THREE.MeshBasicMaterial({ color: 0x2a332d });
-
-            const GEO_PLAN = new THREE.PlaneGeometry(1, 1);
-            const GEO_TRONC = new THREE.CylinderGeometry(0.1, 0.17, 1, 7, 1, true);
-
-            /* Un pan de feuillage, toujours tourné vers le visiteur. */
-            function pan(x, z, largeur, hauteur, mat, yBas) {
-                const m = new THREE.Mesh(GEO_PLAN, mat);
-                m.scale.set(largeur, hauteur, 1);
-                m.position.set(x, (yBas || 0) + hauteur / 2, z);
-                m.lookAt(0, m.position.y, 0);
-                return m;
-            }
-
-            /* Un pan de voûte : le même feuillage, retourné, pour qu'il
-               retombe du haut du cadre au lieu de pousser du sol. */
-            function voute(x, z, largeur, hauteur, yBas) {
-                const m = new THREE.Mesh(GEO_PLAN, matFeuillage('canopee', x, z));
-                m.scale.set(largeur, hauteur, 1);
-                m.position.set(x, yBas + hauteur / 2, z);
-                m.lookAt(0, m.position.y, 0);
-                m.rotateZ(Math.PI);
-                return m;
-            }
-
-            /* Un tronc. C'est un plan tourné vers le visiteur, pas un
-               cylindre : le volume est peint dans la texture, donc il se
-               lit rond sous tous les angles, et sa silhouette reste
-               irrégulière au lieu de former une arête droite. */
-            function tronc(x, z, hauteur, epaisseur) {
-                const m = new THREE.Mesh(GEO_PLAN, matTronc(x, z));
-                m.scale.set(epaisseur * 1.7, hauteur, 1);
-                m.position.set(x, hauteur / 2, z);
-                m.lookAt(0, m.position.y, 0);
-                m.rotateZ(entre(-0.09, 0.09));
-                return m;
-            }
-
-            /* Une liane : une suite de courts segments qui ondulent. */
-            function liane(x, y, z, longueur) {
-                const g = new THREE.Group();
-                let dx = 0;
-                const pas = 0.5, n = Math.round(longueur / pas);
-                for (let i = 0; i < n; i++) {
-                    const seg = new THREE.Mesh(GEO_TRONC, MAT_LIANE);
-                    seg.scale.set(0.035, pas * 1.15, 0.035);
-                    dx += entre(-0.09, 0.09);
-                    seg.position.set(dx, y - i * pas, 0);
-                    g.add(seg);
-                }
-                g.position.set(x, 0, z);
-                g.lookAt(0, y, 0);
-                return g;
-            }
-
-            /* Une grande feuille isolée, au premier plan. */
-            function grandeFeuille(x, y, z, taille, inclinaison) {
-                const m = new THREE.Mesh(GEO_PLAN, MAT_PAN.grande);
-                m.scale.set(taille * 0.5, taille, 1);
-                m.position.set(x, y, z);
-                m.lookAt(0, y, 0);
-                m.rotateZ(inclinaison);
-                return m;
-            }
-
-            /* ---------- Plantation ----------
-               Repères mesurés dans la scène : la caméra est à 1,70, le
-               champ vertical fait 52° (26° au-dessus de l'horizon), les
-               fenêtres occupent l'arc ±38° et montent jusqu'à 21° de
-               hauteur. Il reste donc deux bandes à habiller : les côtés,
-               de 38° jusqu'au bord du champ (44,7° en 16/9, 49,4° en
-               ultra-large), et le ciel au-dessus des fenêtres, de 21° à
-               26°. Toute la jungle tient dans ces deux bandes : plus à
-               l'extérieur elle sort du cadre, plus à l'intérieur elle
-               masque les images. */
+               Tout est en mélange additif : la lumière s'ajoute au lieu
+               de recouvrir. C'est ce qui donne le halo des images de
+               référence, et c'est aussi ce qui garantit qu'une photo ne
+               sera jamais masquée — au pire elle sera un peu éclairée. */
 
             const DEG = Math.PI / 180;
 
-            /* Pose un élément pour que son bord intérieur tombe très
-               exactement à l'angle voulu : c'est ce qui l'empêche de
-               déborder sur les photos. */
-            function poseBord(angleInterieur, largeur, dist, cote) {
-                const demi = Math.atan(largeur / (2 * dist)) / DEG;
-                const a = (angleInterieur + demi) * DEG * cote;
+            /* Un halo : un simple dégradé radial, très étalé. C'est la
+               brique de base de tout le décor. */
+            function halo(douceur) {
+                const T = 256;
+                const c = document.createElement('canvas');
+                c.width = c.height = T;
+                const g = c.getContext('2d');
+                const gr = g.createRadialGradient(T / 2, T / 2, 0, T / 2, T / 2, T / 2);
+                gr.addColorStop(0, 'rgba(255,255,255,1)');
+                gr.addColorStop(douceur * 0.35, 'rgba(255,255,255,0.55)');
+                gr.addColorStop(douceur * 0.7, 'rgba(255,255,255,0.14)');
+                gr.addColorStop(1, 'rgba(255,255,255,0)');
+                g.fillStyle = gr;
+                g.fillRect(0, 0, T, T);
+                const t = new THREE.CanvasTexture(c);
+                t.colorSpace = THREE.SRGBColorSpace;
+                return t;
+            }
+
+            /* Une nappe : le même halo, étiré et déformé, pour les grands
+               aplats de lumière qui montent sur les côtés. */
+            function nappe() {
+                const L = 256, H = 512;
+                const c = document.createElement('canvas');
+                c.width = L; c.height = H;
+                const g = c.getContext('2d');
+                for (let i = 0; i < 5; i++) {
+                    const x = L * (0.3 + alea() * 0.4);
+                    const y = H * (0.2 + alea() * 0.6);
+                    const r = H * (0.25 + alea() * 0.35);
+                    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+                    gr.addColorStop(0, 'rgba(255,255,255,' + (0.3 + alea() * 0.4).toFixed(2) + ')');
+                    gr.addColorStop(0.5, 'rgba(255,255,255,0.1)');
+                    gr.addColorStop(1, 'rgba(255,255,255,0)');
+                    g.fillStyle = gr;
+                    g.fillRect(0, 0, L, H);
+                }
+                const t = new THREE.CanvasTexture(c);
+                t.colorSpace = THREE.SRGBColorSpace;
+                return t;
+            }
+
+            const TEX_HALO = halo(1);
+            const TEX_POINT = halo(0.5);
+            const TEX_NAPPE = [nappe(), nappe(), nappe()];
+
+            /* La palette des références : du bleu profond au cyan, un peu
+               de vert, et le rouge qui ne sert que par touches. */
+            const BLEUS = [0x1b3fa8, 0x2563eb, 0x0ea5e9, 0x22d3ee, 0x7dd3fc, 0x38bdf8];
+            const VERTS = [0x34d399, 0x4ade80];
+            const ROUGE = 0xff3b30;
+
+            const GEO_PLAN = new THREE.PlaneGeometry(1, 1);
+            function matLueur(tex, couleur, force) {
+                return new THREE.MeshBasicMaterial({
+                    map: tex, color: couleur, transparent: true,
+                    opacity: force, blending: THREE.AdditiveBlending,
+                    depthWrite: false, side: THREE.DoubleSide
+                });
+            }
+            function auHasard(liste) { return liste[Math.floor(alea() * liste.length)]; }
+
+            /* Un champ de lumière, face au visiteur. */
+            function champ(x, z, largeur, hauteur, yBas, tex, couleur, force) {
+                const m = new THREE.Mesh(GEO_PLAN, matLueur(tex, couleur, force));
+                m.scale.set(largeur, hauteur, 1);
+                m.position.set(x, yBas + hauteur / 2, z);
+                m.lookAt(0, m.position.y, 0);
+                m.renderOrder = -1;          /* la lumière passe derrière le reste */
+                return m;
+            }
+
+            function pose(angleMin, angleMax, dist, cote) {
+                const a = entre(angleMin, angleMax) * DEG * cote;
                 return { x: Math.sin(a) * dist, z: -Math.cos(a) * dist };
             }
 
-            /* Pose libre, pour ce qui passe derrière les fenêtres. */
-            function pose(angleMin, angleMax, distMin, distMax, cote) {
-                const a = entre(angleMin, angleMax) * DEG * cote;
-                const r = entre(distMin, distMax);
-                return { x: Math.sin(a) * r, z: -Math.cos(a) * r };
-            }
-
             [-1, 1].forEach(function (cote) {
-                /* Rideau proche : c'est lui qu'on voit le mieux. Il monte
-                   plus haut que le cadre et borde la fenêtre extérieure. */
-                for (let i = 0; i < 14; i++) {
-                    const l = entre(4, 7.5), d = entre(6, 10);
-                    const p = poseBord(entre(38, 42), l, d, cote);
-                    jungle.add(pan(p.x, p.z, l, entre(9, 16), matFeuillage('proche', p.x, p.z), -0.5));
-                }
-                /* Les troncs ne font que structurer : peu nombreux, courts
-                   et de la couleur du feuillage, sinon ils ressortent en
-                   barres claires et on ne voit plus la jungle. */
-                for (let i = 0; i < 4; i++) {
-                    const e = entre(0.6, 1.1), d = entre(7.5, 11.5);
-                    const p = poseBord(entre(40, 46), e * 1.4, d, cote);
-                    jungle.add(tronc(p.x, p.z, entre(7, 12), e));
-                }
-                for (let i = 0; i < 5; i++) {
-                    const d = entre(6.5, 10);
-                    const p = poseBord(entre(39, 45), 0.4, d, cote);
-                    jungle.add(liane(p.x, entre(6, 11), p.z, entre(3.5, 7)));
-                }
-                /* Grandes feuilles au tout premier plan : elles entrent
-                   dans l'image par le bord, comme si on écartait les
-                   branches pour regarder. */
-                for (let i = 0; i < 6; i++) {
-                    const t = entre(2.2, 4), d = entre(4.5, 7.5);
-                    const p = poseBord(entre(36, 41), t * 0.5, d, cote);
-                    jungle.add(grandeFeuille(p.x, entre(1.4, 5.2), p.z, t, entre(-1.1, 1.1) - cote * 0.5));
-                }
-                /* Lisière basse : le feuillage plonge dans l'eau. */
+                /* Les grands aplats qui bordent les images. Ils montent
+                   plus haut que le cadre et descendent dans l'eau, où
+                   ils se reflètent. */
                 for (let i = 0; i < 7; i++) {
-                    const l = entre(4, 7), d = entre(7, 13);
-                    const p = poseBord(entre(37, 43), l, d, cote);
-                    jungle.add(pan(p.x, p.z, l, entre(1.3, 2.8), matFeuillage('sol', p.x, p.z), -0.35));
+                    const d = entre(7, 26);
+                    const l = entre(5, 13) * (1 + d / 24);
+                    const p = pose(40, 74, d, cote);
+                    jungle.add(champ(p.x, p.z, l, entre(12, 30), entre(-4, -1),
+                                     auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.1, 0.3)));
                 }
-
-                /* Deuxième rideau, plus loin : il creuse la profondeur. */
-                for (let i = 0; i < 8; i++) {
-                    const l = entre(6, 11), d = entre(12, 18);
-                    const p = poseBord(entre(38, 44), l, d, cote);
-                    jungle.add(pan(p.x, p.z, l, entre(10, 17), matFeuillage('moyen', p.x, p.z), -0.4));
-                }
-
-                /* Derrière les fenêtres, mais seulement vers les bords
-                   (17° et plus) : la jungle passe derrière les images sans
-                   monter au milieu du cadre, où le ciel doit rester
-                   étoilé. */
+                /* Quelques foyers plus serrés et plus vifs, posés bas :
+                   ce sont eux qui allument l'eau. */
                 for (let i = 0; i < 5; i++) {
-                    const l = entre(9, 14), d = entre(20, 29);
-                    const p = poseBord(entre(20, 40), l, d, cote);
-                    jungle.add(pan(p.x, p.z, l, entre(11, 17), matFeuillage('canopee', p.x, p.z), -0.4));
+                    const d = entre(9, 22);
+                    const p = pose(39, 70, d, cote);
+                    jungle.add(champ(p.x, p.z, entre(3, 8), entre(3, 8), entre(-1.5, 1.5),
+                                     TEX_HALO, auHasard(BLEUS), entre(0.16, 0.4)));
                 }
-                for (let i = 0; i < 3; i++) {
-                    const p = poseBord(entre(22, 38), 1.5, entre(19, 27), cote);
-                    jungle.add(tronc(p.x, p.z, entre(13, 19), entre(0.6, 1.2)));
-                }
-            });
-
-            /* Voûte : du feuillage retombe des deux coins hauts du cadre.
-               Elle reste dans les angles (18° à 45°) et s'arrête juste
-               au-dessus des images : le milieu du ciel garde ses étoiles,
-               qui doivent rester ce qu'on voit en premier là-haut. */
-            [-1, 1].forEach(function (cote) {
-                for (let i = 0; i < 3; i++) {
-                    const l = entre(3.5, 6), d = entre(6, 10);
-                    /* même règle que sur les côtés : c'est le bord
-                       intérieur qu'on place, pas le centre du pan. */
-                    const p = poseBord(entre(20, 40), l, d, cote);
-                    const bas = 1.7 + d * Math.tan(entre(22.5, 25) * DEG);
-                    jungle.add(voute(p.x, p.z, l, entre(3.5, 6), bas));
+                /* Une touche de vert, rare, comme sur la planche. */
+                for (let i = 0; i < 2; i++) {
+                    const d = entre(12, 30);
+                    const p = pose(42, 72, d, cote);
+                    jungle.add(champ(p.x, p.z, entre(4, 9), entre(5, 12), entre(-2, 2),
+                                     TEX_HALO, auHasard(VERTS), entre(0.08, 0.18)));
                 }
             });
 
-            /* Sous-bois au ras de l'eau, tout autour, pour que la lisière
-               ne s'arrête pas net sur les côtés. */
-            for (let i = 0; i < 16; i++) {
-                const a = entre(-1, 1) * Math.PI * 0.75;
-                const r = entre(19, 34);
-                jungle.add(pan(Math.sin(a) * r, -Math.cos(a) * r, entre(8, 16), entre(1.8, 3.6), matFeuillage('loin', Math.sin(a) * r, -Math.cos(a) * r), -0.4));
+            /* Le fond : une nappe très large et très faible derrière le
+               mur des images, pour que l'horizon ne soit pas un mur noir. */
+            for (let i = 0; i < 5; i++) {
+                const a = entre(-70, 70) * DEG;
+                const d = entre(38, 64);
+                jungle.add(champ(Math.sin(a) * d, -Math.cos(a) * d,
+                                 entre(26, 50), entre(14, 26), -4,
+                                 auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.05, 0.12)));
             }
 
-            /* Respiration : la jungle bouge à peine, comme sous un souffle. */
+            /* ---------- La poussière ----------
+               Le premier visuel de référence : un nuage dense de points
+               qui brillent, bleus et cyan, avec quelques verts et de très
+               rares rouges. On les tient à l'écart de l'axe des images
+               pour ne pas les piqueter. */
+            (function () {
+                const N_PTS = 1100;
+                const pos = new Float32Array(N_PTS * 3);
+                const col = new Float32Array(N_PTS * 3);
+                const tailles = new Float32Array(N_PTS);
+                const c = new THREE.Color();
+                for (let i = 0; i < N_PTS; i++) {
+                    /* réparties tout autour, mais plus denses sur les côtés */
+                    let a = entre(-170, 170) * DEG;
+                    if (Math.abs(a) < 36 * DEG && alea() < 0.75) a += (a < 0 ? -1 : 1) * entre(36, 90) * DEG;
+                    const d = entre(5, 46);
+                    pos[i * 3] = Math.sin(a) * d;
+                    pos[i * 3 + 1] = entre(-1, 22);
+                    pos[i * 3 + 2] = -Math.cos(a) * d;
+                    const r = alea();
+                    c.set(r < 0.012 ? ROUGE : (r < 0.14 ? auHasard(VERTS) : auHasard(BLEUS)));
+                    /* les plus lointaines sont plus pâles */
+                    const k = 1 - Math.min(1, d / 52) * 0.55;
+                    col[i * 3] = c.r * k; col[i * 3 + 1] = c.g * k; col[i * 3 + 2] = c.b * k;
+                    tailles[i] = entre(0.06, 0.34);
+                }
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+                geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+                const mat = new THREE.PointsMaterial({
+                    map: TEX_POINT, size: 0.26, sizeAttenuation: true,
+                    vertexColors: true, transparent: true, opacity: 0.9,
+                    blending: THREE.AdditiveBlending, depthWrite: false
+                });
+                const nuage = new THREE.Points(geo, mat);
+                nuage.renderOrder = -1;
+                jungle.add(nuage);
+            })();
+
+            /* Respiration : les champs de lumière oscillent à peine. */
             const jungleBase = jungle.children.map(function (g) { return g.rotation.z; });
             let ripI = 0;
             const addRipple = (x, z, s) => { rip[ripI].set(x, z, water.material.uniforms.uNow.value, s); ripI = (ripI + 1) % RIP; };
@@ -3839,6 +3562,20 @@
                 var carte = ajoute(a, 'span', 'dsv-idcard');
                 var mug = ajoute(carte, 'span', 'dsv-mug');
                 var vignette = shot ? shot.querySelector('img') : null;
+                /* Une copie de la photo, glissée SOUS l'originale. Elle
+                   ne sert qu'à la déchirure : quand l'image du dessus est
+                   découpée en bandes décalées, c'est elle qu'on voit dans
+                   les trous, donc l'image reste entière. */
+                if (vignette && shot) {
+                    var dessous = document.createElement('span');
+                    dessous.className = 'dsv-copie';
+                    var cim = document.createElement('img');
+                    cim.src = vignette.getAttribute('src');
+                    cim.alt = ''; cim.setAttribute('aria-hidden', 'true');
+                    cim.loading = 'lazy'; cim.decoding = 'async';
+                    dessous.appendChild(cim);
+                    shot.insertBefore(dessous, vignette);
+                }
                 if (vignette) {
                     var copie = document.createElement('img');
                     copie.src = vignette.getAttribute('src');
@@ -3899,26 +3636,26 @@
 
             /* --- Parasite au changement de fiche ---
                Quatre pannes, tirées au sort, sans rejouer la même deux
-               fois de suite. La classe est posée sur la grille entière,
-               pas sur une image : c'est tout le bloc sur lequel on arrive
-               qui décroche, fiches voisines comprises. Les animations
-               sont dans style.css. */
+               fois de suite. La classe est posée sur la fiche centrale,
+               et sur elle seule : c'est la personne qu'on regarde qui
+               décroche, pas la page. Les animations sont dans
+               style.css. */
             var PANNES = ['gl1', 'gl2', 'gl3', 'gl4'];
             var dernierePanne = '';
             var minuteurPanne = null;
             var sansMouvement = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            function parasite() {
-                if (sansMouvement) return;
-                grid.classList.remove.apply(grid.classList, PANNES);
+            function parasite(li) {
+                if (!li || sansMouvement) return;
+                fiches.forEach(function (f) { f.li.classList.remove.apply(f.li.classList, PANNES); });
                 var tirage;
                 do { tirage = PANNES[Math.floor(Math.random() * PANNES.length)]; }
                 while (tirage === dernierePanne);
                 dernierePanne = tirage;
-                void grid.offsetWidth;        /* relance l'animation même si la classe revient */
-                grid.classList.add(tirage);
+                void li.offsetWidth;          /* relance l'animation même si la classe revient */
+                li.classList.add(tirage);
                 clearTimeout(minuteurPanne);
-                minuteurPanne = setTimeout(function () { grid.classList.remove(tirage); }, 620);
+                minuteurPanne = setTimeout(function () { li.classList.remove(tirage); }, 560);
             }
 
             function sansAccent(s) {
@@ -3960,7 +3697,7 @@
                 if (pos) pos.textContent = (index + 1 < 10 ? '0' : '') + (index + 1) +
                     ' / ' + (retenues.length < 10 ? '0' : '') + retenues.length;
                 bPrev.disabled = bNext.disabled = retenues.length < 2;
-                parasite();
+                parasite(retenues[index].li);
             }
 
             function filtrer(garderPlace) {
@@ -4114,6 +3851,95 @@
             sec.classList.remove('cw-on');
             console.warn('Eau de Curation indisponible :', err);
         }
+    })();
+    </script>
+
+    <!-- ================================================================
+         DIRECTION ARTISTIQUE COMMUNE — pose des champs de lumière
+         Chaque section reçoit une composition écrite à la main : une
+         grande nappe d'un côté, une seconde plus froide en face, un ou
+         deux halos qui font le bloom, et une seule braise rouge.
+         Rien d'aléatoire : les positions sont choisies pour laisser
+         le texte lisible.
+         ================================================================ -->
+    <script>
+    (function () {
+        'use strict';
+
+        /* couleur, x, y, largeur, hauteur — en % de la section.
+           Les tailles dépassent volontairement les bords : on ne veut
+           jamais voir où un champ s'arrête. */
+        var COMPOSITIONS = {
+            accueil: [
+                ['nappe', 'var(--da-bleu)',  -18,  -25,  78,  120],
+                ['nappe', 'var(--da-azur)',   62,   38,  70,  105],
+                ['halo',  'var(--da-cyan)',   -6,   18,  30,   46],
+                ['halo',  'var(--da-ciel)',   74,   -8,  26,   40],
+                ['braise', null,              12,   70,  20,   28]
+            ],
+            curation: [
+                ['nappe', 'var(--da-azur)',   58,  -30,  74,  118],
+                ['nappe', 'var(--da-bleu)',  -24,   44,  68,  100],
+                ['halo',  'var(--da-cyan)',   70,   52,  28,   42],
+                ['halo',  'var(--da-ciel)',    4,   -6,  22,   34],
+                ['braise', null,              -8,   74,  20,   28]
+            ],
+            collaborateurs: [
+                ['nappe', 'var(--da-bleu)',  -22,    4,  66,  104],
+                ['nappe', 'var(--da-azur)',   64,  -18,  70,  110],
+                ['halo',  'var(--da-cyan)',   -4,   60,  24,   36]
+            ],
+            expos: [
+                ['nappe', 'var(--da-bleu)',   -20, -22,  72,  114],
+                ['nappe', 'var(--da-azur)',    60,  30,  74,  110],
+                ['halo',  'var(--da-ciel)',    46, -14,  30,   44],
+                ['halo',  'var(--da-cyan)',   -10,  56,  26,   40],
+                ['braise', null,               80,  70,  20,   28]
+            ],
+            contact: [
+                ['nappe', 'var(--da-azur)',    24, -28,  86,  124],
+                ['nappe', 'var(--da-bleu)',   -26,  40,  64,   96],
+                ['halo',  'var(--da-cyan)',    40,  44,  34,   50],
+                ['braise', null,               88,   2,  16,   22]
+            ]
+        };
+
+        function champ(genre, couleur, x, y, l, h, rang) {
+            var i = document.createElement('i');
+            i.className = genre;
+            i.style.left = x + '%';
+            i.style.top = y + '%';
+            i.style.width = l + '%';
+            i.style.height = h + '%';
+            if (couleur) {
+                i.style.background =
+                    'radial-gradient(circle, ' + couleur + ' 0%, rgba(2, 6, 23, 0) 70%)';
+            }
+            /* Chaque champ part à un moment différent de son cycle :
+               sans ça les cinq respirent ensemble, et ça se voit. */
+            i.style.animationDelay = (-rang * 3.7).toFixed(1) + 's';
+            i.style.animationDuration =
+                (genre === 'nappe' ? 46 + rang * 5 : 13 + rang * 2.4).toFixed(1) + 's';
+            return i;
+        }
+
+        Object.keys(COMPOSITIONS).forEach(function (id) {
+            var sec = document.getElementById(id);
+            if (!sec) return;
+            sec.classList.add('da');
+
+            var aura = document.createElement('div');
+            aura.className = 'da-aura';
+            aura.setAttribute('aria-hidden', 'true');
+            COMPOSITIONS[id].forEach(function (c, n) {
+                aura.appendChild(champ(c[0], c[1], c[2], c[3], c[4], c[5], n));
+            });
+
+            /* Sur l'accueil les champs vont dans le cadre vidéo, pour
+               passer par-dessus la vidéo et sous le titre. */
+            var cadre = sec.querySelector(':scope > .hx-frame');
+            (cadre || sec).insertBefore(aura, (cadre || sec).firstChild);
+        });
     })();
     </script>
 

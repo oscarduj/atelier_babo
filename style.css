@@ -3085,9 +3085,13 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     min-height: calc(100vh - 7rem);
     min-height: calc(100dvh - 7rem);
 }
+/* Le conteneur de catégorie coupait la chaîne flex : la section
+   s'étirait sur toute la hauteur mais lui non, donc les fiches
+   restaient collées en haut avec 500 px de vide dessous. */
+#collaborateurs .collab-category-content { flex: 1; min-height: 0; }
+#collaborateurs .collab-category-content.active { display: flex; flex-direction: column; }
 .dsv { --srv: #eae8e4; --srv-encre: #0a0b0c; display: flex; flex-direction: column; flex: 1; min-height: 0; width: 100%; }
 .dsv-bar { flex: none; }
-.dsv-grid { margin-top: auto; margin-bottom: auto; }
 .dsv-bar {
     display: grid;
     grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto;
@@ -3113,7 +3117,10 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .dsv-count { margin: 0; justify-self: end; white-space: nowrap; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(234, 232, 228, 0.5); }
 
 /* ---- La pile : une seule fiche visible à la fois ---- */
-.dsv-grid { position: relative; height: clamp(26rem, 72vh, 62rem); list-style: none; margin: 0.9rem 0 0; padding: 0; overflow: hidden; }
+/* Les marges auto centrent le bloc dans la hauteur restante. Le
+   raccourci « margin » les écrasait, d'où les 500 px de vide sous les
+   fiches sur un grand écran. */
+.dsv-grid { position: relative; height: clamp(24rem, 62vh, 50rem); list-style: none; margin: auto 0; padding: 0; overflow: hidden; }
 /* Trois dossiers de front : le courant au centre, ses voisins en retrait
    de chaque côté, pour qu'on voie où l'on va. */
 .dsv-card {
@@ -3172,13 +3179,15 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 /* Le visuel occupe tout le cadre */
 .dsv-shot { position: absolute; inset: 0.7rem; display: grid; place-items: center; overflow: hidden; background-color: #0e0f10; background-image: radial-gradient(rgba(234, 232, 228, 0.09) 1px, transparent 1px); background-size: 5px 5px; }
 .dsv-shot > * { grid-area: 1 / 1; }
+.dsv-copie { position: relative; width: 100%; height: 100%; opacity: 0; }
+.dsv-copie img { width: 100%; height: 100%; object-fit: cover; }
 /* Voile sombre : garde le nom et les lignes de données lisibles,
    même sur une image claire (affiche, fond blanc). */
 .dsv-shot::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8, 9, 10, 0.78) 0%, rgba(8, 9, 10, 0.34) 20%, rgba(8, 9, 10, 0) 40%, rgba(8, 9, 10, 0) 54%, rgba(8, 9, 10, 0.42) 76%, rgba(8, 9, 10, 0.88) 100%); }
 .dsv-card:not(.is-on) .dsv-shot::after { background: linear-gradient(180deg, rgba(8, 9, 10, 0.68) 0%, rgba(8, 9, 10, 0) 40%, rgba(8, 9, 10, 0) 62%, rgba(8, 9, 10, 0.78) 100%); }
 .dsv-shot i { font-style: normal; font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 9vh, 6rem); color: rgba(234, 232, 228, 0.13); }
 .dsv-shot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); }
-.dsv-a:hover .dsv-shot img { filter: grayscale(1) contrast(1.6) brightness(0.95); }
+.dsv-a:hover .dsv-shot img { filter: var(--dsv-tube) brightness(1.2); }
 
 /* Réticule de suivi, au centre du cadre */
 .dsv-retic { position: absolute; left: 50%; top: 38%; width: clamp(5rem, 13vh, 8rem); height: clamp(5rem, 13vh, 8rem); transform: translate(-50%, -50%); pointer-events: none; }
@@ -3195,7 +3204,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .dsv-idcard { position: absolute; left: 1.5rem; top: 2rem; width: clamp(7rem, 17%, 10rem); }
 .dsv-idcard .dsv-alert { display: block; padding: 0.16rem 0.4rem; background: var(--srv); color: var(--srv-encre); font-family: 'Share Tech Mono', monospace; font-size: 0.54rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .dsv-idcard .dsv-mug { display: grid; place-items: center; aspect-ratio: 4 / 5; border: 2px solid var(--srv); background-color: #121314; background-image: radial-gradient(rgba(234, 232, 228, 0.12) 1px, transparent 1px); background-size: 4px 4px; overflow: hidden; }
-.dsv-idcard .dsv-mug img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.2); }
+.dsv-idcard .dsv-mug img { width: 100%; height: 100%; object-fit: cover; filter: var(--dsv-tube) brightness(1.1); }
 .dsv-idcard .dsv-mug b { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 1.5rem; color: rgba(234, 232, 228, 0.3); }
 
 /* Les lignes de données, pleines, sous l'encart */
@@ -3254,7 +3263,15 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
    Tout passe par --dsv-phosphore. Pour basculer l'écran en vert
    cathodique comme sur les images, une seule ligne à changer :
    remplacer 234, 232, 228 par 120, 255, 170. */
-#collaborateurs, .dsv { --dsv-phosphore: 234, 232, 228; }
+/* Vert phosphore, comme sur les références. Les deux variables ci-dessous
+   pilotent toute la partie : la lueur des textes et des cadres d'un côté,
+   le traitement des photos de l'autre. Pour revenir au noir et blanc :
+   --dsv-phosphore: 234, 232, 228 et --dsv-tube: grayscale(1) contrast(1.6)
+   brightness(0.84). */
+#collaborateurs, .dsv {
+    --dsv-phosphore: 104, 222, 255;
+    --dsv-tube: grayscale(1) sepia(1) hue-rotate(158deg) saturate(2.6) contrast(1.42) brightness(0.72);
+}
 
 /* La trame : lignes verticales serrées + balayage horizontal.
    C'est elle qui donne l'image « en barres » des références. */
@@ -3281,7 +3298,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 /* Phosphore : noirs écrasés et contraste poussé. Sans ça, la trame
    se pose sur un gris moyen et l'image vire au tramage d'imprimerie
    au lieu de l'écran cathodique. */
-.dsv-shot img { filter: grayscale(1) contrast(1.68) brightness(0.8); }
+.dsv-shot img, .dsv-copie img { filter: var(--dsv-tube); }
 .dsv-card.is-on .dsv-a {
     box-shadow:
         inset 0 0 5rem rgba(var(--dsv-phosphore), 0.07),
@@ -3294,136 +3311,118 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .dsv-name { text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85), 0 0 1.4rem rgba(var(--dsv-phosphore), 0.3); }
 
 /* ---------- Parasite au changement de fiche ----------
-   La panne frappe la grille entière — fiche centrale, voisines et
-   voile de balayage — et pas seulement la photo : c'est tout le bloc
-   sur lequel on arrive qui décroche. Quatre pannes au tirage. */
-.dsv-grid::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 9;
-    opacity: 0;
-    pointer-events: none;
-    background:
-        repeating-linear-gradient(0deg,
-            rgba(var(--dsv-phosphore), 0.16) 0 2px,
-            rgba(0, 0, 0, 0) 2px 5px),
-        linear-gradient(180deg,
-            rgba(var(--dsv-phosphore), 0.12) 0%,
-            rgba(0, 0, 0, 0) 28%,
-            rgba(0, 0, 0, 0) 72%,
-            rgba(var(--dsv-phosphore), 0.12) 100%);
-}
+   D'après la référence : l'image éclate en colonnes verticales qui se
+   décalent les unes par rapport aux autres, avec des pans entiers qui
+   tombent au noir et le reste qui brûle en cyan. Deux calques servent
+   à ça : la photo du dessus porte un masque en bandes, la copie du
+   dessous porte le masque complémentaire et se décale dans l'autre
+   sens. Rien ne bouge en dehors de la fiche centrale. */
+.dsv-copie, .dsv-shot img { will-change: transform, filter; }
 
 @media (prefers-reduced-motion: no-preference) {
-    .dsv-grid.gl1 { animation: dsvBlocRoule 0.46s steps(9) 1; }
-    .dsv-grid.gl2 { animation: dsvBlocDouble 0.44s steps(7) 1; }
-    .dsv-grid.gl3 { animation: dsvBlocCoupure 0.42s steps(8) 1; }
-    .dsv-grid.gl4 { animation: dsvBlocSecousse 0.48s steps(10) 1; }
-
-    .dsv-grid.gl1::after, .dsv-grid.gl2::after,
-    .dsv-grid.gl3::after, .dsv-grid.gl4::after { animation: dsvVoile 0.5s steps(7) 1; }
-
-    .dsv-grid.gl1 .dsv-shot img { animation: dsvRoule 0.42s steps(9) 1; }
-    .dsv-grid.gl2 .dsv-shot img { animation: dsvDouble 0.4s steps(7) 1; }
-    .dsv-grid.gl4 .dsv-shot img { animation: dsvSecousse 0.44s steps(10) 1; }
-
-    .dsv-grid.gl1 .dsv-shot::before,
-    .dsv-grid.gl2 .dsv-shot::before,
-    .dsv-grid.gl3 .dsv-shot::before { animation: dsvNeige 0.4s steps(6) 1; }
-    .dsv-grid.gl4 .dsv-shot::before { animation: dsvBandes 0.44s steps(10) 1; }
-
-    .dsv-grid.gl1 .dsv-name, .dsv-grid.gl2 .dsv-name,
-    .dsv-grid.gl3 .dsv-name, .dsv-grid.gl4 .dsv-name { animation: dsvNomDouble 0.36s steps(6) 1; }
-    .dsv-grid.gl1 .dsv-rows, .dsv-grid.gl2 .dsv-rows,
-    .dsv-grid.gl3 .dsv-rows, .dsv-grid.gl4 .dsv-rows { animation: dsvClignote 0.4s steps(5) 1; }
+    /* 1 — colonnes : l'effet principal de la référence */
+    .dsv-card.gl1 .dsv-copie { animation: dsvColonnes 0.52s steps(9) 1; }
+    .dsv-card.gl1 .dsv-shot img { animation: dsvColonnesFond 0.52s steps(9) 1; }
+    /* 2 — perte de signal : tout tombe au noir, rien ne bouge */
+    .dsv-card.gl2 .dsv-a { animation: dsvPerte 0.44s steps(9) 1; }
+    /* 3 — dédoublement latéral */
+    .dsv-card.gl3 .dsv-shot img { animation: dsvFantome 0.42s steps(7) 1; }
+    .dsv-card.gl3 .dsv-name { animation: dsvNomDouble 0.36s steps(6) 1; }
+    /* 4 — surbrillance : le tube crame en cyan */
+    .dsv-card.gl4 .dsv-a { animation: dsvCrame 0.4s steps(8) 1; }
+    .dsv-card.gl4 .dsv-shot::before { animation: dsvNeige 0.4s steps(6) 1; }
 }
 
-/* --- La grille entière --- */
-@keyframes dsvBlocRoule {
-    0%, 100% { transform: translateY(0); filter: none; }
-    20% { transform: translateY(-1.2%); filter: brightness(1.5) contrast(1.3); }
-    45% { transform: translateY(0.8%); filter: brightness(0.45); }
-    70% { transform: translateY(-0.3%); filter: brightness(1.25); }
+/* 1 — éclatement en colonnes.
+   La photo d'origine reste entière dessous ; c'est la COPIE, passée
+   au-dessus, qui est découpée en colonnes et brûlée en cyan. On
+   n'anime que la position du masque et le décalage vertical : animer
+   le masque lui-même ne tient pas d'un navigateur à l'autre. */
+.dsv-card.gl1 .dsv-copie {
+    z-index: 5;
+    -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 13px);
+    mask-image: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 13px);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
 }
-@keyframes dsvBlocDouble {
-    0%, 100% { transform: translateX(0); filter: none; }
-    25% { transform: translateX(-0.5%); filter: drop-shadow(14px 0 0 rgba(var(--dsv-phosphore), 0.22)); }
-    50% { transform: translateX(0.4%); filter: drop-shadow(-16px 0 0 rgba(var(--dsv-phosphore), 0.18)); }
-    75% { transform: translateX(-0.2%); filter: drop-shadow(8px 0 0 rgba(var(--dsv-phosphore), 0.16)); }
-}
-@keyframes dsvBlocCoupure {
-    0%, 100% { opacity: 1; filter: none; }
-    14% { opacity: 0.08; }
-    28% { opacity: 1; filter: invert(1) contrast(1.4); }
-    44% { opacity: 0.38; filter: none; }
-    60% { opacity: 1; filter: brightness(2.2) contrast(0.6); }
-    82% { opacity: 0.7; }
-}
-@keyframes dsvBlocSecousse {
-    0%, 100% { transform: translateX(0) skewX(0deg); }
-    15% { transform: translateX(0.9%) skewX(1.2deg); }
-    32% { transform: translateX(-1.2%) skewX(-1.6deg); }
-    50% { transform: translateX(0.3%) skewX(0.4deg); }
-    68% { transform: translateX(-0.7%) skewX(-0.9deg); }
-    85% { transform: translateX(0.4%) skewX(0.6deg); }
-}
-@keyframes dsvVoile {
+@keyframes dsvColonnes {
     0%, 100% { opacity: 0; transform: translateY(0); }
-    15% { opacity: 1; transform: translateY(-12%); }
-    35% { opacity: 0.35; transform: translateY(22%); }
-    55% { opacity: 0.9; transform: translateY(-6%); }
-    78% { opacity: 0.4; transform: translateY(14%); }
+    10% {
+        opacity: 1; transform: translateY(-9%);
+        -webkit-mask-position: 0 0; mask-position: 0 0;
+        filter: var(--dsv-tube) brightness(3.6) contrast(1.5) drop-shadow(0 0 14px rgba(var(--dsv-phosphore), 0.9));
+    }
+    28% {
+        opacity: 1; transform: translateY(5%);
+        -webkit-mask-position: 7px 0; mask-position: 7px 0;
+        filter: var(--dsv-tube) brightness(4.2) contrast(1.3) drop-shadow(0 0 22px rgba(var(--dsv-phosphore), 1));
+    }
+    46% {
+        opacity: 1; transform: translateY(-14%);
+        -webkit-mask-position: 3px 0; mask-position: 3px 0;
+        filter: var(--dsv-tube) brightness(3) contrast(1.7) drop-shadow(0 0 9px rgba(var(--dsv-phosphore), 0.8));
+    }
+    64% {
+        opacity: 1; transform: translateY(8%);
+        -webkit-mask-position: 11px 0; mask-position: 11px 0;
+        filter: var(--dsv-tube) brightness(4.6) drop-shadow(0 0 26px rgba(var(--dsv-phosphore), 1));
+    }
+    82% {
+        opacity: 1; transform: translateY(-3%);
+        -webkit-mask-position: 2px 0; mask-position: 2px 0;
+        filter: var(--dsv-tube) brightness(2.4) drop-shadow(0 0 7px rgba(var(--dsv-phosphore), 0.6));
+    }
+}
+/* dessous, l'image d'origine encaisse le coup sans se découper */
+@keyframes dsvColonnesFond {
+    0%, 100% { transform: translateY(0); filter: var(--dsv-tube); }
+    10% { transform: translateY(2%); filter: var(--dsv-tube) brightness(0.35); }
+    28% { transform: translateY(-1%); filter: var(--dsv-tube) brightness(0.15); }
+    46% { transform: translateY(3%); filter: var(--dsv-tube) brightness(0.5); }
+    64% { transform: translateY(-2%); filter: var(--dsv-tube) brightness(0.2); }
+    82% { transform: translateY(1%); filter: var(--dsv-tube) brightness(0.7); }
 }
 
-/* --- Les images, à l'intérieur --- */
-@keyframes dsvRoule {
-    0%, 100% { transform: translateY(0); filter: grayscale(1) contrast(1.68) brightness(0.8); }
-    20% { transform: translateY(-13%); filter: grayscale(1) contrast(2.2) brightness(1.35); }
-    45% { transform: translateY(8%); filter: grayscale(1) contrast(1.05) brightness(0.62); }
-    70% { transform: translateY(-4%); filter: grayscale(1) contrast(1.9) brightness(1.2); }
+/* 2 — perte de signal */
+@keyframes dsvPerte {
+    0%, 100% { opacity: 1; filter: none; }
+    10% { opacity: 0.04; }
+    22% { opacity: 1; filter: brightness(0.22) contrast(2.6); }
+    38% { opacity: 0.16; }
+    52% { opacity: 1; filter: brightness(0.45) contrast(1.8); }
+    70% { opacity: 0.6; }
+    86% { opacity: 1; filter: brightness(0.3); }
 }
-@keyframes dsvDouble {
-    0%, 100% { transform: translateX(0); filter: grayscale(1) contrast(1.68) brightness(0.8); }
-    25% { transform: translateX(-2.4%); filter: grayscale(1) contrast(1.9) brightness(0.9) drop-shadow(12px 0 0 rgba(var(--dsv-phosphore), 0.42)); }
-    50% { transform: translateX(1.9%); filter: grayscale(1) contrast(1.5) drop-shadow(-14px 0 0 rgba(var(--dsv-phosphore), 0.34)); }
-    75% { transform: translateX(-0.9%); filter: grayscale(1) contrast(2.3) drop-shadow(7px 0 0 rgba(var(--dsv-phosphore), 0.3)); }
+/* 3 — dédoublement */
+@keyframes dsvFantome {
+    0%, 100% { transform: translateX(0); filter: var(--dsv-tube); }
+    18% { transform: translateX(-3.4%); filter: var(--dsv-tube) drop-shadow(18px 0 0 rgba(var(--dsv-phosphore), 0.6)); }
+    40% { transform: translateX(2.8%); filter: var(--dsv-tube) drop-shadow(-21px 0 0 rgba(var(--dsv-phosphore), 0.45)); }
+    62% { transform: translateX(-1.5%); filter: var(--dsv-tube) drop-shadow(11px 0 0 rgba(var(--dsv-phosphore), 0.38)); }
+    84% { transform: translateX(0.7%); filter: var(--dsv-tube) drop-shadow(-7px 0 0 rgba(var(--dsv-phosphore), 0.26)); }
 }
-@keyframes dsvSecousse {
-    0%, 100% { transform: translateX(0) scaleY(1); }
-    15% { transform: translateX(4.5%) scaleY(1.03); }
-    30% { transform: translateX(-5.5%) scaleY(0.97); }
-    50% { transform: translateX(1.5%) scaleY(1); }
-    68% { transform: translateX(-3.5%) scaleY(1.04); }
-    85% { transform: translateX(2%) scaleY(0.99); }
+/* 4 — surbrillance */
+@keyframes dsvCrame {
+    0%, 100% { filter: none; }
+    14% { filter: brightness(2.4) contrast(0.6) saturate(2.6); }
+    30% { filter: none; }
+    46% { filter: brightness(3.2) contrast(0.45) saturate(3); }
+    60% { filter: contrast(2.6) brightness(1.4); }
+    78% { filter: brightness(2) contrast(0.7); }
 }
 @keyframes dsvNeige {
     0%, 100% { opacity: 1; background-position: 0 0, 0 0; }
-    20% { opacity: 1; background-position: 7px 0, 0 11px; filter: brightness(1.9); }
-    40% { opacity: 0.6; background-position: -5px 0, 0 -8px; }
-    60% { opacity: 1; background-position: 11px 0, 0 5px; filter: brightness(2.4); }
+    20% { opacity: 1; background-position: 7px 0, 0 11px; filter: brightness(2.4); }
+    40% { opacity: 0.5; background-position: -5px 0, 0 -8px; }
+    60% { opacity: 1; background-position: 11px 0, 0 5px; filter: brightness(3); }
     80% { opacity: 0.8; background-position: -9px 0, 0 14px; }
-}
-@keyframes dsvBandes {
-    0%, 100% { clip-path: inset(0 0 0 0); filter: brightness(1); }
-    15% { clip-path: inset(10% 0 72% 0); filter: brightness(3.2); }
-    32% { clip-path: inset(46% 0 34% 0); filter: brightness(2.6); }
-    48% { clip-path: inset(0 0 0 0); filter: brightness(1); }
-    64% { clip-path: inset(70% 0 12% 0); filter: brightness(3); }
-    82% { clip-path: inset(24% 0 60% 0); filter: brightness(2.2); }
 }
 @keyframes dsvNomDouble {
     0%, 100% { transform: translateX(0); opacity: 1; }
-    20% { transform: translateX(-0.5rem); opacity: 0.55; }
-    40% { transform: translateX(0.35rem); opacity: 1; }
-    60% { transform: translateX(-0.2rem); opacity: 0.35; }
-    80% { transform: translateX(0.15rem); opacity: 1; }
-}
-@keyframes dsvClignote {
-    0%, 100% { opacity: 1; }
-    25% { opacity: 0.25; }
-    50% { opacity: 1; }
-    75% { opacity: 0.5; }
+    20% { transform: translateX(-0.6rem); opacity: 0.5; }
+    40% { transform: translateX(0.4rem); opacity: 1; }
+    60% { transform: translateX(-0.25rem); opacity: 0.3; }
+    80% { transform: translateX(0.18rem); opacity: 1; }
 }
 
 /* ---- Navigation d'une fiche à l'autre ---- */
@@ -4035,4 +4034,228 @@ body, .main-feed { background: var(--ab-bg); }
 body.is-fullscreen .fs-toggle { color: var(--secondary-color); }
 @media (max-width: 700px) {
     .fs-toggle { font-size: 0.62rem; padding: 0.4rem 0.6rem; top: 3rem; }
+}
+
+
+/* ====================================================================
+   DIRECTION ARTISTIQUE COMMUNE — « champs de lumière »
+   Noir profond, grands aplats bleus floutés, bloom, grain fin,
+   libellés entre crochets et un seul accent rouge.
+   Les mêmes valeurs que la salle 3D de Travaux, en CSS.
+   ==================================================================== */
+
+:root {
+    --da-nuit:    #05070c;
+    --da-bleu:    #1b3fa8;
+    --da-azur:    #2563eb;
+    --da-cyan:    #22d3ee;
+    --da-ciel:    #7dd3fc;
+    --da-rouge:   #ff3b30;
+    --da-grain:   rgba(234, 240, 255, 0.032);
+
+    /* Étalonnage des images animées : l'eau de Curation, les vidéos
+       d'accueil et de Contact, les affiches floutées d'Expos. On ne
+       remplace rien, on refroidit : un peu moins de saturation pour
+       laisser la lumière bleue dominer, un peu plus de contraste,
+       et une bascule des teintes vers le cyan. Les quatre valeurs
+       se règlent ici, pour tout le site d'un coup. */
+    --da-sat:     0.72;
+    --da-contr:   1.08;
+    --da-lum:     0.9;
+    --da-teinte:  -14deg;
+    --da-etalon:  saturate(var(--da-sat)) contrast(var(--da-contr))
+                  brightness(var(--da-lum)) hue-rotate(var(--da-teinte));
+}
+
+/* Le fond général descend vers le noir bleuté des références. */
+body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
+
+/* --------------------------------------------------------------
+   1. Les champs de lumière
+   Un conteneur par section, rempli de disques très flous en
+   « screen » : c'est l'équivalent CSS du blending additif de la
+   salle 3D. Ils dérivent très lentement, jamais en boucle visible.
+   -------------------------------------------------------------- */
+
+/* Échelle de plans, valable pour toutes les sections :
+   0 = le fond propre de la section (l'eau de Curation, les affiches
+   floutées d'Expos), 1 = les champs de lumière, 2 = le grain,
+   3 = le contenu. Sans cet ordre les fonds de section repassent
+   par-dessus les champs et la section redevient noire. */
+/* Le « screen » est posé sur le conteneur, pas seulement sur les
+   disques : toute la nappe de lumière est alors fondue d'un bloc
+   sur ce qu'il y a derrière. Un screen ne fait qu'AJOUTER de la
+   lumière, jamais en retirer — l'eau de Curation et les vidéos
+   restent visibles à 100 %, simplement éclairées. Avec le blend
+   sur les disques seuls, c'étaient des pastilles opaques posées
+   par-dessus, et le fond disparaissait. */
+.da-aura {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+    mix-blend-mode: screen;
+}
+.da-aura i {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+/* Les grandes nappes de fond : énormes, très floues, très sourdes. */
+.da-aura i.nappe {
+    filter: blur(90px);
+    opacity: 0.44;
+    animation: daDerive 46s ease-in-out infinite alternate;
+}
+/* Les halos : plus petits, plus nets, ce sont eux qui font le bloom. */
+.da-aura i.halo {
+    filter: blur(38px);
+    opacity: 0.55;
+    animation: daPouls 13s ease-in-out infinite alternate;
+}
+/* L'accent rouge, unique et discret, comme sur les références. */
+.da-aura i.braise {
+    filter: blur(58px);
+    opacity: 0.3;
+    background: radial-gradient(circle, var(--da-rouge) 0%, rgba(255, 59, 48, 0) 70%);
+    animation: daPouls 19s ease-in-out infinite alternate;
+}
+
+@keyframes daDerive {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(2.5%, -3%, 0) scale(1.1); }
+}
+@keyframes daPouls {
+    from { transform: translate3d(0, 0, 0) scale(0.94); opacity: 0.42; }
+    to   { transform: translate3d(-2%, 2.5%, 0) scale(1.08); opacity: 0.72; }
+}
+
+/* --------------------------------------------------------------
+   2. Le grain
+   Une trame de points d'un pixel, posée sur toute la section.
+   Pas d'image : la trame est dessinée par le dégradé lui-même,
+   donc rien à charger et rien à bloquer.
+   -------------------------------------------------------------- */
+
+.feed-section.da::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-image: radial-gradient(var(--da-grain) 1px, transparent 1px);
+    background-size: 3px 3px;
+}
+
+/* Le contenu repasse au-dessus des champs et du grain. */
+.feed-section.da { position: relative; isolation: isolate; }
+.feed-section.da > .section-content,
+.feed-section.da > .hx-frame { position: relative; z-index: 3; }
+#expos.sg-section > .section-content,
+#collaborateurs.da > .section-content { position: relative; z-index: 3; }
+
+/* Contact a un voile vidéo à lui, posé au plan 1 : les champs
+   passent juste au-dessus, sinon la section reste noire. */
+#contact > .da-aura { z-index: 2; }
+#curation, #contact { background: var(--da-nuit); }
+
+/* La couture entre deux sections éclairées ne doit pas se voir. */
+.feed-section.da { border-bottom-color: rgba(125, 211, 252, 0.09); }
+
+/* --------------------------------------------------------------
+   L'étalonnage
+   Rien n'est masqué ni remplacé : l'eau tourne toujours, les
+   vidéos jouent toujours, elles sont seulement refroidies pour
+   entrer dans la même gamme que les champs de lumière.
+   -------------------------------------------------------------- */
+
+#accueil .hero-video        { filter: var(--da-etalon); }
+#curation .cw-bg canvas     { filter: var(--da-etalon); }
+#contact .soutien-bg-video  { filter: var(--da-etalon); }
+
+/* Expos garde son gros flou : on ne remplace que la couleur. */
+#expos .sg-bg span {
+    filter: blur(70px) saturate(0.95) brightness(0.58) hue-rotate(var(--da-teinte));
+}
+
+/* La vidéo de Contact est très atténuée par son voile : on la
+   remonte un peu, sinon l'étalonnage finit de l'éteindre. */
+#contact .soutien-bg-video.active { opacity: 0.68; }
+
+/* --------------------------------------------------------------
+   3. La typographie
+   Titres en lumière, libellés entre crochets, numéro en rouge.
+   -------------------------------------------------------------- */
+
+.feed-section.da .sec-head h2:not(.dfm-sr) {
+    color: #eaf4ff;
+    text-shadow:
+        0 0 22px rgba(125, 211, 252, 0.3),
+        0 0 70px rgba(37, 99, 235, 0.22);
+}
+.feed-section.da .sec-meta .tag::before { content: '[ '; opacity: 0.55; }
+.feed-section.da .sec-meta .tag::after  { content: ' ]'; opacity: 0.55; }
+.feed-section.da .sec-meta .sec-num {
+    color: var(--da-rouge);
+    text-shadow: 0 0 14px rgba(255, 59, 48, 0.45);
+}
+.feed-section.da .section-desc { color: rgba(210, 228, 255, 0.62); }
+
+/* Le filet sous l'en-tête devient un dégradé de lumière. */
+.feed-section.da .sec-head {
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(90deg,
+        rgba(34, 211, 238, 0.45) 0%,
+        rgba(37, 99, 235, 0.22) 45%,
+        rgba(255, 255, 255, 0) 100%) 1;
+}
+
+/* --------------------------------------------------------------
+   4. L'accueil
+   Le cadre vidéo reçoit ses propres champs, par-dessus la vidéo
+   mais sous le texte, pour que le titre baigne dans la lumière.
+   -------------------------------------------------------------- */
+
+#accueil .hx-frame { background: var(--da-nuit); }
+#accueil .hx-frame > .da-aura { z-index: 2; }
+#accueil .hx-head, #accueil .hx-bl { z-index: 4; }
+#accueil .hx-title {
+    font-weight: 300;
+    color: #f2f8ff;
+    text-shadow:
+        0 0 30px rgba(125, 211, 252, 0.28),
+        0 0 110px rgba(37, 99, 235, 0.3);
+}
+#accueil .hx-shade {
+    background:
+        linear-gradient(to bottom,
+            rgba(5, 7, 12, 0.6) 0%,
+            rgba(5, 7, 12, 0.08) 34%,
+            rgba(5, 7, 12, 0.1) 54%,
+            rgba(5, 7, 12, 0.82) 100%);
+}
+#accueil .hx-tags li { border-color: rgba(167, 215, 255, 0.55); color: #dceeff; }
+#accueil .hx-rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--da-cyan), rgba(37, 99, 235, 0) 85%);
+}
+
+/* --------------------------------------------------------------
+   5. Repli
+   Les champs sont lourds à flouter : sur petits écrans on en
+   garde moins, et on les fige si la personne a demandé moins
+   d'animation.
+   -------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+    .da-aura i.nappe { filter: blur(60px); }
+    .da-aura i.halo  { filter: blur(26px); }
+    .da-aura i:nth-child(n + 6) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .da-aura i { animation: none !important; }
 }
