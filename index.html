@@ -36,6 +36,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
     <script src="ambient.js" defer></script>
     <script src="page-transition.js" defer></script>
+    <script src="agent.js" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -428,25 +429,48 @@
 
                 <div id="cat-mecenes" class="collab-category-content" style="display: none;">
                     <p class="section-desc">Soutiens financiers et accompagnateurs de la recherche.</p>
-                    <div class="dt-field">
-                        <img class="dt-bg" src="images/travaux/collectif/babosphere-10.jpg" alt="" loading="lazy">
-                        <svg class="dt-net" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="12.0" y1="32.0" x2="47.5" y2="29.0"/><line x1="47.5" y1="29.0" x2="79.0" y2="28.0"/></svg>
-                        <div class="dt-box" style="--x:5%;--y:10%;--w:14%;--h:44%">
-                            <span class="dt-face" aria-hidden="true">FD</span>
-                            <span class="dt-name">Fondation des Arts Numériques</span>
-                            <span class="dt-data"><b>ID 01 // MÉCÈNE</b>Grand mécène<i>STATUT : DÉTECTÉ</i></span>
+                    <div class="dsv" data-dsv="mecenes">
+                        <div class="dsv-bar">
+                            <label class="dsv-search">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+                                <input type="search" class="dsv-q" placeholder="Nom, type de soutien" aria-label="Rechercher dans les mécènes">
+                            </label>
+                            <div class="dsv-keys" role="group" aria-label="Filtrer par mot-clé"></div>
+                            <p class="dsv-count" aria-live="polite"></p>
                         </div>
-                        <div class="dt-box" style="--x:40%;--y:6%;--w:15%;--h:46%">
-                            <span class="dt-face" aria-hidden="true">CD</span>
-                            <span class="dt-name">Cercle des Amis d'Atelier Babo</span>
-                            <span class="dt-data"><b>ID 02 // MÉCÈNE</b>Soutien récurrent<i>STATUT : DÉTECTÉ</i></span>
-                        </div>
-                        <div class="dt-box is-left" style="--x:73%;--y:8%;--w:12%;--h:40%">
-                            <span class="dt-face" aria-hidden="true">DI</span>
-                            <span class="dt-name">Donateurs individuels</span>
-                            <span class="dt-data"><b>ID 03 // MÉCÈNE</b>Contribution ponctuelle<i>STATUT : DÉTECTÉ</i></span>
-                        </div>
-                        <span class="dt-hud" aria-hidden="true">DÉTECTION // 03 PROFILS — RÉSEAU ATELIER BABO</span>
+                        <ul class="dsv-grid" aria-label="Mécènes et soutiens">
+                            <li class="dsv-card" data-keys="fondation, grand mécène">
+                                <a class="dsv-a" href="#contact">
+                                    <span class="dsv-ref">DOSSIER 01</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>FD</i></span>
+                                    <span class="dsv-name">Fondation des Arts Numériques</span>
+                                    <span class="dsv-practice">Grand mécène</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">SOUTIEN</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="cercle, soutien récurrent">
+                                <a class="dsv-a" href="#contact">
+                                    <span class="dsv-ref">DOSSIER 02</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>CD</i></span>
+                                    <span class="dsv-name">Cercle des Amis d'Atelier Babo</span>
+                                    <span class="dsv-practice">Soutien récurrent</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">SOUTIEN</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="donateurs, contribution ponctuelle">
+                                <a class="dsv-a" href="#contact">
+                                    <span class="dsv-ref">DOSSIER 03</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>DI</i></span>
+                                    <span class="dsv-name">Donateurs individuels</span>
+                                    <span class="dsv-practice">Contribution ponctuelle</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">SOUTIEN</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="dsv-empty" hidden>Aucun dossier ne correspond à cette recherche.</p>
                     </div>
                 </div>
             </div>
@@ -2874,6 +2898,195 @@
             water.material.uniforms.uNormals.value = normals;
             water.material.uniforms.uRip.value = rip;
             scene.add(water);
+
+            /* ============================================================
+               VÉGÉTATION — une jungle de part et d'autre des fenêtres.
+               Tout est généré ici, sans modèle ni image à charger : des
+               silhouettes qui se découpent sur le ciel étoilé et se
+               reflètent dans l'eau, puisqu'elles sont posées au-dessus.
+               Les massifs proches cadrent la scène à gauche et à droite,
+               les lointains ferment l'horizon derrière les panneaux.
+               ============================================================ */
+            const jungle = new THREE.Group();
+            scene.add(jungle);
+
+            /* Un hasard reproductible : la jungle est la même à chaque visite. */
+            let graine = 20260301;
+            function alea() { graine = (graine * 1664525 + 1013904223) % 4294967296; return graine / 4294967296; }
+            function entre(a, b) { return a + alea() * (b - a); }
+
+            /* Feuille découpée, dessinée une fois puis réutilisée partout. */
+            function feuilleTexture() {
+                const c = document.createElement('canvas');
+                c.width = 128; c.height = 256;
+                const g = c.getContext('2d');
+                g.fillStyle = '#ffffff';
+                g.beginPath();
+                g.moveTo(64, 2);
+                g.bezierCurveTo(124, 72, 118, 196, 64, 254);
+                g.bezierCurveTo(10, 196, 4, 72, 64, 2);
+                g.fill();
+                /* entailles latérales : la feuille respire au lieu d'être une goutte */
+                g.globalCompositeOperation = 'destination-out';
+                for (let i = 0; i < 6; i++) {
+                    const y = 40 + i * 33;
+                    g.beginPath(); g.ellipse(2, y, 26, 11, -0.3, 0, Math.PI * 2); g.fill();
+                    g.beginPath(); g.ellipse(126, y + 16, 26, 11, 0.3, 0, Math.PI * 2); g.fill();
+                }
+                const t = new THREE.CanvasTexture(c);
+                t.colorSpace = THREE.SRGBColorSpace;
+                return t;
+            }
+            const TEX_FEUILLE = feuilleTexture();
+            const GEO_FEUILLE = new THREE.PlaneGeometry(1, 2);
+            const GEO_TRONC = new THREE.CylinderGeometry(0.055, 0.12, 1, 6, 1, true);
+            const GEO_MASSE = new THREE.IcosahedronGeometry(1, 0);
+
+            /* Un seul matériau par teinte, partagé par tous les objets :
+               la jungle compte plusieurs centaines de pièces, en créer un
+               par feuille chargerait la carte pour rien. */
+            const matPleine = new Map(), matFeuilles = new Map();
+            function matiere(teinte) {
+                if (!matPleine.has(teinte)) {
+                    matPleine.set(teinte, new THREE.MeshBasicMaterial({
+                        color: teinte, side: THREE.DoubleSide
+                    }));
+                }
+                return matPleine.get(teinte);
+            }
+            function matFeuille(teinte) {
+                if (!matFeuilles.has(teinte)) {
+                    matFeuilles.set(teinte, new THREE.MeshBasicMaterial({
+                        color: teinte, map: TEX_FEUILLE, alphaMap: TEX_FEUILLE,
+                        transparent: true, alphaTest: 0.42, side: THREE.DoubleSide
+                    }));
+                }
+                return matFeuilles.get(teinte);
+            }
+
+            /* Un palmier : un tronc penché, une couronne de feuilles. */
+            function palmier(x, z, hauteur, teinte, versCentre) {
+                const g = new THREE.Group();
+                g.position.set(x, 0, z);
+                const penche = entre(0.05, 0.22) * (versCentre ? -Math.sign(x) : Math.sign(x));
+                const tronc = new THREE.Mesh(GEO_TRONC, matiere(teinte));
+                tronc.scale.set(hauteur * 0.09, hauteur, hauteur * 0.09);
+                tronc.position.y = hauteur / 2;
+                tronc.rotation.z = penche;
+                g.add(tronc);
+                const n = Math.round(entre(6, 9));
+                for (let i = 0; i < n; i++) {
+                    const f = new THREE.Mesh(GEO_FEUILLE, matFeuille(teinte));
+                    const taille = hauteur * entre(0.26, 0.42);
+                    f.scale.set(taille, taille * 1.5, 1);
+                    const angle = (i / n) * Math.PI * 2 + entre(-0.2, 0.2);
+                    const portee = taille * 0.62;
+                    f.position.set(
+                        Math.cos(angle) * portee + penche * hauteur,
+                        hauteur - entre(0.05, 0.4),
+                        Math.sin(angle) * portee
+                    );
+                    f.rotation.set(entre(0.7, 1.5), -angle, entre(-0.3, 0.3));
+                    g.add(f);
+                }
+                return g;
+            }
+
+            /* Une masse de feuillage, pour remplir entre les troncs. */
+            function buisson(x, z, rayon, teinte) {
+                const g = new THREE.Group();
+                g.position.set(x, 0, z);
+                const n = Math.round(entre(3, 6));
+                for (let i = 0; i < n; i++) {
+                    const m = new THREE.Mesh(GEO_MASSE, matiere(teinte));
+                    const r = rayon * entre(0.5, 1);
+                    m.scale.set(r * entre(1, 1.6), r * entre(0.6, 0.95), r * entre(1, 1.4));
+                    m.position.set(entre(-rayon, rayon), r * entre(0.4, 0.8), entre(-rayon, rayon));
+                    m.rotation.set(entre(0, 3), entre(0, 3), entre(0, 3));
+                    g.add(m);
+                }
+                return g;
+            }
+
+            /* Roseaux : de fines lames qui sortent de l'eau. */
+            function roseaux(x, z, etendue, nombre, teinte) {
+                const g = new THREE.Group();
+                g.position.set(x, 0, z);
+                for (let i = 0; i < nombre; i++) {
+                    const h = entre(0.5, 2.1);
+                    const t = new THREE.Mesh(GEO_TRONC, matiere(teinte));
+                    t.scale.set(0.035, h, 0.035);
+                    t.position.set(entre(-etendue, etendue), h / 2 - 0.08, entre(-etendue, etendue));
+                    t.rotation.z = entre(-0.22, 0.22);
+                    t.rotation.x = entre(-0.18, 0.18);
+                    g.add(t);
+                }
+                return g;
+            }
+
+            /* Racines de mangrove : elles plongent sous la surface. */
+            function racines(x, z, rayon, teinte) {
+                const g = new THREE.Group();
+                g.position.set(x, 0, z);
+                const n = Math.round(entre(4, 7));
+                for (let i = 0; i < n; i++) {
+                    const a = (i / n) * Math.PI * 2 + entre(-0.3, 0.3);
+                    const h = entre(0.7, 1.5);
+                    const t = new THREE.Mesh(GEO_TRONC, matiere(teinte));
+                    t.scale.set(0.05, h * 1.5, 0.05);
+                    t.position.set(Math.cos(a) * rayon * 0.6, h * 0.35, Math.sin(a) * rayon * 0.6);
+                    t.rotation.z = Math.cos(a) * 0.75;
+                    t.rotation.x = -Math.sin(a) * 0.75;
+                    g.add(t);
+                }
+                return g;
+            }
+
+            /* ---- Plantation ----
+               Trois rangs par côté : tout près pour cadrer l'image, à
+               mi-distance pour épaissir, au loin pour fermer l'horizon.
+               Les teintes s'éclaircissent avec la distance : c'est ce qui
+               détache les silhouettes les unes des autres. */
+            const PROCHE = 0x02040a, MOYEN = 0x050a12, LOIN = 0x0a131d;
+
+            [-1, 1].forEach(function (cote) {
+                /* Premier plan : hauts, en bord de cadre, ils débordent vers le haut. */
+                for (let i = 0; i < 3; i++) {
+                    const x = cote * entre(4.6, 7.4);
+                    const z = -entre(2.4, 6.2);
+                    jungle.add(palmier(x, z, entre(6.5, 10.5), PROCHE, true));
+                    jungle.add(racines(x, z, entre(0.5, 0.9), PROCHE));
+                }
+                jungle.add(buisson(cote * entre(5, 8), -entre(2, 5), entre(1.1, 1.9), PROCHE));
+                jungle.add(roseaux(cote * entre(4.2, 6.5), -entre(1.6, 4), 1.1, 16, PROCHE));
+
+                /* Rang intermédiaire, derrière la ligne des fenêtres. */
+                for (let i = 0; i < 5; i++) {
+                    const a = (0.42 + alea() * 0.5) * Math.PI * 0.5 * cote;
+                    const r = entre(11, 19);
+                    const x = Math.sin(a) * r, z = -Math.cos(a) * r;
+                    jungle.add(palmier(x, z, entre(4.5, 8), MOYEN, false));
+                    if (alea() > 0.45) jungle.add(buisson(x + entre(-1.5, 1.5), z + entre(-1.5, 1.5), entre(0.9, 1.8), MOYEN));
+                }
+                jungle.add(roseaux(cote * entre(9, 14), -entre(6, 13), 2.2, 22, MOYEN));
+
+                /* Lisière lointaine : elle ferme le fond. */
+                for (let i = 0; i < 7; i++) {
+                    const a = (0.1 + alea() * 0.85) * Math.PI * 0.5 * cote;
+                    const r = entre(22, 34);
+                    jungle.add(palmier(Math.sin(a) * r, -Math.cos(a) * r, entre(3.5, 7), LOIN, false));
+                }
+            });
+            /* Quelques masses derrière les panneaux, pour que l'horizon
+               ne soit pas une simple ligne. */
+            for (let i = 0; i < 9; i++) {
+                const a = entre(-1, 1) * Math.PI * 0.62;
+                const r = entre(24, 36);
+                jungle.add(buisson(Math.sin(a) * r, -Math.cos(a) * r, entre(1.6, 3.4), LOIN));
+            }
+
+            /* Respiration : la jungle bouge à peine, comme sous un souffle. */
+            const jungleBase = jungle.children.map(function (g) { return g.rotation.z; });
             let ripI = 0;
             const addRipple = (x, z, s) => { rip[ripI].set(x, z, water.material.uniforms.uNow.value, s); ripI = (ripI + 1) % RIP; };
 
@@ -3000,6 +3213,14 @@
                 water.material.uniforms.uNow.value += dt;
                 skyMat.uniforms.uTime.value = t;
                 grassMat.uniforms.uTime.value = t;
+                /* La jungle respire : un balancement très lent, décalé d'un
+                   bosquet à l'autre pour que rien ne bouge en bloc. */
+                if (!reduce) {
+                    for (let j = 0; j < jungle.children.length; j++) {
+                        jungle.children[j].rotation.z = jungleBase[j] +
+                            Math.sin(t * 0.32 + j * 0.9) * 0.013;
+                    }
+                }
                 const ease = reduce ? 1 : 0.09;
                 yaw += (yawTo - yaw) * ease; pitch += (pitchTo - pitch) * ease;
                 camera.rotation.set(pitch, yaw, 0);
@@ -3044,8 +3265,10 @@
             var vide = root.querySelector('.dsv-empty');
             var champ = root.querySelector('.dsv-q');
             if (!grid || !boite) return;
-            var prefixe = root.getAttribute('data-dsv') === 'structures' ? 'S' : 'A';
-            var statut = prefixe === 'S' ? 'PARTENAIRE' : 'DOSSIER OUVERT';
+            var cat = root.getAttribute('data-dsv');
+            var prefixe = cat === 'structures' ? 'S' : (cat === 'mecenes' ? 'M' : 'A');
+            var statut = cat === 'structures' ? 'PARTENAIRE'
+                       : (cat === 'mecenes' ? 'SOUTIEN ACTIF' : 'DOSSIER OUVERT');
 
             function ajoute(parent, tag, cls, texte) {
                 var e = document.createElement(tag);
@@ -3155,7 +3378,9 @@
             }
 
             function montrer() {
-                fiches.forEach(function (f) { f.li.classList.remove('is-on'); });
+                fiches.forEach(function (f) {
+                    f.li.classList.remove('is-on', 'is-avant', 'is-apres', 'is-avant2', 'is-apres2');
+                });
                 if (!retenues.length) {
                     if (pos) pos.textContent = '—';
                     bPrev.disabled = bNext.disabled = true;
@@ -3165,6 +3390,16 @@
                 if (vide) vide.hidden = true;
                 index = (index + retenues.length) % retenues.length;
                 retenues[index].li.classList.add('is-on');
+                /* Deux dossiers de chaque côté, sans jamais réutiliser
+                   une carte déjà placée quand la liste est courte. */
+                var pris = [index];
+                [[-1, 'is-avant'], [1, 'is-apres'], [-2, 'is-avant2'], [2, 'is-apres2']]
+                    .forEach(function (place) {
+                        var i = (index + place[0] + retenues.length * 2) % retenues.length;
+                        if (pris.indexOf(i) >= 0) return;
+                        pris.push(i);
+                        retenues[i].li.classList.add(place[1]);
+                    });
                 if (pos) pos.textContent = (index + 1 < 10 ? '0' : '') + (index + 1) +
                     ' / ' + (retenues.length < 10 ? '0' : '') + retenues.length;
                 bPrev.disabled = bNext.disabled = retenues.length < 2;
@@ -3188,6 +3423,16 @@
                 }
                 montrer();
             }
+
+            grid.addEventListener('click', function (e) {
+                var carte = e.target.closest ? e.target.closest('.dsv-card') : null;
+                if (!carte || carte.classList.contains('is-on')) return;
+                e.preventDefault();
+                if (carte.classList.contains('is-avant')) { index--; montrer(); }
+                else if (carte.classList.contains('is-apres')) { index++; montrer(); }
+                else if (carte.classList.contains('is-avant2')) { index -= 2; montrer(); }
+                else if (carte.classList.contains('is-apres2')) { index += 2; montrer(); }
+            });
 
             bPrev.addEventListener('click', function () { index--; montrer(); });
             bNext.addEventListener('click', function () { index++; montrer(); });

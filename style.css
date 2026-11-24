@@ -3073,7 +3073,17 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
    Les mots-clés de chaque fiche sont dans son attribut data-keys :
    les filtres du haut en sont déduits au chargement.
    ============================================================ */
-.dsv { --srv: #4cff5a; display: block; width: 100%; }
+/* Le bloc se centre dans la hauteur de la page, la barre de filtres
+   restant en haut : sans cela tout remontait vers l'en-tête. */
+#collaborateurs .section-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 7rem);
+    min-height: calc(100dvh - 7rem);
+}
+.dsv { --srv: #eae8e4; --srv-encre: #0a0b0c; display: flex; flex-direction: column; flex: 1; min-height: 0; width: 100%; }
+.dsv-bar { flex: none; }
+.dsv-grid { margin-top: auto; margin-bottom: auto; }
 .dsv-bar {
     display: grid;
     grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) auto;
@@ -3093,16 +3103,37 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .dsv-keys { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .dsv-key { padding: 0.24rem 0.56rem; border: 1px solid rgba(234, 232, 228, 0.22); border-radius: 999px; background: none; color: rgba(234, 232, 228, 0.68); font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease; }
 .dsv-key:hover { color: var(--text-color); border-color: rgba(234, 232, 228, 0.5); }
-.dsv-key[aria-pressed="true"] { background: var(--srv); border-color: var(--srv); color: #06180a; }
+.dsv-key[aria-pressed="true"] { background: var(--srv); border-color: var(--srv); color: var(--srv-encre); }
 .dsv-key:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 2px; }
 
 .dsv-count { margin: 0; justify-self: end; white-space: nowrap; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(234, 232, 228, 0.5); }
 
 /* ---- La pile : une seule fiche visible à la fois ---- */
-.dsv-grid { position: relative; height: clamp(26rem, 72vh, 62rem); display: flex; align-items: center; justify-content: center; list-style: none; margin: 0.9rem 0 0; padding: 0; }
-.dsv-card { display: none; }
-.dsv-card.is-on { display: flex; height: 100%; align-items: center; justify-content: center; animation: dsv-in 0.4s ease both; }
-@keyframes dsv-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+.dsv-grid { position: relative; height: clamp(26rem, 72vh, 62rem); list-style: none; margin: 0.9rem 0 0; padding: 0; overflow: hidden; }
+/* Trois dossiers de front : le courant au centre, ses voisins en retrait
+   de chaque côté, pour qu'on voie où l'on va. */
+.dsv-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%) scale(0.74);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+.dsv-card.is-on { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; z-index: 4; }
+.dsv-card.is-avant  { transform: translate(-141%, -50%) scale(0.72); opacity: 0.34; pointer-events: auto; z-index: 3; }
+.dsv-card.is-apres  { transform: translate(41%, -50%) scale(0.72);  opacity: 0.34; pointer-events: auto; z-index: 3; }
+.dsv-card.is-avant2 { transform: translate(-208%, -50%) scale(0.52); opacity: 0.16; pointer-events: auto; z-index: 2; }
+.dsv-card.is-apres2 { transform: translate(108%, -50%) scale(0.52);  opacity: 0.16; pointer-events: auto; z-index: 2; }
+.dsv-card.is-avant:hover, .dsv-card.is-apres:hover { opacity: 0.62; }
+.dsv-card.is-avant2:hover, .dsv-card.is-apres2:hover { opacity: 0.4; }
+.dsv-card.is-avant .dsv-a, .dsv-card.is-apres .dsv-a,
+.dsv-card.is-avant2 .dsv-a, .dsv-card.is-apres2 .dsv-a { cursor: pointer; }
 
 .dsv-a {
     position: relative;
@@ -3137,7 +3168,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .dsv-shot { position: absolute; inset: 0.7rem; display: grid; place-items: center; overflow: hidden; background-color: #0e0f10; background-image: radial-gradient(rgba(234, 232, 228, 0.09) 1px, transparent 1px); background-size: 5px 5px; }
 .dsv-shot i { font-style: normal; font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 9vh, 6rem); color: rgba(234, 232, 228, 0.13); }
 .dsv-shot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); }
-.dsv-a:hover .dsv-shot img { filter: grayscale(0.35) contrast(1.05); }
+.dsv-a:hover .dsv-shot img { filter: grayscale(1) contrast(1.22) brightness(1.08); }
 
 /* Réticule de suivi, au centre du cadre */
 .dsv-retic { position: absolute; left: 50%; top: 38%; width: clamp(5rem, 13vh, 8rem); height: clamp(5rem, 13vh, 8rem); transform: translate(-50%, -50%); pointer-events: none; }
@@ -3152,20 +3183,20 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 
 /* Encart d'identité, en haut à gauche comme sur un relevé */
 .dsv-idcard { position: absolute; left: 1.5rem; top: 2rem; width: clamp(7rem, 17%, 10rem); }
-.dsv-idcard .dsv-alert { display: block; padding: 0.16rem 0.4rem; background: var(--srv); color: #06180a; font-family: 'Share Tech Mono', monospace; font-size: 0.54rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.dsv-idcard .dsv-alert { display: block; padding: 0.16rem 0.4rem; background: var(--srv); color: var(--srv-encre); font-family: 'Share Tech Mono', monospace; font-size: 0.54rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .dsv-idcard .dsv-mug { display: grid; place-items: center; aspect-ratio: 4 / 5; border: 2px solid var(--srv); background-color: #121314; background-image: radial-gradient(rgba(234, 232, 228, 0.12) 1px, transparent 1px); background-size: 4px 4px; overflow: hidden; }
 .dsv-idcard .dsv-mug img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.2); }
 .dsv-idcard .dsv-mug b { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 1.5rem; color: rgba(234, 232, 228, 0.3); }
 
 /* Les lignes de données, pleines, sous l'encart */
 .dsv-rows { position: absolute; left: 1.5rem; bottom: 2.1rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.22rem; max-width: 74%; }
-.dsv-rows b { display: block; width: fit-content; max-width: 100%; padding: 0.16rem 0.46rem; background: var(--srv); color: #06180a; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.07em; text-transform: uppercase; }
+.dsv-rows b { display: block; width: fit-content; max-width: 100%; padding: 0.16rem 0.46rem; background: var(--srv); color: var(--srv-encre); font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.07em; text-transform: uppercase; }
 
 /* Le nom, en grand, et l'invitation à ouvrir */
 .dsv-name { position: absolute; left: 1.5rem; right: 1.5rem; top: 1.8rem; text-align: right; font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.5rem, 4.4vh, 2.6rem); font-weight: 500; line-height: 1.04; letter-spacing: -0.02em; color: #ffffff; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85); }
 .dsv-practice { position: absolute; right: 1.5rem; top: calc(1.8rem + clamp(1.6rem, 4.8vh, 2.9rem)); max-width: 60%; text-align: right; font-family: 'Share Tech Mono', monospace; font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9); }
 .dsv-open { align-self: flex-start; margin-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.32rem 0.68rem; border: 1px solid var(--srv); font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--srv); transition: background-color 0.25s ease, color 0.25s ease; }
-.dsv-a:hover .dsv-open { background: var(--srv); color: #06180a; }
+.dsv-a:hover .dsv-open { background: var(--srv); color: var(--srv-encre); }
 
 .dsv-tags { display: none; }
 
@@ -3258,14 +3289,18 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 #expos.sg-section .sg-stage { left: 0; right: 53%; }
 #expos.sg-section .sg-item { width: 100%; }
 #expos.sg-section .sg-item img { max-height: 76vh; }
-/* Une seule affiche à la fois : les voisines s'effacent au lieu de déborder */
+/* Les affiches arrivent toujours par la gauche et repartent par la gauche :
+   elles restent dans leur colonne au lieu de traverser le texte. */
 #expos.sg-section .sg-item.is-prev,
-#expos.sg-section .sg-item.is-next {
-    transform: translate(-50%, -50%) scale(0.97);
+#expos.sg-section .sg-item.is-next,
+#expos.sg-section .sg-item.is-gone-l,
+#expos.sg-section .sg-item.is-gone-r {
+    transform: translate(-96%, -50%) scale(0.96);
     opacity: 0;
     filter: none;
     pointer-events: none;
 }
+#expos.sg-section .sg-item.is-cur { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 /* La légende ferait doublon avec le titre de droite */
 #expos.sg-section .sg-cap { display: none; }
 
@@ -3742,7 +3777,7 @@ body, .main-feed { background: var(--ab-bg); }
 #curation .sec-head { flex-shrink: 0; }
 /* Le bloc remonte sous le titre au lieu de flotter au milieu de l'écran. */
 /* L'en-tête reste en haut, le bloc de sélection se centre dans ce qui reste. */
-.cm { flex: 1; height: auto; min-height: 0; margin-top: 1.2rem; gap: 1.1rem; justify-content: center; }
+.cm { flex: 1; height: auto; min-height: 0; margin-top: 1.2rem; gap: clamp(1.6rem, 4.5vh, 3.8rem); justify-content: center; }
 .cm-list { height: clamp(11rem, 28vh, 15rem); }
 
 /* --- Travaux : la grille occupe tout l'espace disponible (zoom) --- */
