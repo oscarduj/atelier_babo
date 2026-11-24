@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261124f">
+    <link rel="stylesheet" href="style.css?v=20261124h">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261124f" defer></script>
-    <script src="page-transition.js?v=20261124f" defer></script>
-    <script src="agent.js?v=20261124f" defer></script>
+    <script src="ambient.js?v=20261124h" defer></script>
+    <script src="page-transition.js?v=20261124h" defer></script>
+    <script src="agent.js?v=20261124h" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -285,20 +285,220 @@
                             <p class="dsv-count" aria-live="polite"></p>
                         </div>
                         <ul class="dsv-grid" aria-label="Artistes collaborateurs">
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 01</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Al</i><img src="images/reseau/alice.jpg" alt="Portrait de Alice" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Alice</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, collectif naïf, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 02</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>AF</i><img src="images/reseau/alice-feuillere.jpg" alt="Portrait de Alice Feuillère" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Alice Feuillère</span>
+                                    <span class="dsv-practice">Artiste · collectif naïf</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 03</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ao</i><img src="images/reseau/alioune.jpg" alt="Portrait de Alioune" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Alioune</span>
+                                    <span class="dsv-practice">Artiste mis en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 04</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>AC</i><img src="images/reseau/anna-crene.jpg" alt="Portrait de Anna Crène" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Anna Crène</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, collectif naïf, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 05</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ar</i><img src="images/reseau/arthur.jpg" alt="Portrait de Arthur" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Arthur</span>
+                                    <span class="dsv-practice">Artiste · collectif naïf</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 06</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>CH</i><img src="images/reseau/citlali-honore.jpg" alt="Portrait de Citlali Honoré" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Citlali Honoré</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, collectif, mütaa">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 07</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>MÜ</i><img src="images/reseau/collectif-mutaa.jpg" alt="Portrait de Collectif MÜTAA" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Collectif MÜTAA</span>
+                                    <span class="dsv-practice">Collectif mis en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="collectif, collaboratif, collectif naïf">
+                                <a class="dsv-a" href="artistes/collectif-naif.html">
+                                    <span class="dsv-ref">DOSSIER 08</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>cn</i></span>
+                                    <span class="dsv-name">collectif naïf</span>
+                                    <span class="dsv-practice">Création collaborative</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
                             <li class="dsv-card" data-keys="numérique, image">
                                 <a class="dsv-a" href="artistes/goshe.html">
-                                    <span class="dsv-ref">DOSSIER 01</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>g0</i></span>
+                                    <span class="dsv-ref">DOSSIER 09</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>g0</i><img src="images/reseau/goshe.jpg" alt="Portrait de g0she" loading="lazy" decoding="async" width="900" height="1125"></span>
                                     <span class="dsv-name">g0she</span>
                                     <span class="dsv-practice">Arts numériques</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
                                     <span class="dsv-state">DOSSIER OUVERT</span>
                                 </a>
                             </li>
+                            <li class="dsv-card" data-keys="installation, matière, sculpture, collectif naïf">
+                                <a class="dsv-a" href="artistes/hugo-denise.html">
+                                    <span class="dsv-ref">DOSSIER 10</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>HD</i><img src="images/reseau/hugo-denise.jpg" alt="Portrait de Hugo Denise" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Hugo Denise</span>
+                                    <span class="dsv-practice">Installation &amp; matière</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="génératif, image, numérique, collectif naïf">
+                                <a class="dsv-a" href="artistes/leon-chotard.html">
+                                    <span class="dsv-ref">DOSSIER 11</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LC</i><img src="images/reseau/leon-chotard.jpg" alt="Portrait de Léon Chotard" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Léon Chotard</span>
+                                    <span class="dsv-practice">Génératif &amp; visuel</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 12</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Lé</i><img src="images/reseau/leon.jpg" alt="Portrait de Léon" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Léon</span>
+                                    <span class="dsv-practice">Artiste mis en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, mütaa, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 13</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LI</i><img src="images/reseau/li-shicheng.jpg" alt="Portrait de Li Shicheng" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Li Shicheng</span>
+                                    <span class="dsv-practice">Artiste · MÜTAA</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 14</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LG</i><img src="images/reseau/lilie-rose-goyer.jpg" alt="Portrait de Lilie Rose Goyer" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Lilie Rose Goyer</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 15</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LS</i><img src="images/reseau/lisa-sahores.jpg" alt="Portrait de Lisa Sahores" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Lisa Sahores</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 16</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Lo</i><img src="images/reseau/lolaroseta.jpg" alt="Portrait de Lolaroseta" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Lolaroseta</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 17</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LF</i><img src="images/reseau/louane-fleuret.jpg" alt="Portrait de Louane Fleuret" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Louane Fleuret</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, mütaa, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 18</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LL</i><img src="images/reseau/louise-lacoume.jpg" alt="Portrait de Louise Lacoume" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Louise Lacoume</span>
+                                    <span class="dsv-practice">Artiste · MÜTAA</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, mütaa, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 19</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LJ</i><img src="images/reseau/lu-jacques.jpg" alt="Portrait de Lu Jacques" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Lu Jacques</span>
+                                    <span class="dsv-practice">Artiste · MÜTAA</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 20</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LM</i><img src="images/reseau/lucien-le-mandu.jpg" alt="Portrait de Lucien Le Mandu" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Lucien Le Mandu</span>
+                                    <span class="dsv-practice">Artiste mis en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 21</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>MS</i><img src="images/reseau/malo-schmitt.jpg" alt="Portrait de Malo Schmitt" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Malo Schmitt</span>
+                                    <span class="dsv-practice">Artiste mis en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
                             <li class="dsv-card" data-keys="son, plastique, sculpture">
                                 <a class="dsv-a" href="artistes/nino.html">
-                                    <span class="dsv-ref">DOSSIER 02</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>Ni</i></span>
+                                    <span class="dsv-ref">DOSSIER 22</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ni</i><img src="images/reseau/nino.jpg" alt="Portrait de Nino" loading="lazy" decoding="async" width="900" height="1125"></span>
                                     <span class="dsv-name">Nino</span>
                                     <span class="dsv-practice">Plastique &amp; son</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
@@ -307,7 +507,7 @@
                             </li>
                             <li class="dsv-card" data-keys="code, recherche, génératif">
                                 <a class="dsv-a" href="artistes/quidenovie.html">
-                                    <span class="dsv-ref">DOSSIER 03</span>
+                                    <span class="dsv-ref">DOSSIER 23</span>
                                     <span class="dsv-shot" aria-hidden="true"><i>qN</i></span>
                                     <span class="dsv-name">quideNovie</span>
                                     <span class="dsv-practice">Recherche &amp; code</span>
@@ -315,32 +515,62 @@
                                     <span class="dsv-state">DOSSIER OUVERT</span>
                                 </a>
                             </li>
-                            <li class="dsv-card" data-keys="collectif, collaboratif">
-                                <a class="dsv-a" href="artistes/collectif-naif.html">
-                                    <span class="dsv-ref">DOSSIER 04</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>cn</i></span>
-                                    <span class="dsv-name">collectif naïf</span>
-                                    <span class="dsv-practice">Création collaborative</span>
+                            <li class="dsv-card" data-keys="mis en avant, mütaa, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 24</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>SX</i><img src="images/reseau/shen-xinyi.jpg" alt="Portrait de Shen Xinyi" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Shen Xinyi</span>
+                                    <span class="dsv-practice">Artiste · MÜTAA</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
                                     <span class="dsv-state">DOSSIER OUVERT</span>
                                 </a>
                             </li>
-                            <li class="dsv-card" data-keys="installation, matière, sculpture">
-                                <a class="dsv-a" href="artistes/hugo-denise.html">
-                                    <span class="dsv-ref">DOSSIER 05</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>HD</i></span>
-                                    <span class="dsv-name">Hugo Denise</span>
-                                    <span class="dsv-practice">Installation &amp; matière</span>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 25</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Sh</i><img src="images/reseau/shirel.jpg" alt="Portrait de Shirel" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Shirel</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
                                     <span class="dsv-state">DOSSIER OUVERT</span>
                                 </a>
                             </li>
-                            <li class="dsv-card" data-keys="génératif, image, numérique">
-                                <a class="dsv-a" href="artistes/leon-chotard.html">
-                                    <span class="dsv-ref">DOSSIER 06</span>
-                                    <span class="dsv-shot" aria-hidden="true"><i>LC</i></span>
-                                    <span class="dsv-name">Léon Chotard</span>
-                                    <span class="dsv-practice">Génératif &amp; visuel</span>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 26</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>So</i><img src="images/reseau/soyeong.jpg" alt="Portrait de Soyeong" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Soyeong</span>
+                                    <span class="dsv-practice">Artiste mise en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 27</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ti</i><img src="images/reseau/timothee.jpg" alt="Portrait de Timothée" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Timothée</span>
+                                    <span class="dsv-practice">Artiste mis en avant</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant, mütaa, collectif">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 28</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>WM</i><img src="images/reseau/wang-mengting.jpg" alt="Portrait de Wang Mengting" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Wang Mengting</span>
+                                    <span class="dsv-practice">Artiste · MÜTAA</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="mis en avant">
+                                <a class="dsv-a">
+                                    <span class="dsv-ref">DOSSIER 29</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ya</i><img src="images/reseau/yang.jpg" alt="Portrait de Yang" loading="lazy" decoding="async" width="900" height="1125"></span>
+                                    <span class="dsv-name">Yang</span>
+                                    <span class="dsv-practice">Artiste mis en avant</span>
                                     <span class="dsv-tags" aria-hidden="true"></span>
                                     <span class="dsv-state">DOSSIER OUVERT</span>
                                 </a>
@@ -3137,6 +3367,19 @@
                     const p = pose(8, 100, 26, 40, cote);
                     jungle.add(pan(p.x, p.z, entre(14, 24), entre(8, 15), MAT_PAN.loin, -0.5));
                 }
+
+                /* Derrière les fenêtres : les panneaux montent à 7.1 et sont
+                   posés à 16 unités. Des rideaux hauts placés à 19-25 passent
+                   au-dessus d'eux et se glissent dans les intervalles, pour
+                   que la jungle encadre vraiment au lieu de border les côtés. */
+                for (let i = 0; i < 6; i++) {
+                    const p = pose(4, 40, 19, 25, cote);
+                    jungle.add(pan(p.x, p.z, entre(9, 15), entre(13, 20), MAT_PAN.moyen, -0.4));
+                }
+                for (let i = 0; i < 4; i++) {
+                    const p = pose(6, 38, 18, 23, cote);
+                    jungle.add(tronc(p.x, p.z, entre(13, 20), entre(0.7, 1.4)));
+                }
             });
 
             /* Sous-bois au ras de l'eau, tout autour, pour que la lisière
@@ -3386,7 +3629,18 @@
                 var carte = ajoute(a, 'span', 'dsv-idcard');
                 ajoute(carte, 'span', 'dsv-alert', 'ACTIVITÉ HORS LIGNE DÉTECTÉE');
                 var mug = ajoute(carte, 'span', 'dsv-mug');
-                ajoute(mug, 'b', null, ini ? ini.textContent : f.nom.slice(0, 2));
+                var vignette = shot ? shot.querySelector('img') : null;
+                if (vignette) {
+                    var copie = document.createElement('img');
+                    copie.src = vignette.getAttribute('src');
+                    copie.alt = '';
+                    copie.setAttribute('aria-hidden', 'true');
+                    copie.loading = 'lazy';
+                    copie.decoding = 'async';
+                    mug.appendChild(copie);
+                } else {
+                    ajoute(mug, 'b', null, ini ? ini.textContent : f.nom.slice(0, 2));
+                }
 
                 /* Lignes de données, pleines, comme sur le relevé */
                 var rows = ajoute(a, 'span', 'dsv-rows');
@@ -3396,7 +3650,8 @@
                 ajoute(rows, 'b', null, 'STATUT : ' + statut);
 
                 var ouvre = ajoute(rows, 'span', 'dsv-open',
-                    a.getAttribute('target') === '_blank' ? 'VISITER' : 'OUVRIR LE DOSSIER');
+                    !a.hasAttribute('href') ? 'DOSSIER EN CONSTITUTION'
+                        : (a.getAttribute('target') === '_blank' ? 'VISITER' : 'OUVRIR LE DOSSIER'));
                 ouvre.setAttribute('aria-hidden', 'true');
             });
 

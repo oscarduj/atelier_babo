@@ -2769,6 +2769,10 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease, opacity 0.6s ease;
 }
 .cm-item.is-active { cursor: pointer; }
+/* Seule la citation choisie reste à l'écran : les titres voisins
+   débordaient du cadre, au-dessus et au-dessous, sans jamais s'y centrer. */
+.cm-item { visibility: hidden; opacity: 0 !important; }
+.cm-item.is-active { visibility: visible; opacity: 1 !important; filter: none !important; }
 .cm-item:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 4px; }
 /* Quatre coins fins autour du titre central */
 .cm-corner { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; border: 0 solid rgba(234, 232, 228, 0.7); pointer-events: none; }
@@ -3166,6 +3170,11 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 
 /* Le visuel occupe tout le cadre */
 .dsv-shot { position: absolute; inset: 0.7rem; display: grid; place-items: center; overflow: hidden; background-color: #0e0f10; background-image: radial-gradient(rgba(234, 232, 228, 0.09) 1px, transparent 1px); background-size: 5px 5px; }
+.dsv-shot > * { grid-area: 1 / 1; }
+/* Voile sombre : garde le nom et les lignes de données lisibles,
+   même sur une image claire (affiche, fond blanc). */
+.dsv-shot::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8, 9, 10, 0.78) 0%, rgba(8, 9, 10, 0.34) 20%, rgba(8, 9, 10, 0) 40%, rgba(8, 9, 10, 0) 54%, rgba(8, 9, 10, 0.42) 76%, rgba(8, 9, 10, 0.88) 100%); }
+.dsv-card:not(.is-on) .dsv-shot::after { background: linear-gradient(180deg, rgba(8, 9, 10, 0.68) 0%, rgba(8, 9, 10, 0) 40%, rgba(8, 9, 10, 0) 62%, rgba(8, 9, 10, 0.78) 100%); }
 .dsv-shot i { font-style: normal; font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 9vh, 6rem); color: rgba(234, 232, 228, 0.13); }
 .dsv-shot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); }
 .dsv-a:hover .dsv-shot img { filter: grayscale(1) contrast(1.22) brightness(1.08); }
@@ -3289,9 +3298,10 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 #expos.sg-section .sg-stage { left: 0; right: 53%; }
 #expos.sg-section .sg-item { width: 100%; }
 #expos.sg-section .sg-item img { max-height: 76vh; }
-/* Le placement des affiches est calculé en JavaScript (styles en ligne) :
-   rien à régler ici, sinon le débordement est bridé par la scène. */
-#expos.sg-section .sg-stage { overflow: hidden; }
+/* Le placement des affiches est calculé en JavaScript (styles en ligne).
+   La scène ne coupe pas : l'affiche en attente déborde vers la gauche,
+   où l'espace est libre, au lieu d'être tranchée net. */
+#expos.sg-section .sg-stage { overflow: visible; }
 /* La légende ferait doublon avec le titre de droite */
 #expos.sg-section .sg-cap { display: none; }
 
@@ -3768,10 +3778,7 @@ body, .main-feed { background: var(--ab-bg); }
 #curation .sec-head { flex-shrink: 0; }
 /* Le bloc remonte sous le titre au lieu de flotter au milieu de l'écran. */
 /* L'en-tête reste en haut, le bloc de sélection se centre dans ce qui reste. */
-/* L'écart tient compte des titres voisins du carrousel : ils débordent
-   de 7.5rem au-dessus et au-dessous du bloc, et venaient coller au
-   « 01/03 » et à l'extrait. */
-.cm { flex: 1; height: auto; min-height: 0; margin-top: 1.2rem; gap: clamp(2.6rem, 10vh, 8.5rem); justify-content: center; }
+.cm { flex: 1; height: auto; min-height: 0; margin-top: 1.2rem; gap: clamp(2rem, 6vh, 5rem); justify-content: center; }
 .cm-list { height: clamp(11rem, 28vh, 15rem); }
 
 /* --- Travaux : la grille occupe tout l'espace disponible (zoom) --- */
