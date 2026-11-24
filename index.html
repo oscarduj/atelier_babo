@@ -131,6 +131,8 @@
             </button>
             <div class="carousel-dots" id="carousel-dots"></div>
                 <div class="hx-shade" aria-hidden="true"></div>
+                <div class="hx-head">
+                <h1 class="hx-title">Atelier<br>Babo</h1>
                 <div class="hx-tl">
                     <p class="hx-tagline">Collectif d'artistes émergents</p>
                     <span class="hx-rule" aria-hidden="true"></span>
@@ -141,7 +143,7 @@
                 </button></li>
                     </ul>
                 </div>
-                <h1 class="hx-title">Atelier<br>Babo</h1>
+                </div>
                 <a class="hx-down" href="#travaux" aria-label="Descendre vers les travaux">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg>
                 </a>
@@ -235,17 +237,19 @@
                         <span class="cm-num" id="cm-num">01/03</span>
                         <span class="cm-tag" id="cm-tag"></span>
                     </div>
+                    <div class="cm-center">
                     <ol class="cm-list" id="cm-list" aria-label="Textes de curation">
                         <li><button type="button" class="cm-item" data-i="0" data-href="travaux/collectif.html" data-num="01" data-tag="INSTALLATION" data-text="L&#x27;imaginaire surgit là où la représentation échoue.">L&#x27;esthétique du raté</button></li>
                         <li><button type="button" class="cm-item" data-i="1" data-href="travaux/collectif.html" data-num="02" data-tag="RECHERCHE" data-text="Le vivant devenu suite d&#x27;informations perd sa part d&#x27;inconnu.">Le vivant réduit en données</button></li>
                         <li><button type="button" class="cm-item" data-i="2" data-href="travaux/collectif.html" data-num="03" data-tag="INSTALLATION SONORE" data-text="Donner une voix à ce qui ne parle pas : l&#x27;eau comme matière.">Écouter la disparition</button></li>
                     </ol>
+                    <span class="cm-corner cm-c1" aria-hidden="true"></span><span class="cm-corner cm-c2" aria-hidden="true"></span>
+                    <span class="cm-corner cm-c3" aria-hidden="true"></span><span class="cm-corner cm-c4" aria-hidden="true"></span>
+                    </div>
                     <div class="cm-side cm-right">
                         <span class="cm-text" id="cm-text"></span>
                         <a class="cm-link" id="cm-link" href="#">Lire<svg class="ico-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a>
                     </div>
-                    <span class="cm-corner cm-c1" aria-hidden="true"></span><span class="cm-corner cm-c2" aria-hidden="true"></span>
-                    <span class="cm-corner cm-c3" aria-hidden="true"></span><span class="cm-corner cm-c4" aria-hidden="true"></span>
                 </div>
             </div>
             <a class="sec-down" href="#collaborateurs" aria-label="Descendre vers Collaborateurs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l7 7 7-7M5 12l7 7 7-7"/></svg></a>
@@ -266,33 +270,159 @@
                 </header>
 
                 <div id="cat-artistes" class="collab-category-content active">
-                    <div class="ar3d" id="ar3d">
-                        <div class="ar3d-labels" id="ar3d-labels" aria-hidden="true"></div>
-                        <ul class="ar3d-list" id="ar3d-list" aria-label="Artistes collaborateurs">
-                            <li><a class="ar3d-link" href="artistes/goshe.html" data-i="0" data-name="g0she" data-practice="Arts Numériques">g0she <span>Arts Numériques</span></a></li>
-                            <li><a class="ar3d-link" href="artistes/nino.html" data-i="1" data-name="Nino" data-practice="Plastique &amp; Son">Nino <span>Plastique &amp; Son</span></a></li>
-                            <li><a class="ar3d-link" href="artistes/quidenovie.html" data-i="2" data-name="quideNovie" data-practice="Recherche &amp; Code">quideNovie <span>Recherche &amp; Code</span></a></li>
-                            <li><a class="ar3d-link" href="artistes/collectif-naif.html" data-i="3" data-name="collectif naïf" data-practice="Création Collaborative">collectif naïf <span>Création Collaborative</span></a></li>
-                            <li><a class="ar3d-link" href="artistes/hugo-denise.html" data-i="4" data-name="Hugo Denise" data-practice="Installation &amp; Matière">Hugo Denise <span>Installation &amp; Matière</span></a></li>
-                            <li><a class="ar3d-link" href="artistes/leon-chotard.html" data-i="5" data-name="Léon Chotard" data-practice="Génératif &amp; Visuel">Léon Chotard <span>Génératif &amp; Visuel</span></a></li>
+                    <!-- Dossiers de surveillance. Les mots-clés sont dans data-keys,
+                         séparés par des virgules : les filtres du haut sont construits
+                         automatiquement à partir d'eux, il suffit d'éditer cette liste.
+                         data-photo est optionnel : sans photo, la fiche affiche une mire. -->
+                    <div class="dsv" data-dsv="artistes">
+                        <div class="dsv-bar">
+                            <label class="dsv-search">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+                                <input type="search" class="dsv-q" placeholder="Nom, pratique, mot-clé" aria-label="Rechercher dans les dossiers">
+                            </label>
+                            <div class="dsv-keys" role="group" aria-label="Filtrer par mot-clé"></div>
+                            <p class="dsv-count" aria-live="polite"></p>
+                        </div>
+                        <ul class="dsv-grid" aria-label="Artistes collaborateurs">
+                            <li class="dsv-card" data-keys="numérique, image">
+                                <a class="dsv-a" href="artistes/goshe.html">
+                                    <span class="dsv-ref">DOSSIER 01</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>g0</i></span>
+                                    <span class="dsv-name">g0she</span>
+                                    <span class="dsv-practice">Arts numériques</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="son, plastique, sculpture">
+                                <a class="dsv-a" href="artistes/nino.html">
+                                    <span class="dsv-ref">DOSSIER 02</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Ni</i></span>
+                                    <span class="dsv-name">Nino</span>
+                                    <span class="dsv-practice">Plastique &amp; son</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="code, recherche, génératif">
+                                <a class="dsv-a" href="artistes/quidenovie.html">
+                                    <span class="dsv-ref">DOSSIER 03</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>qN</i></span>
+                                    <span class="dsv-name">quideNovie</span>
+                                    <span class="dsv-practice">Recherche &amp; code</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="collectif, collaboratif">
+                                <a class="dsv-a" href="artistes/collectif-naif.html">
+                                    <span class="dsv-ref">DOSSIER 04</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>cn</i></span>
+                                    <span class="dsv-name">collectif naïf</span>
+                                    <span class="dsv-practice">Création collaborative</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="installation, matière, sculpture">
+                                <a class="dsv-a" href="artistes/hugo-denise.html">
+                                    <span class="dsv-ref">DOSSIER 05</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>HD</i></span>
+                                    <span class="dsv-name">Hugo Denise</span>
+                                    <span class="dsv-practice">Installation &amp; matière</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="génératif, image, numérique">
+                                <a class="dsv-a" href="artistes/leon-chotard.html">
+                                    <span class="dsv-ref">DOSSIER 06</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>LC</i></span>
+                                    <span class="dsv-name">Léon Chotard</span>
+                                    <span class="dsv-practice">Génératif &amp; visuel</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">DOSSIER OUVERT</span>
+                                </a>
+                            </li>
                         </ul>
-                        <p class="ar3d-hint" aria-hidden="true">Survoler pour identifier · cliquer pour ouvrir</p>
+                        <p class="dsv-empty" hidden>Aucun dossier ne correspond à cette recherche.</p>
                     </div>
                 </div>
 
                 <div id="cat-structures" class="collab-category-content" style="display: none;">
                     <p class="section-desc">Partenaires institutionnels, galeries et espaces de diffusion.</p>
-                    <div class="ar3d st3d" id="st3d">
-                        <div class="ar3d-labels" id="st3d-labels" aria-hidden="true"></div>
-                        <ul class="ar3d-list" id="st3d-list" aria-label="Structures partenaires">
-                            <li><a class="ar3d-link" href="https://www.fracnormandie.fr" target="_blank" rel="noopener noreferrer" data-i="0" data-name="Frac Normandie — SHED" data-practice="Centre d&#x27;art · Exposition 5D">Frac Normandie — SHED <span>Centre d&#x27;art · Exposition 5D</span></a></li>
-                            <li><a class="ar3d-link" href="https://www.esadhar.fr" target="_blank" rel="noopener noreferrer" data-i="1" data-name="ésadhar" data-practice="École · Rouen">ésadhar <span>École · Rouen</span></a></li>
-                            <li><a class="ar3d-link" href="http://www.art-immanence.org" target="_blank" rel="noopener noreferrer" data-i="2" data-name="Immanence" data-practice="Espace d&#x27;art · Paris">Immanence <span>Espace d&#x27;art · Paris</span></a></li>
-                            <li><a class="ar3d-link" href="https://videoformes.com" target="_blank" rel="noopener noreferrer" data-i="3" data-name="VIDEOFORMES" data-practice="Festival · Clermont-Ferrand">VIDEOFORMES <span>Festival · Clermont-Ferrand</span></a></li>
-                            <li><a class="ar3d-link" href="#" data-i="4" data-name="Hangar 107" data-practice="Lieu d&#x27;art · Rouen">Hangar 107 <span>Lieu d&#x27;art · Rouen</span></a></li>
-                            <li><a class="ar3d-link" href="https://www.esad-orleans.fr" target="_blank" rel="noopener noreferrer" data-i="5" data-name="ESAD Orléans" data-practice="École · Orléans">ESAD Orléans <span>École · Orléans</span></a></li>
+                    <div class="dsv" data-dsv="structures">
+                        <div class="dsv-bar">
+                            <label class="dsv-search">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+                                <input type="search" class="dsv-q" placeholder="Nom, type, ville" aria-label="Rechercher dans les structures">
+                            </label>
+                            <div class="dsv-keys" role="group" aria-label="Filtrer par mot-clé"></div>
+                            <p class="dsv-count" aria-live="polite"></p>
+                        </div>
+                        <ul class="dsv-grid" aria-label="Structures partenaires">
+                            <li class="dsv-card" data-keys="centre d'art, exposition, normandie">
+                                <a class="dsv-a" href="https://www.fracnormandie.fr" target="_blank" rel="noopener noreferrer">
+                                    <span class="dsv-ref">DOSSIER 01</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>FN</i></span>
+                                    <span class="dsv-name">Frac Normandie — SHED</span>
+                                    <span class="dsv-practice">Centre d'art · exposition 5D</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">PARTENAIRE</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="école, rouen, normandie">
+                                <a class="dsv-a" href="https://www.esadhar.fr" target="_blank" rel="noopener noreferrer">
+                                    <span class="dsv-ref">DOSSIER 02</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>és</i></span>
+                                    <span class="dsv-name">ésadhar</span>
+                                    <span class="dsv-practice">École · Rouen</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">PARTENAIRE</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="espace d'art, paris, exposition">
+                                <a class="dsv-a" href="http://www.art-immanence.org" target="_blank" rel="noopener noreferrer">
+                                    <span class="dsv-ref">DOSSIER 03</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>Im</i></span>
+                                    <span class="dsv-name">Immanence</span>
+                                    <span class="dsv-practice">Espace d'art · Paris</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">PARTENAIRE</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="festival, vidéo, clermont-ferrand">
+                                <a class="dsv-a" href="https://videoformes.com" target="_blank" rel="noopener noreferrer">
+                                    <span class="dsv-ref">DOSSIER 04</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>VF</i></span>
+                                    <span class="dsv-name">VIDEOFORMES</span>
+                                    <span class="dsv-practice">Festival · Clermont-Ferrand</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">PARTENAIRE</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="lieu d'art, rouen, normandie">
+                                <a class="dsv-a" href="#">
+                                    <span class="dsv-ref">DOSSIER 05</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>H7</i></span>
+                                    <span class="dsv-name">Hangar 107</span>
+                                    <span class="dsv-practice">Lieu d'art · Rouen</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">PARTENAIRE</span>
+                                </a>
+                            </li>
+                            <li class="dsv-card" data-keys="école, orléans">
+                                <a class="dsv-a" href="https://www.esad-orleans.fr" target="_blank" rel="noopener noreferrer">
+                                    <span class="dsv-ref">DOSSIER 06</span>
+                                    <span class="dsv-shot" aria-hidden="true"><i>EO</i></span>
+                                    <span class="dsv-name">ESAD Orléans</span>
+                                    <span class="dsv-practice">École · Orléans</span>
+                                    <span class="dsv-tags" aria-hidden="true"></span>
+                                    <span class="dsv-state">PARTENAIRE</span>
+                                </a>
+                            </li>
                         </ul>
-                        <p class="ar3d-hint" aria-hidden="true">Survoler pour identifier · cliquer pour visiter</p>
+                        <p class="dsv-empty" hidden>Aucun dossier ne correspond à cette recherche.</p>
                     </div>
                 </div>
 
@@ -2401,7 +2531,7 @@
                 const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
             }
             const moon = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture('rgba(222,230,245,0.95)', 'rgba(140,165,210,0.22)'), transparent: true, depthWrite: false }));
-            moon.position.set(0, 56, -150); moon.scale.set(30, 30, 1);
+            moon.position.set(0, 92, -150); moon.scale.set(30, 30, 1);
             scene.add(moon);
 
             /* ---- Panneaux : 2 de navigation + 5 travaux ---- */
@@ -2870,266 +3000,133 @@
         }
     })();
     </script>
-    <script type="module">
+
+    <script>
     /* ============================================================
-       COLLABORATEURS — ARTISTES ET STRUCTURES EN 3D
-       Grand espace noir vu en plongée. Chaque élément est posé sur une
-       dalle lumineuse : silhouettes anonymes pour les artistes, bâtiments
-       stylisés pour les structures. Survol : la dalle s'illumine, le halo
-       grandit, nom et précision apparaissent. Clic : page ou site.
-       Si WebGL échoue, la liste de liens reste visible.
+       COLLABORATEURS — DOSSIERS DE SURVEILLANCE
+       Chaque fiche porte ses mots-clés dans data-keys. Le script en
+       déduit la liste des filtres, les affiche en haut, et croise
+       la sélection avec le champ de recherche. Plusieurs mots-clés
+       cochés élargissent la recherche (l'un OU l'autre) ; le texte
+       saisi, lui, restreint. Sans JavaScript, toutes les fiches
+       restent visibles et cliquables.
        ============================================================ */
-    import * as THREE from 'three';
+    (function () {
+        var noms = document.querySelectorAll('.dsv');
+        Array.prototype.forEach.call(noms, function (root) {
+            var grid = root.querySelector('.dsv-grid');
+            var boite = root.querySelector('.dsv-keys');
+            var compte = root.querySelector('.dsv-count');
+            var vide = root.querySelector('.dsv-empty');
+            var champ = root.querySelector('.dsv-q');
+            if (!grid || !boite) return;
 
-    const SKIN = new THREE.MeshStandardMaterial({ color: 0xb9b2aa, roughness: 0.85 });
-    const DARK = new THREE.MeshStandardMaterial({ color: 0x23262b, roughness: 0.9 });
-    const SHOE = new THREE.MeshStandardMaterial({ color: 0xe8e6e2, roughness: 0.7 });
-    const capsule = (r, len, mat) => new THREE.Mesh(new THREE.CapsuleGeometry(r, len, 6, 12), mat);
-
-    function haloTex() {
-        const c = document.createElement('canvas'); c.width = c.height = 128;
-        const g = c.getContext('2d');
-        const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-        grd.addColorStop(0, 'rgba(255,255,255,0.9)'); grd.addColorStop(0.35, 'rgba(255,255,255,0.35)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
-        g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
-        const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx;
-    }
-
-    /* ---- Une silhouette anonyme stylisée ---- */
-    function figure(o) {
-        const g = new THREE.Group();
-        const top = new THREE.MeshStandardMaterial({ color: o.top, roughness: 0.8 });
-        const legs = new THREE.MeshStandardMaterial({ color: o.legs, roughness: 0.9 });
-        [-1, 1].forEach((sd) => {
-            const leg = capsule(0.07, 0.62, legs);
-            leg.position.set(sd * 0.085, 0.44, sd * o.step);
-            leg.rotation.x = -sd * o.step * 0.6;
-            g.add(leg);
-            const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.06, 0.22), SHOE);
-            shoe.position.set(sd * 0.085, 0.04, sd * o.step + 0.04);
-            g.add(shoe);
-        });
-        const torso = capsule(0.165, 0.36, top);
-        torso.scale.set(1, 1, 0.68); torso.position.y = 1.08; g.add(torso);
-        [-1, 1].forEach((sd, k) => {
-            const pivot = new THREE.Group();
-            pivot.position.set(sd * 0.215, 1.3, 0);
-            const arm = capsule(0.048, 0.5, top); arm.position.y = -0.3; pivot.add(arm);
-            pivot.rotation.z = sd * 0.08; pivot.rotation.x = o.arms[k];
-            g.add(pivot);
-        });
-        const head = new THREE.Group(); head.position.y = 1.56;
-        const skull = new THREE.Mesh(new THREE.SphereGeometry(0.115, 18, 14), SKIN); skull.scale.set(0.92, 1.05, 1); head.add(skull);
-        const hair = new THREE.Mesh(new THREE.SphereGeometry(0.12, 18, 10, 0, Math.PI * 2, 0, Math.PI * 0.55), o.hood ? top : DARK);
-        hair.position.y = 0.012; hair.rotation.x = -0.25; head.add(hair);
-        head.rotation.x = o.look; g.add(head);
-        if (o.bag) {
-            const bag = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.14), new THREE.MeshStandardMaterial({ color: o.bag, roughness: 0.85 }));
-            bag.position.set(0, 1.1, -0.17); g.add(bag);
-        }
-        g.rotation.y = o.turn;
-        g.userData = { torso, head, look: o.look, kind: 'person' };
-        return g;
-    }
-
-    /* ---- Un bâtiment stylisé : volume, fenêtres éclairées, toit ---- */
-    function windowsTex(cols, rows, seed) {
-        let s = seed;
-        const rnd = () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
-        const c = document.createElement('canvas'); c.width = 128; c.height = 256;
-        const g = c.getContext('2d');
-        g.fillStyle = '#16181c'; g.fillRect(0, 0, 128, 256);
-        const cw = 128 / cols, ch = 256 / rows;
-        for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
-            const on = rnd() < 0.45;
-            g.fillStyle = on ? 'rgba(255,226,170,' + (0.55 + rnd() * 0.45) + ')' : 'rgba(70,80,95,0.55)';
-            g.fillRect(x * cw + cw * 0.22, y * ch + ch * 0.2, cw * 0.56, ch * 0.55);
-        }
-        const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx;
-    }
-    function building(o) {
-        const g = new THREE.Group();
-        const body = new THREE.MeshStandardMaterial({ color: o.color, roughness: 0.75 });
-        const win = new THREE.MeshStandardMaterial({ color: 0xffffff, map: windowsTex(o.cols, o.rows, o.seed), emissive: 0xffffff, emissiveMap: windowsTex(o.cols, o.rows, o.seed), emissiveIntensity: 0.55, roughness: 0.6 });
-        const mats = [win, win, body, body, win, win];          // fenêtres sur les quatre faces
-        const main = new THREE.Mesh(new THREE.BoxGeometry(o.w, o.h, o.d), mats);
-        main.position.y = o.h / 2; g.add(main);
-        if (o.roof === 'slope') {
-            const roof = new THREE.Mesh(new THREE.CylinderGeometry(0.0001, o.w * 0.72, o.h * 0.32, 4, 1), body);
-            roof.rotation.y = Math.PI / 4; roof.scale.z = o.d / o.w; roof.position.y = o.h + o.h * 0.16; g.add(roof);
-        } else if (o.roof === 'dome') {
-            const dome = new THREE.Mesh(new THREE.SphereGeometry(Math.min(o.w, o.d) * 0.42, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2), body);
-            dome.position.y = o.h; g.add(dome);
-        } else if (o.roof === 'tower') {
-            const t2 = new THREE.Mesh(new THREE.BoxGeometry(o.w * 0.55, o.h * 0.55, o.d * 0.55), mats);
-            t2.position.y = o.h + o.h * 0.275; g.add(t2);
-        } else if (o.roof === 'shed') {                          // toit en dents de scie (halle)
-            for (let k = 0; k < 3; k++) {
-                const tooth = new THREE.Mesh(new THREE.CylinderGeometry(0.0001, 0.2, o.d, 3, 1), body);
-                tooth.rotation.x = Math.PI / 2; tooth.rotation.z = Math.PI;
-                tooth.position.set(-o.w / 2 + o.w / 6 + k * o.w / 3, o.h + 0.08, 0); g.add(tooth);
-            }
-        }
-        g.rotation.y = o.turn;
-        g.userData = { kind: 'building', bob: main };
-        return g;
-    }
-
-    /* ---- Une scène : dalles, éléments, étiquettes, interactions ---- */
-    function makeScene(cfg) {
-        const host = document.getElementById(cfg.host);
-        const list = document.getElementById(cfg.list);
-        if (!host || !list) return;
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const links = Array.from(list.querySelectorAll('.ar3d-link'));
-        let renderer, canvas;
-        try {
-            canvas = document.createElement('canvas');
-            canvas.className = 'ar3d-canvas';
-            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-        } catch (e) { host.classList.add('is-fallback'); return; }
-        try {
-            host.insertBefore(canvas, host.firstChild);
-            host.classList.add('is-3d');
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-            renderer.outputColorSpace = THREE.SRGBColorSpace;
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0b0c0e);
-            scene.fog = new THREE.Fog(0x0b0c0e, 16, 30);
-            const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-            const CAM = new THREE.Vector3(0, 10.5, 9.5);
-            camera.position.copy(CAM); camera.lookAt(0, 0.4, 0);
-            // Intensités adaptées à l'éclairage physique de Three.js 0.160
-            scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-            const key = new THREE.DirectionalLight(0xffffff, 1.7); key.position.set(-4, 10, 6); scene.add(key);
-            const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshStandardMaterial({ color: 0x0b0b0b, roughness: 1 }));
-            floor.rotation.x = -Math.PI / 2; scene.add(floor);
-            const HALO = haloTex();
-            const items = [], hits = [];
-            cfg.set.forEach((o, i) => {
-                const root = new THREE.Group(); root.position.set(o.p[0], 0, o.p[1]); scene.add(root);
-                const tileMat = new THREE.MeshStandardMaterial({ color: 0xd8d6d0, emissive: 0xffffff, emissiveIntensity: 0.35, roughness: 0.6 });
-                const tw = cfg.tile[0], td = cfg.tile[1];
-                const tile = new THREE.Mesh(new THREE.BoxGeometry(tw, 0.06, td), tileMat); tile.position.y = 0.03; root.add(tile);
-                const halo = new THREE.Mesh(new THREE.PlaneGeometry(tw * 3, td * 3.5), new THREE.MeshBasicMaterial({ map: HALO, color: o.halo, transparent: true, opacity: 0.28, depthWrite: false, blending: THREE.AdditiveBlending }));
-                halo.rotation.x = -Math.PI / 2; halo.position.y = 0.005; root.add(halo);
-                const light = new THREE.PointLight(o.halo, 4, 3.6, 1.2); light.position.set(0, 0.35, 0.2); root.add(light);
-                const obj = cfg.build(o); obj.position.y = 0.06; root.add(obj);
-                const hit = new THREE.Mesh(new THREE.BoxGeometry(tw * 1.05, cfg.hitH, td * 1.05), new THREE.MeshBasicMaterial({ visible: false }));
-                hit.position.y = cfg.hitH / 2; hit.userData.i = i; root.add(hit); hits.push(hit);
-                items.push({ root, tileMat, halo, light, obj, glow: 0, glowTo: 0, phase: Math.random() * 6 });
+            /* --- Lecture des fiches et des mots-clés --- */
+            var fiches = Array.prototype.map.call(grid.querySelectorAll('.dsv-card'), function (li) {
+                var cles = (li.getAttribute('data-keys') || '').split(',')
+                    .map(function (s) { return s.trim().toLowerCase(); })
+                    .filter(function (s) { return s.length > 0; });
+                var zone = li.querySelector('.dsv-tags');
+                if (zone) {
+                    zone.textContent = '';
+                    cles.forEach(function (k) {
+                        var b = document.createElement('b');
+                        b.setAttribute('data-k', k);
+                        b.textContent = k;
+                        zone.appendChild(b);
+                    });
+                }
+                var nom = li.querySelector('.dsv-name');
+                var prat = li.querySelector('.dsv-practice');
+                var texte = ((nom ? nom.textContent : '') + ' ' +
+                             (prat ? prat.textContent : '') + ' ' +
+                             cles.join(' ')).toLowerCase();
+                return { li: li, cles: cles, texte: texte };
             });
-            const labelsBox = document.getElementById(cfg.labels);
-            const labels = links.map((a) => {
-                const el = document.createElement('span');
-                el.className = 'ar3d-label'; el.innerHTML = '<b></b><i></i>';
-                el.querySelector('b').textContent = a.dataset.name;
-                el.querySelector('i').textContent = a.dataset.practice;
-                labelsBox.appendChild(el); return el;
+
+            /* --- Les filtres : un bouton par mot-clé rencontré --- */
+            var tous = [];
+            fiches.forEach(function (f) {
+                f.cles.forEach(function (k) { if (tous.indexOf(k) < 0) tous.push(k); });
             });
-            const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
-            let mx = 0, my = 0;
-            function setHover(i) {
-                items.forEach((p, k) => { p.glowTo = k === i ? 1 : (i < 0 ? 0 : -0.5); });
-                labels.forEach((l, k) => l.classList.toggle('is-on', k === i));
-                canvas.style.cursor = i >= 0 ? 'pointer' : 'default';
-            }
-            function pick(e) {
-                const r = canvas.getBoundingClientRect();
-                ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
-                ray.setFromCamera(ptr, camera);
-                const h = ray.intersectObjects(hits, false)[0];
-                return h ? h.object.userData.i : -1;
-            }
-            canvas.addEventListener('pointermove', (e) => {
-                const r = canvas.getBoundingClientRect();
-                mx = ((e.clientX - r.left) / r.width) * 2 - 1; my = ((e.clientY - r.top) / r.height) * 2 - 1;
-                setHover(pick(e));
+            tous.sort(function (a, b) { return a.localeCompare(b, 'fr'); });
+
+            var actifs = [];
+            boite.textContent = '';
+            tous.forEach(function (k) {
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'dsv-key';
+                b.setAttribute('data-k', k);
+                b.setAttribute('aria-pressed', 'false');
+                b.textContent = k;
+                boite.appendChild(b);
             });
-            canvas.addEventListener('pointerleave', () => { setHover(-1); mx = my = 0; });
-            canvas.addEventListener('click', (e) => { const i = pick(e); if (i >= 0 && links[i]) links[i].click(); });
-            links.forEach((a, i) => { a.addEventListener('focus', () => setHover(i)); a.addEventListener('blur', () => setHover(-1)); });
-            function resize() {
-                const w = host.clientWidth, h = host.clientHeight;
-                if (!w || !h) return;
-                renderer.setSize(w, h, false);
-                camera.aspect = w / h;
-                const far = w / h < 1 ? 1.75 : (w / h < 1.4 ? 1.25 : 1);
-                CAM.set(0, 10.5 * far, 9.5 * far);
-                camera.updateProjectionMatrix();
+
+            function sansAccent(s) {
+                return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '') : s;
             }
-            resize();
-            // Réajuster dès que la taille change (onglet affiché, premier chargement, rotation)
-            if ('ResizeObserver' in window) new ResizeObserver(() => resize()).observe(host);
-            window.addEventListener('resize', resize);
-            window.addEventListener('load', () => { resize(); setTimeout(resize, 300); });
-            let visible = true;
-            new IntersectionObserver((en) => { visible = en[0].isIntersecting; }, { threshold: 0.01 }).observe(host);
-            const v = new THREE.Vector3(), clock = new THREE.Clock();
-            let t = 0;
-            (function frame() {
-                requestAnimationFrame(frame);
-                if (!visible || document.hidden || host.offsetParent === null) { clock.getDelta(); return; }
-                const dt = Math.min(clock.getDelta(), 0.05);
-                if (!reduce) t += dt;
-                camera.position.x += ((CAM.x + mx * 0.9) - camera.position.x) * 0.04;
-                camera.position.y += ((CAM.y - my * 0.5) - camera.position.y) * 0.04;
-                camera.position.z += (CAM.z - camera.position.z) * 0.04;
-                camera.lookAt(0, 0.4, 0);
-                const r = canvas.getBoundingClientRect();
-                items.forEach((p, i) => {
-                    p.glow += (p.glowTo - p.glow) * 0.12;
-                    const g = p.glow;
-                    p.tileMat.emissiveIntensity = 0.35 + Math.max(0, g) * 0.9 + Math.min(0, g) * 0.25;
-                    p.halo.material.opacity = 0.28 + Math.max(0, g) * 0.55 + Math.min(0, g) * 0.2;
-                    p.halo.scale.setScalar(1 + Math.max(0, g) * 0.35);
-                    p.light.intensity = 4 + Math.max(0, g) * 7;
-                    const u = p.obj.userData;
-                    if (u.kind === 'person') {
-                        u.torso.scale.y = 1 + Math.sin(t * 1.4 + p.phase) * 0.012;
-                        u.head.rotation.y = Math.sin(t * 0.35 + p.phase) * 0.35;
-                        u.head.rotation.x = u.look + Math.sin(t * 0.5 + p.phase) * 0.04;
-                    } else {
-                        p.obj.position.y = 0.06 + Math.max(0, g) * 0.12;   // le bâtiment se soulève un peu au survol
+
+            function filtrer() {
+                var q = sansAccent((champ ? champ.value : '').trim().toLowerCase());
+                var n = 0;
+                fiches.forEach(function (f) {
+                    var parCle = actifs.length === 0 || f.cles.some(function (k) {
+                        return actifs.indexOf(k) >= 0;
+                    });
+                    var parTexte = !q || sansAccent(f.texte).indexOf(q) >= 0;
+                    var garde = parCle && parTexte;
+                    var etait = !f.li.classList.contains('is-out');
+                    f.li.classList.toggle('is-out', !garde);
+                    if (garde) {
+                        n++;
+                        if (!etait) {           /* relance l'apparition */
+                            f.li.style.animation = 'none';
+                            void f.li.offsetWidth;
+                            f.li.style.animation = '';
+                        }
                     }
-                    if (labels[i]) {
-                        v.set(p.root.position.x, 0, p.root.position.z + cfg.tile[1] * 0.65).project(camera);
-                        labels[i].style.transform = 'translate(' + ((v.x + 1) / 2 * r.width).toFixed(1) + 'px,' + ((1 - v.y) / 2 * r.height).toFixed(1) + 'px)';
-                    }
+                    Array.prototype.forEach.call(f.li.querySelectorAll('.dsv-tags b'), function (b) {
+                        b.classList.toggle('is-hit', actifs.indexOf(b.getAttribute('data-k')) >= 0);
+                    });
                 });
-                renderer.render(scene, camera);
-            })();
-        } catch (err) {
-            host.classList.remove('is-3d'); host.classList.add('is-fallback');
-            if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
-            console.warn('Scène 3D indisponible :', err);
-        }
-    }
+                if (compte) {
+                    compte.textContent = (n < 10 ? '0' + n : n) + ' / ' +
+                        (fiches.length < 10 ? '0' + fiches.length : fiches.length) +
+                        (n > 1 ? ' dossiers' : ' dossier');
+                }
+                if (vide) vide.hidden = n > 0;
+            }
 
-    // Artistes : silhouettes
-    makeScene({
-        host: 'ar3d', list: 'ar3d-list', labels: 'ar3d-labels', tile: [1.15, 0.85], hitH: 1.9, build: figure,
-        set: [
-            { p: [-3.6, -1.2], top: 0x2f6f73, legs: 0x2a3550, bag: 0x1d1f22, arms: [0.1, -0.15], step: 0.04, look: 0.25, turn: 0.6, halo: 0x5fd6e0 },
-            { p: [-1.5, 0.9], top: 0xb23a2c, legs: 0x2b2f3a, bag: null, arms: [-1.2, 0.05], step: 0.0, look: 0.45, turn: -0.4, halo: 0xff5a3c },
-            { p: [0.6, -1.6], top: 0xe6e3dc, legs: 0x1f2228, bag: 0x3f5f3a, arms: [0.05, 0.12], step: 0.06, look: 0.1, turn: 2.6, halo: 0xffffff },
-            { p: [2.4, 0.6], top: 0xd98b2b, legs: 0x3b4a6b, bag: null, arms: [0.0, -0.9], step: 0.03, look: 0.3, turn: -2.2, halo: 0xffb04a },
-            { p: [3.9, -1.0], top: 0x4d5a3f, legs: 0x26282c, bag: 0x2a2a2a, arms: [0.12, 0.08], step: 0.05, look: 0.05, turn: 1.4, halo: 0xfff1d6, hood: true },
-            { p: [-0.2, 2.3], top: 0x6a4b8a, legs: 0x1c1d22, bag: null, arms: [-0.6, -0.1], step: 0.02, look: 0.35, turn: 0.2, halo: 0xb48cff }
-        ]
-    });
-    // Structures : bâtiments (à personnaliser plus tard : forme, couleur, toit)
-    makeScene({
-        host: 'st3d', list: 'st3d-list', labels: 'st3d-labels', tile: [2.0, 1.6], hitH: 2.6, build: building,
-        set: [
-            { p: [-3.9, -1.3], w: 1.6, h: 1.2, d: 1.2, color: 0x8a8f96, roof: 'shed', cols: 6, rows: 4, seed: 11, turn: 0.3, halo: 0xfff1d6 },   // Frac Normandie — SHED
-            { p: [-1.2, 1.0], w: 1.2, h: 1.9, d: 1.0, color: 0xd8d2c4, roof: 'flat', cols: 4, rows: 7, seed: 29, turn: -0.2, halo: 0xffffff },  // ésadhar
-            { p: [1.4, -1.6], w: 1.0, h: 1.4, d: 0.9, color: 0x6e5a4a, roof: 'slope', cols: 3, rows: 5, seed: 47, turn: 0.5, halo: 0xff8a5c },  // Immanence
-            { p: [3.8, 0.4], w: 1.3, h: 1.1, d: 1.1, color: 0x2f3a52, roof: 'dome', cols: 5, rows: 4, seed: 83, turn: -0.6, halo: 0x6fa8ff },   // VIDEOFORMES
-            { p: [-3.4, 2.3], w: 1.6, h: 0.9, d: 1.2, color: 0x5c6650, roof: 'shed', cols: 7, rows: 3, seed: 97, turn: 0.1, halo: 0xc9ff9a },   // Hangar 107
-            { p: [1.6, 2.6], w: 1.0, h: 1.7, d: 1.0, color: 0xa7a39a, roof: 'tower', cols: 3, rows: 6, seed: 61, turn: 0.4, halo: 0xd6c8ff }   // ESAD Orléans
-        ]
-    });
+            function basculer(k, bouton) {
+                var i = actifs.indexOf(k);
+                if (i >= 0) { actifs.splice(i, 1); bouton.setAttribute('aria-pressed', 'false'); }
+                else { actifs.push(k); bouton.setAttribute('aria-pressed', 'true'); }
+                filtrer();
+            }
+
+            boite.addEventListener('click', function (e) {
+                var b = e.target.closest ? e.target.closest('.dsv-key') : null;
+                if (b) basculer(b.getAttribute('data-k'), b);
+            });
+
+            /* Les étiquettes d'une fiche activent le même filtre */
+            grid.addEventListener('click', function (e) {
+                var t = e.target.closest ? e.target.closest('.dsv-tags b') : null;
+                if (!t) return;
+                e.preventDefault();
+                e.stopPropagation();
+                var b = boite.querySelector('.dsv-key[data-k="' + t.getAttribute('data-k').replace(/"/g, '\\"') + '"]');
+                if (b) basculer(b.getAttribute('data-k'), b);
+            });
+
+            if (champ) {
+                champ.addEventListener('input', filtrer);
+                champ.addEventListener('search', filtrer);
+            }
+            filtrer();
+        });
+    })();
     </script>
 
     <script type="module">
