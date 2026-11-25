@@ -4066,10 +4066,10 @@ body.is-fullscreen .fs-toggle { color: var(--secondary-color); }
        laisser la lumière bleue dominer, un peu plus de contraste,
        et une bascule des teintes vers le cyan. Les quatre valeurs
        se règlent ici, pour tout le site d'un coup. */
-    --da-intensite: 1;
-    --da-sat:     0.72;
-    --da-contr:   1.08;
-    --da-lum:     0.9;
+    --da-intensite: 0.58;
+    --da-sat:     0.66;
+    --da-contr:   1.26;
+    --da-lum:     0.78;
     --da-teinte:  -14deg;
     --da-etalon:  saturate(var(--da-sat)) contrast(var(--da-contr))
                   brightness(var(--da-lum)) hue-rotate(var(--da-teinte));
@@ -4138,7 +4138,7 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
         radial-gradient(87% 62% at 102% 2%,  rgba(56, 189, 248, 0.86) 0%, rgba(56, 189, 248, 0) 62%),
         radial-gradient(118% 53% at 45% 112%, rgba(37, 99, 235, 0.74) 0%, rgba(37, 99, 235, 0) 64%),
         radial-gradient(72% 98% at 98% 65%,  rgba(125, 211, 252, 0.6) 0%, rgba(125, 211, 252, 0) 60%),
-        radial-gradient(96% 76% at 38% 46%,  rgba(30, 98, 200, 0.5) 0%, rgba(30, 98, 200, 0) 72%);
+        radial-gradient(96% 76% at 38% 46%,  rgba(30, 98, 200, 0.3) 0%, rgba(30, 98, 200, 0) 76%);
     animation: daVoileA 97s ease-in-out infinite alternate, daGamme 78s linear infinite;
 }
 
@@ -4151,7 +4151,7 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
         radial-gradient(82% 58% at 0% 3%,    rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 60%),
         radial-gradient(113% 60% at 52% 107%, rgba(199, 226, 255, 0.76) 0%, rgba(199, 226, 255, 0) 62%),
         radial-gradient(65% 87% at 2% 57%,   rgba(173, 214, 255, 0.62) 0%, rgba(173, 214, 255, 0) 58%),
-        radial-gradient(104% 80% at 62% 50%, rgba(206, 228, 255, 0.4) 0%, rgba(206, 228, 255, 0) 74%);
+        radial-gradient(104% 80% at 62% 50%, rgba(206, 228, 255, 0.2) 0%, rgba(206, 228, 255, 0) 78%);
     animation: daVoileB 113s ease-in-out infinite alternate, daGammeBlanc 78s linear infinite;
 }
 
@@ -4166,7 +4166,7 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
         radial-gradient(93% 65% at 95% 27%,  rgba(18, 136, 148, 1) 0%, rgba(18, 136, 148, 0) 64%),
         radial-gradient(112% 77% at -3% 40%, rgba(52, 198, 196, 0.8) 0%, rgba(52, 198, 196, 0) 62%),
         radial-gradient(80% 60% at 57% -7%,  rgba(150, 228, 232, 0.62) 0%, rgba(150, 228, 232, 0) 60%),
-        radial-gradient(98% 78% at 44% 52%,  rgba(26, 124, 140, 0.52) 0%, rgba(26, 124, 140, 0) 72%);
+        radial-gradient(98% 78% at 44% 52%,  rgba(26, 124, 140, 0.3) 0%, rgba(26, 124, 140, 0) 76%);
     animation: daVoileC 139s ease-in-out infinite alternate, daGamme 78s linear infinite;
 }
 
@@ -4200,8 +4200,8 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
     50%      { opacity: 0.12; }
 }
 @keyframes daGammeBlanc {
-    0%, 100% { opacity: 0.62; }
-    50%      { opacity: 0.08; }
+    0%, 100% { opacity: 0.34; }
+    50%      { opacity: 0.05; }
 }
 
 /* Chaque section pèse les trois gammes différemment, pour ne pas
@@ -4215,9 +4215,10 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
    plus de hauteur et paraît éteinte : Expos et Contact reçoivent
    donc un gain. brightness() s'applique avant le fondu « screen »,
    donc il renforce la lumière sans toucher au fond. */
-/* --da-intensite est le réglage d'ensemble : 1 = tel quel,
-   0.6 = fond beaucoup plus noir, 1.3 = plus lumineux. Une seule
-   valeur pour tout le site. */
+/* --da-intensite est le réglage d'ensemble : 0.58 aujourd'hui.
+   Monter vers 1 rend les pages plus lumineuses et plus plates,
+   descendre vers 0.3 les enfonce dans le noir. Une seule valeur
+   pour tout le site. */
 .da-aura {
     opacity: calc(var(--da-poids, 1) * var(--da-intensite, 1));
     filter: brightness(var(--da-force, 1));

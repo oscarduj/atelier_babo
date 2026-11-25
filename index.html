@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125f">
+    <link rel="stylesheet" href="style.css?v=20261125g">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125f" defer></script>
-    <script src="page-transition.js?v=20261125f" defer></script>
-    <script src="agent.js?v=20261125f" defer></script>
+    <script src="ambient.js?v=20261125g" defer></script>
+    <script src="page-transition.js?v=20261125g" defer></script>
+    <script src="agent.js?v=20261125g" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3393,6 +3393,34 @@
 
                 const TEX = [texBrume(1), texBrume(2), texBrume(3), texBrume(4)];
 
+                /* LES BORDS DE LA BRUME.
+                   La texture ne s'éteint que vers le haut et le bas ;
+                   à gauche et à droite elle doit rester raccordable pour
+                   défiler sans couture, donc son alpha y est quelconque
+                   — et le quad se terminait net. C'est ça qui se voyait.
+                   On ne peut pas éteindre les bords dans la texture sans
+                   casser le défilement : on le fait donc dans la
+                   GÉOMÉTRIE, avec une transparence par sommet en sinus.
+                   Le plan est subdivisé 14 fois en largeur pour que la
+                   courbe soit lisse, et chaque nappe se dissout de
+                   chaque côté quoi qu'il arrive. */
+                const GEO_BRUME = new THREE.PlaneGeometry(1, 1, 14, 5);
+                (function () {
+                    const pos = GEO_BRUME.attributes.position;
+                    const teintes = new Float32Array(pos.count * 4);
+                    for (let i = 0; i < pos.count; i++) {
+                        const u = pos.getX(i) + 0.5;        /* 0 à 1 en largeur */
+                        const v = pos.getY(i) + 0.5;        /* 0 à 1 en hauteur */
+                        const fu = Math.pow(Math.sin(Math.PI * u), 0.7);
+                        const fv = Math.min(1, Math.sin(Math.PI * v) * 1.9);
+                        teintes[i * 4] = 1; teintes[i * 4 + 1] = 1; teintes[i * 4 + 2] = 1;
+                        teintes[i * 4 + 3] = fu * fv;
+                    }
+                    /* quatre composantes : c'est ce qui active USE_COLOR_ALPHA
+                       dans three, donc l'alpha par sommet */
+                    GEO_BRUME.setAttribute('color', new THREE.BufferAttribute(teintes, 4));
+                })();
+
                 /* Trois rangs. Le plus proche reste discret et bas, les
                    lointains montent un peu et s'élargissent : c'est la
                    perspective aérienne qui fait le reste. */
@@ -3417,9 +3445,10 @@
                 RANGS.forEach(function (rang, iRang) {
                     for (let i = 0; i < rang.n; i++) {
                         const tex = TEX[Math.floor(alea() * TEX.length)];
-                        const m = new THREE.Mesh(GEO_PLAN, new THREE.MeshBasicMaterial({
+                        const m = new THREE.Mesh(GEO_BRUME, new THREE.MeshBasicMaterial({
                             map: tex,
                             color: 0xbcd8f2,
+                            vertexColors: true,
                             transparent: true,
                             opacity: entre(rang.o[0], rang.o[1]),
                             depthWrite: false,
@@ -3461,9 +3490,10 @@
                    basse, posée là où l'eau rejoint le dôme. Elle efface
                    ce qui pourrait rester de la ligne de raccord. */
                 [34, 52, 74].forEach(function (d, k) {
-                    const m = new THREE.Mesh(GEO_PLAN, new THREE.MeshBasicMaterial({
+                    const m = new THREE.Mesh(GEO_BRUME, new THREE.MeshBasicMaterial({
                         map: TEX[k % TEX.length],
                         color: 0x8fb4d8,
+                        vertexColors: true,
                         transparent: true,
                         opacity: 0.26 + k * 0.09,
                         depthWrite: false,
