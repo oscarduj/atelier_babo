@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125l">
+    <link rel="stylesheet" href="style.css?v=20261125m">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125l" defer></script>
-    <script src="page-transition.js?v=20261125l" defer></script>
-    <script src="agent.js?v=20261125l" defer></script>
+    <script src="ambient.js?v=20261125m" defer></script>
+    <script src="page-transition.js?v=20261125m" defer></script>
+    <script src="agent.js?v=20261125m" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -372,7 +372,7 @@
                                 </a>
                             </li>
                             <li class="dsv-card" data-face="58 22" data-keys="mis en avant">
-                                <a class="dsv-a">
+                                <a class="dsv-a" href="artistes/citlali-honore.html">
                                     <span class="dsv-ref">DOSSIER 06</span>
                                     <span class="dsv-shot" aria-hidden="true"><i>CH</i><img src="images/reseau/citlali-honore.jpg" alt="Portrait de Citlali Honoré" loading="lazy" decoding="async" width="900" height="1125"></span>
                                     <span class="dsv-name">Citlali Honoré</span>
@@ -4049,9 +4049,17 @@
                 if (vide) vide.hidden = true;
                 index = (index + retenues.length) % retenues.length;
                 retenues[index].li.classList.add('is-on');
+                /* Seule la fiche au centre est cliquable — les voisines
+                   sont neutralisées plus haut. Celles qui ont une page
+                   reçoivent en plus la classe « a-fiche », qui affiche
+                   le repère « VOIR LA FICHE » : sans ça rien n'indique
+                   qu'on peut cliquer. */
                 var ouvrable = retenues[index].li.querySelector('.dsv-a');
                 if (ouvrable && ouvrable.getAttribute('data-href')) {
                     ouvrable.setAttribute('href', ouvrable.getAttribute('data-href'));
+                    retenues[index].li.classList.add('a-fiche');
+                } else {
+                    retenues[index].li.classList.remove('a-fiche');
                 }
                 /* Deux dossiers de chaque côté, sans jamais réutiliser
                    une carte déjà placée quand la liste est courte. */
@@ -4310,6 +4318,27 @@
             bande.className = 'vhs-bande';
             bande.setAttribute('aria-hidden', 'true');
             cadre.appendChild(bande);
+
+            /* La bande ne tourne plus en boucle. Le carrousel d'accueil
+               change de vidéo toutes les 9 s et celui de Contact toutes
+               les 7 s ; la bande passait toutes les 11 s. Les rythmes se
+               rattrapaient de temps en temps et on croyait que la bande
+               déclenchait le changement. Elle est maintenant lancée PAR
+               le changement : chaque coupure est couverte par un
+               décrochage de bande, et il n'y a pas de décrochage sans
+               coupure. */
+            var passe = null;
+            var obs = new MutationObserver(function () {
+                clearTimeout(passe);
+                bande.classList.remove('passe');
+                void bande.offsetWidth;
+                bande.classList.add('passe');
+                passe = setTimeout(function () { bande.classList.remove('passe'); }, 1300);
+            });
+            var videos = cadre.querySelectorAll('video');
+            for (var v = 0; v < videos.length; v++) {
+                obs.observe(videos[v], { attributes: true, attributeFilter: ['class'] });
+            }
 
             var h = document.createElement('div');
             h.className = 'vhs-horloge';
