@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr" class="dark-mode">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125p">
+    <link rel="stylesheet" href="style.css?v=20261125s">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125p" defer></script>
-    <script src="page-transition.js?v=20261125p" defer></script>
-    <script src="agent.js?v=20261125p" defer></script>
+    <script src="ambient.js?v=20261125s" defer></script>
+    <script src="page-transition.js?v=20261125s" defer></script>
+    <script src="agent.js?v=20261125s" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -128,6 +128,42 @@
 
         <div class="nav-status">STATUS: ALL SYSTEMS OPERATIONAL</div>
     </header>
+
+    <!-- La barre de gauche s'ouvre en approchant la souris du bord. Au doigt
+         il n'y a pas de survol : sur une tablette on ne voyait qu'un bout de
+         panneau impossible à ouvrir. Sous 1400 px, ou dès qu'il n'y a pas de
+         souris, on masque ce panneau et on passe au hamburger, qui est le seul
+         point d'entrée fiable. La feuille de style a déjà tout ce qu'il faut
+         sous « .touch-device » : il suffit de poser la classe. Ce script est
+         volontairement seul et sans dépendance, pour que le menu marche même
+         si une librairie extérieure ne charge pas. -->
+    <script>
+        (function () {
+            function reglerMenu() {
+                var auDoigt = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                var replie = auDoigt || window.innerWidth < 1400;
+                document.documentElement.classList.toggle('touch-device', replie);
+                if (!replie) {
+                    var nav = document.getElementById('side-nav');
+                    var ham = document.getElementById('hamburger-btn');
+                    if (nav) { nav.classList.remove('menu-open'); }
+                    if (ham) { ham.classList.remove('open'); }
+                }
+            }
+            reglerMenu();
+            window.addEventListener('resize', reglerMenu);
+
+            // Le menu est le seul point d'entrée au doigt : son ouverture ne
+            // doit dépendre de rien d'autre que de ce script.
+            var ham = document.getElementById('hamburger-btn');
+            var nav = document.getElementById('side-nav');
+            if (ham && nav) {
+                ham.addEventListener('click', function () {
+                    ham.classList.toggle('open', nav.classList.toggle('menu-open'));
+                });
+            }
+        })();
+    </script>
 
     <canvas id="site-3d-bg" class="site-3d-bg"></canvas>
 
@@ -2256,18 +2292,16 @@
             });
         }
 
-        // Menu mobile : replié par défaut, ne s'ouvre qu'au clic sur le hamburger.
+        // Le clic sur le hamburger est géré plus haut, dans son propre script,
+        // pour que le menu marche même si une librairie extérieure ne charge pas.
         const hamburgerBtn = document.getElementById('hamburger-btn');
-        hamburgerBtn.addEventListener('click', () => {
-            const isOpen = sideNav.classList.toggle('menu-open');
-            hamburgerBtn.classList.toggle('open', isOpen);
-        });
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 sideNav.classList.remove('menu-open');
                 hamburgerBtn.classList.remove('open');
             });
         });
+
 
         // Inclinaison 3D subtile de l'image des blocs Travaux, qui suit la position du
         // curseur — amplitude volontairement faible (±5°) pour rester discret, pas gadget.
@@ -3212,7 +3246,7 @@
                         // qui est ce qu'on attend d'une étendue d'eau la
                         // nuit, et la ligne d'horizon se lit sans arête
                         // puisque la brume lointaine s'y pose.
-                        col = mix( col, vec3( 0.011, 0.02, 0.042 ), smoothstep( 40.0, 150.0, dist ) );
+                        col = mix( col, vec3( 0.016, 0.028, 0.055 ), smoothstep( 40.0, 165.0, dist ) );
                         gl_FragColor = vec4( col, 1.0 );
                         #include <tonemapping_fragment>
                         #include <colorspace_fragment>
@@ -3564,8 +3598,14 @@
                        de plus en plus large, de plus en plus haute, et de
                        plus en plus sourde. C'est la perspective aérienne —
                        plus c'est loin, plus la lumière se perd en route. */
-                    { n: 12, d: [66, 118], y: [0.1, 1.1], l: [46, 90],  h: [2.4, 5], o: [0.26, 0.4], sourd: 0.62 },
-                    { n: 9,  d: [130, 205], y: [0.2, 2],  l: [95, 180], h: [4, 9],   o: [0.16, 0.26], sourd: 0.38 },
+                    /* Les rangs lointains sont écrasés au ras de l'eau.
+                       Hauts de 4 à 9 unités, ils formaient une masse grise
+                       qui montait bien au-dessus de l'horizon et bouchait
+                       le fond : l'eau avait l'air de s'arrêter en plein
+                       milieu. Ils ne dépassent plus 3 unités, soit à peine
+                       plus d'un degré vu de 150 unités. */
+                    { n: 14, d: [66, 118], y: [0, 0.3], l: [46, 90],  h: [1, 2.6], o: [0.3, 0.44], sourd: 0.62 },
+                    { n: 11, d: [130, 205], y: [0, 0.4], l: [95, 180], h: [1.2, 3], o: [0.2, 0.3], sourd: 0.38 },
                     /* LES FLANCS. Le mur d'images s'arrête à 38° : au-delà,
                        le reflet s'interrompt sur une arête verticale nette
                        et il ne reste que du noir. Ce rang-là ne sert qu'à
@@ -3625,7 +3665,12 @@
                 /* Le ruban d'horizon : une seule nappe très large et très
                    basse, posée là où l'eau rejoint le dôme. Elle efface
                    ce qui pourrait rester de la ligne de raccord. */
-                [34, 58, 96, 160].forEach(function (d, k) {
+                /* LA BANDE D'HORIZON. C'est là que la brume doit être la
+                   plus présente : posée sur l'eau, pas suspendue au-dessus.
+                   Sept rubans au lieu de quatre, denses et bas, échelonnés
+                   de 24 à 170 unités pour que la bande ait elle-même de la
+                   profondeur au lieu d'être un ruban unique. */
+                [24, 36, 52, 74, 102, 136, 170].forEach(function (d, k) {
                     const m = new THREE.Mesh(GEO_BRUME, new THREE.MeshBasicMaterial({
                         map: TEX[k % TEX.length],
                         color: 0x8fb4d8,
@@ -3640,13 +3685,13 @@
                     m.material.map.needsUpdate = true;
                     m.material.map.wrapS = THREE.RepeatWrapping;
                     m.material.map.repeat.set(3, 1);
-                    m.scale.set(d * 2.6, 1.1 + k * 1.5, 1);
-                    m.position.set(0, 0.1 + k * 0.18, -d);
+                    m.scale.set(d * 2.8, 0.75 + k * 0.42, 1);
+                    m.position.set(0, 0.02 + k * 0.07, -d);
                     m.renderOrder = 2;
                     m.userData.brume = {
                         x0: 0, z0: -d, tx: 1, tz: 0,
-                        amp: 1.6 + k, vitesse: 0.008 + k * 0.004,
-                        souffle: 0.07 + k * 0.02, phase: k * 2.1,
+                        amp: 1.2 + k * 0.8, vitesse: 0.007 + k * 0.003,
+                        souffle: 0.06 + k * 0.015, phase: k * 1.7,
                         base: m.material.opacity
                     };
                     brume.add(m);

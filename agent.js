@@ -189,6 +189,13 @@
 @media (prefers-reduced-motion: reduce) {
     .ag7 { transition: none; }
     .ag7-barre i { animation: none; }
+}
+/* Sous 1500 px — tablette, téléphone — l'écran est trop étroit pour
+   un panneau posé par-dessus : il mangeait le contenu et le coin bas
+   droit, où passent maintenant les boutons son et plein écran. On le
+   réserve donc aux grands écrans. */
+@media (max-width: 1500px) {
+    .ag7 { display: none !important; }
 }`;
 
     const style = document.createElement('style');

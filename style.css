@@ -5028,3 +5028,108 @@ body.fa-body {
    le script tourne, ses styles en ligne reprennent la main. */
 .sg-stage .sg-item { opacity: 0; }
 .sg-stage .sg-item:first-of-type { opacity: 1; }
+
+
+/* ====================================================================
+   LA FICHE DU CARROUSEL — CORRECTION GÉNÉRALE
+   Le correctif précédent était enfermé dans la requête téléphone,
+   alors que le défaut frappe TOUTES les largeurs : sur tablette la
+   fiche tombait à une quarantaine de pixels, et même sur grand écran
+   elle ne faisait que la moitié de ce qu'elle aurait dû.
+   La cause : .dsv-a combine height 100 %, aspect-ratio 4/5 et
+   max-width 100 % dans une .dsv-card absolue sans largeur. Le
+   navigateur doit déduire la largeur de la hauteur, puis la hauteur
+   de la largeur. Selon la place disponible il s'arrête n'importe où.
+   On fixe donc une hauteur de référence, et la largeur en découle.
+   ==================================================================== */
+
+.dsv { --dsv-h: clamp(20rem, 58vh, 40rem); }
+.dsv .dsv-grid {
+    min-height: 0;
+    height: var(--dsv-h);
+}
+.dsv .dsv-card {
+    /* 0.8 = le rapport 4/5 de la fiche. Le min avec 86vw évite qu'une
+       fenêtre basse et étroite ne fasse déborder la fiche. */
+    width: min(calc(var(--dsv-h) * 0.8), 86vw);
+}
+.dsv .dsv-a {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+}
+
+/* ====================================================================
+   SON ET PLEIN ÉCRAN : EN BAS À DROITE SUR LES PETITS ÉCRANS
+   Les deux boutons sont fixés au coin haut droit de la fenêtre. Le
+   texte de droite des en-têtes, lui, suit la largeur du contenu :
+   sous ~1500 px, les deux se croisent, et ça arrive sur presque
+   toutes les sections. On avait d'abord réservé de la place dans
+   l'en-tête, mais ça rognait le texte à chaque section. On déplace
+   les boutons : en bas à droite, il n'y a aucun texte à gêner.
+   ==================================================================== */
+
+@media (max-width: 1500px) {
+    .sound-toggle,
+    .fs-toggle {
+        top: auto;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.64rem;
+        padding: 0.42rem 0.64rem;
+        background: rgba(10, 16, 28, 0.74);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    /* Le son se place à gauche du plein écran, sur la même ligne. */
+    .sound-toggle { right: 8.4rem; }
+
+    /* L'horodatage VHS était lui aussi en bas à droite : on le passe à
+       gauche, un camescope l'affichait d'un côté comme de l'autre. */
+    .vhs-horloge {
+        right: auto;
+        left: clamp(0.9rem, 2.2vw, 2.2rem);
+    }
+
+    /* Le haut des en-têtes est libre : on rend sa largeur au texte. */
+    .main-feed .sec-head > :last-child,
+    .feed-section .sec-head > :last-child { padding-right: 0; }
+}
+
+@media (max-width: 420px) {
+    /* Trop étroit pour deux boutons côte à côte : on les empile. */
+    .sound-toggle { right: 1rem; bottom: 3.4rem; }
+}
+
+/* ====================================================================
+   TABLETTE : LA PAGE DOIT REMPLIR L'ÉCRAN
+   Sur grand écran, la vidéo d'accueil est posée dans un cadre arrondi
+   avec 1,2 rem de marge autour, et les sections ont 6 rem de marge de
+   chaque côté. Sur une tablette, ces marges mangent près d'un quart de
+   la largeur : il reste une bande sombre tout autour du contenu. Entre
+   901 et 1400 px, la vidéo va donc bord à bord et les marges latérales
+   suivent la largeur de la fenêtre. Le téléphone garde ses réglages.
+   ==================================================================== */
+
+@media (min-width: 601px) and (max-width: 1400px) {
+    #accueil.hero-section-video { padding: 0 !important; }
+    .hx-frame {
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 0;
+    }
+    .feed-section:not(.hero-section-video) {
+        padding-left: clamp(1.6rem, 3.4vw, 3.4rem);
+        padding-right: clamp(1.6rem, 3.4vw, 3.4rem);
+    }
+}
+
+/* Dès que le hamburger est là (tablette, téléphone), il occupe le coin
+   haut gauche : on descend l'en-tête de section pour qu'il ne passe
+   pas dessous. */
+.touch-device .main-feed .sec-head,
+.touch-device .feed-section .sec-head { padding-top: 2.6rem; }
+@media (max-width: 900px) {
+    .main-feed .sec-head,
+    .feed-section .sec-head { padding-top: 2.6rem; }
+}
