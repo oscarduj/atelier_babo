@@ -2745,9 +2745,15 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
    calent sur le centre du texte, et non sur celui du bloc entier, dont
    les deux colonnes latérales n'ont pas la même hauteur. */
 .cm-center { position: relative; display: flex; justify-content: center; width: min(100%, 34rem); }
-.cm-list { position: relative; width: 100%; height: clamp(13rem, 34vh, 18rem); list-style: none; margin: 0; padding: 0; }
+.cm-list {
+    position: relative; width: 100%; height: clamp(13rem, 34vh, 18rem);
+    list-style: none; margin: 0; padding: 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%);
+}
 .cm-item {
     --d: 0;
+    --a: 0;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -2763,16 +2769,18 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     line-height: 1.1;
     text-align: center;
     cursor: pointer;
-    transform: translate(-50%, calc(-50% + var(--d) * 7.5rem)) scale(calc(1 - min(1, abs(var(--d))) * 0.42));
-    filter: blur(calc(min(2, abs(var(--d))) * 5px));
-    opacity: calc(1 - min(2, abs(var(--d))) * 0.38);
+    transform: translate(-50%, calc(-50% + var(--d) * 4.6rem)) scale(calc(1 - min(1, var(--a)) * 0.34));
+    filter: blur(calc(min(2, var(--a)) * 3.4px));
+    opacity: calc(1 - min(2, var(--a)) * 0.42);
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease, opacity 0.6s ease;
 }
 .cm-item.is-active { cursor: pointer; }
-/* Seule la citation choisie reste à l'écran : les titres voisins
-   débordaient du cadre, au-dessus et au-dessous, sans jamais s'y centrer. */
-.cm-item { visibility: hidden; opacity: 0 !important; }
-.cm-item.is-active { visibility: visible; opacity: 1 !important; filter: none !important; }
+/* Les trois titres sont de nouveau dans la roulette. Ils avaient été
+   masqués parce qu'ils débordaient du cadre : l'écart de 7,5 rem
+   entre deux titres était plus grand que la moitié de la liste.
+   Réglé en rapprochant les voisins (4,6 rem) et en fondant le haut
+   et le bas de la liste, ce qui évite aussi toute coupure nette. */
+.cm-item.is-active { opacity: 1 !important; filter: none !important; }
 .cm-item:focus-visible { outline: 1px dashed var(--text-color); outline-offset: 4px; }
 /* Quatre coins fins autour du titre central */
 .cm-corner { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; border: 0 solid rgba(234, 232, 228, 0.7); pointer-events: none; }
@@ -2962,7 +2970,10 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
 .sg-cap b { font-family: 'Space Grotesk', sans-serif; font-weight: 400; font-size: 1rem; letter-spacing: -0.01em; }
 .sg-cap i { font-style: normal; font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
 .sg-item.is-cur { transform: translate(-50%, -50%) scale(1); opacity: 1; z-index: 3; }
-.sg-item.is-prev { transform: translate(calc(-50% - 36vw), -50%) scale(0.3); opacity: 0.4; filter: blur(0.5px); z-index: 2; }
+/* L'exposition déjà vue ne reste plus en vignette à gauche : elle
+   sort du cadre comme celles d'avant. Seules l'image principale et
+   l'annonce de la suivante, à droite, restent visibles. */
+.sg-item.is-prev { transform: translate(calc(-50% - 58vw), -50%) scale(0.2); opacity: 0; filter: blur(8px); pointer-events: none; z-index: 1; }
 .sg-item.is-next { transform: translate(calc(-50% + 36vw), -50%) scale(0.3); opacity: 0.55; z-index: 2; }
 .sg-item.is-gone-l { transform: translate(calc(-50% - 62vw), -50%) scale(0.2); opacity: 0; filter: blur(10px); pointer-events: none; }
 .sg-item.is-gone-r { transform: translate(calc(-50% + 62vw), -50%) scale(0.2); opacity: 0; filter: blur(10px); pointer-events: none; }
@@ -4167,7 +4178,7 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
         radial-gradient(112% 77% at -3% 40%, rgba(52, 198, 196, 0.8) 0%, rgba(52, 198, 196, 0) 62%),
         radial-gradient(80% 60% at 57% -7%,  rgba(150, 228, 232, 0.62) 0%, rgba(150, 228, 232, 0) 60%),
         radial-gradient(98% 78% at 44% 52%,  rgba(26, 124, 140, 0.3) 0%, rgba(26, 124, 140, 0) 76%);
-    animation: daVoileC 139s ease-in-out infinite alternate, daGamme 78s linear infinite;
+    animation: daVoileC 139s ease-in-out infinite alternate, daGammeEau 78s linear infinite;
 }
 
 /* Plus de rotation : faire tourner un voile oblige à le faire
@@ -4190,18 +4201,26 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
 
 /* Le cycle des gammes. Les creux ne descendent pas à zéro :
    c'est ce qui fait une oscillation et non un diaporama. */
-/* Trois triangles décalés d'un tiers. Trois triangles à 120° l'un
-   de l'autre ont une somme constante : c'est la seule façon pour
-   que la couleur tourne sans que la section s'éteigne au passage
-   d'une gamme à l'autre. D'où aussi le « linear » : avec un
-   ease-in-out les trois courbes creusent en même temps. */
+/* Trois triangles décalés d'un tiers : à 120° l'un de l'autre, leur
+   somme est constante, donc la couleur tourne sans que la section
+   s'éteigne au passage d'une gamme à l'autre. D'où aussi le
+   « linear » : avec un ease-in-out les trois courbes creusent en
+   même temps.
+   LE BLEU MÈNE. Il ne descend jamais sous 0,45 alors que les deux
+   autres plafonnent bien plus bas : le fond reste ce bleu sombre
+   en permanence, le vert d'eau ne fait que le teinter au passage,
+   et le blanc ne sert plus qu'à l'éclaircir un peu. */
 @keyframes daGamme {
-    0%, 100% { opacity: 0.9; }
-    50%      { opacity: 0.12; }
+    0%, 100% { opacity: 0.95; }
+    50%      { opacity: 0.45; }
+}
+@keyframes daGammeEau {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 0.04; }
 }
 @keyframes daGammeBlanc {
-    0%, 100% { opacity: 0.34; }
-    50%      { opacity: 0.05; }
+    0%, 100% { opacity: 0.2; }
+    50%      { opacity: 0.03; }
 }
 
 /* Chaque section pèse les trois gammes différemment, pour ne pas
@@ -4431,4 +4450,64 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
 #expos .sg-bg::after {
     background: radial-gradient(ellipse at 50% 50%,
         rgba(0, 0, 0, 0) 38%, rgba(3, 6, 12, 0.42) 100%);
+}
+
+
+/* ====================================================================
+   LE MENU HAMBURGER, À LA MÊME DA
+   Il gardait le fond plat et le filet gris d'avant. Il reprend ici
+   le noir bleuté, le filet cyan et la lueur des autres éléments,
+   et le panneau déplié porte le même voile bleu que les sections.
+   Tout est sous la requête média d'origine : rien ne change sur
+   grand écran, où le menu est une colonne fixe.
+   ==================================================================== */
+
+@media (max-width: 900px) {
+    .hamburger-btn {
+        background-color: rgba(5, 7, 12, 0.82);
+        border: 1px solid rgba(var(--dsv-phosphore, 150, 206, 228), 0.38);
+        border-radius: 2px;
+        -webkit-backdrop-filter: blur(14px) saturate(1.2);
+        backdrop-filter: blur(14px) saturate(1.2);
+        box-shadow:
+            0 0 0 1px rgba(5, 7, 12, 0.6),
+            0 6px 26px rgba(2, 8, 20, 0.7),
+            0 0 22px rgba(56, 189, 248, 0.14);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hamburger-btn span {
+        background-color: #dceeff;
+        box-shadow: 0 0 8px rgba(125, 211, 252, 0.5);
+    }
+    .hamburger-btn.open {
+        border-color: rgba(125, 211, 252, 0.7);
+        box-shadow:
+            0 0 0 1px rgba(5, 7, 12, 0.6),
+            0 6px 26px rgba(2, 8, 20, 0.8),
+            0 0 30px rgba(56, 189, 248, 0.3);
+    }
+
+    /* Le panneau déplié : même nuit bleutée, même lueur en haut,
+       et un filet de lumière en bas au lieu d'une arête franche. */
+    .side-nav {
+        background:
+            radial-gradient(120% 90% at 8% -10%, rgba(37, 99, 235, 0.3) 0%, rgba(37, 99, 235, 0) 62%),
+            radial-gradient(100% 80% at 96% 8%, rgba(34, 160, 190, 0.22) 0%, rgba(34, 160, 190, 0) 58%),
+            rgba(5, 7, 12, 0.94);
+        -webkit-backdrop-filter: blur(22px) saturate(1.15);
+        backdrop-filter: blur(22px) saturate(1.15);
+        border-bottom: 1px solid transparent;
+        border-image: linear-gradient(90deg,
+            rgba(56, 189, 248, 0.5) 0%,
+            rgba(37, 99, 235, 0.22) 50%,
+            rgba(255, 255, 255, 0) 100%) 1;
+        box-shadow: 0 24px 60px rgba(2, 6, 16, 0.75);
+    }
+    .side-nav .nav-item a,
+    .side-nav .nav-item { color: rgba(222, 238, 255, 0.82); }
+    .side-nav .nav-item.active a,
+    .side-nav .nav-item.active {
+        color: #f2f8ff;
+        text-shadow: 0 0 16px rgba(125, 211, 252, 0.45);
+    }
 }

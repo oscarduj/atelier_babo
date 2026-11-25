@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125h">
+    <link rel="stylesheet" href="style.css?v=20261125i">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125h" defer></script>
-    <script src="page-transition.js?v=20261125h" defer></script>
-    <script src="agent.js?v=20261125h" defer></script>
+    <script src="ambient.js?v=20261125i" defer></script>
+    <script src="page-transition.js?v=20261125i" defer></script>
+    <script src="agent.js?v=20261125i" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -234,11 +234,7 @@
                     <p class="section-desc">Mise en perspective des œuvres et des écritures numériques.</p>
                 </header>
                 <div class="cm" id="cm">
-                    <div class="cm-side cm-left" aria-live="polite">
-                        <span class="cm-num" id="cm-num">01/03</span>
-                        <span class="cm-tag" id="cm-tag"></span>
-                    </div>
-                    <div class="cm-center">
+    <div class="cm-center">
                     <ol class="cm-list" id="cm-list" aria-label="Textes de curation">
                         <li><button type="button" class="cm-item" data-i="0" data-href="travaux/collectif.html" data-num="01" data-tag="INSTALLATION" data-text="L&#x27;imaginaire surgit là où la représentation échoue.">L&#x27;esthétique du raté</button></li>
                         <li><button type="button" class="cm-item" data-i="1" data-href="travaux/collectif.html" data-num="02" data-tag="RECHERCHE" data-text="Le vivant devenu suite d&#x27;informations perd sa part d&#x27;inconnu.">Le vivant réduit en données</button></li>
@@ -1785,12 +1781,19 @@
                     if (d > items.length / 2) d -= items.length;
                     if (d < -items.length / 2) d += items.length;
                     it.style.setProperty('--d', d);
+                    /* abs() en CSS n'est pas encore partout : la valeur
+                       absolue est calculée ici et passée à part. Sans
+                       ça, tout le calc() du transform était invalide et
+                       les trois titres se superposaient au centre. */
+                    it.style.setProperty('--a', Math.abs(d));
                     it.classList.toggle('is-active', d === 0);
                     it.setAttribute('aria-current', d === 0 ? 'true' : 'false');
                 });
                 const it = items[cur];
-                $('cm-num').textContent = String(cur + 1).padStart(2, '0') + '/' + String(items.length).padStart(2, '0');
-                $('cm-tag').textContent = it.dataset.tag;
+                /* Le bloc « 01/03 · INSTALLATION » a été retiré de la
+                   page : on ne l'écrit que s'il existe encore. */
+                if ($('cm-num')) { $('cm-num').textContent = String(cur + 1).padStart(2, '0') + '/' + String(items.length).padStart(2, '0'); }
+                if ($('cm-tag')) { $('cm-tag').textContent = it.dataset.tag; }
                 $('cm-text').textContent = it.dataset.text;
                 $('cm-link').href = it.dataset.href;
             }
@@ -3979,10 +3982,11 @@
                sur une fiche encore en vol, réduite à 0,74 et posée sur
                le côté — l'effet existait mais passait inaperçu. */
             var minuteurArrivee = null;
-            function parasite(li) {
-                clearTimeout(minuteurArrivee);
-                minuteurArrivee = setTimeout(function () { broyer(li); }, 680);
-            }
+            /* Le glitch en colonnes est retiré : les fiches changent
+               maintenant sans brisure. Le code de broyer() reste
+               au-dessus, inutilisé — il suffit de rappeler broyer(li)
+               ici pour le remettre. */
+            function parasite() { }
 
             function sansAccent(s) {
                 return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '') : s;
