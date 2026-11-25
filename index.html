@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125e">
+    <link rel="stylesheet" href="style.css?v=20261125f">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125e" defer></script>
-    <script src="page-transition.js?v=20261125e" defer></script>
-    <script src="agent.js?v=20261125e" defer></script>
+    <script src="ambient.js?v=20261125f" defer></script>
+    <script src="page-transition.js?v=20261125f" defer></script>
+    <script src="agent.js?v=20261125f" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3251,7 +3251,18 @@
                     const l = entre(5, 13) * (1 + d / 24);
                     const p = pose(40, 74, d, cote);
                     jungle.add(champ(p.x, p.z, l, entre(12, 30), entre(0.02, 0.5),
-                                     auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.1, 0.3)));
+                                     auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.22, 0.45)));
+                }
+                /* Le prolongement du mur. Le dernier panneau est à 38° :
+                   juste après, cinq colonnes de lumière hautes et étroites,
+                   entre 42° et 62°, qui montent de l'eau. Le mur a l'air
+                   de continuer et de se perdre dans la brume au lieu de
+                   s'arrêter sur une arête. */
+                for (let i = 0; i < 5; i++) {
+                    const d = entre(13, 22);
+                    const p = pose(42, 62, d, cote);
+                    jungle.add(champ(p.x, p.z, entre(2.5, 5.5), entre(9, 17), 0.03,
+                                     auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.3, 0.5)));
                 }
                 /* Quelques foyers plus serrés et plus vifs, posés bas :
                    ce sont eux qui allument l'eau. */
@@ -3394,7 +3405,13 @@
                     { n: 10, d: [9, 15],  y: [0, 0.06],    l: [6, 12],  h: [0.28, 0.6], o: [0.3, 0.46], arc: 62 },
                     { n: 9,  d: [6, 13],  y: [0.02, 0.16], l: [7, 13],  h: [0.5, 1.0], o: [0.2, 0.34] },
                     { n: 12, d: [14, 27], y: [0.03, 0.3],  l: [12, 22], h: [0.9, 1.8], o: [0.34, 0.5] },
-                    { n: 13, d: [29, 58], y: [0.05, 0.5],  l: [22, 44], h: [1.4, 2.8], o: [0.4, 0.6] }
+                    { n: 13, d: [29, 58], y: [0.05, 0.5],  l: [22, 44], h: [1.4, 2.8], o: [0.4, 0.6] },
+                    /* LES FLANCS. Le mur d'images s'arrête à 38° : au-delà,
+                       le reflet s'interrompt sur une arête verticale nette
+                       et il ne reste que du noir. Ce rang-là ne sert qu'à
+                       ça — occuper la bande 40°–105° de chaque côté pour
+                       que le regard ne tombe pas dans le vide. */
+                    { n: 16, d: [11, 40], y: [0, 0.35],    l: [10, 26], h: [0.8, 2.4], o: [0.36, 0.58], arc: 105, creux: 42 }
                 ];
 
                 RANGS.forEach(function (rang, iRang) {
@@ -3409,7 +3426,11 @@
                             side: THREE.DoubleSide,
                             fog: false
                         }));
-                        const a = (alea() * 2 - 1) * (rang.arc || 95) * DEG;   /* devant le visiteur */
+                        /* « creux » réserve le centre : l'angle est alors tiré
+                           entre le creux et l'arc, d'un côté ou de l'autre. */
+                        const a = rang.creux
+                            ? (alea() < 0.5 ? -1 : 1) * entre(rang.creux, rang.arc) * DEG
+                            : (alea() * 2 - 1) * (rang.arc || 95) * DEG;
                         const d = entre(rang.d[0], rang.d[1]);
                         const l = entre(rang.l[0], rang.l[1]);
                         const h = entre(rang.h[0], rang.h[1]);
