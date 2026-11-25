@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125d">
+    <link rel="stylesheet" href="style.css?v=20261125e">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125d" defer></script>
-    <script src="page-transition.js?v=20261125d" defer></script>
-    <script src="agent.js?v=20261125d" defer></script>
+    <script src="ambient.js?v=20261125e" defer></script>
+    <script src="page-transition.js?v=20261125e" defer></script>
+    <script src="agent.js?v=20261125e" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3088,8 +3088,14 @@
                         float dist = length( vWorld.xz - cameraPosition.xz );
                         // L'eau s'assombrit en s'éloignant : le pied des panneaux repose sur du sombre
                         col *= mix( 1.0, 0.32, smoothstep( 6.0, 15.5, dist ) );
-                        // Au-delà des panneaux seulement, elle rejoint la couleur du bas du ciel
-                        col = mix( col, vec3( 0.022, 0.04, 0.078 ), smoothstep( 26.0, 110.0, dist ) );
+                        // Au-delà des panneaux, l'eau rejoint EXACTEMENT la
+                        // couleur du bas du dôme — vec3(0.028,0.05,0.095),
+                        // la première couleur du mix dans le shader du ciel.
+                        // Au moindre écart, le bord du plan d'eau (rayon
+                        // 100) se voyait comme une coupure devant le dôme
+                        // (rayon 180). Le raccord est atteint dès 78, bien
+                        // avant le bord, pour qu'il ne reste aucune arête.
+                        col = mix( col, vec3( 0.028, 0.05, 0.095 ), smoothstep( 22.0, 78.0, dist ) );
                         gl_FragColor = vec4( col, 1.0 );
                         #include <tonemapping_fragment>
                         #include <colorspace_fragment>
@@ -3172,6 +3178,24 @@
                     g.fillStyle = gr;
                     g.fillRect(0, 0, L, H);
                 }
+                /* Les cinq taches sont tirées au hasard avec un rayon qui
+                   peut dépasser la toile : elles se faisaient alors couper
+                   net au bord, et le quad apparaissait dans le ciel sous
+                   forme de rectangle. On force donc l'alpha à zéro sur
+                   tout le pourtour avec un masque elliptique. */
+                const masque = g.createRadialGradient(L / 2, H / 2, 0, L / 2, H / 2, L / 2);
+                masque.addColorStop(0, 'rgba(0,0,0,1)');
+                masque.addColorStop(0.72, 'rgba(0,0,0,1)');
+                masque.addColorStop(1, 'rgba(0,0,0,0)');
+                g.globalCompositeOperation = 'destination-in';
+                g.save();
+                g.translate(L / 2, H / 2);
+                g.scale(1, H / L);          /* l'ellipse épouse la toile */
+                g.translate(-L / 2, -H / 2);
+                g.fillStyle = masque;
+                g.fillRect(-L, -H, L * 3, H * 3);
+                g.restore();
+                g.globalCompositeOperation = 'source-over';
                 const t = new THREE.CanvasTexture(c);
                 t.colorSpace = THREE.SRGBColorSpace;
                 return t;
@@ -3213,14 +3237,20 @@
             }
 
             [-1, 1].forEach(function (cote) {
-                /* Les grands aplats qui bordent les images. Ils montent
-                   plus haut que le cadre et descendent dans l'eau, où
-                   ils se reflètent. */
+                /* Les grands aplats qui bordent les images.
+                   Ils s'arrêtent AU RAS de l'eau, jamais en dessous.
+                   Un quad qui plonge sous la surface se fait trancher
+                   net par la profondeur de l'eau : l'intersection est
+                   une droite, et en perspective elle apparaît comme
+                   une diagonale parfaitement rectiligne en travers du
+                   décor. C'était ça, la coupure. Le reflet, lui, ne
+                   se perd pas : le Reflector refait un rendu de ce qui
+                   est AU-DESSUS de l'eau, donc de ces aplats. */
                 for (let i = 0; i < 7; i++) {
                     const d = entre(7, 26);
                     const l = entre(5, 13) * (1 + d / 24);
                     const p = pose(40, 74, d, cote);
-                    jungle.add(champ(p.x, p.z, l, entre(12, 30), entre(-4, -1),
+                    jungle.add(champ(p.x, p.z, l, entre(12, 30), entre(0.02, 0.5),
                                      auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.1, 0.3)));
                 }
                 /* Quelques foyers plus serrés et plus vifs, posés bas :
@@ -3228,14 +3258,14 @@
                 for (let i = 0; i < 5; i++) {
                     const d = entre(9, 22);
                     const p = pose(39, 70, d, cote);
-                    jungle.add(champ(p.x, p.z, entre(3, 8), entre(3, 8), entre(-1.5, 1.5),
+                    jungle.add(champ(p.x, p.z, entre(3, 8), entre(3, 8), entre(0.04, 1.6),
                                      TEX_HALO, auHasard(BLEUS), entre(0.16, 0.4)));
                 }
                 /* Une touche de vert, rare, comme sur la planche. */
                 for (let i = 0; i < 2; i++) {
                     const d = entre(12, 30);
                     const p = pose(42, 72, d, cote);
-                    jungle.add(champ(p.x, p.z, entre(4, 9), entre(5, 12), entre(-2, 2),
+                    jungle.add(champ(p.x, p.z, entre(4, 9), entre(5, 12), entre(0.06, 1.9),
                                      TEX_HALO, auHasard(VERTS), entre(0.08, 0.18)));
                 }
             });
@@ -3246,7 +3276,7 @@
                 const a = entre(-70, 70) * DEG;
                 const d = entre(38, 64);
                 jungle.add(champ(Math.sin(a) * d, -Math.cos(a) * d,
-                                 entre(26, 50), entre(14, 26), -4,
+                                 entre(26, 50), entre(14, 26), 0.03,
                                  auHasard(TEX_NAPPE), auHasard(BLEUS), entre(0.05, 0.12)));
             }
 
@@ -3288,6 +3318,172 @@
                 nuage.renderOrder = -1;
                 jungle.add(nuage);
             })();
+
+            /* ============================================================
+               LA BRUME SUR L'EAU
+               Technique des « nappes en panneau d'affichage » : des quads
+               larges et très plats, posés juste au-dessus de l'eau et
+               tournés vers le visiteur. Vus presque de profil depuis la
+               caméra (1,70 m), ils s'étirent en longues traînées — c'est
+               ce qui donne la brume rasante, sans aucun calcul volumique.
+               Trois choses comptent :
+               — fondu alpha normal, PAS d'additif : une brume cache ce
+                 qu'il y a derrière, elle ne l'éclaire pas ;
+               — depthWrite à faux, sinon les nappes se découpent entre
+                 elles en arêtes bien nettes ;
+               — un fondu de proximité : sans lui, la nappe la plus proche
+                 remplit l'écran d'un voile uni dès qu'on regarde en bas.
+               ============================================================ */
+            const brume = new THREE.Group();
+            scene.add(brume);
+
+            (function () {
+                /* Une bande de buée : du bruit doux, à zéro sur tout le
+                   pourtour, et raccordable à gauche et à droite pour que
+                   le défilement de la texture ne montre pas de couture. */
+                function texBrume(graine) {
+                    const L = 512, H = 128;
+                    const c = document.createElement('canvas');
+                    c.width = L; c.height = H;
+                    const g = c.getContext('2d');
+                    for (let i = 0; i < 26; i++) {
+                        const x = alea() * L;
+                        const y = H * (0.25 + alea() * 0.5);
+                        const r = H * (0.3 + alea() * 0.75);
+                        /* chaque tache est dessinée trois fois, décalée
+                           d'une largeur de toile : c'est ce qui rend la
+                           bande raccordable horizontalement */
+                        for (const dx of [-L, 0, L]) {
+                            const gr = g.createRadialGradient(x + dx, y, 0, x + dx, y, r);
+                            gr.addColorStop(0, 'rgba(255,255,255,' + (0.1 + alea() * 0.16).toFixed(3) + ')');
+                            gr.addColorStop(0.55, 'rgba(255,255,255,0.04)');
+                            gr.addColorStop(1, 'rgba(255,255,255,0)');
+                            g.fillStyle = gr;
+                            g.fillRect(0, 0, L, H);
+                        }
+                    }
+                    /* Alpha à zéro en haut et en bas : la nappe doit se
+                       dissoudre, pas se terminer par un bord droit. */
+                    const v = g.createLinearGradient(0, 0, 0, H);
+                    v.addColorStop(0, 'rgba(0,0,0,0)');
+                    v.addColorStop(0.42, 'rgba(0,0,0,1)');
+                    v.addColorStop(0.6, 'rgba(0,0,0,1)');
+                    v.addColorStop(1, 'rgba(0,0,0,0)');
+                    g.globalCompositeOperation = 'destination-in';
+                    g.fillStyle = v;
+                    g.fillRect(0, 0, L, H);
+                    g.globalCompositeOperation = 'source-over';
+                    const t = new THREE.CanvasTexture(c);
+                    t.colorSpace = THREE.SRGBColorSpace;
+                    t.wrapS = THREE.RepeatWrapping;
+                    t.wrapT = THREE.ClampToEdgeWrapping;
+                    return t;
+                }
+
+                const TEX = [texBrume(1), texBrume(2), texBrume(3), texBrume(4)];
+
+                /* Trois rangs. Le plus proche reste discret et bas, les
+                   lointains montent un peu et s'élargissent : c'est la
+                   perspective aérienne qui fait le reste. */
+                const RANGS = [
+                    /* Le rang du pied des panneaux : très bas, très plat,
+                       et resserré dans le cône de vue. C'est lui qu'on
+                       voit en premier — les panneaux semblent sortir de
+                       l'eau. Il reste sous 0,6 m pour ne jamais voiler
+                       les images elles-mêmes. */
+                    { n: 10, d: [9, 15],  y: [0, 0.06],    l: [6, 12],  h: [0.28, 0.6], o: [0.3, 0.46], arc: 62 },
+                    { n: 9,  d: [6, 13],  y: [0.02, 0.16], l: [7, 13],  h: [0.5, 1.0], o: [0.2, 0.34] },
+                    { n: 12, d: [14, 27], y: [0.03, 0.3],  l: [12, 22], h: [0.9, 1.8], o: [0.34, 0.5] },
+                    { n: 13, d: [29, 58], y: [0.05, 0.5],  l: [22, 44], h: [1.4, 2.8], o: [0.4, 0.6] }
+                ];
+
+                RANGS.forEach(function (rang, iRang) {
+                    for (let i = 0; i < rang.n; i++) {
+                        const tex = TEX[Math.floor(alea() * TEX.length)];
+                        const m = new THREE.Mesh(GEO_PLAN, new THREE.MeshBasicMaterial({
+                            map: tex,
+                            color: 0xbcd8f2,
+                            transparent: true,
+                            opacity: entre(rang.o[0], rang.o[1]),
+                            depthWrite: false,
+                            side: THREE.DoubleSide,
+                            fog: false
+                        }));
+                        const a = (alea() * 2 - 1) * (rang.arc || 95) * DEG;   /* devant le visiteur */
+                        const d = entre(rang.d[0], rang.d[1]);
+                        const l = entre(rang.l[0], rang.l[1]);
+                        const h = entre(rang.h[0], rang.h[1]);
+                        m.scale.set(l, h, 1);
+                        m.position.set(Math.sin(a) * d, entre(rang.y[0], rang.y[1]) + h / 2, -Math.cos(a) * d);
+                        /* La caméra ne se déplace pas, elle ne fait que
+                           pivoter : un lookAt une fois pour toutes suffit,
+                           pas besoin de recalculer à chaque image. */
+                        m.lookAt(0, m.position.y, 0);
+                        m.renderOrder = 2;   /* après l'eau et les champs */
+                        /* La dérive se fait le long de la tangente, donc
+                           parallèlement au plan de la nappe : elle glisse
+                           dans son propre plan au lieu de s'enfoncer. */
+                        m.userData.brume = {
+                            x0: m.position.x, z0: m.position.z,
+                            tx: Math.cos(a), tz: Math.sin(a),
+                            amp: entre(0.6, 2.4) * (1 + iRang),
+                            vitesse: entre(0.012, 0.045),
+                            souffle: entre(0.1, 0.3),
+                            phase: alea() * 6.28,
+                            base: m.material.opacity
+                        };
+                        brume.add(m);
+                    }
+                });
+
+                /* Le ruban d'horizon : une seule nappe très large et très
+                   basse, posée là où l'eau rejoint le dôme. Elle efface
+                   ce qui pourrait rester de la ligne de raccord. */
+                [34, 52, 74].forEach(function (d, k) {
+                    const m = new THREE.Mesh(GEO_PLAN, new THREE.MeshBasicMaterial({
+                        map: TEX[k % TEX.length],
+                        color: 0x8fb4d8,
+                        transparent: true,
+                        opacity: 0.26 + k * 0.09,
+                        depthWrite: false,
+                        side: THREE.DoubleSide,
+                        fog: false
+                    }));
+                    m.material.map = m.material.map.clone();
+                    m.material.map.needsUpdate = true;
+                    m.material.map.wrapS = THREE.RepeatWrapping;
+                    m.material.map.repeat.set(3, 1);
+                    m.scale.set(d * 2.6, 1.1 + k * 0.7, 1);
+                    m.position.set(0, 0.1 + k * 0.18, -d);
+                    m.renderOrder = 2;
+                    m.userData.brume = {
+                        x0: 0, z0: -d, tx: 1, tz: 0,
+                        amp: 1.6 + k, vitesse: 0.008 + k * 0.004,
+                        souffle: 0.07 + k * 0.02, phase: k * 2.1,
+                        base: m.material.opacity
+                    };
+                    brume.add(m);
+                });
+
+                /* Les quatre textures défilent à des vitesses différentes.
+                   Comme plusieurs nappes partagent la même, c'est ce
+                   décalage plus la dérive propre à chaque nappe qui
+                   empêche de voir un motif qui se répète. */
+                brume.userData.textures = TEX;
+                brume.userData.defilement = [0.009, -0.014, 0.006, -0.02];
+            })();
+
+            /* La brume est un effet POSÉ AU-DESSUS : elle ne doit pas
+               toucher l'eau. Le Reflector refait un rendu de la scène
+               depuis une caméra miroir ; sans précaution la brume s'y
+               retrouve et vient blanchir le reflet. On l'éteint donc
+               le temps de cette passe, et on la rallume juste après. */
+            const refletAvant = water.onBeforeRender;
+            water.onBeforeRender = function (renderer, scene, camera, geometry, material, group) {
+                brume.visible = false;
+                refletAvant.call(this, renderer, scene, camera, geometry, material, group);
+                brume.visible = true;
+            };
 
             /* Respiration : les champs de lumière oscillent à peine. */
             const jungleBase = jungle.children.map(function (g) { return g.rotation.z; });
@@ -3417,6 +3613,20 @@
                 water.material.uniforms.uNow.value += dt;
                 skyMat.uniforms.uTime.value = t;
                 grassMat.uniforms.uTime.value = t;
+                /* La brume : les textures défilent, et chaque nappe
+                   glisse dans son propre plan en respirant. */
+                if (!reduce) {
+                    const tex = brume.userData.textures;
+                    const vit = brume.userData.defilement;
+                    for (let k = 0; k < tex.length; k++) { tex[k].offset.x += vit[k] * dt; }
+                    for (let k = 0; k < brume.children.length; k++) {
+                        const m = brume.children[k], b = m.userData.brume;
+                        const g = Math.sin(t * b.vitesse * 6.28 + b.phase) * b.amp;
+                        m.position.x = b.x0 + b.tx * g;
+                        m.position.z = b.z0 + b.tz * g;
+                        m.material.opacity = b.base * (0.66 + 0.34 * Math.sin(t * b.souffle + b.phase * 1.7));
+                    }
+                }
                 /* La jungle respire : un balancement très lent, décalé d'un
                    bosquet à l'autre pour que rien ne bouge en bloc. */
                 if (!reduce) {
