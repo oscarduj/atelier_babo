@@ -4957,3 +4957,74 @@ body.fa-body {
     background: rgba(var(--dsv-phosphore), 0.16);
     border-color: rgba(var(--dsv-phosphore), 0.9);
 }
+
+
+/* ====================================================================
+   TÉLÉPHONE — LE CARROUSEL DES FICHES
+   Bug de fond : .dsv-a combinait height 100 %, aspect-ratio 4/5 et
+   max-width 100 % dans une .dsv-card en position absolue sans largeur.
+   La largeur dépendait de la hauteur, qui dépendait de la largeur :
+   sur grand écran le navigateur s'en sortait, sous 400 px la fiche
+   s'effondrait à 24 px. On casse la boucle en donnant une largeur
+   ferme à la carte et en déduisant la hauteur de la grille.
+   ==================================================================== */
+
+@media (max-width: 900px) {
+    .dsv-grid {
+        /* min-height: 60vh plus haut dans la feuille passait devant la
+           hauteur calculée : la fiche repartait en 1,54 au lieu de 1,25.
+           On le remet à zéro ici. */
+        min-height: 0;
+        height: calc(min(76vw, 19rem) * 1.25);
+        margin: 0.4rem 0 0;
+    }
+    .dsv-card { width: min(76vw, 19rem); }
+    .dsv-a { height: 100%; width: 100%; }
+
+    /* Les voisines se rapprochent : sur un écran étroit, les écarts
+       prévus pour le bureau les envoyaient entièrement hors cadre. */
+    .dsv-card.is-avant  { transform: translate(-124%, -50%) scale(0.62); opacity: 0.26; }
+    .dsv-card.is-apres  { transform: translate(24%, -50%) scale(0.62);   opacity: 0.26; }
+    .dsv-card.is-avant2,
+    .dsv-card.is-apres2 { opacity: 0; pointer-events: none; }
+
+    /* Le bandeau de recherche prenait la moitié de l'écran : les
+       mots-clés défilent maintenant sur une seule ligne. */
+    .dsv-bar { gap: 0.5rem; }
+    .dsv-keys {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.2rem;
+        mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+    }
+    .dsv-keys::-webkit-scrollbar { display: none; }
+    .dsv-keys > * { flex: 0 0 auto; }
+
+    /* Les flèches sont la seule façon de naviguer au doigt : on les
+       agrandit à une cible confortable. */
+    .dsv-nav { gap: 1.6rem; margin-top: 1rem; }
+    .dsv-arrow { width: 2.9rem; height: 2.9rem; }
+
+    /* Le repère de fiche doit rester lisible sur une petite carte. */
+    .dsv-card.a-fiche .dsv-a::after { bottom: 0.6rem; font-size: 0.55rem; padding: 0.38rem 0.6rem; }
+}
+
+/* Très petits écrans : la fiche prend toute la largeur utile et les
+   voisines disparaissent, elles ne montraient plus qu'un liseré. */
+@media (max-width: 420px) {
+    .dsv-grid { height: calc(84vw * 1.25); }
+    .dsv-card { width: 84vw; }
+    .dsv-card.is-avant, .dsv-card.is-apres { opacity: 0.14; }
+}
+
+/* Garde-fou pour Expos. Les affiches sont placées par le script, qui
+   écrit transform et opacity en ligne. Si ce script ne tourne pas —
+   une dépendance qui ne se charge pas, par exemple — toutes les
+   affiches restent empilées au même endroit avec leurs légendes les
+   unes sur les autres. Au repos on n'en montre donc qu'une : dès que
+   le script tourne, ses styles en ligne reprennent la main. */
+.sg-stage .sg-item { opacity: 0; }
+.sg-stage .sg-item:first-of-type { opacity: 1; }

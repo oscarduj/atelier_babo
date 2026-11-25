@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125o">
+    <link rel="stylesheet" href="style.css?v=20261125p">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125o" defer></script>
-    <script src="page-transition.js?v=20261125o" defer></script>
-    <script src="agent.js?v=20261125o" defer></script>
+    <script src="ambient.js?v=20261125p" defer></script>
+    <script src="page-transition.js?v=20261125p" defer></script>
+    <script src="agent.js?v=20261125p" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3010,31 +3010,11 @@
                lieu d'exposition, ce n'est pas la lumière d'ambiance, c'est
                la lumière DIRIGÉE et la structure qui la porte. On ajoute
                donc trois choses, toutes sans modèle ni image à charger :
-               un cône de lumière au-dessus de chaque œuvre, un socle sous
-               chaque œuvre, et des rails au plafond.
+               des rails au plafond, qui donnent un haut à la salle.
                Tout est en MeshBasicMaterial, donc non éclairé : la lumière
                est peinte dans la couleur, elle n'est pas calculée.
                ============================================================ */
             (function architecture() {
-
-                /* Dégradé vertical pour le cône : plein en haut, éteint en
-                   bas. C'est lui qui donne l'impression d'un faisceau qui
-                   se dilue dans l'air au lieu de s'arrêter net. */
-                function texFaisceau() {
-                    const c = document.createElement('canvas');
-                    c.width = 8; c.height = 256;
-                    const g = c.getContext('2d');
-                    const gr = g.createLinearGradient(0, 0, 0, 256);
-                    gr.addColorStop(0, 'rgba(255,255,255,0.5)');
-                    gr.addColorStop(0.25, 'rgba(255,255,255,0.26)');
-                    gr.addColorStop(0.68, 'rgba(255,255,255,0.08)');
-                    gr.addColorStop(1, 'rgba(255,255,255,0)');
-                    g.fillStyle = gr; g.fillRect(0, 0, 8, 256);
-                    const t = new THREE.CanvasTexture(c);
-                    t.colorSpace = THREE.SRGBColorSpace;
-                    return t;
-                }
-                const TEX_FAISCEAU = texFaisceau();
 
                 /* Un ruban clair, pour les arêtes allumées des rails et
                    des socles : plus net au centre, éteint aux deux bouts. */
@@ -3053,67 +3033,10 @@
                 }
                 const TEX_ARETE = texArete();
 
-                const GEO_SOCLE = new THREE.BoxGeometry(1, 1, 1);
-                const faisceaux = [];
-
-                panels.forEach(function (p) {
-                    const lift = p.screen.parent;
-
-                    /* --- Le cône de lumière ---
-                       Un cylindre ouvert, plus étroit en haut qu'en bas :
-                       la projection d'un spot. En additif et sans écriture
-                       de profondeur, il traverse l'air sans découper quoi
-                       que ce soit. */
-                    const cone = new THREE.Mesh(
-                        new THREE.CylinderGeometry(0.3, PW * 0.6, H * 0.88, 20, 1, true),
-                        new THREE.MeshBasicMaterial({
-                            map: TEX_FAISCEAU, color: 0xbfe2ff,
-                            transparent: true, opacity: 0.17,
-                            blending: THREE.AdditiveBlending,
-                            depthWrite: false, side: THREE.DoubleSide
-                        })
-                    );
-                    cone.position.set(0, BASE + H * 0.58, 0.55);
-                    cone.renderOrder = 1;
-                    lift.add(cone);
-                    faisceaux.push(cone.material);
-
-                    /* --- La source ---
-                       Une barre claire au-dessus du panneau. Sans elle le
-                       cône part de nulle part. */
-                    const lampe = new THREE.Mesh(
-                        new THREE.PlaneGeometry(PW * 0.3, 0.1),
-                        new THREE.MeshBasicMaterial({
-                            map: TEX_ARETE, color: 0xdcefff,
-                            transparent: true, opacity: 0.6,
-                            blending: THREE.AdditiveBlending, depthWrite: false
-                        })
-                    );
-                    lampe.position.set(0, BASE + H * 1.045, 0.55);
-                    lampe.renderOrder = 2;
-                    lift.add(lampe);
-
-                    /* --- Le socle ---
-                       Une dalle sombre, posée au ras de l'eau, avec une
-                       arête allumée sur le dessus. L'œuvre repose sur
-                       quelque chose au lieu de flotter. */
-                    const socle = new THREE.Mesh(GEO_SOCLE, new THREE.MeshBasicMaterial({ color: 0x080d15 }));
-                    socle.scale.set(PW * 1.12, 0.16, 0.74);
-                    socle.position.set(0, 0.08, 0.06);
-                    lift.add(socle);
-
-                    const arete = new THREE.Mesh(
-                        new THREE.PlaneGeometry(PW * 1.12, 0.035),
-                        new THREE.MeshBasicMaterial({
-                            map: TEX_ARETE, color: 0x8fd4ff,
-                            transparent: true, opacity: 0.55,
-                            blending: THREE.AdditiveBlending, depthWrite: false
-                        })
-                    );
-                    arete.position.set(0, 0.163, 0.43);
-                    arete.rotation.x = -Math.PI / 2.6;
-                    lift.add(arete);
-                });
+                /* Les cônes de lumière, les lampes et les socles qui se
+                   trouvaient ici ont été retirés : ils refermaient la
+                   salle sur elle-même. Il ne reste que la structure du
+                   plafond, et c'est l'eau qui porte la profondeur. */
 
                 /* --- Les rails du plafond ---
                    Trois arcs au-dessus du mur, de plus en plus hauts et
@@ -3148,9 +3071,6 @@
                     scene.add(lueur);
                 });
 
-                /* Les faisceaux respirent très légèrement, comme des
-                   projecteurs qui chauffent. Exposé pour la boucle. */
-                window.__faisceaux = faisceaux;
             })();
 
 
@@ -3279,23 +3199,27 @@
                         vec3 col = deep + refl * fres * 0.92 + vec3( 0.35, 0.45, 0.6 ) * sheen;
                         // Brume d'horizon : même couleur que le bas du ciel, raccord sans ligne
                         float dist = length( vWorld.xz - cameraPosition.xz );
-                        // L'eau s'assombrit en s'éloignant : le pied des panneaux repose sur du sombre
-                        col *= mix( 1.0, 0.32, smoothstep( 6.0, 15.5, dist ) );
-                        // Au-delà des panneaux, l'eau rejoint EXACTEMENT la
-                        // couleur du bas du dôme — vec3(0.028,0.05,0.095),
-                        // la première couleur du mix dans le shader du ciel.
-                        // Au moindre écart, le bord du plan d'eau (rayon
-                        // 100) se voyait comme une coupure devant le dôme
-                        // (rayon 180). Le raccord est atteint dès 78, bien
-                        // avant le bord, pour qu'il ne reste aucune arête.
-                        col = mix( col, vec3( 0.028, 0.05, 0.095 ), smoothstep( 22.0, 78.0, dist ) );
+                        // L'eau s'enfonce dans le noir à mesure qu'elle
+                        // s'éloigne. Deux pentes : une première chute
+                        // rapide au pied des panneaux, puis une seconde,
+                        // plus longue, qui emmène le fond vers presque
+                        // rien. C'est elle qui crée la profondeur.
+                        col *= mix( 1.0, 0.26, smoothstep( 6.0, 17.0, dist ) );
+                        col *= mix( 1.0, 0.18, smoothstep( 20.0, 95.0, dist ) );
+                        // Tout au fond, l'eau se stabilise sur un bleu très
+                        // sombre — environ la moitié de la valeur du bas du
+                        // dôme. Elle reste donc plus noire que le ciel, ce
+                        // qui est ce qu'on attend d'une étendue d'eau la
+                        // nuit, et la ligne d'horizon se lit sans arête
+                        // puisque la brume lointaine s'y pose.
+                        col = mix( col, vec3( 0.011, 0.02, 0.042 ), smoothstep( 40.0, 150.0, dist ) );
                         gl_FragColor = vec4( col, 1.0 );
                         #include <tonemapping_fragment>
                         #include <colorspace_fragment>
                     }`
             };
             const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-            const water = new Reflector(new THREE.PlaneGeometry(200, 200), {
+            const water = new Reflector(new THREE.PlaneGeometry(344, 344), {
                 shader: WaterShader,
                 textureWidth: Math.round(host.clientWidth * dpr),
                 textureHeight: Math.round(host.clientHeight * dpr),
@@ -3636,6 +3560,12 @@
                     { n: 9,  d: [6, 13],  y: [0.02, 0.16], l: [7, 13],  h: [0.5, 1.0], o: [0.2, 0.34] },
                     { n: 12, d: [14, 27], y: [0.03, 0.3],  l: [12, 22], h: [0.9, 1.8], o: [0.34, 0.5] },
                     { n: 13, d: [29, 58], y: [0.05, 0.5],  l: [22, 44], h: [1.4, 2.8], o: [0.4, 0.6] },
+                    /* LE LOINTAIN. La brume accompagne l'eau jusqu'au fond :
+                       de plus en plus large, de plus en plus haute, et de
+                       plus en plus sourde. C'est la perspective aérienne —
+                       plus c'est loin, plus la lumière se perd en route. */
+                    { n: 12, d: [66, 118], y: [0.1, 1.1], l: [46, 90],  h: [2.4, 5], o: [0.26, 0.4], sourd: 0.62 },
+                    { n: 9,  d: [130, 205], y: [0.2, 2],  l: [95, 180], h: [4, 9],   o: [0.16, 0.26], sourd: 0.38 },
                     /* LES FLANCS. Le mur d'images s'arrête à 38° : au-delà,
                        le reflet s'interrompt sur une arête verticale nette
                        et il ne reste que du noir. Ce rang-là ne sert qu'à
@@ -3647,9 +3577,13 @@
                 RANGS.forEach(function (rang, iRang) {
                     for (let i = 0; i < rang.n; i++) {
                         const tex = TEX[Math.floor(alea() * TEX.length)];
+                        /* « sourd » éteint la nappe sans la rendre plus
+                           transparente : une brume lointaine n'est pas
+                           moins dense, elle est moins éclairée. */
+                        const teinte = new THREE.Color(0xbcd8f2).multiplyScalar(rang.sourd || 1);
                         const m = new THREE.Mesh(GEO_BRUME, new THREE.MeshBasicMaterial({
                             map: tex,
-                            color: 0xbcd8f2,
+                            color: teinte,
                             vertexColors: true,
                             transparent: true,
                             opacity: entre(rang.o[0], rang.o[1]),
@@ -3691,7 +3625,7 @@
                 /* Le ruban d'horizon : une seule nappe très large et très
                    basse, posée là où l'eau rejoint le dôme. Elle efface
                    ce qui pourrait rester de la ligne de raccord. */
-                [34, 52, 74].forEach(function (d, k) {
+                [34, 58, 96, 160].forEach(function (d, k) {
                     const m = new THREE.Mesh(GEO_BRUME, new THREE.MeshBasicMaterial({
                         map: TEX[k % TEX.length],
                         color: 0x8fb4d8,
@@ -3706,7 +3640,7 @@
                     m.material.map.needsUpdate = true;
                     m.material.map.wrapS = THREE.RepeatWrapping;
                     m.material.map.repeat.set(3, 1);
-                    m.scale.set(d * 2.6, 1.1 + k * 0.7, 1);
+                    m.scale.set(d * 2.6, 1.1 + k * 1.5, 1);
                     m.position.set(0, 0.1 + k * 0.18, -d);
                     m.renderOrder = 2;
                     m.userData.brume = {
@@ -3863,13 +3797,17 @@
                comprend qu'on est dans un lieu et pas devant une galerie
                d'images. Ça ne se joue qu'une fois, et pas du tout si la
                personne a demandé moins d'animation. */
-            let entree = reduce ? 1 : 0;
-            const ENTREE_DUREE = 2.5;
+            const ENTREE_DUREE = 2500;        /* millisecondes */
             const ENTREE_DEPART = -0.46;      /* radians : le regard sur l'eau */
-            let entreeArmee = false;
+            /* L'entrée est pilotée par l'horloge réelle, pas par le temps
+               accumulé de la boucle. Ce dernier est plafonné à 50 ms par
+               image pour que rien ne saute après un onglet laissé de côté
+               — mais du coup, sur une machine lente, l'entrée s'étirait
+               sur des dizaines de secondes au lieu de deux et demie. */
+            let entreeDebut = reduce ? -ENTREE_DUREE : 0;
             new IntersectionObserver(function (en) {
-                if (!entreeArmee && en[0].isIntersecting && en[0].intersectionRatio > 0.5) {
-                    entreeArmee = true;
+                if (!entreeDebut && en[0].isIntersecting && en[0].intersectionRatio > 0.5) {
+                    entreeDebut = performance.now();
                 }
             }, { threshold: [0.5] }).observe(host);
             const clock = new THREE.Clock();
@@ -3911,10 +3849,11 @@
                    remplacer : si elle fait glisser la salle pendant la
                    montée, son geste est pris en compte tout de suite. */
                 let piqueEntree = 0;
-                if (entreeArmee && entree < 1) {
-                    entree = Math.min(1, entree + dt / ENTREE_DUREE);
-                    const k = 1 - Math.pow(1 - entree, 3);   /* ralentit à l'arrivée */
+                if (entreeDebut > 0) {
+                    const e = Math.min(1, (performance.now() - entreeDebut) / ENTREE_DUREE);
+                    const k = 1 - Math.pow(1 - e, 3);        /* ralentit à l'arrivée */
                     piqueEntree = ENTREE_DEPART * (1 - k);
+                    if (e >= 1) { entreeDebut = -1; }
                 }
                 camera.rotation.set(pitch + piqueEntree, yaw, 0);
                 panels.forEach((p) => {
