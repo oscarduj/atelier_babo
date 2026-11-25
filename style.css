@@ -4862,6 +4862,10 @@ body.fa-body {
         rgba(255, 255, 255, 0) 100%);
 }
 .vhs-bande.passe { animation: vhsBande 1.1s cubic-bezier(0.4, 0, 0.5, 1) 1; }
+/* Pas de bande sur l'accueil : c'est la première image du site, elle
+   doit rester calme. La trame de lignes et l'horodatage y restent.
+   Contact la garde. */
+#accueil .vhs-bande { display: none; }
 @keyframes vhsBande {
     0%        { transform: translateY(-140%); opacity: 0; }
     12%       { opacity: 1; }
