@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125c">
+    <link rel="stylesheet" href="style.css?v=20261125d">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125c" defer></script>
-    <script src="page-transition.js?v=20261125c" defer></script>
-    <script src="agent.js?v=20261125c" defer></script>
+    <script src="ambient.js?v=20261125d" defer></script>
+    <script src="page-transition.js?v=20261125d" defer></script>
+    <script src="agent.js?v=20261125d" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3640,22 +3640,78 @@
                et sur elle seule : c'est la personne qu'on regarde qui
                décroche, pas la page. Les animations sont dans
                style.css. */
-            var PANNES = ['gl1', 'gl2', 'gl3', 'gl4'];
             var dernierePanne = '';
             var minuteurPanne = null;
             var sansMouvement = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            function parasite(li) {
+            /* L'image éclate en colonnes verticales, et CHAQUE colonne
+               glisse de son côté. C'est là qu'était l'erreur jusqu'ici :
+               un masque CSS découpe bien l'image en bandes, mais il les
+               déplace toutes ensemble — on voyait une image rayée, pas
+               une image brisée. Il faut donc de vrais éléments, un par
+               colonne, chacun avec ses propres décalages. */
+            var COLONNES = 24;
+
+            function tirageDecalage(ampleur) {
+                return (Math.random() * ampleur * 2 - ampleur).toFixed(1) + '%';
+            }
+
+            function broyer(li) {
                 if (!li || sansMouvement) return;
-                fiches.forEach(function (f) { f.li.classList.remove.apply(f.li.classList, PANNES); });
-                var tirage;
-                do { tirage = PANNES[Math.floor(Math.random() * PANNES.length)]; }
-                while (tirage === dernierePanne);
-                dernierePanne = tirage;
-                void li.offsetWidth;          /* relance l'animation même si la classe revient */
-                li.classList.add(tirage);
+                var shot = li.querySelector('.dsv-shot');
+                var img = shot ? shot.querySelector('img') : null;
+                if (!img) return;
+                var src = img.getAttribute('src');
+                if (!src) return;
+
+                /* On nettoie les éclats d'une fiche précédente : sans ça
+                   deux brisures se superposent quand on défile vite. */
+                var vieux = document.querySelectorAll('.dsv-eclats');
+                for (var v = 0; v < vieux.length; v++) { vieux[v].remove(); }
+
+                var boite = document.createElement('span');
+                boite.className = 'dsv-eclats';
+                boite.setAttribute('aria-hidden', 'true');
+
+                for (var k = 0; k < COLONNES; k++) {
+                    var col = document.createElement('i');
+                    col.style.left = (k * 100 / COLONNES) + '%';
+                    col.style.width = (100 / COLONNES) + '%';
+                    col.style.backgroundImage = 'url("' + src + '")';
+                    /* La photo est mise à l'échelle de la fiche entière,
+                       puis décalée pour que chaque colonne montre sa
+                       tranche : c'est la formule k / (n - 1). */
+                    col.style.backgroundSize = (COLONNES * 100) + '% 100%';
+                    col.style.backgroundPosition = (k * 100 / (COLONNES - 1)) + '% 50%';
+                    /* Les décalages sont larges exprès : à ±45 % de la
+                       hauteur, la colonne laisse derrière elle une
+                       grande plage noire. C'est ça qu'on voit sur la
+                       référence — pas des rayures, des morceaux
+                       d'image qui manquent. */
+                    col.style.setProperty('--a', tirageDecalage(46));
+                    col.style.setProperty('--b', tirageDecalage(46));
+                    col.style.setProperty('--c', tirageDecalage(32));
+                    col.style.setProperty('--d', tirageDecalage(14));
+                    /* Plus d'une colonne sur quatre reste noire : c'est
+                       ce qui donne l'impression d'un signal qui manque. */
+                    if (Math.random() < 0.28) { col.style.setProperty('--eteint', '0'); }
+                    boite.appendChild(col);
+                }
+
+                shot.appendChild(boite);
                 clearTimeout(minuteurPanne);
-                minuteurPanne = setTimeout(function () { li.classList.remove(tirage); }, 560);
+                minuteurPanne = setTimeout(function () { boite.remove(); }, 540);
+            }
+
+            /* La brisure attend que la fiche soit ARRIVÉE au centre.
+               Les fiches glissent en 0,65 s (voir .dsv-card dans la
+               feuille de style) : lancée avant, la brisure se jouait
+               sur une fiche encore en vol, réduite à 0,74 et posée sur
+               le côté — l'effet existait mais passait inaperçu. */
+            var minuteurArrivee = null;
+            function parasite(li) {
+                clearTimeout(minuteurArrivee);
+                minuteurArrivee = setTimeout(function () { broyer(li); }, 680);
             }
 
             function sansAccent(s) {
@@ -3868,15 +3924,17 @@
         /* Décalage de phase par section, en secondes. Les valeurs sont
            volontairement sans rapport entre elles : deux sections ne
            repassent jamais par la même position en même temps. */
-        var PHASES = {
-            accueil:        [  -4, -61],
-            curation:       [ -29, -12],
-            collaborateurs: [ -53, -88],
-            expos:          [ -17, -44],
-            contact:        [ -71, -25]
-        };
+        /* Trois gammes par section : bleu, blanc, vert d'eau.
+           Le cycle de couleur dure 78 s ; les trois voiles sont
+           décalés d'un tiers (26 s) pour que l'un domine toujours.
+           Le troisième chiffre de chaque ligne décale en plus la
+           section entière, pour que deux sections voisines ne
+           soient jamais sur la même gamme au même moment. */
+        var CYCLE = 78;
+        var DECALAGES = { accueil: 0, curation: 13, collaborateurs: 31, expos: 47, contact: 62 };
+        var GAMMES = ['bleu', 'blanc', 'eau'];
 
-        Object.keys(PHASES).forEach(function (id) {
+        Object.keys(DECALAGES).forEach(function (id) {
             var sec = document.getElementById(id);
             if (!sec) return;
             sec.classList.add('da');
@@ -3885,10 +3943,16 @@
             aura.className = 'da-aura';
             aura.setAttribute('aria-hidden', 'true');
 
-            ['un', 'deux'].forEach(function (rang, n) {
+            GAMMES.forEach(function (gamme, n) {
                 var voile = document.createElement('span');
-                voile.className = 'da-voile ' + rang;
-                voile.style.animationDelay = PHASES[id][n] + 's';
+                voile.className = 'da-voile ' + gamme;
+                /* Deux animations sur chaque voile : la rotation et le
+                   cycle de couleur. Le délai doit être donné pour les
+                   deux, dans le même ordre que dans la feuille de
+                   style, sinon la rotation reprend à zéro. */
+                var phaseCouleur = -(DECALAGES[id] + n * CYCLE / GAMMES.length);
+                voile.style.animationDelay =
+                    (-DECALAGES[id] * 1.7 - n * 23) + 's, ' + phaseCouleur.toFixed(1) + 's';
                 aura.appendChild(voile);
             });
 
