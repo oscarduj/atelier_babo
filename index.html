@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125i">
+    <link rel="stylesheet" href="style.css?v=20261125l">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125i" defer></script>
-    <script src="page-transition.js?v=20261125i" defer></script>
-    <script src="agent.js?v=20261125i" defer></script>
+    <script src="ambient.js?v=20261125l" defer></script>
+    <script src="page-transition.js?v=20261125l" defer></script>
+    <script src="agent.js?v=20261125l" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -45,6 +45,39 @@
     </script>
 </head>
 <body>
+
+    <!-- ================================================================
+         LE FILTRE VHS DES VIDÉOS DE FOND
+         Un filtre SVG, pas un filtre CSS : seul le SVG sait séparer
+         les canaux de couleur. Il fait trois choses d'un coup —
+         le rouge part à droite, le bleu à gauche (l'aberration
+         chromatique), une traînée horizontale par flou directionnel,
+         et une courbe qui crame les hautes lumières. Les lignes de
+         balayage et l'horodatage sont posés par-dessus en CSS.
+         Ce bloc ne s'affiche pas : il ne sert que de définition.
+         ================================================================ -->
+    <svg class="vhs-defs" aria-hidden="true" focusable="false"><defs>
+        <filter id="vhs" x="-3%" y="-1%" width="106%" height="102%" color-interpolation-filters="sRGB">
+            <feColorMatrix in="SourceGraphic" type="matrix" result="cR"
+                values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/>
+            <feOffset in="cR" dx="2.2" dy="0" result="dR"/>
+            <feColorMatrix in="SourceGraphic" type="matrix" result="cV"
+                values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"/>
+            <feColorMatrix in="SourceGraphic" type="matrix" result="cB"
+                values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+            <feOffset in="cB" dx="-2.2" dy="0" result="dB"/>
+            <feBlend in="dR" in2="cV" mode="screen" result="rv"/>
+            <feBlend in="rv" in2="dB" mode="screen" result="rvb"/>
+            <feGaussianBlur in="rvb" stdDeviation="1.3 0" result="trainee"/>
+            <feBlend in="rvb" in2="trainee" mode="screen" result="smear"/>
+            <feComponentTransfer in="smear">
+                <feFuncR type="gamma" amplitude="1.2" exponent="0.9" offset="-0.02"/>
+                <feFuncG type="gamma" amplitude="1.2" exponent="0.9" offset="-0.02"/>
+                <feFuncB type="gamma" amplitude="1.24" exponent="0.88" offset="-0.015"/>
+            </feComponentTransfer>
+        </filter>
+    </defs></svg>
+
 
     <button class="sound-toggle" id="sound-toggle" type="button">SON : ON</button>
     <button class="fs-toggle" id="fullscreen-exit" type="button">PLEIN ÉCRAN</button>
@@ -1932,12 +1965,18 @@
                     c.style.display = '';
                     const d = i - P;
                     let x, s, o, bl;
-                    if (d >= 0) {            // à venir : elle attend à gauche et se rapproche
+                    if (d >= 0) {
+                        /* L'affiche à venir arrive bien par la gauche, mais
+                           elle s'efface avant d'avoir pu croiser celle du
+                           centre : à k = 0,42 elle est déjà invisible, et
+                           la principale n'est jamais chevauchée. Elle garde
+                           son glissement, c'est seulement son opacité qui
+                           la retient hors champ. */
                         const k = Math.min(d, 1);
                         x = -side * k;
                         s = 1 - 0.5 * k;
-                        o = d <= 1 ? 1 - 0.45 * k : Math.max(0, 0.55 * (1.6 - d) / 0.6);
-                        bl = d > 1 ? (d - 1) * 4 : 0;
+                        o = Math.max(0, 1 - 2.4 * k);
+                        bl = k * 6;
                     } else {                 // dépassée : elle repart par la gauche
                         const a = Math.min(-d, 1.2);
                         x = -larg * (0.5 + 0.55 * a);
@@ -4235,6 +4274,66 @@
             var cadre = sec.querySelector(':scope > .hx-frame');
             (cadre || sec).insertBefore(aura, (cadre || sec).firstChild);
         });
+    })();
+    </script>
+
+    <!-- ================================================================
+         LES LIGNES DE BALAYAGE ET L'HORODATAGE
+         Posés sur chaque cadre vidéo : la trame par-dessus l'image
+         mais sous le texte, l'horodatage en bas à droite comme sur
+         un caméscope. La date part d'aujourd'hui et avance en temps
+         réel — c'est ce qui fait croire à un enregistrement.
+         ================================================================ -->
+    <script>
+    (function () {
+        'use strict';
+        /* On accroche au CADRE, pas au carrousel : sur l'accueil le
+           voile .hx-shade passe au-dessus du carrousel, et l'horodatage
+           posé dedans se retrouvait caché. */
+        var CADRES = ['#accueil .hx-frame', '#contact .soutien-video-bg'];
+        var horloges = [];
+
+        CADRES.forEach(function (sel) {
+            var cadre = document.querySelector(sel);
+            if (!cadre) return;
+            cadre.classList.add('vhs');
+
+            var trame = document.createElement('div');
+            trame.className = 'vhs-trame';
+            trame.setAttribute('aria-hidden', 'true');
+            cadre.appendChild(trame);
+
+            /* La bande de désynchronisation : une barre claire qui
+               descend lentement, de loin en loin. Elle est à part de
+               la trame pour avoir son propre rythme. */
+            var bande = document.createElement('div');
+            bande.className = 'vhs-bande';
+            bande.setAttribute('aria-hidden', 'true');
+            cadre.appendChild(bande);
+
+            var h = document.createElement('div');
+            h.className = 'vhs-horloge';
+            h.setAttribute('aria-hidden', 'true');
+            h.innerHTML = '<span class="vhs-rec"></span><span class="vhs-date"></span>';
+            cadre.appendChild(h);
+            horloges.push(h);
+        });
+
+        if (!horloges.length) return;
+
+        var MOIS = ['JAN', 'FEV', 'MAR', 'AVR', 'MAI', 'JUIN',
+                    'JUIL', 'AOUT', 'SEP', 'OCT', 'NOV', 'DEC'];
+        function deux(n) { return (n < 10 ? '0' : '') + n; }
+        function tic() {
+            var d = new Date();
+            var txt = MOIS[d.getMonth()] + ' ' + deux(d.getDate()) + ' ' + d.getFullYear() +
+                      '   ' + deux(d.getHours()) + ':' + deux(d.getMinutes()) + ':' + deux(d.getSeconds());
+            for (var i = 0; i < horloges.length; i++) {
+                horloges[i].querySelector('.vhs-date').textContent = txt;
+            }
+        }
+        tic();
+        setInterval(tic, 1000);
     })();
     </script>
 

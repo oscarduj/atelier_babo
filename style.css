@@ -2648,7 +2648,10 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     inset: 0;
     pointer-events: none;
     z-index: 3;
-    background: radial-gradient(ellipse 75% 85% at 50% 45%, transparent 55%, rgba(4, 5, 7, 0.85) 100%);
+    /* Le vignetage noir est remplacé par une retombée bleutée, bien
+       plus légère : 0,85 d'opacité noircissait franchement les quatre
+       coins de la salle. */
+    background: radial-gradient(ellipse 88% 94% at 50% 46%, transparent 68%, rgba(6, 14, 28, 0.3) 100%);
 }
 .main-feed .travaux-asym-grid::after { display: none !important; }
 .main-feed .travaux-asym-grid .travaux-cell { flex-basis: clamp(9.5rem, 15.5vw, 16rem); }
@@ -2942,7 +2945,8 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.55) 100%);
+    /* Même chose pour Expos : plus de cerne noir autour de l'affiche. */
+    background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 52%, rgba(6, 14, 28, 0.26) 100%);
 }
 .sg-stage { position: absolute; inset: 0; outline: none; }
 .sg-stage:focus-visible { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
@@ -3696,7 +3700,7 @@ html.light-mode .tv-vault text { fill: var(--text-color); }
     content: "";
     position: absolute;
     inset: -2rem -3rem;
-    background: radial-gradient(ellipse at 50% 50%, rgba(2, 4, 7, 0.55) 0%, rgba(2, 4, 7, 0) 70%);
+    background: radial-gradient(ellipse at 50% 50%, rgba(6, 14, 28, 0.26) 0%, rgba(6, 14, 28, 0) 74%);
     pointer-events: none;
     z-index: -1;
 }
@@ -4511,3 +4515,408 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
         text-shadow: 0 0 16px rgba(125, 211, 252, 0.45);
     }
 }
+
+
+/* ====================================================================
+   LE MENU DE GAUCHE, À LA MÊME DA
+   Il gardait son filet gris, son fond neutre et son accent d'origine.
+   Il reprend ici le noir bleuté des sections, un filet cyan en
+   dégradé, une poignée lumineuse et un onglet actif qui s'allume.
+   Tout est posé après coup pour ne pas toucher à la mécanique du
+   panneau (il reste à gauche hors écran et glisse au survol).
+   ==================================================================== */
+
+@media (min-width: 901px) {
+    .side-nav {
+        border-right: 1px solid transparent;
+        border-image: linear-gradient(to bottom,
+            rgba(56, 189, 248, 0) 0%,
+            rgba(56, 189, 248, 0.42) 22%,
+            rgba(37, 99, 235, 0.3) 62%,
+            rgba(56, 189, 248, 0) 100%) 1;
+        -webkit-backdrop-filter: blur(16px) saturate(1.1);
+        backdrop-filter: blur(16px) saturate(1.1);
+    }
+    .side-nav:hover {
+        background:
+            radial-gradient(120% 55% at 0% 0%, rgba(37, 99, 235, 0.26) 0%, rgba(37, 99, 235, 0) 62%),
+            radial-gradient(100% 45% at 10% 100%, rgba(26, 124, 140, 0.2) 0%, rgba(26, 124, 140, 0) 60%),
+            rgba(5, 7, 12, 0.76);
+        box-shadow: 24px 0 70px rgba(2, 6, 16, 0.6);
+    }
+
+    /* La poignée : un trait de lumière au lieu d'un trait gris. */
+    .side-nav::after {
+        width: 2px;
+        height: 54px;
+        border-radius: 2px;
+        background: linear-gradient(to bottom,
+            rgba(56, 189, 248, 0) 0%,
+            rgba(125, 211, 252, 0.95) 50%,
+            rgba(56, 189, 248, 0) 100%);
+        opacity: 0.9;
+        box-shadow: 0 0 14px rgba(56, 189, 248, 0.55);
+    }
+
+    .side-nav .nav-item {
+        color: rgba(214, 234, 255, 0.9);
+        border-left: 2px solid transparent;
+    }
+    .side-nav .nav-item:hover {
+        color: #eaf6ff;
+        border-left-color: rgba(56, 189, 248, 0.5);
+    }
+    .side-nav .nav-item.active {
+        color: #f2f8ff !important;
+        background-color: rgba(37, 99, 235, 0.16);
+        border-left: 4px solid rgba(125, 211, 252, 0.95);
+        text-shadow: 0 0 18px rgba(125, 211, 252, 0.5);
+        box-shadow: inset 0 0 28px rgba(56, 189, 248, 0.1);
+    }
+
+    /* Le bloc du haut et le statut du bas suivent la même gamme. */
+    .side-nav .nav-top > *,
+    .side-nav .nav-status,
+    .side-nav .nav-logo {
+        color: rgba(222, 240, 255, 0.86);
+        border-color: rgba(125, 211, 252, 0.26);
+    }
+    .side-nav .nav-item-locked { color: rgba(176, 206, 232, 0.55); }
+    .side-nav .nav-item-locked.unlocked {
+        color: rgba(125, 211, 252, 0.95);
+        text-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+    }
+}
+
+
+/* ====================================================================
+   FICHE ARTISTE — artistes/<prenom-nom>.html
+   Une feuille blanche posée sur le noir du site, comme un dossier
+   de presse imprimé laissé sur une table sombre. Tout est préfixé
+   fa- pour ne rien croiser avec le reste de la feuille de style.
+   ==================================================================== */
+
+/* body.fa-body et pas .fa-body seul : plus bas dans la feuille,
+   « body, .main-feed { background: var(--ab-bg) } » reprendrait le
+   dessus. La classe standalone-page, elle, existait déjà — sans
+   elle le body reste en flex, hauteur d'écran, débordement caché,
+   et la feuille blanche s'arrête au premier écran. */
+body.fa-body {
+    margin: 0;
+    padding: clamp(0.8rem, 3vw, 3.4rem) clamp(0.6rem, 3vw, 2rem);
+    background: var(--da-nuit, #05070c);
+    /* Une respiration bleue derrière la feuille, pour que la page ne
+       soit pas un rectangle blanc posé sur du noir plat. */
+    background-image:
+        radial-gradient(120% 70% at 12% 0%, rgba(37, 99, 235, 0.22) 0%, rgba(37, 99, 235, 0) 62%),
+        radial-gradient(100% 60% at 92% 24%, rgba(26, 124, 140, 0.18) 0%, rgba(26, 124, 140, 0) 58%);
+    background-attachment: fixed;
+    font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.fa-feuille {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(1.4rem, 3vw, 2.6rem) clamp(1.2rem, 4vw, 3.6rem) clamp(1rem, 2vw, 2rem);
+    background: #f7f7f5;
+    color: #0a0a0a;
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Les deux barres ---------- */
+.fa-bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.fa-bar-haut { padding-bottom: clamp(2.5rem, 7vw, 6rem); }
+.fa-bar-bas {
+    margin-top: clamp(2rem, 5vw, 4rem);
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(10, 10, 10, 0.18);
+}
+.fa-bar-liens { display: flex; gap: clamp(1.2rem, 4vw, 3.5rem); flex-wrap: wrap; }
+.fa-bar a, .fa-bar span { color: #0a0a0a; text-decoration: none; }
+.fa-bar a { transition: opacity 0.2s ease; }
+.fa-bar a:hover { opacity: 0.45; }
+.fa-marque {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.03em;
+    text-transform: none;
+}
+.fa-bar-bas .fa-marque { font-size: 1.5rem; }
+
+/* ---------- Le nom ----------
+   Un mot par ligne, serré au maximum : c'est ce bloc qui tient
+   toute la page. La taille suit la fenêtre sans jamais déborder. */
+.fa-nom {
+    margin: 0 0 clamp(2.4rem, 6vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 700;
+    font-size: clamp(2.6rem, 11vw, 8.2rem);
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Colonne de gauche + texte ---------- */
+.fa-entete {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) minmax(0, 2.1fr);
+    gap: clamp(1.5rem, 5vw, 4.5rem);
+    align-items: start;
+    padding-bottom: clamp(2.5rem, 7vw, 5.5rem);
+}
+.fa-meta { display: flex; flex-direction: column; gap: 1.6rem; }
+.fa-meta-titre {
+    margin: 0 0 0.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(10, 10, 10, 0.45);
+}
+.fa-liste { list-style: none; margin: 0; padding: 0; }
+.fa-liste li { font-size: 0.82rem; line-height: 1.6; }
+.fa-liste-liens a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(10, 10, 10, 0.3);
+    transition: border-color 0.2s ease;
+}
+.fa-liste-liens a:hover { border-bottom-color: #0a0a0a; }
+.fa-ne { width: 0.52em; height: 0.52em; margin-left: 0.3em; fill: none; stroke: currentColor; stroke-width: 1.6; vertical-align: 0.15em; }
+
+/* Le bouton de téléchargement : le seul élément plein de la page,
+   pour qu'on le trouve sans le chercher. */
+.fa-telecharger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.3rem;
+    padding: 0.62rem 0.9rem;
+    background: #0a0a0a;
+    color: #f7f7f5;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.fa-telecharger:hover { background: #1e4fd8; transform: translateY(-1px); }
+.fa-telecharger svg { width: 0.85rem; height: 0.85rem; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.fa-poids { opacity: 0.5; }
+
+.fa-texte { max-width: 34rem; }
+.fa-texte p { margin: 0 0 1.1rem; font-size: 0.95rem; line-height: 1.55; }
+.fa-texte p:last-child { margin-bottom: 0; }
+.fa-chapo { font-size: 1.05rem !important; line-height: 1.45 !important; }
+
+/* ---------- La planche ----------
+   Douze colonnes. Chaque figure déclare sa largeur ; une rangée
+   complète doit totaliser 12. C'est ce qui donne les rangées
+   inégales sans jamais avoir à toucher à la grille. */
+.fa-planche {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(0.5rem, 1.4vw, 1.1rem);
+    align-items: end;
+}
+.fa-planche figure { margin: 0; min-width: 0; }
+.fa-planche img {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* Une image très haute ferait à elle seule la hauteur de sa
+       rangée et creuserait un grand vide à côté. On la plafonne,
+       et elle se recentre dans sa colonne. */
+    max-height: 76vh;
+    object-fit: contain;
+    margin: 0 auto;
+    background: rgba(10, 10, 10, 0.06);
+}
+.fa-planche figcaption {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.42rem;
+    font-size: 0.64rem;
+    line-height: 1.45;
+}
+.fa-planche figcaption b { font-weight: 500; }
+.fa-planche figcaption i { font-style: normal; color: rgba(10, 10, 10, 0.5); }
+
+.fa-w3 { grid-column: span 3; }
+.fa-w4 { grid-column: span 4; }
+.fa-w5 { grid-column: span 5; }
+.fa-w6 { grid-column: span 6; }
+.fa-w7 { grid-column: span 7; }
+.fa-w8 { grid-column: span 8; }
+.fa-w12 { grid-column: span 12; }
+
+/* ---------- Petits écrans ----------
+   La grille à douze colonnes n'a plus de sens sous 760 px : on
+   passe à deux colonnes, puis à une seule. La colonne de gauche
+   repasse au-dessus du texte. */
+@media (max-width: 760px) {
+    .fa-entete { grid-template-columns: 1fr; gap: 2rem; }
+    .fa-nom { align-items: flex-start; text-align: left; }
+    .fa-planche { grid-template-columns: repeat(2, 1fr); }
+    .fa-planche figure { grid-column: span 1; }
+    .fa-planche .fa-w7, .fa-planche .fa-w8, .fa-planche .fa-w12 { grid-column: span 2; }
+}
+@media (max-width: 460px) {
+    .fa-planche { grid-template-columns: 1fr; }
+    .fa-planche figure, .fa-planche .fa-w7, .fa-planche .fa-w8 { grid-column: span 1; }
+}
+
+@media print {
+    .fa-body { padding: 0; background: #fff; }
+    .fa-feuille { box-shadow: none; max-width: none; }
+}
+
+
+/* ====================================================================
+   LES VIDÉOS DE FOND — TRAITEMENT VHS
+   Quatre ingrédients, dans cet ordre de lecture :
+   1. le filtre SVG #vhs (décalage rouge/cyan, traînée, blancs cramés)
+      — voir la définition en haut de index.html ;
+   2. la trame de lignes horizontales, qui roule lentement ;
+   3. une bande de désynchronisation qui descend de loin en loin ;
+   4. l'horodatage caméscope.
+   Réglé « marqué mais lisible » : le texte posé par-dessus reste net
+   parce que la trame s'arrête au plan 2 et que les titres sont au 4.
+   ==================================================================== */
+
+.vhs-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Le filtre vient AVANT l'étalonnage : on abîme l'image, puis on la
+   refroidit, pas l'inverse. */
+#accueil .hero-video { filter: url(#vhs) var(--da-etalon); }
+#contact .soutien-bg-video { filter: url(#vhs) var(--da-etalon); }
+
+.vhs { position: relative; }
+
+/* ---------- 2. La trame ----------
+   Deux passes : des lignes sombres au pas de 3 px, qui font le
+   balayage, et une trame plus large et plus claire par-dessus, qui
+   évite que le motif soit trop régulier. L'ensemble descend d'un
+   pas toutes les 6 s : c'est le défilement vertical d'une bande. */
+.vhs-trame {
+    position: absolute;
+    inset: 0;
+    /* Au-dessus de la vidéo et du voile, sous les titres (plan 4). */
+    z-index: 3;
+    pointer-events: none;
+    background-image:
+        repeating-linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.36) 0px, rgba(0, 0, 0, 0.36) 1px,
+            rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 3px),
+        repeating-linear-gradient(to bottom,
+            rgba(190, 225, 255, 0.05) 0px, rgba(190, 225, 255, 0.05) 2px,
+            rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 7px);
+    background-size: 100% 3px, 100% 7px;
+    animation: vhsRoule 6s linear infinite;
+}
+@keyframes vhsRoule {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 0 3px, 0 -7px; }
+}
+
+/* ---------- 3. La bande de désynchronisation ----------
+   Une barre claire et floue qui traverse l'image de haut en bas
+   toutes les onze secondes, et reste invisible le reste du temps. */
+.vhs-bande {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 14%;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: screen;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(190, 225, 255, 0.1) 38%,
+        rgba(255, 255, 255, 0.16) 52%,
+        rgba(190, 225, 255, 0.08) 64%,
+        rgba(255, 255, 255, 0) 100%);
+    animation: vhsBande 11s linear infinite;
+}
+@keyframes vhsBande {
+    0%        { transform: translateY(-120%); opacity: 0; }
+    6%        { opacity: 0.9; }
+    62%       { opacity: 0.9; }
+    70%, 100% { transform: translateY(760%); opacity: 0; }
+}
+
+/* ---------- 4. L'horodatage ---------- */
+.vhs-horloge {
+    position: absolute;
+    right: clamp(0.9rem, 2.2vw, 2.2rem);
+    bottom: clamp(0.9rem, 2.2vw, 2.2rem);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: clamp(0.58rem, 0.82vw, 0.76rem);
+    letter-spacing: 0.1em;
+    color: rgba(238, 246, 255, 0.82);
+    /* Le texte aussi est dédoublé rouge/cyan : c'est ce qui vend
+       l'incrustation d'époque, elle subit la même panne que l'image. */
+    text-shadow:
+        1.2px 0 0 rgba(255, 60, 60, 0.6),
+        -1.2px 0 0 rgba(0, 220, 255, 0.6),
+        0 0 14px rgba(0, 0, 0, 0.8);
+}
+.vhs-rec {
+    width: 0.46em;
+    height: 0.46em;
+    border-radius: 50%;
+    background: #ff3b30;
+    box-shadow: 0 0 10px rgba(255, 59, 48, 0.9);
+    animation: vhsRec 1.6s steps(1) infinite;
+}
+@keyframes vhsRec { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0.12; } }
+
+/* ---------- Repli ----------
+   Le filtre SVG s'applique image par image sur une vidéo plein
+   écran : c'est le poste le plus lourd de la page. Sur petit écran
+   on le retire et on ne garde que la trame, qui ne coûte rien. */
+@media (max-width: 900px) {
+    #accueil .hero-video, #contact .soutien-bg-video { filter: var(--da-etalon); }
+    .vhs-trame { background-size: 100% 2px, 100% 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .vhs-trame, .vhs-bande, .vhs-rec { animation: none !important; }
+    .vhs-bande { opacity: 0; }
+}
+
+/* Le bloc des vidéos, sous la planche : des liens, pas de lecteurs
+   embarqués — un iframe YouTube par vidéo alourdirait la page et
+   ferait entrer des traceurs sur le site. */
+.fa-videos {
+    margin-top: clamp(2rem, 5vw, 3.6rem);
+    padding-top: clamp(1.2rem, 3vw, 2rem);
+    border-top: 1px solid rgba(10, 10, 10, 0.18);
+    max-width: 44rem;
+}
+.fa-videos .fa-liste li { font-size: 0.9rem; line-height: 1.9; }
+.fa-note { margin: 1rem 0 0; font-size: 0.8rem; color: rgba(10, 10, 10, 0.5); }

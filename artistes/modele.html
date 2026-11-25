@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data: blob:;
+        object-src 'none';
+        base-uri 'self';
+        form-action 'none';
+        frame-src 'none';
+        frame-ancestors 'none';">
+
+    <!-- ================================================================
+         FICHE ARTISTE — PAGE TYPE
+         Pour créer la fiche d'un artiste : copier ce fichier sous
+         artistes/<prenom-nom>.html et remplacer tout ce qui est
+         entre crochets. Les six repères à changer :
+
+         1. <title> et la description
+         2. le nom dans <h1> (une ligne par mot, c'est ce qui donne
+            le gros bloc de titre)
+         3. la colonne de gauche : mots-clés, liens, portfolio
+         4. les deux paragraphes de présentation
+         5. les images et leurs légendes
+         6. rien d'autre : la mise en page s'adapte toute seule
+
+         LES IMAGES. Chaque <figure> porte une classe de largeur,
+         fa-w3 à fa-w8, sur une grille de 12 colonnes. Une rangée
+         doit totaliser 12 : par exemple fa-w7 + fa-w5, ou
+         fa-w4 + fa-w4 + fa-w4. C'est ce qui donne les rangées
+         inégales de la référence. Changer ces classes suffit à
+         recomposer toute la planche.
+         ================================================================ -->
+
+    <title>[ PRÉNOM NOM ] // ATELIER BABO</title>
+    <meta name="description" content="[ Une phrase qui résume le travail de l'artiste. ]">
+    <link rel="stylesheet" href="../style.css?v=20261125k">
+</head>
+<body class="fa-body standalone-page">
+
+<main class="fa-feuille">
+
+    <!-- ---------- Barre du haut ---------- -->
+    <header class="fa-bar fa-bar-haut">
+        <a class="fa-marque" href="../index.html">ATELIER BABO</a>
+        <nav class="fa-bar-liens">
+            <a href="../index.html#collaborateurs">ARTISTES</a>
+            <a href="../index.html#expos">EXPOSITIONS</a>
+            <a href="../index.html#contact">CONTACT</a>
+        </nav>
+    </header>
+
+    <!-- ---------- Le nom ---------- -->
+    <!-- Un mot par ligne : c'est ce qui fait le bloc de titre. -->
+    <h1 class="fa-nom"><span>PRÉNOM</span><span>NOM</span></h1>
+
+    <!-- ---------- Colonne de gauche + présentation ---------- -->
+    <div class="fa-entete">
+
+        <aside class="fa-meta">
+            <div class="fa-meta-bloc">
+                <h2 class="fa-meta-titre">Mots-clés</h2>
+                <!-- Les mots-clés relevés dans le portfolio. Cinq ou six
+                     au maximum : au-delà, ça ne résume plus rien. -->
+                <ul class="fa-liste">
+                    <li>[ Installation ]</li>
+                    <li>[ Vidéo ]</li>
+                    <li>[ Son ]</li>
+                    <li>[ Sculpture ]</li>
+                </ul>
+            </div>
+
+            <div class="fa-meta-bloc">
+                <h2 class="fa-meta-titre">Faits marquants</h2>
+                <ul class="fa-liste">
+                    <li>[ Prix ou sélection, année ]</li>
+                    <li>[ Exposition marquante, lieu ]</li>
+                    <li>[ Résidence, lieu ]</li>
+                </ul>
+            </div>
+
+            <div class="fa-meta-bloc">
+                <h2 class="fa-meta-titre">Liens</h2>
+                <ul class="fa-liste fa-liste-liens">
+                    <!-- Retirer la ligne si l'artiste n'a pas de site. -->
+                    <li><a href="https://exemple.com" target="_blank" rel="noopener noreferrer">Site<svg class="fa-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a></li>
+                    <li><a href="https://instagram.com/compte" target="_blank" rel="noopener noreferrer">Instagram<svg class="fa-ne" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 10L10 2M4 2h6v6"/></svg></a></li>
+                </ul>
+            </div>
+
+            <!-- Le portfolio : fichier déposé dans artistes/portfolios/ -->
+            <a class="fa-telecharger" href="portfolios/prenom-nom.pdf" download>
+                <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1v8M3.5 6.5L7 10l3.5-3.5M1.5 12.5h11"/></svg>
+                Télécharger le portfolio
+                <span class="fa-poids">PDF</span>
+            </a>
+        </aside>
+
+        <div class="fa-texte">
+            <p class="fa-chapo">[ Deux ou trois lignes qui disent ce que fait l'artiste, en une seule idée. C'est la phrase qu'on lit si on ne lit rien d'autre. ]</p>
+            <p>[ Le parcours : formation, où et comment la pratique s'est formée, ce qu'elle cherche. Quatre à six lignes. ]</p>
+            <p>[ Ce sur quoi l'artiste travaille en ce moment, et les projets à venir. Trois à cinq lignes. ]</p>
+        </div>
+    </div>
+
+    <!-- ---------- La planche d'images ----------
+         Chaque rangée doit totaliser 12 colonnes. -->
+    <section class="fa-planche" aria-label="Œuvres">
+
+        <figure class="fa-w7">
+            <img src="../images/travaux/collectif/babosphere-11.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+        <figure class="fa-w5">
+            <img src="../images/travaux/collectif/eauracle-1.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+        <figure class="fa-w4">
+            <img src="../images/travaux/collectif/signal-faible-tirage-1.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+        <figure class="fa-w8">
+            <img src="../images/travaux/collectif/portrait-immateriel-plan-24.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+        <figure class="fa-w4">
+            <img src="../images/travaux/collectif/collectif-2.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+        <figure class="fa-w4">
+            <img src="../images/travaux/collectif/babosphere-08.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+        <figure class="fa-w4">
+            <img src="../images/travaux/collectif/babosphere-06.jpg" alt="[ Description de l'image ]" loading="lazy">
+            <figcaption><b>[ Titre de l'œuvre ]</b><i>[ Technique, année ]</i></figcaption>
+        </figure>
+
+    </section>
+
+    <!-- ---------- Barre du bas ---------- -->
+    <footer class="fa-bar fa-bar-bas">
+        <a class="fa-marque" href="../index.html">ATELIER BABO</a>
+        <div class="fa-bar-liens">
+            <span>contact@atelier-babo.com</span>
+            <a href="https://instagram.com/atelier_babo_" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <span>Rouen, France</span>
+        </div>
+    </footer>
+
+</main>
+
+</body>
+</html>
