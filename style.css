@@ -4222,6 +4222,27 @@ body, .main-feed, .feed-section, #collaborateurs { background: var(--da-nuit); }
 .da-aura {
     opacity: calc(var(--da-poids, 1) * var(--da-intensite, 1));
     filter: brightness(var(--da-force, 1));
+    /* Chaque section a son propre voile, découpé par le bord de la
+       section : en descendant la page on voyait la lumière s'arrêter
+       net et une autre reprendre. Le masque éteint le voile sur les
+       premiers et les derniers 14 % de la section, si bien que deux
+       sections voisines se fondent l'une dans l'autre au lieu de se
+       succéder. Et sur les côtés, les 6 % de bord évitent que le
+       voile ne vienne buter contre le cadre de la fenêtre. */
+    -webkit-mask-image:
+        linear-gradient(to bottom, transparent 0%, #000 9%, #000 91%, transparent 100%),
+        linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-image:
+        linear-gradient(to bottom, transparent 0%, #000 9%, #000 91%, transparent 100%),
+        linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+/* L'accueil est en pleine image : le voile doit y couvrir tout le
+   cadre, donc pas de masque vertical. */
+#accueil .hx-frame > .da-aura {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 5%, #000 95%, transparent 100%);
 }
 #expos   .da-aura { --da-force: 1.25; }
 #contact .da-aura { --da-force: 1.15; }

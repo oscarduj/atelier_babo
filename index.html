@@ -24,7 +24,7 @@
         upgrade-insecure-requests;">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>ATELIER BABO // COLLECTIF</title>
-    <link rel="stylesheet" href="style.css?v=20261125g">
+    <link rel="stylesheet" href="style.css?v=20261125h">
     <script>
         /* Séquence d'entrée déjà franchie dans cet onglet ? On la saute :
            en revenant d'une autre page du site, on arrive directement sur
@@ -34,9 +34,9 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="ambient.js?v=20261125g" defer></script>
-    <script src="page-transition.js?v=20261125g" defer></script>
-    <script src="agent.js?v=20261125g" defer></script>
+    <script src="ambient.js?v=20261125h" defer></script>
+    <script src="page-transition.js?v=20261125h" defer></script>
+    <script src="agent.js?v=20261125h" defer></script>
     <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -3430,6 +3430,15 @@
                        voit en premier — les panneaux semblent sortir de
                        l'eau. Il reste sous 0,6 m pour ne jamais voiler
                        les images elles-mêmes. */
+                    /* AU PIED DES FENÊTRES. Les panneaux commencent à
+                       15 cm au-dessus de l'eau et font 7 de haut : leur
+                       bord bas est une ligne parfaitement droite, et
+                       c'est elle qui rigidifie toute la salle. Ce rang
+                       est planté à 14,2–17,6 — donc juste devant et
+                       juste derrière le mur, qui est à 16 — et monte à
+                       1,7, soit le sixième bas des images. Assez pour
+                       dissoudre l'arête, pas assez pour masquer l'œuvre. */
+                    { n: 16, d: [14.2, 17.6], y: [0, 0.05], l: [5, 11], h: [0.9, 1.7], o: [0.46, 0.68], arc: 46 },
                     { n: 10, d: [9, 15],  y: [0, 0.06],    l: [6, 12],  h: [0.28, 0.6], o: [0.3, 0.46], arc: 62 },
                     { n: 9,  d: [6, 13],  y: [0.02, 0.16], l: [7, 13],  h: [0.5, 1.0], o: [0.2, 0.34] },
                     { n: 12, d: [14, 27], y: [0.03, 0.3],  l: [12, 22], h: [0.9, 1.8], o: [0.34, 0.5] },
